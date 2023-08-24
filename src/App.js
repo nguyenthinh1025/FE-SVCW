@@ -1,14 +1,20 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Profile from './Profile/Profile'; // Đảm bảo import đúng đường dẫn của các component
-import Home from './Home/Home'; // Đảm bảo import đúng đường dẫn của các component
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'; // Đảm bảo import đúng đường dẫn của các component
+import Home from './pages/Home/Home'; // Đảm bảo import đúng đường dẫn của các component
+import Profile from './pages/Profile/Profile';
+import { createBrowserHistory } from 'history'
+import { UserTemplate } from './templates/UserTemplate/UserTemplate';
+import './App.css'
+import Login from './pages/Login/Login';
+export const history = createBrowserHistory()
 
 function App () {
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
-        <Route path="/profile" exact component={Profile} /> {/* Chữ "Component" thay bằng "component" */}
-        <Route path="/" exact component={Home} /> {/* Chữ "Component" thay bằng "component" */}
+        <UserTemplate path="/profile" exact Component={Profile} />
+        <UserTemplate path="/home" exact Component={Home} />
+        <Route path="/" exact component={Login} />
       </Switch>
     </Router>
   );
