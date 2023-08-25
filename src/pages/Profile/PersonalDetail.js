@@ -227,7 +227,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
                 type="text"
                 class="form-control-plaintext"
                 id="validationDefault02"
-                value={moment(info.dateOfBirth).format('DD-MM-YYYY')}
+                value={moment(info?.dateOfBirth).format('DD-MM-YYYY')}
                 readOnly
               />
             </div>

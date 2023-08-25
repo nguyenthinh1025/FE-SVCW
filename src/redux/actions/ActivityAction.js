@@ -86,18 +86,32 @@ export const GetListEndActivityAction = () => {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get('/Activity/get-activity-after-enddate');
             console.log(result.data.data);
-            const newArray = await (result.data.data).map((item) => ({
-                ...item,
-                isFollow: false,
-                isJoin: false,
-
-            }));
+            
             const action = {
                 type: "GET_LIST_END_ACTIVITY",
-                arrActivity: newArray
+                arrEndActivity: result.data.data
             }
             dispatch(action)
-
+            localStorage.setItem('endactivity', JSON.stringify(result.data.data))
+            dispatch({ type: "HIDE_LOADING" })
+        } catch (error) {
+            console.log(error);
+            dispatch({ type: "HIDE_LOADING" })
+        }
+    }
+}
+export const GetListEndActivityByUserIDAction = (id) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: "DISPLAY_LOADING" })
+            let result = await http.get(`/Activity/get-activity-after-enddate-user?userId=${id}`);
+            console.log(result.data.data);
+            
+            const action = {
+                type: "GET_LIST_END_ACTIVITY_BY_USERID",
+                arrEndActivityByUserID: result.data.data
+            }
+            dispatch(action)
             localStorage.setItem('endactivity', JSON.stringify(result.data.data))
             dispatch({ type: "HIDE_LOADING" })
         } catch (error) {

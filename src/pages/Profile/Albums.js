@@ -6,7 +6,6 @@ import moment from 'moment';
 
 const Albums = (props) => {
   const { arrActivity } = props;
-  console.log(arrActivity);
   const [albums, setAlbums] = useState(arrActivity);
   const [detail, setDetail] = useState({});
 

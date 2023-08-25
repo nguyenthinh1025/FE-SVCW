@@ -1487,6 +1487,8 @@ header.transparent .topbar {
   border-radius: 100%;
   max-width: 30px;
   margin: 5px;
+  max-height: 30px;
+  height: 30px;
 }
 
 .user-dp .name {
@@ -7293,9 +7295,9 @@ ul.countdown {
   position: absolute;
   border-radius: 999px;
   background: white;
-  left: 0;
+  left: 13px;
   width: 100%;
-  top: 0;
+  top: 8px;
   height: 100%;
   z-index: 0;
 }
@@ -11670,6 +11672,8 @@ a.main-btn2:hover,
   border: 3px solid #fff;
   border-radius: 100%;
   max-width: 135px;
+  height: 135px;
+  max-height: 135px;
 }
 
 .edit-dp {
@@ -13973,7 +13977,9 @@ nav.sidebar.padding {
 
 .comments-area>ul li figure img {
   border-radius: 100%;
-  max-width: 25px;
+  max-width: 29px;
+  height: 29px;
+  max-height: 29px;
 }
 
 .commenter {

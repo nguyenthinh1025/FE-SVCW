@@ -14,8 +14,9 @@ import { DonationAction } from '../redux/actions/DonationAction';
 export default function ItemActivity (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector((root) => root.LoginReducer);
-    const { ItemActivity, isAlreadyFollowed, isAlreadyJoined, isAlreadyLiked, detailItem, index } = props;
+    const { ItemActivity, isAlreadyFollowed, isAlreadyJoined, isAlreadyLiked, detailItem, index,getUserId } = props;
     const [openpro1, setOpenPro1] = useState(false);
+    console.log(getUserId)
     const [detail, setDetail] = useState({});
     const [report, setReport] = useState(false);
     const [joinedIndex, setJoinedIndex] = useState(null);
@@ -271,7 +272,7 @@ export default function ItemActivity (props) {
                         <img
                             style={{ height: "3rem", width: "3.5rem" }}
                             alt
-                            src={ItemActivity.user?.image}
+                            src={getUserId.image ==='none' ? 'https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg':getUserId.image}
                         />
                     </figure>
                     <div className="friend-name">
@@ -373,10 +374,10 @@ export default function ItemActivity (props) {
                         </div>
                         <ins>
                             <NavLink
-                                to={`/profile/${localStorage.getItem('userID')}`}
+                                to={`/profile`}
                                 title
                             >
-                                <h4>{ItemActivity.user?.username}</h4>
+                                <h4>{getUserId.username}</h4>
                             </NavLink>
                         </ins>
                         <span>
@@ -597,7 +598,7 @@ export default function ItemActivity (props) {
                                             }%, #ddd 100%)`,
                                     }}
                                 />
-                                <div className="range-value" style={{ position: 'absolute', left: `${((ItemActivity.realDonation - 5) * 100) / (100 - 0)}%` }}>{ItemActivity.realDonation}%</div>
+                                {/* <div className="range-value" style={{ position: 'absolute', left: `${((ItemActivity.realDonation - 5) * 100) / (100 - 0)}%` }}>{ItemActivity.realDonation}%</div> */}
                                 {ItemActivity.realDonation !== 0 ? (
                                     <div></div>
                                 ) : (
@@ -958,7 +959,7 @@ export default function ItemActivity (props) {
                                             <ul>
                                                 <li>
                                                     <figure>
-                                                        <img alt src={item.user?.image} />
+                                                    <img alt src={item.user?.image ==='none' ?'https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg': item.user?.image} />
                                                     </figure>
                                                     <div className="commenter">
                                                         <h5>
@@ -990,7 +991,8 @@ export default function ItemActivity (props) {
                                                         (item, index) => {
                                                             return (
                                                                 <div key={index} className="ml-5">
-                                                                    <figure><img alt src={item.user.image} /></figure>
+                                                                       <figure>  <img alt src={item.user?.image ==='none' ?'https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg': item.user?.image} /></figure>
+
                                                                     <div className="commenter">
                                                                         <h5><a title href="#">{item.user?.username} </a></h5>
                                                                         <span>{DateTime(item.datetime)}</span>
