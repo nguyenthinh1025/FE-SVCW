@@ -16,18 +16,22 @@ import { GetListEndActivityAction, GetListEndActivityByUserIDAction } from '../.
 import CompleteInfo from '../../components/CompleteInfo';
 import SuggestedGroup from '../../components/SuggestedGroup';
 import Other from '../../components/Other';
+import { GetListReportAction, GetListReportByTypeAction } from '../../redux/actions/ReportAction';
 
 export default function Profile (props) {
+    const { id } = props.match.params;
     const dispatch = useDispatch();
     const [reloadPage, setReloadPage] = useState(false);
     const { userID } = useSelector((root) => root.LoginReducer);
     const { getUserId } = useSelector(root => root.ProfileReducer)
     const { arrEndActivityByUserID } = useSelector(root => root.EndActivityReducer)
     useEffect(() => {
-        const action = GetProfileByIdAction(userID);
+        const action = GetProfileByIdAction(id);
         dispatch(action)
-        const action1 = GetListEndActivityByUserIDAction(userID);
+        const action1 = GetListEndActivityByUserIDAction(id);
         dispatch(action1)
+        const action4 = GetListReportAction();
+        dispatch(action4);
     }, []);
     return (
         <div><div className="theme-layout">
@@ -41,14 +45,14 @@ export default function Profile (props) {
                                         <aside className="sidebar static left">
                                             <Clock />
                                             <CompleteInfo />
-                                           <SuggestedGroup />
-                                       </aside>
+                                            <SuggestedGroup />
+                                        </aside>
                                     </div>
                                     <div className="col-lg-9">
                                         <div className="group-feed">
                                             <div className="group-avatar">
                                                 {getUserId?.coverImage === "none" ? <img src='https://img4.thuthuatphanmem.vn/uploads/2020/05/12/hinh-anh-mau-xam-chi_103623490.jpg' /> : <img src={getUserId?.coverImage} style={{ objectFit: 'cover' }} alt />}
-                                                {getUserId.userId === userID ? <div></div> :<div className='follow'><i className="icofont-check-circled" />Thích</div>}
+                                                {getUserId?.userId === userID ? <div></div> : <div className='follow'><i className="icofont-check-circled" />Thích</div>}
                                                 <figure className="group-dp"> {getUserId?.image === "none" ? <img src='https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg' /> : <img src={getUserId?.image} alt />}</figure>
                                             </div>
                                             <div className="grp-info about">
@@ -128,12 +132,12 @@ export default function Profile (props) {
                                                                 <div className="col-lg-8">
                                                                     <CreateActivity />{/* create new post */}
                                                                     <div className="">
-                                                                        <ListActivity arrActivity={getUserId?.activity} getUserId = {getUserId} />
+                                                                        <ListActivity arrActivity={getUserId?.activity} getUserId={getUserId} />
                                                                     </div>
 
                                                                     <div className="sp sp-bars" />
                                                                 </div>
-                                                               <Other />
+                                                                <Other />
                                                             </div>
                                                         </div>
                                                         <Albums arrActivity={getUserId?.activity} />
@@ -150,7 +154,7 @@ export default function Profile (props) {
                                                             </div>
                                                         </div>
                                                         <EndActivity arrEndActivityByUserID={arrEndActivityByUserID} getUserId={getUserId} />
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -173,7 +177,7 @@ export default function Profile (props) {
                     </div>
                 </div>
             </div>
-           
+
         </div>
         </div>
     )

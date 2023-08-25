@@ -12,7 +12,7 @@ function App () {
   return (
     <Router history={history}>
       <Switch>
-        <UserTemplate path="/profile" exact Component={Profile} />
+        <UserTemplate path="/profile/:id" exact Component={Profile} />
         <UserTemplate path="/home" exact Component={Home} />
         <Route path="/" exact component={Login} />
       </Switch>

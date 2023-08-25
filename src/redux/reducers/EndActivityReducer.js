@@ -1,6 +1,11 @@
+let arr = [];
+if (JSON.parse(localStorage.getItem('endactivity'))) {
+    arr = JSON.parse(localStorage.getItem('endactivity'))
+}
+
 const stateDefault = {
     arrEndActivity: [],
-    arrEndActivityByUserID:[],
+    arrEndActivityByUserID: arr,
 }
 
 
