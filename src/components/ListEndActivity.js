@@ -1,15 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import ItemEndActivity from './ItemEndActivity';
+import moment from 'moment';
 
 export default function ListEndActivity (props) {
     let { arrActivity } = props
     const { userID } = useSelector((root) => root.LoginReducer);
-    console.log(arrActivity);
-    console.log(userID);
     return (
         <div>
-            {arrActivity?.filter(item =>item.status ==='Active').map((item, index) => {
+            {arrActivity?.filter(item => item.status === 'Active').map((item, index) => {
                 const detailItem = item;
                 let isAlreadyLiked = false;
                 let isAlreadyJoined = false;
@@ -33,7 +32,7 @@ export default function ListEndActivity (props) {
                         isAlreadyJoined = user.isJoin;
                     }
                 });
-                return <ItemEndActivity ItemActivity={item} index={index} isAlreadyFollowed={isAlreadyFollowed} isAlreadyJoined={isAlreadyJoined} isAlreadyLiked={isAlreadyLiked} detailItem={detailItem}/>
+                return <ItemEndActivity ItemActivity={item} index={index} isAlreadyFollowed={isAlreadyFollowed} isAlreadyJoined={isAlreadyJoined} isAlreadyLiked={isAlreadyLiked} detailItem={detailItem} />
             })}
         </div>
     )

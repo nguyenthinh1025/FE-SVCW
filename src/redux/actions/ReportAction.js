@@ -6,11 +6,11 @@ export const GetListReportAction = () => {
             let result = await http.get('/Report/get-all-report');
             console.log(result.data.data);
             const action = {
-                type: "GET_LIST_REPORT",
+                type: "GET_LIST_REPORTYPE",
                 arrReport: result.data.data
             }
             dispatch(action)
-
+            localStorage.setItem('reporttype', JSON.stringify(result.data.data))
         } catch (error) {
             console.log(error);
         }

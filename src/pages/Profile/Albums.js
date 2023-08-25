@@ -9,9 +9,6 @@ const Albums = (props) => {
   const [albums, setAlbums] = useState(arrActivity);
   const [detail, setDetail] = useState({});
 
-
-
-
   const handleRenderAlbums = () => {
     return albums?.map((album) => {
       return (
@@ -50,7 +47,6 @@ const Albums = (props) => {
       );
     });
   };
-  console.log(albums);
   return (
     <>
       <div className="tab-pane fade" id="pictures">

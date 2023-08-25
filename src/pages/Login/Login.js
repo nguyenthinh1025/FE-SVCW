@@ -108,7 +108,7 @@ export default function Login (props) {
         dots: false,
         infinite: true,
         speed: 500,
-        autoplay: true, 
+        autoplay: true,
         autoplaySpeed: 3000,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -124,12 +124,12 @@ export default function Login (props) {
         <div className="theme-layout">
             <div className="authtication bluesh high-opacity">
                 <div className="bg-image" style={{ backgroundImage: 'url(images/avatar/20.jpg)' }} />
-            
+
                 <ul className='welcome-caro' style={{ zIndex: '99!important', opacity: 1 }}>
                     <Slider {...settings} >
                         {arrActivityLogin.map((slide, index) => (
                             <div key={index} className='welcome-box' style={{ zIndex: '99!important', opacity: 1 }}>
-                                <img src={slide.media[0].linkMedia} style={{ width: 600, height: 400, borderRadius: '10px', objectFit: 'cover' }} alt={`Slide ${index + 1}`} />
+                                <img src={slide.media[0]?.linkMedia} style={{ width: 600, height: 400, borderRadius: '10px', objectFit: 'cover' }} alt={`Slide ${index + 1}`} />
                                 <h4 className='text-center pb-3 ' style={{ color: 'black' }}>{slide.title}</h4>
                                 <p className='text-center' style={{ color: 'black' }}>{(slide.description).slice(0, 200) + '...'}</p>
                             </div>

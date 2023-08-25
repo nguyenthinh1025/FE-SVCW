@@ -1,5 +1,5 @@
 const stateDefault = {
-    arrReport: [],
+    arrReport: JSON.parse(localStorage.getItem('repottype')),
     arrReportByID: []
 }
 
@@ -7,7 +7,7 @@ const stateDefault = {
 export const ReportReducer = (state = stateDefault, action) => {
     switch (action.type) {
 
-        case 'GET_LIST_REPORT': {
+        case 'GET_LIST_REPORTYPE': {
             state.arrReport = action.arrReport;
             return { ...state }
         }

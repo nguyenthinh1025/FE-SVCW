@@ -86,7 +86,7 @@ export const GetListEndActivityAction = () => {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get('/Activity/get-activity-after-enddate');
             console.log(result.data.data);
-            
+
             const action = {
                 type: "GET_LIST_END_ACTIVITY",
                 arrEndActivity: result.data.data
@@ -106,7 +106,7 @@ export const GetListEndActivityByUserIDAction = (id) => {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get(`/Activity/get-activity-after-enddate-user?userId=${id}`);
             console.log(result.data.data);
-            
+
             const action = {
                 type: "GET_LIST_END_ACTIVITY_BY_USERID",
                 arrEndActivityByUserID: result.data.data
@@ -212,6 +212,9 @@ export const DeleteActivityByUserAction = (value) => {
             console.log(result.data.data);
             const action1 = GetListActivityAction()
             dispatch(action1)
+            const action = GetProfileByIdAction(localStorage.getItem('userID'));
+            dispatch(action)
+            dispatch(action)
         } catch (error) {
             console.log(error);
         }
@@ -243,6 +246,8 @@ export const UpdateActivityAction = (value) => {
             console.log(result.data.data);
             const action1 = GetListActivityAction()
             dispatch(action1)
+            const action = GetProfileByIdAction(localStorage.getItem('userID'));
+            dispatch(action)
         } catch (error) {
             console.log(error);
         }

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 import { GetProfileByIdAction } from "../../../redux/actions/ProfileAction";
 
-export default function Header(props) {
+export default function Header (props) {
   const { userID } = useSelector((root) => root.LoginReducer);
 
   const dispatch = useDispatch();
@@ -93,8 +93,8 @@ export default function Header(props) {
         <ul className="web-elements" style={{}}>
           <li>
             <div className="user-dp">
-              {/* <NavLink to={`/profile/${localStorage.getItem('userID')}`} title> */}
-               <NavLink to={`/profile`} title> 
+              <NavLink to={`/profile/${localStorage.getItem('userID')}`} title>
+                {/* <NavLink to={`/profile`} title>  */}
                 <img
                   alt
                   src={
