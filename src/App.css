@@ -1366,3 +1366,23 @@ i.fa.fa-arrow-up {
 .post-subject ul.post-detail-btn {
   margin-left: 30px;
 }
+
+.tab-content .tab-pane h4 {
+
+text-transform: none; 
+
+}
+
+.group-avatar .follow{
+  width: 87px;
+    position: absolute;
+    bottom: 30px;
+    right: 28px;
+    color: black;
+    background: white;
+    padding: 3px 5px;
+    border-radius: 8px;
+}
+.name-user{
+  font-size: 15px;
+}

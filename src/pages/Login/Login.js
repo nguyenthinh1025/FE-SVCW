@@ -85,36 +85,7 @@ export default function Login (props) {
             localStorage.setItem('emailuser', result.user?.email)
             const action1 = LoginUserAction(email, props);
             dispatch(action1)
-
-
-            // props.history.push('/home')
-            // console.log(result);
-            // console.log(result.user.accessToken);
-            // axios({
-            //     url: 'https://old-stuff-exchange.azurewebsites.net/api/users/login',
-            //     method: 'POST',
-            //     data: {
-            //         token: result.user.accessToken,
-            //     }
-            // }).then((value) => {
-            //     console.log(value);
-            // })
-
-            // console.log(result.user.accessToken);
-            // localStorage.setItem('a', result.user.displayName);
-            // localStorage.setItem('userlogin', result.user.email);
-            // // console.log(result.user.displayName);
-            // // <Redirect to="/admin/dashboard" />
-
-            // props.history.push("/home");
             console.log(localStorage.getItem('userLogin'));
-            // if (localStorage.getItem('userLogin') !== 104) {
-            //     // const action = ConfigActivityAction(email)
-            //     // dispatch(action)
-            //     props.history.push("/home");
-            // } else {
-
-            // }
         })
             .catch((error) => {
                 console.log(error);
@@ -128,7 +99,6 @@ export default function Login (props) {
         return <div className="custom-arrow prev-arrow" onClick={onClick} />;
     };
 
-    // Custom next arrow component
     const CustomNextArrow = (props) => {
         const { onClick } = props;
         return <div className="custom-arrow next-arrow" onClick={onClick} />;
@@ -138,7 +108,7 @@ export default function Login (props) {
         dots: false,
         infinite: true,
         speed: 500,
-        autoplay: true, // Add autoplay to make the slider change slides automatically
+        autoplay: true, 
         autoplaySpeed: 3000,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -149,47 +119,17 @@ export default function Login (props) {
         },
 
     };
-    const slides = [
-        { imgSrc: "images/tu thien 1.jpg", text: "Trường học tình thương", text2: 'Dự án này được lên xây dựng lên nhầm kêu gọi cộng đồng chung tay đưa những con chữ đến với trẻ em vùng cao.' },
-        { imgSrc: "images/tu thien_4.jpg", text: "Cho đi là còn mãi", text2: 'Dự án nhầm kêu gọi cộng đồng gây quỹ từ thiện cho những cựu chiến binh, bà mẹ Việt Nam anh hùng và những người bị dính chất độc màu da cam,.... Qũy này giúp cho cựu chiến binh, bà mẹ việt nam anh hùng,.... sẽ cảm thấy được an ủi một phần mất mác đã trải qua.' },
-        { imgSrc: "images/tu thien_2.jpg", text: "Miền trung thân thương", text2: ' Hoạt động nhầm kêu gọi mọi người hướng về miền trung' },
-        // Add more images and texts as needed
-    ];
+
     return (
         <div className="theme-layout">
             <div className="authtication bluesh high-opacity">
                 <div className="bg-image" style={{ backgroundImage: 'url(images/avatar/20.jpg)' }} />
-                {/* <ul className="welcome-caro">
-                    <li className="welcome-box">
-                        <figure><img style={{ width: 600, height: 400 }} src="images/tu thien 1.jpg" alt /></figure>
-                        <h4>Trường học tình thương</h4>
-                        <p>
-                            Dự án này được lên xây dựng lên nhầm kêu gọi cộng đồng chung tay đưa những con chữ đến với trẻ em vùng cao.
-                        </p>
-                    </li>
-                    <li className="welcome-box">
-                        <figure><img style={{ width: 600, height: 400 }} src="images/tu thien_4.jpg" alt /></figure>
-                        <h4>Cho đi là còn mãi</h4>
-                        <p>
-                            Dự án nhầm kêu gọi cộng đồng gây quỹ từ thiện cho những cựu chiến binh, bà mẹ Việt Nam anh hùng và những người bị dính chất độc màu da cam,....
-                            Qũy này giúp cho cựu chiến binh, bà mẹ việt nam anh hùng,.... sẽ cảm thấy được an ủi một phần mất mác đã trải qua.
-                        </p>
-                    </li>
-                    <li className="welcome-box">
-                        <figure><img style={{ width: 600, height: 400 }} src="images/tu thien_2.jpg" alt /></figure>
-                        <h4>Miền trung thân thương</h4>
-                        <p>
-                            Hoạt động nhầm kêu gọi mọi người hướng về miền trung
-                        </p>
-                    </li>
-                </ul> */}
-
-
+            
                 <ul className='welcome-caro' style={{ zIndex: '99!important', opacity: 1 }}>
                     <Slider {...settings} >
                         {arrActivityLogin.map((slide, index) => (
                             <div key={index} className='welcome-box' style={{ zIndex: '99!important', opacity: 1 }}>
-                                <img src={slide.media[0]} style={{ width: 600, height: 400, borderRadius: '10px', objectFit: 'cover' }} alt={`Slide ${index + 1}`} />
+                                <img src={slide.media[0].linkMedia} style={{ width: 600, height: 400, borderRadius: '10px', objectFit: 'cover' }} alt={`Slide ${index + 1}`} />
                                 <h4 className='text-center pb-3 ' style={{ color: 'black' }}>{slide.title}</h4>
                                 <p className='text-center' style={{ color: 'black' }}>{(slide.description).slice(0, 200) + '...'}</p>
                             </div>

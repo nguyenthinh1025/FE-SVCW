@@ -1,21 +1,24 @@
-import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
-import { Fragment } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom';
-import { GetProfileByIdAction } from '../../../redux/actions/ProfileAction';
+import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
+import { Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom/cjs/react-router-dom";
+import { GetProfileByIdAction } from "../../../redux/actions/ProfileAction";
 
-export default function Header (props) {
+export default function Header(props) {
   const { userID } = useSelector((root) => root.LoginReducer);
+
   const dispatch = useDispatch();
-  const [title, setTitle] = useState('');
-  const { getUserId, arrActivityUser } = useSelector(root => root.ProfileReducer)
+  const [title, setTitle] = useState("");
+  const { getUserId, arrActivityUser } = useSelector(
+    (root) => root.ProfileReducer
+  );
   useEffect(() => {
     // const action = GetProfileByIdAction(id);
     // dispatch(action);
 
     const action = GetProfileByIdAction(userID);
-    dispatch(action)
+    dispatch(action);
   }, []);
   const formik = useFormik({
     initialValues: {
@@ -28,18 +31,17 @@ export default function Header (props) {
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
     setTitle(inputValue);
-    localStorage.setItem('search', inputValue);
+    localStorage.setItem("search", inputValue);
     console.log(e.target.value);
 
-    formik.setFieldValue('title', inputValue); // Gán giá trị vào trường "title" trong Formik
+    formik.setFieldValue("title", inputValue); // Gán giá trị vào trường "title" trong Formik
   };
-
 
   // if (!getUserId) return <p>Loading...</p>;
 
   return (
     <header className>
-      <div className="topbar stick" style={{ position: 'relative' }}>
+      <div className="topbar stick" style={{ position: "relative" }}>
         <NavLink to="/home" className="logo">
           <img src="../images/logo.png" alt />
           <span>SVCW</span>
@@ -66,7 +68,7 @@ export default function Header (props) {
                   <div className="searched-user">
                     <figure>
                       <img
-                        style={{ height: '2.5rem', width: '2.5rem' }}
+                        style={{ height: "2.5rem", width: "2.5rem" }}
                         src={getUserId?.image}
                         alt
                       />
@@ -92,10 +94,17 @@ export default function Header (props) {
           <li>
             <div className="user-dp">
               {/* <NavLink to={`/profile/${localStorage.getItem('userID')}`} title> */}
-              <NavLink to={`/profile`} title>
-                <img alt src={getUserId?.image} />
+               <NavLink to={`/profile`} title> 
+                <img
+                  alt
+                  src={
+                    getUserId?.image === "none"
+                      ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                      : getUserId?.image
+                  }
+                />
                 <div className="name">
-                  <h4>{localStorage.getItem('username')}</h4>
+                  <h4>{localStorage.getItem("username")}</h4>
                 </div>
               </NavLink>
             </div>
@@ -219,7 +228,7 @@ export default function Header (props) {
             </a>
 
             <ul className="dropdown">
-              {localStorage.getItem('userID') ? (
+              {localStorage.getItem("userID") ? (
                 <li>
                   <a href="profile.html" title>
                     <i className="icofont-user-alt-3" /> Trang cá nhân
@@ -284,18 +293,18 @@ export default function Header (props) {
                 className="logout"
                 onClick={() => {
                   const action = {
-                    type: 'LOGOUT',
+                    type: "LOGOUT",
                   };
                   dispatch(action);
                   const action1 = {
-                    type: 'LOGOUT1',
+                    type: "LOGOUT1",
                   };
                   dispatch(action1);
                 }}
               >
                 <NavLink to="/" title>
-                  <i className="icofont-power" />{' '}
-                  {localStorage.getItem('userID') ? 'Đăng xuất' : 'Đăng nhập'}
+                  <i className="icofont-power" />{" "}
+                  {localStorage.getItem("userID") ? "Đăng xuất" : "Đăng nhập"}
                 </NavLink>
               </li>
             </ul>
