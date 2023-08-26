@@ -42,6 +42,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+  <!-- <script>
+    function AddOriginalLink() {
+      var e, t = document.getElementsByTagName("body")[0];
+      e = window.getSelection();
+      var n = "Source : <a href='" + document.location.href + "'>" + document.location.href + "</a> - WP Extra",
+        o = document.createElement("div");
+      o.style.position = "absolute", o.style.left = "-99999px", t.appendChild(o), o.innerHTML = n, e.selectAllChildren(o), window.setTimeout(function () {
+        t.removeChild(o)
+      }, 0)
+    }
+    window.onload = function () {
+      function e(e) {
+        return e.stopPropagation ? e.stopPropagation() : window.event && (window.event.cancelBubble = !0), e.preventDefault(), !1
+      }
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault()
+      }, !1), document.addEventListener("keydown", function (t) {
+        t.ctrlKey && t.shiftKey && 73 == t.keyCode && e(t), t.ctrlKey && t.shiftKey && 74 == t.keyCode && e(t), 83 == t.keyCode && (navigator.platform.match("Mac") ? t.metaKey : t.ctrlKey) && e(t), t.ctrlKey && 85 == t.keyCode && e(t), 123 == event.keyCode && e(t), !t.ctrlKey || "p" != t.key && 16 != t.charCode && 112 != t.charCode && 80 != t.keyCode || (t.cancelBubble = !0, t.preventDefault(), t.stopImmediatePropagation())
+      }, !1)
+    }, document.oncopy = AddOriginalLink, document.addEventListener("contextmenu", function (e) {
+      e.preventDefault()
+    }, !1);
+  </script> -->
   <title>React App</title>
 </head>
 
@@ -71,10 +96,10 @@
     const fileImage = document.querySelector('.input-preview__src');
     const filePreview = document.querySelector('.input-preview');
 
-    fileImage.onchange = function() {
+    fileImage.onchange = function () {
       const reader = new FileReader();
 
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         // get loaded data and render thumbnail.
         filePreview.style.backgroundImage = "url(" + e.target.result + ")";
         filePreview.classList.add("has-image");
@@ -84,6 +109,29 @@
       reader.readAsDataURL(this.files[0]);
     };
   </script>
+   <!-- <script>
+    function AddOriginalLink() {
+      var e, t = document.getElementsByTagName("body")[0];
+      e = window.getSelection();
+      var n = "Source : <a href='" + document.location.href + "'>" + document.location.href + "</a> - WP Extra",
+        o = document.createElement("div");
+      o.style.position = "absolute", o.style.left = "-99999px", t.appendChild(o), o.innerHTML = n, e.selectAllChildren(o), window.setTimeout(function () {
+        t.removeChild(o)
+      }, 0)
+    }
+    window.onload = function () {
+      function e(e) {
+        return e.stopPropagation ? e.stopPropagation() : window.event && (window.event.cancelBubble = !0), e.preventDefault(), !1
+      }
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault()
+      }, !1), document.addEventListener("keydown", function (t) {
+        t.ctrlKey && t.shiftKey && 73 == t.keyCode && e(t), t.ctrlKey && t.shiftKey && 74 == t.keyCode && e(t), 83 == t.keyCode && (navigator.platform.match("Mac") ? t.metaKey : t.ctrlKey) && e(t), t.ctrlKey && 85 == t.keyCode && e(t), 123 == event.keyCode && e(t), !t.ctrlKey || "p" != t.key && 16 != t.charCode && 112 != t.charCode && 80 != t.keyCode || (t.cancelBubble = !0, t.preventDefault(), t.stopImmediatePropagation())
+      }, !1)
+    }, document.oncopy = AddOriginalLink, document.addEventListener("contextmenu", function (e) {
+      e.preventDefault()
+    }, !1);
+  </script> -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 

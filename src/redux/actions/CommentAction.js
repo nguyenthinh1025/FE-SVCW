@@ -1,5 +1,5 @@
 import { http } from "../../utils/reponse";
-import { GetListActivityAction } from "./ActivityAction";
+import { GetActivityIDAction, GetListActivityAction } from "./ActivityAction";
 import { GetFanpageByIDAction } from "./FanpageAction";
 import { GetProfileByIdAction } from "./ProfileAction";
 
@@ -12,6 +12,10 @@ export const CommentAction = (value) => {
             dispatch(action)
             const action2 = GetProfileByIdAction(value.userId)
             dispatch(action2)
+            const action3 = GetActivityIDAction(value.activityId);
+            dispatch(action3)
+            const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
+            dispatch(action4)
         } catch (error) {
             console.log(error);
         }
@@ -40,6 +44,10 @@ export const CommentRepllyAction = (value) => {
             dispatch(action)
             const action2 = GetProfileByIdAction(value.userId)
             dispatch(action2)
+            const action3 = GetActivityIDAction(value.activityId);
+            dispatch(action3)
+            const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
+            dispatch(action4)
         } catch (error) {
             console.log(error);
         }

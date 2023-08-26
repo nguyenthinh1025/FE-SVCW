@@ -4,6 +4,7 @@ import {
   DeleteActivityByUserAction,
   DeleteLikeAction,
   GetActivityByIDAction,
+  GetActivityIDAction,
   GetListActivityAction,
   PostLikeAction,
 } from "../redux/actions/ActivityAction";
@@ -24,16 +25,26 @@ import {
   CommentRepllyAction,
 } from "../redux/actions/CommentAction";
 import { DonationAction } from "../redux/actions/DonationAction";
-import DetailActivity from "./DetailActivity";
 import UpdateActivity from "./UpdateActivity";
 import { useEffect } from "react";
 import ReportActivity from "./ReportActivity";
+import { GetListReportTypeAction } from "../redux/actions/ReportTypeAction";
+import { history } from "../App";
+import ShareActivity from "./ShareActivity";
 
 export default function ItemEndActivity (props) {
+  const[share,setShare] =useState(false)
+  const [shareActivityID,setShareActivityID] = useState('')
+  const handleClickShare = () => {
+    setShare((prevIsOpen) => !prevIsOpen);
+  };  const popupStyleShare = {
+    opacity: share ? 1 : 0,
+    visibility: share ? 'visible' : 'hidden',
+    overflow: share ? 'auto' : 'hidden',
+  };
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
-  const { arrReport } = useSelector((root) => root.ReportReducer);
-  console.log(arrReport);
+  const { reportType } = useSelector((root) => root.ReportType);
   const {
     ItemActivity,
     isAlreadyFollowed,
@@ -68,17 +79,17 @@ export default function ItemEndActivity (props) {
     overflow: report ? 'auto' : 'hidden',
   };
   useEffect(() => {
-    const action4 = GetListReportAction();
+    const action4 = GetListReportTypeAction();
     dispatch(action4);
   }, []);
-  console.log(arrReport);
-  const arrReportType = arrReport?.map((item, index) => {
+
+  const arrReportType = reportType?.map((item, index) => {
     return {
       label: item.reportTypeName,
       value: item.reportTypeId,
     };
   });
-  console.log(arrReportType);
+
   const formik1 = useFormik({
     initialValues: {
       title: "",
@@ -106,7 +117,6 @@ export default function ItemEndActivity (props) {
       commentIdReply: "",
     },
     onSubmit: (value) => {
-      console.log(value);
       if (value.commentIdReply === "") {
         const action = CommentAction(value);
         dispatch(action);
@@ -131,10 +141,9 @@ export default function ItemEndActivity (props) {
       description: "string",
       status: true,
       userId: userID,
-      activityId: "",
+      activityId: reportid,
     },
     onSubmit: async (value) => {
-      // console.log(value);
       const action = await CreateReportAction(value);
       await dispatch(action);
       const Toast = Swal.mixin({
@@ -256,7 +265,6 @@ export default function ItemEndActivity (props) {
       });
     } else {
       setFollowIndex(index);
-      console.log(activity, userID);
       const action = FollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -278,7 +286,6 @@ export default function ItemEndActivity (props) {
     }
   };
   const handleLikeClick = (id) => {
-    console.log(isAlreadyLiked);
     let alreadyLiked = isAlreadyLiked;
 
     let action = null;
@@ -413,11 +420,9 @@ export default function ItemEndActivity (props) {
                     {userID !== ItemActivity.userId ? (
                       <li
                         onClick={() => {
+                          setReportID(ItemActivity.activityId);
                           setReport(true);
-                          formik6.setFieldValue(
-                            "activityId",
-                            ItemActivity.activityId
-                          );
+                         
                         }}
                       >
                         <i className="icofont-flag" />
@@ -557,38 +562,39 @@ export default function ItemEndActivity (props) {
                     ? ItemActivity.media.map((image, index) => {
                       return (
                         <div key={index} className={`image-container-post`}>
-                          <a
-                            data-toggle="modal"
-                            data-target="#img-comt"
-                            href="images/resources/album1.jpg"
+                          <NavLink  to={`/detailactivity/${ItemActivity.activityId}`}
                             onClick={() => {
-                              setDetail(detailItem);
+                              console.log(ItemActivity.activity)
+                              const action = GetActivityIDAction(ItemActivity.activityId);
+                              dispatch(action)
+                            
                             }}
                           >
                             <img
                               src={image.linkMedia}
                               alt={`Image ${image.id}`}
                             />
-                          </a>
+                          </NavLink>
                         </div>
                       );
                     })
                     : ItemActivity.media?.slice(0, 4).map((image, index) => {
                       return index !== 3 ? (
                         <div key={index} className={`image-container-post`}>
-                          <a
-                            data-toggle="modal"
-                            data-target="#img-comt"
+                          <div
                             href="images/resources/album1.jpg"
                             onClick={() => {
-                              setDetail(detailItem);
+                              console.log(ItemActivity.activity)
+                              const action = GetActivityIDAction(ItemActivity.activityId);
+                              dispatch(action)
+                             history.push(`/detailactivity/${ItemActivity.activityId}`)
                             }}
                           >
                             <img
                               src={image.linkMedia}
                               alt={`Image ${image.id}`}
                             />
-                          </a>
+                          </div>
                         </div>
                       ) : (
                         <div
@@ -759,6 +765,7 @@ export default function ItemEndActivity (props) {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
+                  paddingTop: "20px",
                 }}
                 className={
                   (ItemActivity.targetDonation !== 0
@@ -945,9 +952,12 @@ export default function ItemEndActivity (props) {
                 <div className="comment-to bg">
                   <i className="icofont-comment" /> Bình luận
                 </div>
-                <a title href="#" className="share-to">
+                <div className="share" onClick={()=>{
+                  setShare(true);
+                  setShareActivityID(ItemActivity.activityId)
+                }}>
                   <i className="icofont-share-alt" /> Chia sẻ
-                </a>
+                </div>
               </div>
               <div className="new-comment" style={{ display: "block" }}>
                 <form
@@ -1134,9 +1144,9 @@ export default function ItemEndActivity (props) {
           </div>
         </div>
       </div>
-      <DetailActivity item={ItemActivity} dateTime={DateTime} />
       <UpdateActivity openpro1={openpro1} popupStyle4={popupStyle4} handleClick6={handleClick6} />
       <ReportActivity report={report} reportid={reportid} popupStyle3={popupStyle3} handleClick={handleClick} arrReportType={arrReportType} />
+      <ShareActivity share={share} handleClickShare={handleClickShare} popupStyleShare={popupStyleShare}  activityId = {shareActivityID}/>
     </div>
   );
 }

@@ -60,7 +60,7 @@ export default function UpdateActivity (props) {
                 <div className="post-new-popup" style={popupStyle4}>
                     <div
                         className="popup"
-                        style={{ width: 800, marginTop: '100px', zIndex: 80 }}
+                        style={{ width: 800, marginTop: '0px', zIndex: 80 }}
                     >
                         <span className="popup-closed" onClick={handleClick6}>
                             <i className="icofont-close" />

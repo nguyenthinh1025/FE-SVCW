@@ -15,7 +15,6 @@ export default function ListEndActivity (props) {
                 let isAlreadyFollowed = false;
                 item?.like?.map((user) => {
                     if (user.userId === userID) {
-                        console.log(user.userId === userID);
                         //item?.like?
                         isAlreadyLiked = true;
                     }
@@ -23,10 +22,6 @@ export default function ListEndActivity (props) {
 
 
                 item?.followJoinAvtivity?.map((user) => {
-                    console.log(user.isFollow);
-                    console.log(user.isJoin);
-                    console.log(user.userId);
-                    console.log(userID);
                     if (user.userId === userID) {
                         isAlreadyFollowed = user.isFollow;
                         isAlreadyJoined = user.isJoin;

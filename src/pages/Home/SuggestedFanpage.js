@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import {
   FollowFanpageAction,
+  GetFanpageByIDAction,
   UnFollowFanpageAction,
 } from "../../redux/actions/FanpageAction";
 
@@ -112,16 +113,19 @@ function SuggestedFanpage(props) {
             </span>
           </div>
           <Slider {...settings}>
-            {cmt
-              .filter((item) => item.status === "Active")
-              .map((item, index) => {
+            {cmt?.filter((item) => item.status === "Active").map((item, index) => {
                 return (
                   <div className="suggested-caro">
                     <li>
                       {/* <figure style={{ cursor: 'pointer' }} ><img src={item.avatar} style={{ height: '80px' }} /></figure> */}
                       <NavLink
                         to={`/fanpage/${item.fanpageId}`}
-                        style={{ cursor: "pointer", backgroundColor: "white" }}
+                        style={{ cursor: "pointer" }}
+                       onClick={()=>{
+                        localStorage.setItem('fanpagedatail',item.fanpageId)
+                        const action = GetFanpageByIDAction(item.fanpageId);
+                        dispatch(action)
+                       }}
                       >
                         <figure>
                           <img

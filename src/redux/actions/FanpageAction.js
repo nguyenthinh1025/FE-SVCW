@@ -5,7 +5,7 @@ export const GetListFanpageAction = () => {
         try {
             let result = await http.get('/Fanpage/getall-fanpage');
             console.log(result.data.data);
-            const newArray = await (result.data.data).map((item) => ({
+            const newArray = await (result.data.data).filter(item => item.status === "Active").map((item) => ({
                 ...item,
                 isFollow: false,
                 isJoin: false,
@@ -46,12 +46,11 @@ export const GetFanpageByIDAction = (id) => {
             let result = await http.get(`/Fanpage/get-fanpage-id?id=${id}`);
             console.log(result.data.data);
             const action = {
-                type: "GET_LIST_FANPAGE_ID",
+                type: "GET_FANPAGE_ID",
                 fanpageId: result.data.data,
-                fanpageActivity: result.data.data.activity
             }
             dispatch(action)
-            localStorage.setItem('fanpageactivity', JSON.stringify(result.data.data.activity))
+            localStorage.setItem('fanpageId', result.data.data)
             dispatch({ type: "HIDE_LOADING" })
         } catch (error) {
             console.log(error);

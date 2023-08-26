@@ -13,6 +13,7 @@ export default function Header (props) {
   const { getUserId, arrActivityUser } = useSelector(
     (root) => root.ProfileReducer
   );
+  console.log(getUserId)
   useEffect(() => {
     // const action = GetProfileByIdAction(id);
     // dispatch(action);

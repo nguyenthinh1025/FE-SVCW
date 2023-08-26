@@ -6,6 +6,7 @@ if(JSON.parse(localStorage.getItem('activity'))){
 const stateDefault = {
     arrActivity: arrActivity1,
     activityId: {},
+    activityById:localStorage.getItem('activityID'),
     arrListActivity: [],
     arrActivityLogin: [],
     arrActivityRecomment: []
@@ -21,6 +22,10 @@ export const ActivityReducer = (state = stateDefault, action) => {
         }
         case 'GET_ACTIVITY_ID': {
             state.activityId = action.activityId;
+            return { ...state }
+        }
+        case 'GET_ACTIVITY_BY_ID': {
+            state.activityById = action.activityById;
             return { ...state }
         }
         case 'GET_ACTIVITY': {
