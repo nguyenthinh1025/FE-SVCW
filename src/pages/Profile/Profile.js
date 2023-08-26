@@ -3,11 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Clock from '../../components/Clock'
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 import { GetProfileByIdAction } from '../../redux/actions/ProfileAction';
 import moment from 'moment';
 import CreateActivity from '../../components/CreateActivity';
-import ItemActivity from '../../components/ItemActivity';
 import ListActivity from '../../components/ListActivity';
 import Albums from './Albums';
 import PersonalDetail from './PersonalDetail';
@@ -17,6 +15,7 @@ import CompleteInfo from '../../components/CompleteInfo';
 import SuggestedGroup from '../../components/SuggestedGroup';
 import Other from '../../components/Other';
 import { GetListReportAction, GetListReportByTypeAction } from '../../redux/actions/ReportAction';
+import { GetListReportTypeAction } from '../../redux/actions/ReportTypeAction';
 
 export default function Profile (props) {
     const { id } = props.match.params;
@@ -30,7 +29,7 @@ export default function Profile (props) {
         dispatch(action)
         const action1 = GetListEndActivityByUserIDAction(id);
         dispatch(action1)
-        const action4 = GetListReportAction();
+        const action4 = GetListReportTypeAction();
         dispatch(action4);
     }, []);
     return (

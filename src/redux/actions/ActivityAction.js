@@ -1,4 +1,5 @@
 import { http } from "../../utils/reponse";
+import { GetFanpageByIDAction } from "./FanpageAction";
 import { GetProfileByIdAction } from "./ProfileAction";
 
 // export const GetListActivityAction = () => {
@@ -139,8 +140,25 @@ export const CreateActivityAction = (value) => {
         }
     }
 }
+export const GetActivityIDAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.get(`/Activity/get-activity-id?id=${value}`)
+            const action = {
+                type: "GET_ACTIVITY_BY_ID",
+                activityById: result.data.data
+            }
+            localStorage.setItem('activityID',result.data.data)
+            dispatch(action)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
 
 export const PostLikeAction = (value) => {
+    console.log("sasa"+ localStorage.getItem('fanpagedatail'))
     return async (dispatch) => {
         try {
             let result = await http.post('/Like/simple-like', value);
@@ -150,6 +168,10 @@ export const PostLikeAction = (value) => {
             dispatch(action1)
             const action2 = GetProfileByIdAction(value.userId)
             dispatch(action2)
+            const action3 = GetActivityIDAction(value.activityId)
+            dispatch(action3)
+            const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
+            dispatch(action4)
         } catch (error) {
             console.log(error);
         }
@@ -172,6 +194,10 @@ export const DeleteLikeAction = (value) => {
             dispatch(action1)
             const action2 = GetProfileByIdAction(value.userId)
             dispatch(action2)
+            const action3 = GetActivityIDAction(value.activityId)
+            dispatch(action3)
+            const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
+            dispatch(action4)
         } catch (error) {
             console.log(error);
         }
@@ -231,13 +257,13 @@ export const GetActivityByIDAction = (value) => {
                 type: "GET_ACTIVITY_ID",
                 activityId: result.data.data
             }
+            localStorage.setItem('activityID',result.data.data)
             dispatch(action)
         } catch (error) {
             console.log(error);
         }
     }
 }
-
 
 export const UpdateActivityAction = (value) => {
     return async (dispatch) => {

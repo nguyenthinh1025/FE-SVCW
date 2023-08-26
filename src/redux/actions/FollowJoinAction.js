@@ -1,5 +1,6 @@
 import { http } from "../../utils/reponse";
-import { GetListActivityAction, GetRecommentActivityAction } from "./ActivityAction";
+import { GetActivityIDAction, GetListActivityAction, GetRecommentActivityAction } from "./ActivityAction";
+import { GetFanpageByIDAction } from "./FanpageAction";
 import { GetProfileByIdAction } from "./ProfileAction";
 
 export const FollowAction = (activity, user) => {
@@ -13,6 +14,10 @@ export const FollowAction = (activity, user) => {
             dispatch(action1)
             const action2 = GetProfileByIdAction(user);
             dispatch(action2)
+            const action3 = GetActivityIDAction(activity)
+            dispatch(action3)
+            const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
+            dispatch(action4)
         } catch (error) {
             console.log(error);
         }
@@ -31,6 +36,10 @@ export const UnFollowAction = (activity, user) => {
             dispatch(action1)
             const action2 = GetProfileByIdAction(user);
             dispatch(action2)
+            const action3 = GetActivityIDAction(activity)
+            dispatch(action3)
+            const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
+            dispatch(action4)
         } catch (error) {
             console.log(error);
         }
@@ -49,7 +58,10 @@ export const JoinAction = (activity, user) => {
             dispatch(action)
             const action2 = GetProfileByIdAction(user);
             dispatch(action2)
-
+            const action3 = GetActivityIDAction(activity)
+            dispatch(action3)
+            const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
+            dispatch(action4)
         } catch (error) {
             console.log(error);
         }
@@ -64,7 +76,10 @@ export const UnJoinAction = (activity, user) => {
             dispatch(action)
             const action2 = GetProfileByIdAction(user);
             dispatch(action2)
-
+            const action3 = GetActivityIDAction(activity)
+            dispatch(action3)
+            const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
+            dispatch(action4)
         } catch (error) {
             console.log(error);
         }

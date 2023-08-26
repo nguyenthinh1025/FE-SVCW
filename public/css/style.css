@@ -2326,6 +2326,7 @@ aside .widget {
 }
 
 .we-video-info {
+
   border-top: 1px solid #ede9e9;
   float: left;
   padding: 8px 0 0;
@@ -3194,7 +3195,7 @@ ul.welcome-caro li.welcome-box figure img {
 
 .suggested-caro li>a,
 .friendz>a {
-  background: #088dcd none repeat scroll 0 0;
+  /* background: #088dcd none repeat scroll 0 0; */
   border-radius: 16px;
   color: #fff;
   display: inline-block;
@@ -14058,7 +14059,7 @@ nav.sidebar.padding {
   position: absolute;
   transform: translate(0px, 10px);
   visibility: hidden;
-  width: 100px;
+  width: 114px
 }
 
 /*.popover_content:before {
@@ -14734,9 +14735,7 @@ ul.chat-rooms {
 #img-comt .modal-header {
   border: 0 none;
   padding: 0;
-  position: absolute;
-  right: 15px;
-  top: 5px;
+
 }
 
 #img-comt .modal-dialog {
@@ -14812,6 +14811,8 @@ ul.chat-rooms {
 }
 
 .user>figure img {
+  width: 35px;
+  height: 35px;
   border: 2px solid #cacaca;
   border-radius: 100%;
 }

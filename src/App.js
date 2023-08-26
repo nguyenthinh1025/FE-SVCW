@@ -6,6 +6,12 @@ import { createBrowserHistory } from 'history'
 import { UserTemplate } from './templates/UserTemplate/UserTemplate';
 import './App.css'
 import Login from './pages/Login/Login';
+import DetailActivity from './components/DetailActivity';
+import DetailFanpage from './pages/Fanpage/DetailFanpage';
+import CreateFanpage from './pages/Fanpage/CreateFanpage';
+import Result from './pages/Result/Result';
+import StatisticalUser from './pages/StatisticalUser/StatisticalUser';
+import Group from './pages/Groups/Group';
 export const history = createBrowserHistory()
 
 function App () {
@@ -14,6 +20,12 @@ function App () {
       <Switch>
         <UserTemplate path="/profile/:id" exact Component={Profile} />
         <UserTemplate path="/home" exact Component={Home} />
+        <Route path="/detailactivity/:id" exact component={DetailActivity} />
+        <UserTemplate exact path="/fanpage/:id" Component={DetailFanpage} />
+        <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
+        <UserTemplate exact path="/history" Component={Result} />
+        <UserTemplate exact path="/statisticaluser" Component={StatisticalUser} />
+        <UserTemplate exact path="/groups" Component={Group} />
         <Route path="/" exact component={Login} />
       </Switch>
     </Router>

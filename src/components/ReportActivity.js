@@ -5,22 +5,22 @@ import { CreateReportAction } from '../redux/actions/ReportAction';
 import Swal from 'sweetalert2';
 
 export default function ReportActivity (props) {
-    const { report, handleClick, popupStyle3, reportid, arrReportType } = props
+    const { report, handleClick, popupStyle3, reportid, arrReportType } = props;
     const dispatch = useDispatch()
     const formik6 = useFormik({
         initialValues: {
-            reportId: reportid,
+            reportId: 'string',
             title: 'string',
             reason: '',
             reportTypeId: 'string',
             description: 'string',
             status: true,
             userId: localStorage.getItem('userID'),
-            activityId: '',
+            activityId: reportid,
         },
         onSubmit: async (value) => {
-            // console.log(value);
-            const action = await CreateReportAction(value);
+            const value1 = {...value,activityId: reportid}
+            const action = await CreateReportAction(value1);
             await dispatch(action);
             const Toast = Swal.mixin({
                 toast: true,
@@ -91,7 +91,7 @@ export default function ReportActivity (props) {
                             <form onSubmit={formik6.handleSubmit}>
                                 <div className="form row mt-3">
                                     <div className="form-group">
-                                        <label>Thể loại tiến trình</label>
+                                        <label>Loại báo cáo</label>
                                         <select
                                             value="" // Bind the select value to the formData value
                                             onChange={(e) => onInputDropdown(e)} // Pass the formIndex to handleSelectChange
