@@ -7,18 +7,18 @@ import { GetFanpageByIDAction } from '../../redux/actions/FanpageAction'
 import ListActivity from '../../components/ListActivity'
 import ListEndActivity from '../../components/ListEndActivity'
 
-export default function DetailFanpage(props) {
+export default function DetailFanpage (props) {
     const dispatch = useDispatch()
-    const {id} = props.match.params
-    const {fanpageId} = useSelector(root =>root.FanpageReducer)
+    const { id } = props.match.params
+    const { fanpageId } = useSelector(root => root.FanpageReducer)
     const { userID } = useSelector((root) => root.LoginReducer);
     console.log(fanpageId)
-    useEffect(()=>{
+    useEffect(() => {
         const action = GetFanpageByIDAction(id);
         dispatch(action)
-    },[])
-  return (
-    <Fragment>
+    }, [])
+    return (
+        <Fragment>
             <section>
                 <div className="gap">
                     <div className="container">
@@ -176,7 +176,7 @@ export default function DetailFanpage(props) {
                                                 <figure className="group-dp"><img src={fanpageId?.avatar} alt /></figure>
                                             </div>
                                             <div className="grp-info">
-                                                <h4>dasas <span>@Cộng đồng</span></h4>
+                                                <h4>{fanpageId.fanpageName} <span>@Cộng đồng</span></h4>
                                                 <ul>
                                                     <li><span>Ngày tạo: </span>{moment(fanpageId?.createAt).format('DD-MM-YYYY')}</li>
                                                     <li><span>Số điện thoại: </span> {fanpageId?.phone}</li>
@@ -191,7 +191,7 @@ export default function DetailFanpage(props) {
                                                         </form>
                                                     </li>
                                                     <li>
-                                                      {fanpageId.fanpageId ===userID ?  <div className="more">
+                                                        {fanpageId?.fanpageId === userID ? <div className="more">
                                                             <div className="more-post-optns">
                                                                 <i className>
                                                                     <svg className="feather feather-more-horizontal" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg"><circle r={1} cy={12} cx={12} /><circle r={1} cy={12} cx={19} /><circle r={1} cy={12} cx={5} /></svg></i>
@@ -199,16 +199,16 @@ export default function DetailFanpage(props) {
                                                                     <li>
                                                                         <i className="icofont-pen-alt-1" />Chỉnh sửa
                                                                         <span>Chỉnh sửa thông tin fanpage của bạn</span>
-                                                                    </li>                                                          
+                                                                    </li>
                                                                 </ul>
                                                             </div>
                                                         </div>
-                                                        : <div></div>}
+                                                            : <div></div>}
                                                     </li>
                                                 </ul>
                                             </div>
                                             <ListEndActivity arrActivity={fanpageId?.activity} />
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -1089,8 +1089,8 @@ export default function DetailFanpage(props) {
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </Fragment>
-  )
+    )
 }

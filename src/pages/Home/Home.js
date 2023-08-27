@@ -9,17 +9,19 @@ import CompleteInfo from '../../components/CompleteInfo';
 import CreateActivity from '../../components/CreateActivity';
 import SuggestedFanpage from './SuggestedFanpage';
 import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
-import { GetListActivityAction } from '../../redux/actions/ActivityAction';
+import { GetActivityTitleAction, GetListActivityAction, GetListEndActivityAction } from '../../redux/actions/ActivityAction';
 import ItemEndActivity from '../../components/ItemEndActivity';
 import ListEndActivity from '../../components/ListEndActivity';
 import YourFanpage from '../../components/YourFanpage';
 import { GetListReportAction, GetListReportByTypeAction } from '../../redux/actions/ReportAction';
+import EndActivity from '../Profile/EndActivity';
 export default function Home (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector((root) => root.LoginReducer);
     const { arrFanpage } = useSelector((root) => root.FanpageReducer);
     const { arrActivity, activityId, arrActivityRecomment } = useSelector((root) => root.ActivityReducer);
-    console.log(arrActivity)
+    const { arrEndActivity } = useSelector((root) => root.EndActivityReducer);
+    console.log(localStorage.getItem('title'));
     useEffect(() => {
         const user = localStorage.getItem('userID');
         if (user) {
@@ -34,12 +36,16 @@ export default function Home (props) {
             dispatch(action2)
             const action4 = GetListReportAction();
             dispatch(action4);
+            const action5 = GetListEndActivityAction();
+            dispatch(action5)
+
 
         } else {
             alert('Vui lòng đăng nhập để trải nghiệm tốt hơn');
             props.history.push('/');
         }
     }, []);
+
     return (
         <div className="theme-layout">
             <section>
@@ -55,23 +61,40 @@ export default function Home (props) {
                                         </aside>
                                     </div>
                                     <div className="col-lg-6">
-                                        <ul className="filtr-tabs">
-                                            <li><NavLink className="active" to="/home" title>Trang chủ</NavLink></li>
-                                            <li><NavLink to="/endactivity" title>Chiến dịch đã kết thúc</NavLink></li>
+                                        <ul className="filtr-tabs nav nav-tabs about-btn">
+                                            <li className="nav-item">
+                                                <a
+                                                    className="active"
+                                                    href="#home"
+                                                    data-toggle="tab"
+                                                >
+                                                    Trang chủ
+                                                </a>
+                                            </li>
+                                            <li className="nav-item">
+                                                <a className href="#endactivity" data-toggle="tab">
+                                                    Danh sách kết thúc chiến dịch
+                                                </a>
+                                            </li>
+                                            {/* <li><NavLink className="active" to="/home" title>Trang chủ</NavLink></li>
+                                            <li><NavLink to="/endactivity" title>Chiến dịch đã kết thúc</NavLink></li> */}
 
                                         </ul>{/* tab buttons */}
-                                        <CreateActivity />
-
-                                        <SuggestedFanpage arrFanpage={arrFanpage} />
-
-                                        <ListEndActivity arrActivity={arrActivity} />
-
-
-
-                                        <div className="loadmore">
-                                            <div className="sp sp-bars" />
-                                            <a href="#" title data-ripple>Load More..</a>
-                                        </div>{/* loadmore buttons */}
+                                        <div className="tab-content">
+                                            <div className=" tab-pane active fade show " id="home">
+                                                <CreateActivity />
+                                                <SuggestedFanpage arrFanpage={arrFanpage} />
+                                                <ListEndActivity arrActivity={arrActivity} />
+                                                <div className="loadmore">
+                                                    <div className="sp sp-bars" />
+                                                    <a href="#" title data-ripple>Load More..</a>
+                                                </div>
+                                            </div>
+                                            <div className=" tab-pane fade" id="endactivity">
+                                                <SuggestedFanpage arrFanpage={arrFanpage} />
+                                                <ListEndActivity arrActivity={arrEndActivity} />
+                                            </div>
+                                        </div>
                                     </div>
                                     <YourFanpage />
                                 </div>

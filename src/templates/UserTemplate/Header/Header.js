@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 import { GetProfileByIdAction } from "../../../redux/actions/ProfileAction";
+import { GetActivityTitleAction, GetListActivityAction } from "../../../redux/actions/ActivityAction";
 
 export default function Header (props) {
   const { userID } = useSelector((root) => root.LoginReducer);
@@ -13,7 +14,6 @@ export default function Header (props) {
   const { getUserId, arrActivityUser } = useSelector(
     (root) => root.ProfileReducer
   );
-  console.log(getUserId)
   useEffect(() => {
     // const action = GetProfileByIdAction(id);
     // dispatch(action);
@@ -26,17 +26,18 @@ export default function Header (props) {
       title: title,
     },
     onSubmit: (value) => {
-      console.log(value);
+      if (formik.values.title !== '') {
+        console.log(value);
+        const action = GetActivityTitleAction();
+        dispatch(action)
+      }
+      else {
+        const action = GetListActivityAction();
+        dispatch(action)
+      }
     },
   });
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-    setTitle(inputValue);
-    localStorage.setItem("search", inputValue);
-    console.log(e.target.value);
 
-    formik.setFieldValue("title", inputValue); // Gán giá trị vào trường "title" trong Formik
-  };
 
   // if (!getUserId) return <p>Loading...</p>;
 
@@ -53,8 +54,7 @@ export default function Header (props) {
               type="text"
               placeholder="Tìm Kiếm..."
               name="title"
-              value={title}
-              onChange={handleInputChange}
+              onChange={formik.handleChange}
             />
             <button type="submit">
               <i className="icofont-search" />

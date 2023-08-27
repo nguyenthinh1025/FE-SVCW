@@ -18,7 +18,7 @@ import {
 import { FollowAction, JoinAction, UnFollowAction, UnJoinAction } from "../redux/actions/FollowJoinAction";
 import Swal from "sweetalert2";
 import { DonationAction } from "../redux/actions/DonationAction";
-export default function DetailActivity(props) {
+export default function DetailActivity (props) {
   const { userID } = useSelector((root) => root.LoginReducer);
   const [content, setContent] = useState("");
   const [onID, setOnID] = useState("");
@@ -29,7 +29,7 @@ export default function DetailActivity(props) {
 
   const { activityById } = useSelector((root) => root.ActivityReducer);
   console.log(activityById);
-  const endDate = moment(activityById.endDate, "DD-MM-YYYY");
+  const endDate = moment(activityById?.endDate, "DD-MM-YYYY");
   const currentDate = moment();
   const settings = {
     dots: true,
@@ -64,7 +64,7 @@ export default function DetailActivity(props) {
   const [joinedIndex, setJoinedIndex] = useState(null);
   const [followIndex, setFollowIndex] = useState(null);
   const handleJoinClick = async (index, activity, isJoin, title) => {
-    
+
     if (isJoin) {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
@@ -116,16 +116,16 @@ export default function DetailActivity(props) {
     //     return newArray;
     // });
   };
-  const slides = activityById.media?.map((item, index) => {
+  const slides = activityById?.media?.map((item, index) => {
     return (
       <div className={styles["carousel-item"]} key={index}>
-        <img src={item.linkMedia} alt="Slide 1" />
+        <img src={item?.linkMedia} alt="Slide 1" />
       </div>
     );
   });
   const [isPopupOpen, setPopupOpen] = useState(false);
   const openPopup = () => {
-    setPopupOpen(open =>!open);
+    setPopupOpen(open => !open);
   };
   const formik1 = useFormik({
     initialValues: {
@@ -295,9 +295,8 @@ export default function DetailActivity(props) {
                     <div
                       className=""
                       style={{
-                        backgroundColor: `${
-                          isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
-                        }`,
+                        backgroundColor: `${isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
+                          }`,
                         borderRadius: "4px",
                         color: "#82828e",
                         display: "inline-block",
@@ -338,98 +337,94 @@ export default function DetailActivity(props) {
                     <div className="user-information">
                       <h4>
                         <a href="#" title>
-                          {activityById.user?.username}
+                          {activityById?.user?.username}
                         </a>
                       </h4>
-                      <span>{DateTime(activityById.createAt)}</span>
+                      <span>{DateTime(activityById?.createAt)}</span>
                     </div>
                     <a href="#" title="Follow" data-ripple>
                       Follow
                     </a>
                   </div>
                   <div style={{ paddingLeft: "20px" }}>
-                    <h3> {activityById.title}</h3>
-                    <p>{activityById.description}</p>
+                    <h3> {activityById?.title}</h3>
+                    <p>{activityById?.description}</p>
                   </div>
-                <div style={{display:'flex'}}>
+                  <div style={{ display: 'flex' }}>
 
-                {endDate.isBefore(currentDate) ? (
-                    <div></div>
-                  ) : (
-                    <button
-                      className={` ${
-                        isAlreadyJoined ? "btn-change" : "btn-color"
-                      } mb-4 mt-4 btn-add ${
-                        activityById.targetDonation !== 0
-                          ? "marginfollow"
-                          : "sas"
-                      }`}
-                      onClick={() => {
-                        handleJoinClick(
-                          1,
-                          activityById.activityId,
-                          isAlreadyJoined,
-                          activityById.title
-                        );
-                      }}
-                    >
-                      {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
-                    </button>
-                  )}
+                    {endDate.isBefore(currentDate) ? (
+                      <div></div>
+                    ) : (
+                      <button
+                        className={` ${isAlreadyJoined ? "btn-change" : "btn-color"
+                          } mb-4 mt-4 btn-add ${activityById?.targetDonation !== 0
+                            ? "marginfollow"
+                            : "sas"
+                          }`}
+                        onClick={() => {
+                          handleJoinClick(
+                            1,
+                            activityById?.activityId,
+                            isAlreadyJoined,
+                            activityById?.title
+                          );
+                        }}
+                      >
+                        {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
+                      </button>
+                    )}
 
-              {endDate.isBefore(currentDate) ? (
-                    <div></div>
-                  ) : (
-                    <button
-                      className={` ${
-                        isAlreadyFollowed ? "btn-change" : "btn-color"
-                      } mb-4 mt-4`}
-                      onClick={() => {
-                        handleFollowClick(
-                          1,
-                          activityById.activityId,
-                          isAlreadyFollowed,
-                          activityById.title
-                        );
-                      }}
-                    >
-                      {
-                        //TODO
-                      }
-                      {isAlreadyFollowed ? "Hủy theo dõi" : "Theo dõi"}
-                    </button>
-                  )}
-                  {endDate.isBefore(currentDate) ? (
-                    <div></div>
-                  ) : (
-                    <div>
-                      {activityById.targetDonation !== 0 ? (
-                        <button
-                          className=" btn-color btn-donate"
-                          onClick={() => {
-                            // setActi(ItemActivity.activityId)
-                            formik1.setFieldValue(
-                              "activityId",
-                              activityById.activityId
-                            );
-                            openPopup();
-                          }}
-                        >
-                          Ủng hộ
-                        </button>
-                      ) : (
-                        <div></div>
-                      )}
-                    </div>
-                  )} 
-                </div>
+                    {endDate.isBefore(currentDate) ? (
+                      <div></div>
+                    ) : (
+                      <button
+                        className={` ${isAlreadyFollowed ? "btn-change" : "btn-color"
+                          } mb-4 mt-4`}
+                        onClick={() => {
+                          handleFollowClick(
+                            1,
+                            activityById.activityId,
+                            isAlreadyFollowed,
+                            activityById.title
+                          );
+                        }}
+                      >
+                        {
+                          //TODO
+                        }
+                        {isAlreadyFollowed ? "Hủy theo dõi" : "Theo dõi"}
+                      </button>
+                    )}
+                    {endDate.isBefore(currentDate) ? (
+                      <div></div>
+                    ) : (
+                      <div>
+                        {activityById?.targetDonation !== 0 ? (
+                          <button
+                            className=" btn-color btn-donate"
+                            onClick={() => {
+                              // setActi(ItemActivity.activityId)
+                              formik1.setFieldValue(
+                                "activityId",
+                                activityById?.activityId
+                              );
+                              openPopup();
+                            }}
+                          >
+                            Ủng hộ
+                          </button>
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <div className="stat-tools" style={{ paddingLeft: "20px" }}>
                     <div
                       className=""
                       style={{
-                        backgroundColor: `${
-                          isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
-                        }`,
+                        backgroundColor: `${isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
+                          }`,
                         borderRadius: "4px",
                         color: "#82828e",
                         display: "inline-block",
@@ -440,7 +435,7 @@ export default function DetailActivity(props) {
                         cursor: "pointer",
                       }}
                       onClick={() => {
-                        handleLikeClick(activityById.activityId);
+                        handleLikeClick(activityById?.activityId);
                       }}
                     >
                       <div className="Like ">
@@ -463,7 +458,7 @@ export default function DetailActivity(props) {
                       style={{ position: "relative" }}
                     >
                       <div style={{ paddingBottom: "10px" }}>
-                        {onID === activityById.activityId ? (
+                        {onID === activityById?.activityId ? (
                           <div
                             className="commentT"
                             style={{
@@ -530,7 +525,7 @@ export default function DetailActivity(props) {
                         onChange={formik2.handleChange}
                         className="input-comment"
                       />
-                      {onID === activityById.activityId ? (
+                      {onID === activityById?.activityId ? (
                         <button
                           style={{
                             position: "absolute",
@@ -541,7 +536,7 @@ export default function DetailActivity(props) {
                             // await setTextI(item.activityId)
                             formik2.setFieldValue(
                               "activityId",
-                              activityById.activityId
+                              activityById?.activityId
                             );
                           }}
                         >
@@ -558,7 +553,7 @@ export default function DetailActivity(props) {
                             // await setTextI(item.activityId)
                             formik2.setFieldValue(
                               "activityId",
-                              activityById.activityId
+                              activityById?.activityId
                             );
                           }}
                         >

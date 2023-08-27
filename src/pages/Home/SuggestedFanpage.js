@@ -8,12 +8,19 @@ import Swal from "sweetalert2";
 import {
   FollowFanpageAction,
   GetFanpageByIDAction,
+  GetListFanpageAction,
   UnFollowFanpageAction,
 } from "../../redux/actions/FanpageAction";
+import { useEffect } from "react";
 
-function SuggestedFanpage(props) {
+function SuggestedFanpage (props) {
   const { userID } = useSelector((root) => root.LoginReducer);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const { arrFanpage } = useSelector((root) => root.FanpageReducer);
+  useEffect(() => {
+    const action1 = GetListFanpageAction();
+    dispatch(action1);
+  }, []);
   const settings = {
     dots: false,
     infinite: true,
@@ -38,19 +45,8 @@ function SuggestedFanpage(props) {
     ],
   };
 
-  const [cmt, setCmt] = useState(
-    JSON.parse(localStorage.getItem("arrFanpage"))
-  );
-  const handleFollowClick = (index, activity, isFollow, title) => {
-    console.log(index, activity, isFollow, title);
-    console.log(userID);
-    setCmt((prevArray) => {
-      const newArray = JSON.parse(JSON.stringify(prevArray));
-      newArray[index].isFollow = !newArray[index].isFollow;
-      localStorage.setItem(`arrFanpage`, JSON.stringify(newArray));
 
-      return newArray;
-    });
+  const handleFollowClick = (index, activity, isFollow, title) => {
     if (isFollow) {
       console.log("Hủy theo dõi");
       const action = UnFollowFanpageAction(userID, activity);
@@ -94,7 +90,6 @@ function SuggestedFanpage(props) {
     }
   };
 
-  console.log(cmt);
   return (
     <div className="main-wraper">
       <div className="user-post">
@@ -113,70 +108,76 @@ function SuggestedFanpage(props) {
             </span>
           </div>
           <Slider {...settings}>
-            {cmt?.filter((item) => item.status === "Active").map((item, index) => {
-                return (
-                  <div className="suggested-caro">
-                    <li>
-                      {/* <figure style={{ cursor: 'pointer' }} ><img src={item.avatar} style={{ height: '80px' }} /></figure> */}
-                      <NavLink
-                        to={`/fanpage/${item.fanpageId}`}
-                        style={{ cursor: "pointer" }}
-                       onClick={()=>{
-                        localStorage.setItem('fanpagedatail',item.fanpageId)
+            {arrFanpage?.filter((item) => item.status === "Active").map((item, index) => {
+              let isAlreadyFollowed = false;
+              item?.followFanpage?.map((user) => {
+                if (user.userId === userID) {
+                  isAlreadyFollowed = user.status;
+                }
+              });
+              return (
+                <div className="suggested-caro">
+                  <li>
+                    {/* <figure style={{ cursor: 'pointer' }} ><img src={item.avatar} style={{ height: '80px' }} /></figure> */}
+                    <NavLink
+                      to={`/fanpage/${item.fanpageId}`}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        localStorage.setItem('fanpagedatail', item.fanpageId)
                         const action = GetFanpageByIDAction(item.fanpageId);
                         dispatch(action)
-                       }}
-                      >
-                        <figure>
-                          <img
-                            src={item.avatar}
-                            style={{
-                              margin: "0 2.5rem",
-                              height: "80px",
-                              width: "90px",
-                              objectFit: "cover",
-                            }}
-                          />
-                        </figure>
-                      </NavLink>
-                      <span
-                        className="title-suggest "
-                        style={{ paddingLeft: "25px", width: "150px" }}
-                      >
-                        {item.fanpageName}
-                      </span>
-                      {/* <ins>{(item.description).slice(0, 200)}</ins> */}
-                      <div
-                        style={{
-                          width: "110px",
-                          background: "#088dcd none repeat scroll 0 0",
-                          borderRadius: "16px",
-                          color: "#fff",
-                          display: "block",
-                          marginLeft: "30px",
-                          fontSize: "12px",
-                          marginTop: "10px",
-                          padding: " 5px 10px",
-                          cursor: "pointer",
-                        }}
-                        title
-                        data-ripple
-                        onClick={() => {
-                          handleFollowClick(
-                            index,
-                            item.fanpageId,
-                            item.isFollow,
-                            item.fanpageName
-                          );
-                        }}
-                      >
-                        <i className="icofont-star" />
-                        {item?.isFollow ? "Hủy theo dõi" : "Theo dõi"}
-                      </div>
-                    </li>
-                  </div>
-                );
-              })}
+                      }}
+                    >
+                      <figure>
+                        <img
+                          src={item.avatar}
+                          style={{
+                            margin: "0 2.5rem",
+                            height: "80px",
+                            width: "90px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </figure>
+                    </NavLink>
+                    <span
+                      className="title-suggest "
+                      style={{ paddingLeft: "25px", width: "150px" }}
+                    >
+                      {item.fanpageName}
+                    </span>
+                    {/* <ins>{(item.description).slice(0, 200)}</ins> */}
+                    <div
+                      style={{
+                        width: "110px",
+                        background: "#088dcd none repeat scroll 0 0",
+                        borderRadius: "16px",
+                        color: "#fff",
+                        display: "block",
+                        marginLeft: "30px",
+                        fontSize: "12px",
+                        marginTop: "10px",
+                        padding: " 5px 10px",
+                        cursor: "pointer",
+                      }}
+                      title
+                      data-ripple
+                      onClick={() => {
+                        handleFollowClick(
+                          index,
+                          item.fanpageId,
+                          isAlreadyFollowed,
+                          item.fanpageName
+                        );
+                      }}
+                    >
+                      <i className="icofont-star" />
+                      {isAlreadyFollowed ? "Hủy theo dõi" : "Theo dõi"}
+                    </div>
+                  </li>
+                </div>
+              );
+            })}
           </Slider>
         </div>
       </div>
