@@ -8,7 +8,7 @@ export default function ListEndActivity (props) {
     const { userID } = useSelector((root) => root.LoginReducer);
     return (
         <div>
-            {arrActivity?.filter(item => item.status === 'Active').map((item, index) => {
+            {arrActivity?.filter(item => item.status === 'Active')?.map((item, index) => {
                 const detailItem = item;
                 let isAlreadyLiked = false;
                 let isAlreadyJoined = false;

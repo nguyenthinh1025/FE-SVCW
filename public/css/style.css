@@ -1249,7 +1249,7 @@ a.date {
   display: inline-block;
   font-size: 12px;
   margin-bottom: 10px;
-  text-transform: capitalize;
+  text-transform: none;
   margin-top: 5px;
 }
 
@@ -4295,7 +4295,7 @@ a.download-btn {
   margin-bottom: 20px;
   padding-bottom: 10px;
   position: relative;
-  text-transform: capitalize;
+  text-transform: none;
   width: 100%;
 }
 

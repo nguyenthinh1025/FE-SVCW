@@ -1,10 +1,12 @@
 
 import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { NavLink } from "react-router-dom";
 import { HistoryFollowJoinAction } from '../../redux/actions/HistoryAction';
 import moment from 'moment';
 import { HistoryDonationAction } from '../../redux/actions/DonationAction';
 import { useState } from 'react';
+import { GetActivityIDAction } from '../../redux/actions/ActivityAction';
 export default function Result () {
     const [detail, setDetail] = useState({})
     const { arrFollowJoin } = useSelector(root => root.HistoryReducer)
@@ -109,29 +111,19 @@ export default function Result () {
                                                                         {item.activity?.description}
                                                                     </p>
                                                                     <span><i className="icofont-clock-time" />{(DateTime(item.activity?.createAt)).toLowerCase()}</span>
-                                                                    <a href="blog-detail.html" title className="button primary circle">Chi tiết</a>
+                                                                    <NavLink className="button primary circle" to={`/detailactivity/${item.activity.activityId}`}
+                                                                        onClick={() => {
+                                                                            const action = GetActivityIDAction(item.activity.activityId);
+                                                                            dispatch(action)
+
+                                                                        }}
+                                                                    > Chi tiết</NavLink>
                                                                 </div>
                                                             </div>
                                                         })
                                                         }</div>
                                                     }
-
-                                                    {/* <div className="load mt-5 mb-4">
-                                                        <ul className="pagination">
-                                                            <li><a href="#" title><i className="icofont-arrow-left" /></a></li>
-                                                            <li><a className="active" href="#" title>1</a></li>
-                                                            <li><a href="#" title>2</a></li>
-                                                            <li><a href="#" title>3</a></li>
-                                                            <li><a href="#" title>4</a></li>
-                                                            <li><a href="#" title>5</a></li>
-                                                            <li>....</li>
-                                                            <li><a href="#" title>10</a></li>
-                                                            <li><a href="#" title><i className="icofont-arrow-right" /></a></li>
-                                                        </ul>
-                                                    </div> */}
                                                 </div>
-
-
                                             </div>
                                             <div className="tab-pane fade" id="depart">
                                                 <div className="main-wraper">
@@ -172,17 +164,24 @@ export default function Result () {
                                                                     <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt /></figure>
                                                                     <div className="blog-post-meta">
                                                                         <ul>
-                                                                            <li><i className="icofont-read-book" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
-                                                                            <li><i className="icofont-comment" /><a title="comments" href="#">33</a></li>
+                                                                            <li><i className="icofont-like" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
+
                                                                         </ul>
                                                                         <h4>{item.activity?.title}</h4>
                                                                         <p>
                                                                             {item.activity?.description}
                                                                         </p>
                                                                         <span><i className="icofont-clock-time" />{DateTime(item.activity?.createAt)}</span>
-                                                                        <a data-toggle="modal" data-target="#img-comt" title className="button primary circle" onClick={() => {
+                                                                        {/* <a data-toggle="modal" data-target="#img-comt" title className="button primary circle" onClick={() => {
                                                                             setDetail(detailItem)
-                                                                        }}>Chi tiết</a>
+                                                                        }}>Chi tiết</a> */}
+                                                                        <NavLink className="button primary circle" to={`/detailactivity/${item.activity.activityId}`}
+                                                                            onClick={() => {
+                                                                                const action = GetActivityIDAction(item.activity.activityId);
+                                                                                dispatch(action)
+
+                                                                            }}
+                                                                        > Chi tiết</NavLink>
                                                                     </div>
                                                                 </div>
                                                             })}
@@ -695,7 +694,7 @@ export default function Result () {
                     </div>
                 </div>
             </div>{/* chat box */}
-        
+
         </div>
     )
 }

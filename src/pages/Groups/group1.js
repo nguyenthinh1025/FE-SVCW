@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom'
 import { FollowFanpageAction, GetListFanpageAction, UnFollowFanpageAction } from '../../redux/actions/FanpageAction';
 import Swal from 'sweetalert2';
-export default function Group () {
+export default function ABC () {
     const { userID } = useSelector((root) => root.LoginReducer);
     const dispatch = useDispatch()
     const { arrFanpage } = useSelector((root) => root.FanpageReducer);

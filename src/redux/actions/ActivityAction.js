@@ -1,46 +1,6 @@
 import { http } from "../../utils/reponse";
 import { GetFanpageByIDAction } from "./FanpageAction";
 import { GetProfileByIdAction } from "./ProfileAction";
-
-// export const GetListActivityAction = () => {
-//     return async (dispatch) => {
-
-//         try {
-//             dispatch({ type: "DISPLAY_LOADING" })
-//             let result = await http.get('/Activity/get-activity?pageSize=5&PageLoad=1');
-//             console.log(result.data.data);
-//             const newArray = await (result.data.data).map((item) => ({
-//                 ...item,
-//                 isFollow: false,
-//                 isJoin: false,
-
-//             }));
-//             // const newArray2 = await (result.data.data).map((item) => ({
-//             //     id: item.activityId,
-//             //     isCmt: true,
-//             //     color: '#eae9ee',
-
-//             // }));
-//             // console.log(newArray2);
-//             // console.log(newArray);
-//             const action = {
-//                 type: "GET_LIST_ACTIVITY",
-//                 arrActivity: newArray
-//             }
-//             dispatch(action)
-//             // newArray.forEach((item) => {
-//             //     localStorage.setItem(`activity_${item.activityId}`, JSON.stringify(item.isJoin));
-//             // });
-//             await localStorage.setItem('activity', JSON.stringify(newArray))
-//             // await localStorage.setItem('activity2', JSON.stringify(newArray2))
-//             localStorage.setItem('activity', JSON.stringify(result.data.data))
-//             dispatch({ type: "HIDE_LOADING" })
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     }
-// }
-
 export const GetListActivityAction = () => {
     return async (dispatch) => {
         try {
@@ -133,8 +93,28 @@ export const CreateActivityAction = (value) => {
             dispatch(action1)
             const action = GetListActivityAction()
             dispatch(action)
+            const action5 = GetListEndActivityAction();
+            dispatch(action5)
             localStorage.setItem('activityprocess', result.data.data.activityId)
 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+
+export const GetActivityTitleAction = () => {
+    return async (dispatch) => {
+        try {
+            let result = await http.get(`/Activity/get-activity-title?title=hiến máu`)
+            const action = {
+                type: "GET_LIST_ACTIVITY_TITLE",
+                arrActivity: result.data.data
+            }
+            dispatch(action)
+            console.log(result.data);
+            localStorage.setItem('activity', JSON.stringify(result.data.data))
         } catch (error) {
             console.log(error);
         }
@@ -148,7 +128,7 @@ export const GetActivityIDAction = (value) => {
                 type: "GET_ACTIVITY_BY_ID",
                 activityById: result.data.data
             }
-            localStorage.setItem('activityID',result.data.data)
+            localStorage.setItem('activityID', result.data.data)
             dispatch(action)
         } catch (error) {
             console.log(error);
@@ -158,7 +138,7 @@ export const GetActivityIDAction = (value) => {
 
 
 export const PostLikeAction = (value) => {
-    console.log("sasa"+ localStorage.getItem('fanpagedatail'))
+    console.log("sasa" + localStorage.getItem('fanpagedatail'))
     return async (dispatch) => {
         try {
             let result = await http.post('/Like/simple-like', value);
@@ -172,6 +152,8 @@ export const PostLikeAction = (value) => {
             dispatch(action3)
             const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
             dispatch(action4)
+            const action5 = GetListEndActivityAction();
+            dispatch(action5)
         } catch (error) {
             console.log(error);
         }
@@ -198,6 +180,8 @@ export const DeleteLikeAction = (value) => {
             dispatch(action3)
             const action4 = GetFanpageByIDAction(localStorage.getItem('fanpagedatail'));
             dispatch(action4)
+            const action5 = GetListEndActivityAction();
+            dispatch(action5)
         } catch (error) {
             console.log(error);
         }
@@ -212,6 +196,8 @@ export const ResultActivityAction = (value) => {
             console.log(result.data.data);
             const action1 = GetListEndActivityAction()
             dispatch(action1)
+            const action5 = GetListEndActivityAction();
+            dispatch(action5)
         } catch (error) {
             console.log(error);
         }
@@ -226,6 +212,8 @@ export const DeleteActivityAction = (value) => {
             console.log(result.data.data);
             const action1 = GetListActivityAction()
             dispatch(action1)
+            const action5 = GetListEndActivityAction();
+            dispatch(action5)
         } catch (error) {
             console.log(error);
         }
@@ -257,7 +245,7 @@ export const GetActivityByIDAction = (value) => {
                 type: "GET_ACTIVITY_ID",
                 activityId: result.data.data
             }
-            localStorage.setItem('activityID',result.data.data)
+            localStorage.setItem('activityID', result.data.data)
             dispatch(action)
         } catch (error) {
             console.log(error);

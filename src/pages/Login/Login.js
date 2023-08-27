@@ -13,12 +13,15 @@ import Swal from 'sweetalert2';
 import Slider from 'react-slick';
 
 export default function Login (props) {
+    localStorage.setItem('title', '')
     const dispatch = useDispatch()
     const { msg, msgModerator } = useSelector(root => root.LoginReducer)
     const { arrActivityLogin } = useSelector(root => root.ActivityReducer)
     console.log(arrActivityLogin);
     const [isMatch, setIsMatch] = useState(false);
+
     useEffect(() => {
+
         const action = GetListActivityAction();
         dispatch(action)
         const action1 = GetListFanpageAction();
