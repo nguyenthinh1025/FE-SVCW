@@ -33,11 +33,11 @@ import { history } from "../App";
 import ShareActivity from "./ShareActivity";
 
 export default function ItemEndActivity (props) {
-  const[share,setShare] =useState(false)
-  const [shareActivityID,setShareActivityID] = useState('')
+  const [share, setShare] = useState(false)
+  const [shareActivityID, setShareActivityID] = useState('')
   const handleClickShare = () => {
     setShare((prevIsOpen) => !prevIsOpen);
-  };  const popupStyleShare = {
+  }; const popupStyleShare = {
     opacity: share ? 1 : 0,
     visibility: share ? 'visible' : 'hidden',
     overflow: share ? 'auto' : 'hidden',
@@ -309,8 +309,10 @@ export default function ItemEndActivity (props) {
     overflow: openpro1 ? 'auto' : 'hidden',
   };
 
-  const endDate = moment(ItemActivity.endDate, 'DD-MM-YYYY');
+  const endDate = moment(ItemActivity.endDate, 'DD-MM-YYYY HH:mm:ss');
   const currentDate = moment();
+  console.log(currentDate);
+  console.log(endDate.isBefore(currentDate));
   return (
     <div>
       <div className="main-wraper">
@@ -364,7 +366,7 @@ export default function ItemEndActivity (props) {
                     </svg>
                   </i>
                   <ul>
-                    {userID === ItemActivity.userId && (endDate.isBefore(currentDate) === false) ? (
+                    {userID === ItemActivity.userId && (endDate.isBefore(currentDate) === false) && ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
                           handleClick6();
@@ -382,7 +384,7 @@ export default function ItemEndActivity (props) {
                       <div></div>
                     )}
 
-                    {userID === ItemActivity.userId ? (
+                    {userID === ItemActivity.userId && ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
                           Swal.fire({
@@ -422,7 +424,7 @@ export default function ItemEndActivity (props) {
                         onClick={() => {
                           setReportID(ItemActivity.activityId);
                           setReport(true);
-                         
+
                         }}
                       >
                         <i className="icofont-flag" />
@@ -439,7 +441,7 @@ export default function ItemEndActivity (props) {
                 </div>
               </div>
               <ins>
-                <NavLink to={`/profile`} title>
+                <NavLink to={`/profile/${userID}`} title>
                   <h5 className="name-user">{ItemActivity?.user?.username}</h5>
                 </NavLink>
               </ins>
@@ -467,6 +469,7 @@ export default function ItemEndActivity (props) {
                   }}
                 >
                   Xem tiến trình
+
                 </NavLink>
               ) : (
                 <div></div>
@@ -562,12 +565,12 @@ export default function ItemEndActivity (props) {
                     ? ItemActivity.media.map((image, index) => {
                       return (
                         <div key={index} className={`image-container-post`}>
-                          <NavLink  to={`/detailactivity/${ItemActivity.activityId}`}
+                          <NavLink to={`/detailactivity/${ItemActivity.activityId}`}
                             onClick={() => {
                               console.log(ItemActivity.activity)
                               const action = GetActivityIDAction(ItemActivity.activityId);
                               dispatch(action)
-                            
+
                             }}
                           >
                             <img
@@ -587,7 +590,7 @@ export default function ItemEndActivity (props) {
                               console.log(ItemActivity.activity)
                               const action = GetActivityIDAction(ItemActivity.activityId);
                               dispatch(action)
-                             history.push(`/detailactivity/${ItemActivity.activityId}`)
+                              history.push(`/detailactivity/${ItemActivity.activityId}`)
                             }}
                           >
                             <img
@@ -781,21 +784,41 @@ export default function ItemEndActivity (props) {
                 {endDate.isBefore(currentDate) ?
                   <div></div>
                   :
-                  <button
-                    className={` ${isAlreadyJoined ? "btn-change" : "btn-color"
-                      } mb-4 mt-4 btn-add ${ItemActivity.targetDonation !== 0 ? "marginfollow" : "sas"
-                      }`}
-                    onClick={() => {
-                      handleJoinClick(
-                        index,
-                        ItemActivity.activityId,
-                        isAlreadyJoined,
-                        ItemActivity.title
-                      );
-                    }}
-                  >
-                    {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
-                  </button>
+                  <div>
+                    {ItemActivity.process?.map((pro, index) => {
+
+                      if (((moment(pro.startDate, 'DD-MM-YYYY')).isBefore(currentDate)) && ((moment(pro.endDate, 'DD-MM-YYYY')).isAfter(currentDate))) {
+                        if (pro.isParticipant === true) {
+                          return <div>
+                            {/* {pro.processTitle} */}
+
+                            <button
+                              className={` ${isAlreadyJoined ? "btn-change" : "btn-color"
+                                } mb-4 mt-4 btn-add ${ItemActivity.targetDonation !== 0 ? "marginfollow" : "sas"
+                                }`}
+                              onClick={() => {
+
+                                handleJoinClick(
+                                  index,
+                                  ItemActivity.activityId,
+                                  isAlreadyJoined,
+                                  ItemActivity.title
+                                );
+                              }}
+                            >
+                              {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
+
+
+                            </button>
+                            Số người tham gia:  {pro.realParticipant}/{pro.targetParticipant}
+                          </div>
+                        }
+
+
+                      }
+                    })}
+
+                  </div>
                 }
 
                 {endDate.isBefore(currentDate) ?
@@ -884,13 +907,13 @@ export default function ItemEndActivity (props) {
                       <ul className="namelist">
                         {ItemActivity?.like?.length <= 4
                           ? ItemActivity?.like.map((userItem) => {
-                            return <li>{userItem.user.username}</li>;
+                            return <li>{userItem.user?.username}</li>;
                           })
                           : ItemActivity?.like
                             ?.slice(0, 4)
                             .map((userItem, index) => {
                               index < 4 ? (
-                                <li>{userItem.user.username}</li>
+                                <li>{userItem.user?.username}</li>
                               ) : (
                                 <li>
                                   <span>
@@ -952,7 +975,7 @@ export default function ItemEndActivity (props) {
                 <div className="comment-to bg">
                   <i className="icofont-comment" /> Bình luận
                 </div>
-                <div className="share" onClick={()=>{
+                <div className="share" onClick={() => {
                   setShare(true);
                   setShareActivityID(ItemActivity.activityId)
                 }}>
@@ -1146,7 +1169,7 @@ export default function ItemEndActivity (props) {
       </div>
       <UpdateActivity openpro1={openpro1} popupStyle4={popupStyle4} handleClick6={handleClick6} />
       <ReportActivity report={report} reportid={reportid} popupStyle3={popupStyle3} handleClick={handleClick} arrReportType={arrReportType} />
-      <ShareActivity share={share} handleClickShare={handleClickShare} popupStyleShare={popupStyleShare}  activityId = {shareActivityID}/>
+      <ShareActivity share={share} handleClickShare={handleClickShare} popupStyleShare={popupStyleShare} activityId={shareActivityID} />
     </div>
   );
 }

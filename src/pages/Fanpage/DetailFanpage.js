@@ -176,7 +176,7 @@ export default function DetailFanpage (props) {
                                                 <figure className="group-dp"><img src={fanpageId?.avatar} alt /></figure>
                                             </div>
                                             <div className="grp-info">
-                                                <h4>{fanpageId.fanpageName} <span>@Cộng đồng</span></h4>
+                                                <h4>{fanpageId?.fanpageName} <span>@Cộng đồng</span></h4>
                                                 <ul>
                                                     <li><span>Ngày tạo: </span>{moment(fanpageId?.createAt).format('DD-MM-YYYY')}</li>
                                                     <li><span>Số điện thoại: </span> {fanpageId?.phone}</li>
