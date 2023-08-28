@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom/cjs/react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Carousel () {
   return (
@@ -10,13 +10,13 @@ export default function Carousel () {
             <div className="row">
               <div className="col-lg-3">
                 <div className="sidemenu">
-                  
+
                 </div>
               </div>
               <div className="col-lg-7 pl-3">
                 <div className="page-caro">
                   <div className="link-item">
-                    <a className="active" href="http://localhost:3000/home" title>
+                    <NavLink className="active" to="/home" title>
                       <i className>
                         <svg
                           className="feather feather-home"
@@ -35,10 +35,10 @@ export default function Carousel () {
                         </svg>
                       </i>
                       <p>Trang chủ</p>
-                    </a>
+                    </NavLink>
                   </div>
                   <div className="link-item">
-                    <a href="http://localhost:3000/history" title>
+                    <NavLink to="/history" title>
                       <i className>
                         <svg
                           className="feather feather-zap"
@@ -56,7 +56,7 @@ export default function Carousel () {
                         </svg>
                       </i>
                       <p>Lịch sử quyên góp</p>
-                    </a>
+                    </NavLink>
                   </div>
                   {/* <div className="link-item">
                                         <a href="courses.html" title>
@@ -138,7 +138,7 @@ export default function Carousel () {
               </div>
               <div className="col-lg-2">
                 <div className="sidemenu">
-                  
+
                 </div>
               </div>
               {/* <div className="col-lg-2">

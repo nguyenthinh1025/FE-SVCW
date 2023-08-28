@@ -47,6 +47,7 @@ export const GetFanpageByIDAction = (id) => {
             }
             dispatch(action)
             localStorage.setItem('fanpageId', result.data.data)
+            localStorage.setItem('fanpagedatail', result.data.data.fanpageId)
             dispatch({ type: "HIDE_LOADING" })
         } catch (error) {
             console.log(error);

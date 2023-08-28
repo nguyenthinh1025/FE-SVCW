@@ -292,7 +292,7 @@ export default function DetailActivity (props) {
                     <Slider {...settings} className={styles["slick-slider"]}>
                       {slides}
                     </Slider>
-                    <div
+                    {/* <div
                       className=""
                       style={{
                         backgroundColor: `${isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
@@ -315,7 +315,7 @@ export default function DetailActivity (props) {
                           <i className="icofont-like" /> Thích
                         </a>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -362,6 +362,7 @@ export default function DetailActivity (props) {
                             : "sas"
                           }`}
                         onClick={() => {
+
                           handleJoinClick(
                             1,
                             activityById?.activityId,

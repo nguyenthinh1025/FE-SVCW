@@ -34,12 +34,12 @@ import { useEffect } from "react";
 import { GetListReportTypeAction } from "../redux/actions/ReportTypeAction";
 import ShareActivity from "./ShareActivity";
 
-export default function ItemActivity(props) {
-  const[share,setShare] =useState(false)
-  const [shareActivityID,setShareActivityID] = useState('')
+export default function ItemActivity (props) {
+  const [share, setShare] = useState(false)
+  const [shareActivityID, setShareActivityID] = useState('')
   const handleClickShare = () => {
     setShare((prevIsOpen) => !prevIsOpen);
-  };  const popupStyleShare = {
+  }; const popupStyleShare = {
     opacity: share ? 1 : 0,
     visibility: share ? 'visible' : 'hidden',
     overflow: share ? 'auto' : 'hidden',
@@ -276,7 +276,7 @@ export default function ItemActivity(props) {
     }
     dispatch(action);
   };
-  const endDate = moment(ItemActivity.endDate, "DD-MM-YYYY");
+  const endDate = moment(ItemActivity.endDate, 'DD-MM-YYYY HH:mm:ss');
   const currentDate = moment();
   const popupStyle4 = {
     opacity: openpro1 ? 1 : 0,
@@ -337,7 +337,7 @@ export default function ItemActivity(props) {
                   </i>
                   <ul>
                     {userID === ItemActivity.userId &&
-                    endDate.isBefore(currentDate) === false ? (
+                      endDate.isBefore(currentDate) === false && ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
                           console.log(ItemActivity.activityId);
@@ -356,7 +356,7 @@ export default function ItemActivity(props) {
                       <div></div>
                     )}
 
-                    {userID === ItemActivity.userId ? (
+                    {userID === ItemActivity.userId && ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
                           Swal.fire({
@@ -412,7 +412,7 @@ export default function ItemActivity(props) {
                 </div>
               </div>
               <ins>
-                <NavLink to={`/profile`} title>
+                <NavLink to={`/profile/${userID}`} title>
                   <h4>{getUserId.username}</h4>
                 </NavLink>
               </ins>
@@ -533,65 +533,65 @@ export default function ItemActivity(props) {
                 <div className="image-gallery-flex">
                   {ItemActivity?.media?.length <= 3
                     ? ItemActivity.media.map((image, index) => {
-                        return (
-                          <div key={index} className={`image-container-post`}>
-                            <a
-                              data-toggle="modal"
-                              data-target="#img-comt"
-                              href="images/resources/album1.jpg"
-                              onClick={() => {
-                                setDetail(detailItem);
-                              }}
-                            >
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </a>
-                          </div>
-                        );
-                      })
-                    : ItemActivity.media?.slice(0, 4).map((image, index) => {
-                        return index !== 3 ? (
-                          <div key={index} className={`image-container-post`}>
-                            <a
-                              data-toggle="modal"
-                              data-target="#img-comt"
-                              href="images/resources/album1.jpg"
-                              onClick={() => {
-                                setDetail(detailItem);
-                              }}
-                            >
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </a>
-                          </div>
-                        ) : (
-                          <div
-                            key={index}
-                            className={`image-container-post-last`}
+                      return (
+                        <div key={index} className={`image-container-post`}>
+                          <a
+                            data-toggle="modal"
+                            data-target="#img-comt"
+                            href="images/resources/album1.jpg"
+                            onClick={() => {
+                              setDetail(detailItem);
+                            }}
                           >
-                            <a
-                              data-toggle="modal"
-                              data-target="#img-comt"
-                              href="images/resources/album1.jpg"
-                              onClick={() => {
-                                setDetail(detailItem);
-                              }}
-                            >
-                              <div className="overlay">
-                                +{ItemActivity.media.length - 4}
-                              </div>
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </a>
-                          </div>
-                        );
-                      })}
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
+                          </a>
+                        </div>
+                      );
+                    })
+                    : ItemActivity.media?.slice(0, 4).map((image, index) => {
+                      return index !== 3 ? (
+                        <div key={index} className={`image-container-post`}>
+                          <a
+                            data-toggle="modal"
+                            data-target="#img-comt"
+                            href="images/resources/album1.jpg"
+                            onClick={() => {
+                              setDetail(detailItem);
+                            }}
+                          >
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
+                          </a>
+                        </div>
+                      ) : (
+                        <div
+                          key={index}
+                          className={`image-container-post-last`}
+                        >
+                          <a
+                            data-toggle="modal"
+                            data-target="#img-comt"
+                            href="images/resources/album1.jpg"
+                            onClick={() => {
+                              setDetail(detailItem);
+                            }}
+                          >
+                            <div className="overlay">
+                              +{ItemActivity.media.length - 4}
+                            </div>
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
+                          </a>
+                        </div>
+                      );
+                    })}
                 </div>
               </figure>
 
@@ -634,15 +634,13 @@ export default function ItemActivity(props) {
                     // onChange={handleChange}
                     className="range-slider"
                     style={{
-                      background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                        (ItemActivity.realDonation /
+                      background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(ItemActivity.realDonation /
+                        ItemActivity.targetDonation) *
+                        100
+                        }%, #ddd ${(ItemActivity.realDonation /
                           ItemActivity.targetDonation) *
                         100
-                      }%, #ddd ${
-                        (ItemActivity.realDonation /
-                          ItemActivity.targetDonation) *
-                        100
-                      }%, #ddd 100%)`,
+                        }%, #ddd 100%)`,
                     }}
                   />
                   {/* <div className="range-value" style={{ position: 'absolute', left: `${((ItemActivity.realDonation - 5) * 100) / (100 - 0)}%` }}>{ItemActivity.realDonation}%</div> */}
@@ -664,9 +662,8 @@ export default function ItemActivity(props) {
                       className="range-value"
                       style={{
                         position: "absolute",
-                        left: `${
-                          ((ItemActivity.realDonation - 5) * 100) / (100 - 0)
-                        }%`,
+                        left: `${((ItemActivity.realDonation - 5) * 100) / (100 - 0)
+                          }%`,
                       }}
                     >
                       {
@@ -685,9 +682,8 @@ export default function ItemActivity(props) {
                       className="range-value"
                       style={{
                         position: "absolute",
-                        left: `${
-                          ((ItemActivity.realDonation - 0) * 100) / (100 - 0)
-                        }%`,
+                        left: `${((ItemActivity.realDonation - 0) * 100) / (100 - 0)
+                          }%`,
                       }}
                     >
                       {
@@ -709,11 +705,10 @@ export default function ItemActivity(props) {
                       className="range-value"
                       style={{
                         position: "absolute",
-                        left: `${
-                          (ItemActivity.realDonation /
-                            ItemActivity.targetDonation) *
+                        left: `${(ItemActivity.realDonation /
+                          ItemActivity.targetDonation) *
                           100
-                        }%`,
+                          }%`,
                       }}
                     >
                       {" "}
@@ -757,31 +752,47 @@ export default function ItemActivity(props) {
                 {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
-                  <button
-                    className={` ${
-                      isAlreadyJoined ? "btn-change" : "btn-color"
-                    } mb-4 mt-4 btn-add ${
-                      ItemActivity.targetDonation !== 0 ? "marginfollow" : "sas"
-                    }`}
-                    onClick={() => {
-                      handleJoinClick(
-                        index,
-                        ItemActivity.activityId,
-                        isAlreadyJoined,
-                        ItemActivity.title
-                      );
-                    }}
-                  >
-                    {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
-                  </button>
+                  <div>
+                    {ItemActivity.process?.map((pro, index) => {
+
+                      if (((moment(pro.startDate, 'DD-MM-YYYY')).isBefore(currentDate)) && ((moment(pro.endDate, 'DD-MM-YYYY')).isAfter(currentDate))) {
+                        if (pro.isParticipant === true) {
+                          return <div>
+
+                            <button
+                              className={` ${isAlreadyJoined ? "btn-change" : "btn-color"
+                                } mb-4 mt-4 btn-add ${ItemActivity.targetDonation !== 0 ? "marginfollow" : "sas"
+                                }`}
+                              onClick={() => {
+
+                                handleJoinClick(
+                                  index,
+                                  ItemActivity.activityId,
+                                  isAlreadyJoined,
+                                  ItemActivity.title
+                                );
+                              }}
+                            >
+                              {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
+
+
+                            </button>
+                            Số người tham gia:  {pro.realParticipant}/{pro.targetParticipant}
+                          </div>
+                        }
+
+
+                      }
+                    })}
+
+                  </div>
                 )}
                 {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <button
-                    className={` ${
-                      isAlreadyFollowed ? "btn-change" : "btn-color"
-                    } mb-4 mt-4`}
+                    className={` ${isAlreadyFollowed ? "btn-change" : "btn-color"
+                      } mb-4 mt-4`}
                     onClick={() => {
                       handleFollowClick(
                         index,
@@ -834,10 +845,12 @@ export default function ItemActivity(props) {
                     }}
                   >
                     Xem tiến trình
+
                   </NavLink>
                 ) : (
                   <div></div>
                 )}
+
               </div>
 
               <div className="we-video-info">
@@ -861,21 +874,21 @@ export default function ItemActivity(props) {
                       <ul className="namelist">
                         {ItemActivity?.like?.length <= 4
                           ? ItemActivity?.like.map((userItem) => {
-                              return <li>{userItem.user.username}</li>;
-                            })
+                            return <li>{userItem.user.username}</li>;
+                          })
                           : ItemActivity?.like
-                              ?.slice(0, 4)
-                              .map((userItem, index) => {
-                                index < 4 ? (
-                                  <li>{userItem.user.username}</li>
-                                ) : (
-                                  <li>
-                                    <span>
-                                      +{ItemActivity?.like.length - 5}
-                                    </span>
-                                  </li>
-                                );
-                              })}
+                            ?.slice(0, 4)
+                            .map((userItem, index) => {
+                              index < 4 ? (
+                                <li>{userItem.user.username}</li>
+                              ) : (
+                                <li>
+                                  <span>
+                                    +{ItemActivity?.like.length - 5}
+                                  </span>
+                                </li>
+                              );
+                            })}
                       </ul>
                     </div>
                   </div>
@@ -905,9 +918,8 @@ export default function ItemActivity(props) {
                 <div
                   className=""
                   style={{
-                    backgroundColor: `${
-                      isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
-                    }`,
+                    backgroundColor: `${isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
+                      }`,
                     borderRadius: "4px",
                     color: "#82828e",
                     display: "inline-block",
@@ -930,7 +942,7 @@ export default function ItemActivity(props) {
                 <div className="comment-to bg">
                   <i className="icofont-comment" /> Bình luận
                 </div>
-                <div className="share" onClick={()=>{
+                <div className="share" onClick={() => {
                   setShare(true);
                   setShareActivityID(ItemActivity.activityId)
                 }}>
@@ -1134,7 +1146,7 @@ export default function ItemActivity(props) {
         handleClick={handleClick}
         arrReportType={arrReportType}
       />
-       <ShareActivity share={share} handleClickShare={handleClickShare} popupStyleShare={popupStyleShare}  activityId = {shareActivityID}/>
+      <ShareActivity share={share} handleClickShare={handleClickShare} popupStyleShare={popupStyleShare} activityId={shareActivityID} />
     </Fragment>
   );
 }

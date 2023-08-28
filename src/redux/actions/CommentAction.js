@@ -1,5 +1,5 @@
 import { http } from "../../utils/reponse";
-import { GetActivityIDAction, GetListActivityAction, GetListEndActivityAction } from "./ActivityAction";
+import { GetActivityIDAction, GetListActivityAction, GetListEndActivityAction, GetListEndActivityByUserIDAction } from "./ActivityAction";
 import { GetFanpageByIDAction } from "./FanpageAction";
 import { GetProfileByIdAction } from "./ProfileAction";
 
@@ -18,6 +18,8 @@ export const CommentAction = (value) => {
             dispatch(action4)
             const action5 = GetListEndActivityAction();
             dispatch(action5)
+            const action8 = GetListEndActivityByUserIDAction(value.userId);
+            dispatch(action8)
         } catch (error) {
             console.log(error);
         }
@@ -52,6 +54,8 @@ export const CommentRepllyAction = (value) => {
             dispatch(action4)
             const action5 = GetListEndActivityAction();
             dispatch(action5)
+            const action8 = GetListEndActivityByUserIDAction(value.userId);
+            dispatch(action8)
         } catch (error) {
             console.log(error);
         }

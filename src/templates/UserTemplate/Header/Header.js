@@ -14,6 +14,7 @@ export default function Header (props) {
   const { getUserId, arrActivityUser } = useSelector(
     (root) => root.ProfileReducer
   );
+  console.log(getUserId);
   useEffect(() => {
     // const action = GetProfileByIdAction(id);
     // dispatch(action);
@@ -231,9 +232,9 @@ export default function Header (props) {
             <ul className="dropdown">
               {localStorage.getItem("userID") ? (
                 <li>
-                  <a href="profile.html" title>
+                  <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
                     <i className="icofont-user-alt-3" /> Trang cá nhân
-                  </a>
+                  </NavLink>
                 </li>
               ) : (
                 <Fragment></Fragment>
