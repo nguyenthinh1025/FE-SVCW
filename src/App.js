@@ -14,6 +14,7 @@ import StatisticalUser from './pages/StatisticalUser/StatisticalUser';
 import Group from './pages/Groups/Group';
 import ABC from './pages/Groups/group1';
 import SendEmailComponent from './SendEmailComponent';
+import CopyTextExample from './Test';
 export const history = createBrowserHistory()
 
 function App () {
@@ -29,6 +30,7 @@ function App () {
         <UserTemplate exact path="/statisticaluser" Component={StatisticalUser} />
         <UserTemplate exact path="/groups" Component={Group} />
         <UserTemplate exact path="/send" Component={SendEmailComponent} />
+        <UserTemplate exact path="/test" Component={CopyTextExample} />
         <Route path="/" exact component={Login} />
       </Switch>
     </Router>

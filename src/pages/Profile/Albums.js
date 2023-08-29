@@ -12,7 +12,7 @@ const Albums = (props) => {
   const handleRenderAlbums = () => {
     return albums?.map((album) => {
       return (
-        <div className="col-lg-3 col-md-4 col-sm-6">
+        <div className="col-lg-3 col-md-4 col-sm-6" style={{margin:'40px 0'}}>
           <div className="uzr-pictures">
             <a
               data-target="#img-comt"
@@ -49,7 +49,7 @@ const Albums = (props) => {
   };
   return (
     <>
-      <div className="tab-pane fade" id="pictures">
+      <div className="tab-pane fade" id="pictures" style={{padding:'50px 0'}}>
         <h5 className="tab-title">Hình ảnh</h5>
         <div className="row merged-10" style={{ maxHeight: '100px' }}>
           {handleRenderAlbums()}

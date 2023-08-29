@@ -104,10 +104,10 @@ export const CreateActivityAction = (value) => {
 }
 
 
-export const GetActivityTitleAction = () => {
+export const GetActivityTitleAction = (value) => {
     return async (dispatch) => {
         try {
-            let result = await http.get(`/Activity/get-activity-title?title=hiến máu`)
+            let result = await http.get(`/Activity/get-activity-title?search=${value}`)
             const action = {
                 type: "GET_LIST_ACTIVITY_TITLE",
                 arrActivity: result.data.data

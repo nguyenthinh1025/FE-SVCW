@@ -13,7 +13,7 @@ import Config from '../../components/Config';
 export const UserTemplate = (props) => {
     const { Component, ...restProps } = props;
     return <Route {...restProps} render={(propsRoute) => {
-        if (localStorage.getItem('userID') !== '') {
+        if (localStorage.getItem('userID')) {
             return <div className='theme-layout'>
                 <Config />
                 <ResponsiveHeader />
@@ -24,7 +24,7 @@ export const UserTemplate = (props) => {
                 <Component {...propsRoute} />
             </div>
         }
-        alert('Bạn không thể truy cập! Vui lòng đăng nhập');
+        alert('Bạn không thể truy cập! Vui lòng đăng nhập để trải nghiệm tốt hơn');
         history.push('/')
         window.location.reload();
     }} />
