@@ -15,10 +15,16 @@ import {
   CommentAction,
   CommentRepllyAction,
 } from "../redux/actions/CommentAction";
-import { FollowAction, JoinAction, UnFollowAction, UnJoinAction } from "../redux/actions/FollowJoinAction";
+import {
+  FollowAction,
+  JoinAction,
+  UnFollowAction,
+  UnJoinAction,
+} from "../redux/actions/FollowJoinAction";
 import Swal from "sweetalert2";
 import { DonationAction } from "../redux/actions/DonationAction";
-export default function DetailActivity (props) {
+import { NavLink } from "react-router-dom";
+export default function DetailActivity(props) {
   const { userID } = useSelector((root) => root.LoginReducer);
   const [content, setContent] = useState("");
   const [onID, setOnID] = useState("");
@@ -64,7 +70,6 @@ export default function DetailActivity (props) {
   const [joinedIndex, setJoinedIndex] = useState(null);
   const [followIndex, setFollowIndex] = useState(null);
   const handleJoinClick = async (index, activity, isJoin, title) => {
-
     if (isJoin) {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
@@ -125,7 +130,7 @@ export default function DetailActivity (props) {
   });
   const [isPopupOpen, setPopupOpen] = useState(false);
   const openPopup = () => {
-    setPopupOpen(open => !open);
+    setPopupOpen((open) => !open);
   };
   const formik1 = useFormik({
     initialValues: {
@@ -164,6 +169,7 @@ export default function DetailActivity (props) {
         // formik2.setFieldValue('commentIdReply', '');
         // setCommentI('commentContent')
         // setContent(true)
+        setOnID("");
         formik2.setFieldValue("commentContent", "");
         formik2.setFieldValue("commentIdReply", "");
       }
@@ -259,15 +265,15 @@ export default function DetailActivity (props) {
         <div className="modal-content" style={{ position: "relative" }}>
           {/* Modal Header */}
           <div className="modal-header" style={{ width: "100%" }}>
-            <a
+            <NavLink
               aria-current="page"
               className="logo active"
-              href="/home"
+              to="/home"
               style={{ position: "absolute", left: "10px", top: "10px" }}
             >
               <img src="../images/logo.png" />
               <span>SVCW</span>
-            </a>
+            </NavLink>
 
             <button
               type="button"
@@ -275,7 +281,7 @@ export default function DetailActivity (props) {
               data-dismiss="modal"
               style={{ position: "absolute", right: "22px", top: "20px" }}
               onClick={() => {
-                props.history.push("/home");
+                props.history.goBack();
               }}
             >
               ×
@@ -350,37 +356,84 @@ export default function DetailActivity (props) {
                     <h3> {activityById?.title}</h3>
                     <p>{activityById?.description}</p>
                   </div>
-                  <div style={{ display: 'flex' }}>
-
+                  {endDate.isBefore(currentDate) ? (
+                    <div></div>
+                  ) : (
+                    <div>
+                      {activityById.process?.map((pro, index) => {
+                        if (
+                          moment(pro.startDate, "DD-MM-YYYY").isBefore(
+                            currentDate
+                          ) &&
+                          moment(pro.endDate, "DD-MM-YYYY").isAfter(currentDate)
+                        ) {
+                          if (pro.isParticipant === true) {
+                            return (
+                              <div style={{ padding: "10px 0 0 40px" }}>
+                                Số người tham gia: {pro.realParticipant}/
+                                {pro.targetParticipant}
+                              </div>
+                            );
+                          }
+                        }
+                      })}
+                    </div>
+                  )}
+                  <div style={{ display: "flex" }}>
                     {endDate.isBefore(currentDate) ? (
                       <div></div>
                     ) : (
-                      <button
-                        className={` ${isAlreadyJoined ? "btn-change" : "btn-color"
-                          } mb-4 mt-4 btn-add ${activityById?.targetDonation !== 0
-                            ? "marginfollow"
-                            : "sas"
-                          }`}
-                        onClick={() => {
-
-                          handleJoinClick(
-                            1,
-                            activityById?.activityId,
-                            isAlreadyJoined,
-                            activityById?.title
-                          );
-                        }}
-                      >
-                        {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
-                      </button>
+                      <div>
+                        {activityById.process?.map((pro, index) => {
+                          if (
+                            moment(pro.startDate, "DD-MM-YYYY").isBefore(
+                              currentDate
+                            ) &&
+                            moment(pro.endDate, "DD-MM-YYYY").isAfter(
+                              currentDate
+                            )
+                          ) {
+                            if (pro.isParticipant === true) {
+                              return (
+                                <div>
+                                  <button
+                                    className={` ${
+                                      isAlreadyJoined
+                                        ? "btn-change"
+                                        : "btn-color"
+                                    } mb-4 mt-4 btn-add ${
+                                      activityById.targetDonation !== 0
+                                        ? "marginfollow"
+                                        : "sas"
+                                    }`}
+                                    onClick={() => {
+                                      handleJoinClick(
+                                        index,
+                                        activityById.activityId,
+                                        isAlreadyJoined,
+                                        activityById.title
+                                      );
+                                    }}
+                                  >
+                                    {isAlreadyJoined
+                                      ? "Hủy Tham gia"
+                                      : "Tham gia"}
+                                  </button>
+                                </div>
+                              );
+                            }
+                          }
+                        })}
+                      </div>
                     )}
 
                     {endDate.isBefore(currentDate) ? (
                       <div></div>
                     ) : (
                       <button
-                        className={` ${isAlreadyFollowed ? "btn-change" : "btn-color"
-                          } mb-4 mt-4`}
+                        className={` ${
+                          isAlreadyFollowed ? "btn-change" : "btn-color"
+                        } mb-4 mt-4`}
                         onClick={() => {
                           handleFollowClick(
                             1,
@@ -424,8 +477,9 @@ export default function DetailActivity (props) {
                     <div
                       className=""
                       style={{
-                        backgroundColor: `${isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
-                          }`,
+                        backgroundColor: `${
+                          isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
+                        }`,
                         borderRadius: "4px",
                         color: "#82828e",
                         display: "inline-block",

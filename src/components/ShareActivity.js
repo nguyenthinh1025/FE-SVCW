@@ -1,18 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function ShareActivity (props) {
     const { share, handleClickShare, popupStyleShare, activityId } = props;
-
+    console.log(activityId)
+    const textToCopy =`http://localhost:3000/detailactivity/${activityId}`;
+    const [textToCopy1, setTextToCopy1] = useState(true);
+    const copyTextToClipboard = () => {
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+       setTextToCopy1(false)
+      };
     return (
         <div>
             {share === true ? (
                 <div className="post-new-popup" style={popupStyleShare}>
                     <div
                         className="popup"
-                        style={{ width: 800, marginTop: '0px', zIndex: 80 }}
+                        style={{ width: 800, marginTop: '0px', zIndex: 80, height:'250px' }}
                     >
-                        <span className="popup-closed" onClick={handleClickShare}>
+                        <span className="popup-closed" onClick={()=>{
+                            handleClickShare()
+                            setTextToCopy1(true)
+                        }}>
                             <i className="icofont-close" />
                         </span>
                         <div className="popup-meta">
@@ -45,6 +59,13 @@ export default function ShareActivity (props) {
                                 {` http://localhost:3000/detailactivity/${activityId}`}
 
                             </NavLink>
+                            <button style={{position:'absolute',
+                        right:'10px',bottom:'20px',border:'none',display: "inline-block",
+                        fontSize: "18px",
+                        fontWeight: 500,
+                        marginBottom: 0,
+                        color:'#3f6ad8'
+                        }} onClick={copyTextToClipboard}>{textToCopy1 ? "Sao chép" :"Đã sao chép"}</button>
                         </div>
                     </div>
                 </div>

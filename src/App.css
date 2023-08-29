@@ -1424,3 +1424,15 @@ text-transform: none;
     transition: all 0.2s linear 0s;
 cursor: pointer;
 }
+
+.fanpage-y{
+  width: 100px!important;
+    background: none 0px 0px repeat scroll rgb(8, 141, 205);
+    border-radius: 16px;
+    color: rgb(255, 255, 255)!important;
+    display: block;
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 5px 10px 5px 30px;
+    cursor: pointer;
+}

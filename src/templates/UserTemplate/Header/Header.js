@@ -4,7 +4,8 @@ import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 import { GetProfileByIdAction } from "../../../redux/actions/ProfileAction";
-import { GetActivityTitleAction, GetListActivityAction } from "../../../redux/actions/ActivityAction";
+import { GetActivityTitleAction, GetListActivityAction, RecommentActivityAction } from "../../../redux/actions/ActivityAction";
+import { async } from "q";
 
 export default function Header (props) {
   const { userID } = useSelector((root) => root.LoginReducer);
@@ -26,11 +27,20 @@ export default function Header (props) {
     initialValues: {
       title: title,
     },
-    onSubmit: (value) => {
+    onSubmit:async (value) => {
       if (formik.values.title !== '') {
         console.log(value);
-        const action = GetActivityTitleAction();
+        const action =await GetActivityTitleAction(value.title);
         dispatch(action)
+        const value1 = {
+         
+            userId: userID,
+            searchContent: value.title
+   
+        }
+        console.log(value1)
+        const action1 =await RecommentActivityAction(value1, userID);
+        dispatch(action1);
       }
       else {
         const action = GetListActivityAction();

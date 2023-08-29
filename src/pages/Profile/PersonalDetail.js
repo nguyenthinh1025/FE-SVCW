@@ -146,7 +146,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
         <h5 className="main-title">
           {isEditing ? 'Chỉnh sửa thông tin' : 'Thông tin cá nhân'}
         </h5>
-        <div style={{ width: '15%', alignSelf: 'baseline' }}>
+        <div style={{ width: '15%', alignSelf: 'baseline',cursor:'pointer' }}>
           {!isEditing && (
             <a className="ask-qst" onClick={() => setIsEditing(true)}>
               Chỉnh sửa
@@ -231,7 +231,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
             </div>
             <div class="col-md-6">
               <label for="validationDefault02" class="form-label">
-                Sự kiện đã tham gia
+                Chiến dịch đã tham gia
               </label>
               <input
                 type="text"
@@ -243,7 +243,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
             </div>
             <div class="col-md-6">
               <label for="validationDefault02" class="form-label">
-                Sự kiện hoàn thành
+                Chiến dịch hoàn thành
               </label>
               <input
                 type="text"

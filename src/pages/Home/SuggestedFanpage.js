@@ -65,7 +65,7 @@ function SuggestedFanpage (props) {
 
       Toast.fire({
         icon: "error",
-        title: `Bỏ theo dõi thành công chiến dịch ${title}`,
+        title: `Hủy theo dõi fanpage ${title} thành công`,
       });
     } else {
       console.log("Theo dõi");
@@ -85,7 +85,7 @@ function SuggestedFanpage (props) {
 
       Toast.fire({
         icon: "success",
-        title: `Theo dõi thành công chiến dịch ${title}`,
+        title: `Theo dõi fanpage ${title} thành công`,
       });
     }
   };

@@ -33,6 +33,7 @@ import { history } from "../App";
 import ShareActivity from "./ShareActivity";
 
 export default function ItemEndActivity (props) {
+  const [isReadMore, setReadMore] = useState(false);
   const [share, setShare] = useState(false)
   const [shareActivityID, setShareActivityID] = useState('')
   const handleClickShare = () => {
@@ -53,6 +54,7 @@ export default function ItemEndActivity (props) {
     detailItem,
     index,
   } = props;
+  console.log(ItemActivity)
   const [openpro1, setOpenPro1] = useState(false);
   const [detail, setDetail] = useState({});
   const [report, setReport] = useState(false);
@@ -124,6 +126,7 @@ export default function ItemEndActivity (props) {
       } else {
         const action = CommentRepllyAction(value);
         dispatch(action);
+        setOnID('')
         // formik2.setFieldValue('commentIdReply', '');
         // setCommentI('commentContent')
         // setContent(true)
@@ -261,7 +264,7 @@ export default function ItemEndActivity (props) {
 
       Toast.fire({
         icon: "error",
-        title: `Bỏ theo dõi chiến dịch ${title} thành công `,
+        title: `Hủy theo dõi chiến dịch ${title} thành công `,
       });
     } else {
       setFollowIndex(index);
@@ -319,23 +322,9 @@ export default function ItemEndActivity (props) {
         <div className="user-post">
           <div className="friend-info">
             <figure>
-              <em>
-                <svg
-                  style={{ verticalAlign: "middle" }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={15}
-                  height={15}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="#7fba00"
-                    stroke="#7fba00"
-                    d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
-                  ></path>
-                </svg>
-              </em>
+             
               <img
-                style={{ height: "3rem", width: "3.5rem" }}
+                style={{ height: "40px", width: "40px" }}
                 alt
                 src={
                   ItemActivity.user?.image === "none"
@@ -441,7 +430,7 @@ export default function ItemEndActivity (props) {
                 </div>
               </div>
               <ins>
-                <NavLink to={`/profile/${userID}`} title>
+                <NavLink to={`/profile/${ItemActivity?.user?.userId}`} title>
                   <h5 className="name-user">{ItemActivity?.user?.username}</h5>
                 </NavLink>
               </ins>
@@ -763,12 +752,34 @@ export default function ItemEndActivity (props) {
               ) : (
                 <div></div>
               )}
-
+ {endDate.isBefore(currentDate) ? (
+                <div></div>
+              ) : (
+                <div>
+                  {ItemActivity.process?.map((pro, index) => {
+                    if (
+                      moment(pro.startDate, "DD-MM-YYYY").isBefore(
+                        currentDate
+                      ) &&
+                      moment(pro.endDate, "DD-MM-YYYY").isAfter(currentDate)
+                    ) {
+                      if (pro.isParticipant === true) {
+                        return (
+                          <div style={{padding:'30px 0 0 40px'}}>
+                            Số người tham gia: {pro.realParticipant}/
+                            {pro.targetParticipant}
+                          </div>
+                        );
+                      }
+                    }
+                  })}
+                </div>
+              )}
               <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  paddingTop: "20px",
+       
                 }}
                 className={
                   (ItemActivity.targetDonation !== 0
@@ -810,7 +821,7 @@ export default function ItemEndActivity (props) {
 
 
                             </button>
-                            Số người tham gia:  {pro.realParticipant}/{pro.targetParticipant}
+                          
                           </div>
                         }
 
@@ -907,7 +918,7 @@ export default function ItemEndActivity (props) {
                       <ul className="namelist">
                         {ItemActivity?.like?.length <= 4
                           ? ItemActivity?.like.map((userItem) => {
-                            return <li>{userItem.user?.username}</li>;
+                            return <li>{userItem?.user?.username}</li>;
                           })
                           : ItemActivity?.like
                             ?.slice(0, 4)
@@ -934,14 +945,14 @@ export default function ItemEndActivity (props) {
                         fontSize: "15px",
                       }}
                     >
-                      <span>
-                        {(ItemActivity.comment
-                          ? ItemActivity.comment.length
+                      <span style={{paddingRight:'2px'}}>
+                        {(ItemActivity?.comment?.length !==0
+                          ? ItemActivity?.comment?.length
                           : 0) +
-                          (ItemActivity.comment.inverseReply
-                            ? ItemActivity.comment?.inverseReply?.length
-                            : 0)}{" "}
-                        bình luận
+                          (ItemActivity?.comment?.inverseReply
+                            ? ItemActivity?.comment?.inverseReply?.length
+                            : 0)}
+                         <span style={{paddingLeft:'3px'}}>bình luận</span>
                       </span>
                     </div>
                   </div>
