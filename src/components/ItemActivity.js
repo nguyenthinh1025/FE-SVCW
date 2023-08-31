@@ -209,7 +209,7 @@ export default function ItemActivity(props) {
     //     return newArray;
     // });
   };
-  const handleFollowClick = (index, activity, isFollow, title) => {
+  const handleFollowClick =async (index, activity, isFollow, title) => {
     // setCmt((prevArray) => {
     //     const newArray = JSON.parse(JSON.stringify(prevArray));
     //     newArray[index].isFollow = !newArray[index].isFollow;
@@ -219,7 +219,7 @@ export default function ItemActivity(props) {
     // });
     if (isFollow) {
       setFollowIndex(null);
-      const action = UnFollowAction(activity, userID);
+      const action =await UnFollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
@@ -240,7 +240,7 @@ export default function ItemActivity(props) {
     } else {
       setFollowIndex(index);
       console.log(activity, userID);
-      const action = FollowAction(activity, userID);
+      const action =await FollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,

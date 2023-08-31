@@ -1,5 +1,5 @@
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,13 +9,24 @@ import ListEndActivity from "../../components/ListEndActivity";
 import ListActivityFanpage from "./ListActivityFanpage";
 import Clock from "../../components/Clock";
 import CompleteInfo from "../../components/CompleteInfo";
+import UpdateFanpage from "./UpdateFanpage";
 
 export default function DetailFanpage(props) {
   const dispatch = useDispatch();
   const { id } = props.match.params;
   const { fanpageId } = useSelector((root) => root.FanpageReducer);
   const { userID } = useSelector((root) => root.LoginReducer);
-  console.log(fanpageId);
+  const [update, setUpdate] = useState(false);
+  const handleClickUpdate = () => {
+    setUpdate((prevIsOpen) => !prevIsOpen);
+    const action = GetFanpageByIDAction(id);
+    dispatch(action)
+  };
+  const popupStyleUpdate = {
+    opacity: update ? 1 : 0,
+    visibility: update ? "visible" : "hidden",
+    overflow: update ? "auto" : "hidden",
+  };
   useEffect(() => {
     const action = GetFanpageByIDAction(id);
     dispatch(action);
@@ -110,7 +121,7 @@ export default function DetailFanpage(props) {
                                     </svg>
                                   </i>
                                   <ul>
-                                    <li>
+                                    <li onClick={() =>{setUpdate(true)}}>
                                       <i className="icofont-pen-alt-1" />
                                       Chỉnh sửa
                                       <span>
@@ -137,7 +148,12 @@ export default function DetailFanpage(props) {
             </div>
           </div>
         </div>
-      </section>    
+      </section>   
+      <UpdateFanpage 
+        update={update}
+        handleClickUpdate={handleClickUpdate}
+        popupStyleUpdate={popupStyleUpdate}
+        fanpageId={fanpageId} />
     </Fragment>
   );
 }

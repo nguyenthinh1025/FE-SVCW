@@ -853,11 +853,15 @@ export default function ItemEndActivity (props) {
                     {isAlreadyFollowed ? "Hủy theo dõi" : "Theo dõi"}
                   </button>
                 }
-                {endDate.isBefore(currentDate) ?
+               {endDate.isBefore(currentDate) ?
                   <div></div>
                   :
                   <div>
-                    {ItemActivity.targetDonation !== 0 ? (
+                    {ItemActivity.process?.map((pro, index) => {
+
+                      if (((moment(pro.startDate, 'DD-MM-YYYY')).isBefore(currentDate)) && ((moment(pro.endDate, 'DD-MM-YYYY')).isAfter(currentDate))) {
+                        if (pro.isDonateProcess === true) {
+                          return <div>
                       <button
                         className=" btn-color btn-donate"
                         onClick={() => {
@@ -871,10 +875,10 @@ export default function ItemEndActivity (props) {
                       >
                         Ủng hộ
                       </button>
-                    ) : (
-                      <div></div>
-                    )
-                    }
+                      </div>
+                        }
+                      }
+                    })}
                   </div>
                 }
                 {ItemActivity.process.length !== 0 ? (
