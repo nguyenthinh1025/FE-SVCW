@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { http } from "../../utils/reponse";
 
 export const GetListFanpageAction = () => {
@@ -97,6 +98,34 @@ export const UpdateStatusFanpageAction = (id) => {
             // props.history.push('/home')
             const action = GetListFanpageAction();
             dispatch(action)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+export const UpdateFanpageAction = (value,id) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.put(`/Fanpage/update-fanpage`,value);
+            console.log(result.data.data);          
+            const action = GetFanpageByIDAction(id);
+            dispatch(action)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+        
+              Toast.fire({
+                icon: "success",
+                title: `Chỉnh sửa thành công tin thông tin Fanpage của bạn`,
+              });
         } catch (error) {
             console.log(error);
         }
