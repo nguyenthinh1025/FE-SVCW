@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function ShareActivity (props) {
     const { share, handleClickShare, popupStyleShare, activityId } = props;
-    console.log(activityId)
     const textToCopy =`http://localhost:3000/detailactivity/${activityId}`;
     const [textToCopy1, setTextToCopy1] = useState(true);
     const copyTextToClipboard = () => {

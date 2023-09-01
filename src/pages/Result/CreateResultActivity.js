@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 export default function CreateResultActivity(props) {
   const dispatch = useDispatch();
   const { popupStyleCreate, handleClickCreate, idActivity, isOpen } = props;
-  console.log(idActivity);
   const formik8 = useFormik({
     initialValues: {
       title: "",

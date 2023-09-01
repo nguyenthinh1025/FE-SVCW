@@ -80,7 +80,6 @@ export default function ItemEndActivity(props) {
     detailItem,
     index,
   } = props;
-  console.log(ItemActivity);
   const [openpro1, setOpenPro1] = useState(false);
   const [detail, setDetail] = useState({});
   const [report, setReport] = useState(false);
@@ -345,10 +344,6 @@ export default function ItemEndActivity(props) {
   // console.log(ItemActivity.title,endDate.isAfter(currentDate));
   const endDate = moment(ItemActivity.endDate);
   const currentDate = moment();
-
-  console.log(currentDate);
-  console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
-  console.log(ItemActivity.title, endDate.isAfter(currentDate));
   return (
     <div>
       <div className="main-wraper">
@@ -690,7 +685,6 @@ export default function ItemEndActivity(props) {
               </figure>
 
               {ItemActivity.process?.map((pro, index) => {
-                console.log(ItemActivity.title, pro.isDonateProcess);
                 if (
                   moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
                   moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
@@ -942,7 +936,6 @@ export default function ItemEndActivity(props) {
                 ) : (
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
-                      console.log(ItemActivity.title, pro.isDonateProcess);
                       if (
                         moment(pro.startDate, "YYYY-MM-DD").isBefore(
                           currentDate

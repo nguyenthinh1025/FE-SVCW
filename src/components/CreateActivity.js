@@ -1,35 +1,649 @@
-import React from 'react'
+import { useFormik } from "formik";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CreateActivityAction } from "../redux/actions/ActivityAction";
+import Swal from "sweetalert2";
+import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
+import GoogleMapReact from "google-map-react";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage_bucket } from "../firebase";
+import { useEffect } from "react";
+import { GetUserByIdAction } from "../redux/actions/UserAction";
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+export default function CreateActivity() {
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDisplay, setIsDisplay] = useState(true);
+  const [images, setImages] = useState([]);
+  const [coords, setCoords] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [files, setFiles] = useState("");
+  const { configActivity, isValidCreate, isFanpage } = useSelector(
+    (root) => root.ConfigActivityReducer
+  );
+  const { userID } = useSelector((root) => root.LoginReducer);
+  const { getUserId } = useSelector((root) => root.ProfileReducer);
+  const [currentForm, setCurrentForm] = useState(0);
+  const [isTextInputVisible, setTextInputVisible] = useState(false);
+  const [isTextInputVisible1, setTextInputVisible1] = useState(isFanpage);
+  const { processType, activityProcess } = useSelector(
+    (root) => root.ProcessTypeReducer
+  );
 
-export default function CreateActivity () {
-    return (
-        <div className="main-wraper">
-            <span className="new-title">Create New Post</span>
-            <div className="new-post">
-                <form method="post">
-                    <i className="icofont-pen-alt-1" />
-                    <input type="text" placeholder="Create New Post" />
-                </form>
-                <ul className="upload-media">
-                    <li>
-                        <a href="#" title>
-                            <i><img src="images/image.png" alt /></i>
-                            <span>Photo/Video</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" title>
-                            <i><img src="images/activity.png" alt /></i>
-                            <span>Feeling/Activity</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="live-stream.html" title>
-                            <i><img src="images/live-stream.png" alt /></i>
-                            <span>Live Stream</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+  const [tt, setTT] = useState(false);
+  const popupStyle9 = {
+    opacity: isOpen ? 1 : 0,
+    visibility: isOpen ? "visible" : "hidden",
+    overflow: isOpen ? "auto" : "hidden",
+  };
+  const toggleTextInput1 = () => {
+    setTextInputVisible1(!isTextInputVisible1);
+    formik.setFieldValue("isFanpageAvtivity", isTextInputVisible1);
+  };
+  const fn = async (value) => {
+    const result = await geocodeByAddress(value);
+    const lnglat = await getLatLng(result[0]);
+
+    setCoords(lnglat);
+  };
+  const handleImageChange = async (e) => {
+    setIsLoading(true);
+    const fileList = e.target.files;
+
+    console.log(fileList);
+    const newImages = [];
+
+    for (let i = 0;i < fileList.length;i++) {
+      const file = fileList[i];
+      const imageUrl = URL.createObjectURL(file);
+      newImages.push({ file, url: imageUrl });
+
+      try {
+        const fileRef = ref(storage_bucket, file.name);
+        const uploadTask = uploadBytesResumable(fileRef, file);
+
+        uploadTask.on('state_changed', (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProgress(progress);
+        });
+
+        const snapshot = await uploadTask;
+
+        if (snapshot.state === 'success') {
+          const downloadURL = await getDownloadURL(snapshot.ref);
+          const updatedImages = [...newImages];
+          updatedImages[i].url = downloadURL;
+
+          setImages([...images, ...updatedImages]);
+         const img =  [...images, ...updatedImages].map((item,index)=>{
+          const images = {
+            type: "string",
+            linkMedia:item.url
+          }
+          return images
+         })
+          formik.setFieldValue('media',img)
+        }
+      } catch (error) { }
+    }
+    setIsLoading(false);
+    setUploadProgress(0);
+  };
+  const initialValues = {
+    forms: [
+      // { name: '', email: '', selectField: '', media: [] },
+      {
+        processTitle: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        activityId: activityProcess,
+        processTypeId: "",
+        isKeyProcess: true,
+        processNo: 0,
+        media: [],
+      },
+    ],
+  };
+ 
+  const [formData, setFormData] = useState(initialValues.forms);
+  const handleCreateNewForm = () => {
+    setFormData((prevData) => [
+      ...prevData,
+      {
+        processTitle: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        activityId: localStorage.getItem("activityProcess"),
+        processTypeId: "",
+        isKeyProcess: true,
+        processNo: 0,
+        media: [],
+      },
+    ]);
+    setCurrentForm((prevForm) => prevForm + 1);
+  };
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
+      location: "",
+      targetDonation: 0,
+      userId: userID,
+      isFanpageAvtivity: false,
+      media: [],
+    },
+    // enableReinitialize: true,
+    enableReinitialize: false,
+    onSubmit: async (value) => {
+      console.log(value);
+      const action = await CreateActivityAction(value);
+      await dispatch(action);
+      formik.setFieldValue("title", "");
+      formik.setFieldValue("description", "");
+      formik.setFieldValue("location", "");
+      formik.setFieldValue("targetDonation", 0);
+      formik.setFieldValue("startDate", "");
+      formik.setFieldValue("endDate", "");
+      formik.setFieldValue("endactivity", "");
+      formik.setFieldValue("isFanpageAvtivity", false);
+      // formik.setFieldValue("media", []);
+      setIsOpen((prevIsOpen) => !prevIsOpen);
+      setIsDisplay(false);
+      // setIsOpen((prevIsOpen) => !prevIsOpen);
+      // const Toast = Swal.mixin({
+      //     toast: true,
+      //     position: 'top-end',
+      //     showConfirmButton: false,
+      //     timer: 3000,
+      //     timerProgressBar: true,
+      //     didOpen: (toast) => {
+      //         toast.addEventListener('mouseenter', Swal.stopTimer)
+      //         toast.addEventListener('mouseleave', Swal.resumeTimer)
+      //     }
+      // })
+
+      // Toast.fire({
+      //     icon: 'success',
+      //     title: `Tạo Mới Thành Công Sự Kiện `
+      // })
+
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
+        },
+        buttonsStyling: false,
+      });
+
+      swalWithBootstrapButtons
+        .fire({
+          title: "Tạo mới chiến dịch thành công",
+          text: "Bạn muốn thêm chi tiết tiến trình cho chiến dịch",
+          icon: "success",
+          showCancelButton: true,
+          confirmButtonText: "Thêm tiến trình",
+          cancelButtonText: "Hoàn thành",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            setTT(true);
+            handleCreateNewForm();
+            setTT(true);
+            // swalWithBootstrapButtons.fire(
+            //   "Thành công!",
+            //   "Thêm tiến trình thành công.",
+            //   "success"
+            // );
+            formik.setFieldValue("title", "");
+            formik.setFieldValue("description", "");
+            formik.setFieldValue("location", "");
+            formik.setFieldValue("targetDonation", 0);
+            // formik.setFieldValue("media", []);
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons.fire(
+              "Thành công",
+              "Thêm tiến trình thành  công",
+              "success"
+            );
+            formik.setFieldValue("title", "");
+            formik.setFieldValue("description", "");
+            formik.setFieldValue("location", "");
+            formik.setFieldValue("targetDonation", 0);
+            formik.setFieldValue("media", []);
+            setImages([]);
+          }
+        });
+    },
+  });
+  const handleClick = () => {
+    setIsOpen((prevIsOpen) => !prevIsOpen);
+    setIsDisplay(true);
+    formik.setFieldValue("title", "");
+    formik.setFieldValue("description", "");
+    formik.setFieldValue("location", "");
+  };
+  const handleImageDelete = (index) => {
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(index, 1);
+      return updatedImages;
+    });
+  };
+
+  useEffect(() => {
+   
+    
+    const user = localStorage.getItem('userID');
+    if (user) {
+      console.log('có user');
+      const action = GetUserByIdAction(user);
+      dispatch(action);
+    }
+  }, []);
+  return (
+    <div>
+      {isValidCreate === "true" ? (
+        <div
+          className="main-wraper"
+          onClick={handleClick}
+          style={{ cursor: "pointer" }}
+        >
+          <span className="new-title">Bạn muốn tạo chiến dịch mới</span>
+          <div className="new-post">
+            <form method="post" onClick={handleClick}>
+              <i className="icofont-pen-alt-1" />
+              <input
+                onClick={handleClick}
+                type="text"
+                placeholder="Tạo chiến dịch"
+              />
+            </form>
+          </div>
         </div>
-    )
+      ) : (
+        <div></div>
+      )}
+
+      {isOpen === true ? (
+        <div className="post-new-popup" style={popupStyle9}>
+          <div
+            className="popupPost"
+            style={{
+              width: 800,
+              zIndex: 80,
+              height: "100vh",
+              overflowY: "scroll",
+              margin: "1rem",
+            }}
+          >
+            <span className="popup-closed" onClick={handleClick}>
+              <i className="icofont-close" />
+            </span>
+            <div className="popup-meta">
+              <div className="popup-head">
+                <h5>
+                  <i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-plus"
+                    >
+                      <line x1={12} y1={5} x2={12} y2={19} />
+                      <line x1={5} y1={12} x2={19} y2={12} />
+                    </svg>
+                  </i>
+                  Tạo chiến dịch
+                </h5>
+              </div>
+            </div>
+
+            <div className="">
+              <br />
+              <form
+                id="survey-form"
+                method="post"
+                onSubmit={formik.handleSubmit}
+              >
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Tên chiến dịch
+                      </label>
+                      <input
+                        type="text"
+                        name="title"
+                        onChange={formik.handleChange}
+                        value={formik.values.title}
+                        id="name"
+                        placeholder="Nhập tên chiến dịch"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="email-label" htmlFor="email">
+                        Mô tả chiến dịch
+                      </label>
+                      <input
+                        type="text"
+                        name="description"
+                        onChange={formik.handleChange}
+                        value={formik.values.description}
+                        id="email"
+                        placeholder="Nhập mô tả"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Ngày bắt đầu
+                      </label>
+                      <input
+                        type="date"
+                        name="startDate"
+                        onChange={formik.handleChange}
+                        value={formik.values.startDate}
+                        id="name"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Ngày kết thúc
+                      </label>
+                      <input
+                        type="date"
+                        name="endDate"
+                        onChange={formik.handleChange}
+                        value={formik.values.endDate}
+                        id="name"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Nơi diễn ra
+                      </label>
+                      <input
+                        type="text"
+                        name="location"
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          // fn(e.target.value);
+                        }}
+                        value={formik.values.location}
+                        id="name"
+                        placeholder="Nhập nơi diễn ra"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    {/* <div className="form-group">
+                          {configActivity === "true" ? (
+                            <div>
+                              <div
+                                className="form-group"
+                                style={{ display: "flex" }}
+                              >
+                                <label
+                                  id="name-label"
+                                  style={{ marginRight: "20px" }}
+                                  htmlFor="name"
+                                >
+                                  Nhận ủng hộ
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  onChange={toggleTextInput}
+                                />
+                              </div>
+                              {isTextInputVisible === true && (
+                                <div className="form-group">
+                                  <input
+                                    type="number"
+                                    name="targetDonation"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.targetDonation}
+                                    id="name"
+                                    placeholder="Nhập số tiền cần nhận"
+                                    className="form-control"
+                                    style={{ marginTop: "-2rem" }}
+                                    required
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div></div>
+                          )}
+                        </div> */}
+                  </div>
+                  {/* <div className="col-md-12">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Lựa chọn
+                      </label>
+                      <select
+                        type="text"
+                        name="location"
+
+                        value={formik.values.location}
+                        id="name"
+                        className="form-control"
+                        required
+                      >
+                        <option>Không nhận donation</option>
+                        <option>Có nhận donation</option>
+                      </select>
+                    </div>
+                  </div> */}
+                  <div className="col-md-12">
+                    <div style={{ height: "200px", width: "100%" }}>
+                      <GoogleMapReact
+                        bootstrapURLKeys={{
+                          key: "AIzaSyBEg-cDilr_ZSqVWMdXNVm4Wn9mo-KOKOI",
+                        }}
+                        defaultCenter={coords}
+                        center={coords}
+                        defaultZoom={11}
+                      >
+                        <AnyReactComponent
+                          lat={coords.lat}
+                          lng={coords.lng}
+                          text={
+                            <i
+                              class="icofont-location-pin"
+                              style={{ fontSize: "3rem", color: "red" }}
+                            ></i>
+                          }
+                        />
+                      </GoogleMapReact>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      {getUserId?.fanpage?.status === "Active" && isFanpage ? (
+                          <div
+                            className="form-group"
+                            style={{ display: "flex" }}
+                          >
+                            <label
+                              id="name-label"
+                              style={{ marginRight: "20px" }}
+                              htmlFor="name"
+                            >
+                              Chia sẻ lên nhóm của bạn
+                            </label>
+                            <input
+                              type="checkbox"
+                              onChange={toggleTextInput1}
+                              // checked={isTextInputVisible1}
+                            />
+                          </div>
+                       
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label>Hình ảnh</label>
+                      <div>
+                        <form>
+                          <fieldset className="upload_dropZone text-center mb-3 p-4">
+                            <legend className="visually-hidden">
+                              Tải hình ảnh
+                            </legend>
+                            <svg
+                              className="upload_svg"
+                              width={60}
+                              height={60}
+                              aria-hidden="true"
+                            >
+                              <use href="#icon-imageUpload" />
+                            </svg>
+                            <p className="small my-2">
+                              Kéo &amp; Thả (các) hình nền bên trong vùng nét
+                              đứt
+                              <br />
+                              <i>hoặc</i>
+                            </p>
+                            <input
+                              id="upload_image_background"
+                              // ref={fileInputRef}
+                              data-post-name="image_background"
+                              data-post-url="https://someplace.com/image/uploads/backgrounds/"
+                              className="position-absolute invisible"
+                              type="file"
+                              multiple
+                              onChange={handleImageChange}
+                              accept="image/jpeg, image/png, image/svg+xml"
+                            />
+                            <label
+                              className="btn btn-upload mb-3"
+                              htmlFor="upload_image_background"
+                            >
+                              Chọn hình ảnh
+                            </label>
+                            <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
+                          </fieldset>
+                        </form>
+                        <svg style={{ display: 'none' }}>
+                          <defs>
+                            <symbol
+                              id="icon-imageUpload"
+                              clipRule="evenodd"
+                              viewBox="0 0 96 96"
+                            >
+                              <path d="M47 6a21 21 0 0 0-12.3 3.8c-2.7 2.1-4.4 5-4.7 7.1-5.8 1.2-10.3 5.6-10.3 10.6 0 6 5.8 11 13 11h12.6V22.7l-7.1 6.8c-.4.3-.9.5-1.4.5-1 0-2-.8-2-1.7 0-.4.3-.9.6-1.2l10.3-8.8c.3-.4.8-.6 1.3-.6.6 0 1 .2 1.4.6l10.2 8.8c.4.3.6.8.6 1.2 0 1-.9 1.7-2 1.7-.5 0-1-.2-1.3-.5l-7.2-6.8v15.6h14.4c6.1 0 11.2-4.1 11.2-9.4 0-5-4-8.8-9.5-9.4C63.8 11.8 56 5.8 47 6Zm-1.7 42.7V38.4h3.4v10.3c0 .8-.7 1.5-1.7 1.5s-1.7-.7-1.7-1.5Z M27 49c-4 0-7 2-7 6v29c0 3 3 6 6 6h42c3 0 6-3 6-6V55c0-4-3-6-7-6H28Zm41 3c1 0 3 1 3 3v19l-13-6a2 2 0 0 0-2 0L44 79l-10-5a2 2 0 0 0-2 0l-9 7V55c0-2 2-3 4-3h41Z M40 62c0 2-2 4-5 4s-5-2-5-4 2-4 5-4 5 2 5 4Z" />
+                            </symbol>
+                          </defs>
+                        </svg>
+                      </div>
+
+                      <div className="image-container image-container-flex">
+                        {images.map((image, index) => (
+                          <div
+                            className="image-item image-item-relative"
+                            key={index}
+                          >
+                            <img
+                              src={image.url}
+                              alt={`Image ${index}`}
+                              className="image-preview image-item-flex"
+                            />
+                            <button
+                              className="delete-button"
+                              onClick={() => handleImageDelete(index)}
+                            >
+                              <span>&times;</span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {isLoading && (
+                        <div>
+                          <div className="progress-bar-container">
+                            <div
+                              className="progress-bar"
+                              style={{ width: `${uploadProgress}%` }}
+                            ></div>
+                          </div>
+                          <div className="progress-percentage">
+                            {uploadProgress}%
+                          </div>
+                        </div>
+                      )}
+
+                      {files !== '' ? (
+                        <img src={files} style={{ height: '300px' }} />
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-4">
+                    <button
+                      type="submit"
+                      id="submit"
+                      className="btn btn-primary btn-block"
+                    >
+                      Hoàn thành
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+    </div>
+  );
 }
