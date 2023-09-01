@@ -10,7 +10,11 @@ import {
 } from "../redux/actions/ActivityAction";
 import Swal from "sweetalert2";
 import { NavLink } from "react-router-dom";
-import { CreateReportAction, GetListReportAction, GetListReportByTypeAction } from "../redux/actions/ReportAction";
+import {
+  CreateReportAction,
+  GetListReportAction,
+  GetListReportByTypeAction,
+} from "../redux/actions/ReportAction";
 import { useFormik } from "formik";
 import moment from "moment";
 import PostDescription from "../pages/Home/PostDescription";
@@ -31,17 +35,39 @@ import ReportActivity from "./ReportActivity";
 import { GetListReportTypeAction } from "../redux/actions/ReportTypeAction";
 import { history } from "../App";
 import ShareActivity from "./ShareActivity";
+import CreateResultActivity from "../pages/Result/CreateResultActivity";
+import ResultActivity from "../pages/Result/ResultActivity";
 
-export default function ItemEndActivity (props) {
+export default function ItemEndActivity(props) {
   const [isReadMore, setReadMore] = useState(false);
-  const [share, setShare] = useState(false)
-  const [shareActivityID, setShareActivityID] = useState('')
+  const [share, setShare] = useState(false);
+  const [shareActivityID, setShareActivityID] = useState("");
   const handleClickShare = () => {
     setShare((prevIsOpen) => !prevIsOpen);
-  }; const popupStyleShare = {
+  };
+  const popupStyleShare = {
     opacity: share ? 1 : 0,
-    visibility: share ? 'visible' : 'hidden',
-    overflow: share ? 'auto' : 'hidden',
+    visibility: share ? "visible" : "hidden",
+    overflow: share ? "auto" : "hidden",
+  };
+  const [isOpen, setIsOpen] = useState(false);
+  const popupStyleCreate = {
+    opacity: isOpen ? 1 : 0,
+    visibility: isOpen ? 'visible' : 'hidden',
+    overflow: isOpen ? 'auto' : 'hidden',
+  };
+  const [idActivity,setIDActivity] = useState('')
+  const handleClickCreate = () => {
+    setIsOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const [isOpen1, setIsOpen1] = useState(false);
+  const popupStyle1 = {
+    opacity: isOpen1 ? 1 : 0,
+    visibility: isOpen1 ? 'visible' : 'hidden',
+    overflow: isOpen1 ? 'auto' : 'hidden',
+  };
+  const handleClick1 = () => {
+    setIsOpen1((prevIsOpen) => !prevIsOpen);
   };
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
@@ -54,7 +80,7 @@ export default function ItemEndActivity (props) {
     detailItem,
     index,
   } = props;
-  console.log(ItemActivity)
+  console.log(ItemActivity);
   const [openpro1, setOpenPro1] = useState(false);
   const [detail, setDetail] = useState({});
   const [report, setReport] = useState(false);
@@ -65,7 +91,7 @@ export default function ItemEndActivity (props) {
   const [content, setContent] = useState("");
   const [tcss, setTcss] = useState("css");
   const [commentI, setCommentI] = useState("commentContent");
-  const [reportid, setReportID] = useState('')
+  const [reportid, setReportID] = useState("");
   const handleClick6 = () => {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
   };
@@ -77,8 +103,8 @@ export default function ItemEndActivity (props) {
   };
   const popupStyle3 = {
     opacity: report ? 1 : 0,
-    visibility: report ? 'visible' : 'hidden',
-    overflow: report ? 'auto' : 'hidden',
+    visibility: report ? "visible" : "hidden",
+    overflow: report ? "auto" : "hidden",
   };
   useEffect(() => {
     const action4 = GetListReportTypeAction();
@@ -126,7 +152,7 @@ export default function ItemEndActivity (props) {
       } else {
         const action = CommentRepllyAction(value);
         dispatch(action);
-        setOnID('')
+        setOnID("");
         // formik2.setFieldValue('commentIdReply', '');
         // setCommentI('commentContent')
         // setContent(true)
@@ -226,7 +252,7 @@ export default function ItemEndActivity (props) {
 
       Toast.fire({
         icon: "success",
-        title: `Tham Gia Thành Công Sự Kiện ${title}`,
+        title: `Tham gia thành công sự kiện ${title}`,
       });
     }
     const action = GetListActivityAction();
@@ -308,21 +334,27 @@ export default function ItemEndActivity (props) {
   };
   const popupStyle4 = {
     opacity: openpro1 ? 1 : 0,
-    visibility: openpro1 ? 'visible' : 'hidden',
-    overflow: openpro1 ? 'auto' : 'hidden',
+    visibility: openpro1 ? "visible" : "hidden",
+    overflow: openpro1 ? "auto" : "hidden",
   };
 
-  const endDate = moment(ItemActivity.endDate, 'DD-MM-YYYY HH:mm:ss');
+  // const endDate = moment(ItemActivity.endDate).format("DD-MM-YYYY HH:mm:ss");
+  // const currentDate = moment()
+  // console.log(currentDate);
+  // console.log(endDate);
+  // console.log(ItemActivity.title,endDate.isAfter(currentDate));
+  const endDate = moment(ItemActivity.endDate);
   const currentDate = moment();
+
   console.log(currentDate);
-  console.log(endDate.isBefore(currentDate));
+  console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
+  console.log(ItemActivity.title, endDate.isAfter(currentDate));
   return (
     <div>
       <div className="main-wraper">
         <div className="user-post">
           <div className="friend-info">
             <figure>
-             
               <img
                 style={{ height: "40px", width: "40px" }}
                 alt
@@ -355,7 +387,9 @@ export default function ItemEndActivity (props) {
                     </svg>
                   </i>
                   <ul>
-                    {userID === ItemActivity.userId && (endDate.isBefore(currentDate) === false) && ItemActivity.targetDonation === 0 ? (
+                    {userID === ItemActivity.userId &&
+                    endDate.isBefore(currentDate) === false &&
+                    ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
                           handleClick6();
@@ -373,7 +407,9 @@ export default function ItemEndActivity (props) {
                       <div></div>
                     )}
 
-                    {userID === ItemActivity.userId && ItemActivity.targetDonation === 0 ? (
+                    {userID === ItemActivity.userId &&
+                    ItemActivity.targetDonation === 0 &&
+                    endDate.isBefore(currentDate) === false ? (
                       <li
                         onClick={() => {
                           Swal.fire({
@@ -413,7 +449,6 @@ export default function ItemEndActivity (props) {
                         onClick={() => {
                           setReportID(ItemActivity.activityId);
                           setReport(true);
-
                         }}
                       >
                         <i className="icofont-flag" />
@@ -426,6 +461,39 @@ export default function ItemEndActivity (props) {
                     ) : (
                       <div></div>
                     )}
+                     {endDate.isBefore(currentDate) === true && userID === ItemActivity.userId ? (
+                      <li
+                        onClick={() => {
+                          handleClickCreate();
+                         setIDActivity(ItemActivity.activityId)
+                         console.log(ItemActivity.activityId)
+                        }}
+                      >
+                        <i className="icofont-pen-alt-1" />
+                      Kết quả chiến dịch
+                        <span>Thêm kết quả của chiến dịch</span>
+                      </li>) : (
+                      <div></div>
+                    )}
+                    {endDate.isBefore(currentDate) === true ? (
+                      <li
+                        onClick={() => {
+                          handleClick1()
+                          setIDActivity(ItemActivity.activityId)
+                          const action = GetActivityByIDAction(ItemActivity.activityId);
+                          dispatch(action)
+                        }}
+                      >
+                        <i className="icofont-flag" />
+                        Xem kết quả chiến dịch
+                        <span>
+                          Xem kết quả diễn ra trong chiến dịch
+                        </span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
+                     
                   </ul>
                 </div>
               </div>
@@ -458,7 +526,6 @@ export default function ItemEndActivity (props) {
                   }}
                 >
                   Xem tiến trình
-
                 </NavLink>
               ) : (
                 <div></div>
@@ -472,7 +539,8 @@ export default function ItemEndActivity (props) {
                   }}
                   className="col-lg-12"
                 >
-                  <h3
+                   <NavLink
+                              to={`/detailactivity/${ItemActivity.activityId}`}
                     style={{
                       fontSize: "25px",
                       fontWeight: "bold",
@@ -483,7 +551,7 @@ export default function ItemEndActivity (props) {
                     className="col-lg-12"
                   >
                     {ItemActivity.title}
-                  </h3>
+                  </NavLink>
                 </div>
               </div>
               <div style={{ display: "flex" }}>
@@ -552,222 +620,240 @@ export default function ItemEndActivity (props) {
                 <div className="image-gallery-flex">
                   {ItemActivity?.media?.length <= 3
                     ? ItemActivity.media.map((image, index) => {
-                      return (
-                        <div key={index} className={`image-container-post`}>
-                          <NavLink to={`/detailactivity/${ItemActivity.activityId}`}
-                            onClick={() => {
-                              console.log(ItemActivity.activity)
-                              const action = GetActivityIDAction(ItemActivity.activityId);
-                              dispatch(action)
-
-                            }}
-                          >
-                            <img
-                              src={image.linkMedia}
-                              alt={`Image ${image.id}`}
-                            />
-                          </NavLink>
-                        </div>
-                      );
-                    })
-                    : ItemActivity.media?.slice(0, 4).map((image, index) => {
-                      return index !== 3 ? (
-                        <div key={index} className={`image-container-post`}>
-                          <div
-                            href="images/resources/album1.jpg"
-                            onClick={() => {
-                              console.log(ItemActivity.activity)
-                              const action = GetActivityIDAction(ItemActivity.activityId);
-                              dispatch(action)
-                              history.push(`/detailactivity/${ItemActivity.activityId}`)
-                            }}
-                          >
-                            <img
-                              src={image.linkMedia}
-                              alt={`Image ${image.id}`}
-                            />
+                        return (
+                          <div key={index} className={`image-container-post`}>
+                            <NavLink
+                              to={`/detailactivity/${ItemActivity.activityId}`}
+                              onClick={() => {
+                                console.log(ItemActivity.activity);
+                                const action = GetActivityIDAction(
+                                  ItemActivity.activityId
+                                );
+                                dispatch(action);
+                              }}
+                            >
+                              <img
+                                src={image.linkMedia}
+                                alt={`Image ${image.id}`}
+                              />
+                            </NavLink>
                           </div>
-                        </div>
-                      ) : (
-                        <div
-                          key={index}
-                          className={`image-container-post-last`}
-                        >
-                          <a
-                            data-toggle="modal"
-                            data-target="#img-comt"
-                            href="images/resources/album1.jpg"
-                            onClick={() => {
-                              setDetail(detailItem);
-                            }}
-                          >
-                            <div className="overlay">
-                              +{ItemActivity.media.length - 4}
+                        );
+                      })
+                    : ItemActivity.media?.slice(0, 4).map((image, index) => {
+                        return index !== 3 ? (
+                          <div key={index} className={`image-container-post`}>
+                            <div
+                              href="images/resources/album1.jpg"
+                              onClick={() => {
+                                console.log(ItemActivity.activity);
+                                const action = GetActivityIDAction(
+                                  ItemActivity.activityId
+                                );
+                                dispatch(action);
+                                history.push(
+                                  `/detailactivity/${ItemActivity.activityId}`
+                                );
+                              }}
+                            >
+                              <img
+                                src={image.linkMedia}
+                                alt={`Image ${image.id}`}
+                              />
                             </div>
-                            <img
-                              src={image.linkMedia}
-                              alt={`Image ${image.id}`}
-                            />
-                          </a>
-                        </div>
-                      );
-                    })}
+                          </div>
+                        ) : (
+                          <div
+                            key={index}
+                            className={`image-container-post-last`}
+                          >
+                            <a
+                              data-toggle="modal"
+                              data-target="#img-comt"
+                              href="images/resources/album1.jpg"
+                              onClick={() => {
+                                setDetail(detailItem);
+                              }}
+                            >
+                              <div className="overlay">
+                                +{ItemActivity.media.length - 4}
+                              </div>
+                              <img
+                                src={image.linkMedia}
+                                alt={`Image ${image.id}`}
+                              />
+                            </a>
+                          </div>
+                        );
+                      })}
                 </div>
               </figure>
 
-              {ItemActivity.targetDonation !== 0 ? (
-                <div className="mb-4">
-                  <p
-                    style={{
-                      color: "blue",
-                      fontWeight: "400",
-                      fontSize: "15px",
-                    }}
-                  >
-                    Đã quyên góp được <br />
-                    <span
-                      style={{
-                        color: "blue",
-                        fontSize: "15px",
-                      }}
-                    >
-                      <span style={{ color: "blue", fontSize: "15px" }}>
-                        {ItemActivity.realDonation.toLocaleString()}
-                      </span>{" "}
-                      đ /
-                      <span
-                        style={{
-                          color: "blue",
-                          fontSize: "15px",
-                        }}
-                      >
-                        {ItemActivity.targetDonation.toLocaleString()} đ
-                      </span>{" "}
-                    </span>
-                  </p>
+              {ItemActivity.process?.map((pro, index) => {
+                console.log(ItemActivity.title, pro.isDonateProcess);
+                if (
+                  moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
+                  moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                ) {
+                  if (pro.isDonateProcess === true) {
+                    return (
+                      <div>
+                        {pro.isDonateProcess === true ? (
+                          <div className="mb-4 mt-4">
+                            <p
+                              style={{
+                                color: "blue",
+                                fontWeight: "400",
+                                fontSize: "15px",
+                              }}
+                            >
+                              Đã quyên góp được <br />
+                              <span
+                                style={{
+                                  color: "blue",
+                                  fontSize: "15px",
+                                }}
+                              >
+                                <span
+                                  style={{ color: "blue", fontSize: "15px" }}
+                                >
+                                  {pro.realDonation.toLocaleString()}
+                                </span>{" "}
+                                đ /
+                                <span
+                                  style={{
+                                    color: "blue",
+                                    fontSize: "15px",
+                                  }}
+                                >
+                                  {pro.targetDonation.toLocaleString()} đ
+                                </span>{" "}
+                              </span>
+                            </p>
 
-                  <input
-                    type="range"
-                    min="0"
-                    max={ItemActivity.targetDonation}
-                    value={ItemActivity.realDonation}
-                    // onChange={handleChange}
-                    className="range-slider"
-                    style={{
-                      background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(ItemActivity.realDonation /
-                        ItemActivity.targetDonation) *
-                        100
-                        }%, #ddd ${(ItemActivity.realDonation /
-                          ItemActivity.targetDonation) *
-                        100
-                        }%, #ddd 100%)`,
-                    }}
-                  />
-                  {/* <div className="range-value" style={{ position: 'absolute', left: `${((ItemActivity.realDonation - 5) * 100) / (100 - 0)}%` }}>{ItemActivity.realDonation}%</div> */}
-                  {ItemActivity.realDonation !== 0 ? (
-                    <div></div>
-                  ) : (
-                    <div
-                      className="range-value"
-                      style={{ position: "absolute" }}
-                    >
-                      0
-                    </div>
-                  )}
-                  <div className="range-value" style={{ position: "absolute" }}>
-                    0
-                  </div>
-                  {ItemActivity.realDonation !== 0 ? (
-                    <div
-                      className="range-value"
-                      style={{
-                        position: "absolute",
-                        left: `${((ItemActivity.realDonation - 5) * 100) / (100 - 0)
-                          }%`,
-                      }}
-                    >
-                      {
-                        (
-                          (ItemActivity.realDonation /
-                            ItemActivity.targetDonation) *
-                          100
-                        )
-                          .toString()
-                          .split(".")[0]
-                      }
-                      %
-                    </div>
-                  ) : (
-                    <div
-                      className="range-value"
-                      style={{
-                        position: "absolute",
-                        left: `${((ItemActivity.realDonation - 0) * 100) / (100 - 0)
-                          }%`,
-                      }}
-                    >
-                      {
-                        (
-                          (ItemActivity.realDonation /
-                            ItemActivity.targetDonation) *
-                          100
-                        )
-                          .toString()
-                          .split(".")[0]
-                      }
-                      %
-                    </div>
-                  )}
-                  {ItemActivity.realDonation === 0 ? (
-                    <div></div>
-                  ) : (
-                    <div
-                      className="range-value"
-                      style={{
-                        position: "absolute",
-                        left: `${(ItemActivity.realDonation /
-                          ItemActivity.targetDonation) *
-                          100
-                          }%`,
-                      }}
-                    >
-                      {" "}
-                      {(ItemActivity.realDonation /
-                        ItemActivity.targetDonation) *
-                        100}
-                      %
-                    </div>
-                  )}
-                  <div
-                    className="range-value"
-                    style={{
-                      color: "blue",
-                      position: "absolute",
-                      right: "10px",
-                    }}
-                  >
-                    {ItemActivity.targetDonation.toLocaleString()} vnđ
-                  </div>
-                </div>
-              ) : (
-                <div></div>
-              )}
- {endDate.isBefore(currentDate) ? (
+                            <input
+                              type="range"
+                              min="0"
+                              max={pro.targetDonation}
+                              value={pro.realDonation}
+                              // onChange={handleChange}
+                              className="range-slider"
+                              style={{
+                                background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
+                                  (pro.realDonation / pro.targetDonation) * 100
+                                }%, #ddd ${
+                                  (pro.realDonation / pro.targetDonation) * 100
+                                }%, #ddd 100%)`,
+                              }}
+                            />
+                            {/* <div className="range-value" style={{ position: 'absolute', left: `${((pro.realDonation - 5) * 100) / (100 - 0)}%` }}>{pro.realDonation}%</div> */}
+                            {pro.realDonation !== 0 ? (
+                              <div></div>
+                            ) : (
+                              <div
+                                className="range-value"
+                                style={{ position: "absolute" }}
+                              >
+                                0
+                              </div>
+                            )}
+                            <div
+                              className="range-value"
+                              style={{ position: "absolute" }}
+                            ></div>
+                            {pro.realDonation !== 0 ? (
+                              <div
+                                className="range-value"
+                                style={{
+                                  position: "absolute",
+                                  left: `${
+                                    ((pro.realDonation - 5) * 100) / (100 - 0)
+                                  }%`,
+                                }}
+                              >
+                                {
+                                  (
+                                    (pro.realDonation / pro.targetDonation) *
+                                    100
+                                  )
+                                    .toString()
+                                    .split(".")[0]
+                                }
+                                %
+                              </div>
+                            ) : (
+                              <div
+                                className="range-value"
+                                style={{
+                                  position: "absolute",
+                                  left: `${
+                                    ((pro.realDonation - 0) * 100) / (100 - 0)
+                                  }%`,
+                                }}
+                              >
+                                {
+                                  (
+                                    (pro.realDonation / pro.targetDonation) *
+                                    100
+                                  )
+                                    .toString()
+                                    .split(".")[0]
+                                }
+                                %
+                              </div>
+                            )}
+                            {pro.realDonation === 0 ? (
+                              <div></div>
+                            ) : (
+                              <div
+                                className="range-value"
+                                style={{
+                                  position: "absolute",
+                                  left: `${
+                                    (pro.realDonation / pro.targetDonation) *
+                                    100
+                                  }%`,
+                                }}
+                              >
+                                {" "}
+                                {(pro.realDonation / pro.targetDonation) * 100}%
+                              </div>
+                            )}
+                            <div
+                              className="range-value"
+                              style={{
+                                color: "blue",
+                                position: "absolute",
+                                right: "10px",
+                              }}
+                            >
+                              {pro.targetDonation.toLocaleString()} vnđ
+                            </div>
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    );
+                  }
+                }
+              })}
+              {endDate.isBefore(currentDate) ? (
                 <div></div>
               ) : (
                 <div>
                   {ItemActivity.process?.map((pro, index) => {
                     if (
-                      moment(pro.startDate, "DD-MM-YYYY").isBefore(
+                      moment(pro.startDate, "YYYY-MM-DD").isBefore(
                         currentDate
                       ) &&
-                      moment(pro.endDate, "DD-MM-YYYY").isAfter(currentDate)
+                      moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
                     ) {
                       if (pro.isParticipant === true) {
                         return (
-                          <div style={{padding:'30px 0 0 40px'}}>
-                            Số người tham gia: {pro.realParticipant}/
-                            {pro.targetParticipant}
+                          <div style={{ padding: "30px 0 0 40px" }}>
+                            Số người tham gia: {Number(pro?.realParticipant)}/
+                            {Number(pro?.targetParticipant)}
                           </div>
                         );
                       }
@@ -779,7 +865,6 @@ export default function ItemEndActivity (props) {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-       
                 }}
                 className={
                   (ItemActivity.targetDonation !== 0
@@ -791,24 +876,28 @@ export default function ItemEndActivity (props) {
                     : "noprocessform")
                 }
               >
-
-                {endDate.isBefore(currentDate) ?
+                {endDate.isBefore(currentDate) ? (
                   <div></div>
-                  :
+                ) : (
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
-
-                      if (((moment(pro.startDate, 'DD-MM-YYYY')).isBefore(currentDate)) && ((moment(pro.endDate, 'DD-MM-YYYY')).isAfter(currentDate))) {
+                      if (
+                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                          currentDate
+                        ) &&
+                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      ) {
                         if (pro.isParticipant === true) {
-                          return <div>
-                            {/* {pro.processTitle} */}
-
+                          return (
                             <button
-                              className={` ${isAlreadyJoined ? "btn-change" : "btn-color"
-                                } mb-4 mt-4 btn-add ${ItemActivity.targetDonation !== 0 ? "marginfollow" : "sas"
-                                }`}
+                              className={` ${
+                                isAlreadyJoined ? "btn-change" : "btn-color"
+                              } mb-4 mt-4 btn-add ${
+                                ItemActivity.targetDonation !== 0
+                                  ? "marginfollow"
+                                  : "sas"
+                              }`}
                               onClick={() => {
-
                                 handleJoinClick(
                                   index,
                                   ItemActivity.activityId,
@@ -818,26 +907,21 @@ export default function ItemEndActivity (props) {
                               }}
                             >
                               {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
-
-
                             </button>
-                          
-                          </div>
+                          );
                         }
-
-
                       }
                     })}
-
                   </div>
-                }
+                )}
 
-                {endDate.isBefore(currentDate) ?
+                {endDate.isBefore(currentDate) ? (
                   <div></div>
-                  :
+                ) : (
                   <button
-                    className={` ${isAlreadyFollowed ? "btn-change" : "btn-color"
-                      } mb-4 mt-4`}
+                    className={` ${
+                      isAlreadyFollowed ? "btn-change" : "btn-color"
+                    } mb-4 mt-4`}
                     onClick={() => {
                       handleFollowClick(
                         index,
@@ -852,35 +936,40 @@ export default function ItemEndActivity (props) {
                     }
                     {isAlreadyFollowed ? "Hủy theo dõi" : "Theo dõi"}
                   </button>
-                }
-               {endDate.isBefore(currentDate) ?
+                )}
+                {endDate.isBefore(currentDate) ? (
                   <div></div>
-                  :
+                ) : (
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
-
-                      if (((moment(pro.startDate, 'DD-MM-YYYY')).isBefore(currentDate)) && ((moment(pro.endDate, 'DD-MM-YYYY')).isAfter(currentDate))) {
+                      console.log(ItemActivity.title, pro.isDonateProcess);
+                      if (
+                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                          currentDate
+                        ) &&
+                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      ) {
                         if (pro.isDonateProcess === true) {
-                          return <div>
-                      <button
-                        className=" btn-color btn-donate"
-                        onClick={() => {
-                          // setActi(ItemActivity.activityId)
-                          formik1.setFieldValue(
-                            "activityId",
-                            ItemActivity.activityId
+                          return (
+                            <button
+                              className=" btn-color btn-donate"
+                              onClick={() => {
+                                // setActi(ItemActivity.activityId)
+                                formik1.setFieldValue(
+                                  "activityId",
+                                  ItemActivity.activityId
+                                );
+                                openPopup();
+                              }}
+                            >
+                              Ủng hộ
+                            </button>
                           );
-                          openPopup();
-                        }}
-                      >
-                        Ủng hộ
-                      </button>
-                      </div>
                         }
                       }
                     })}
                   </div>
-                }
+                )}
                 {ItemActivity.process.length !== 0 ? (
                   <NavLink
                     to={`/detailprocess/${ItemActivity.activityId}`}
@@ -922,21 +1011,21 @@ export default function ItemEndActivity (props) {
                       <ul className="namelist">
                         {ItemActivity?.like?.length <= 4
                           ? ItemActivity?.like.map((userItem) => {
-                            return <li>{userItem?.user?.username}</li>;
-                          })
+                              return <li>{userItem?.user?.username}</li>;
+                            })
                           : ItemActivity?.like
-                            ?.slice(0, 4)
-                            .map((userItem, index) => {
-                              index < 4 ? (
-                                <li>{userItem.user?.username}</li>
-                              ) : (
-                                <li>
-                                  <span>
-                                    +{ItemActivity?.like.length - 5}
-                                  </span>
-                                </li>
-                              );
-                            })}
+                              ?.slice(0, 4)
+                              .map((userItem, index) => {
+                                index < 4 ? (
+                                  <li>{userItem.user?.username}</li>
+                                ) : (
+                                  <li>
+                                    <span>
+                                      +{ItemActivity?.like.length - 5}
+                                    </span>
+                                  </li>
+                                );
+                              })}
                       </ul>
                     </div>
                   </div>
@@ -949,14 +1038,14 @@ export default function ItemEndActivity (props) {
                         fontSize: "15px",
                       }}
                     >
-                      <span style={{paddingRight:'2px'}}>
-                        {(ItemActivity?.comment?.length !==0
+                      <span style={{ paddingRight: "2px" }}>
+                        {(ItemActivity?.comment?.length !== 0
                           ? ItemActivity?.comment?.length
                           : 0) +
                           (ItemActivity?.comment?.inverseReply
                             ? ItemActivity?.comment?.inverseReply?.length
                             : 0)}
-                         <span style={{paddingLeft:'3px'}}>bình luận</span>
+                        <span style={{ paddingLeft: "3px" }}>bình luận</span>
                       </span>
                     </div>
                   </div>
@@ -966,8 +1055,9 @@ export default function ItemEndActivity (props) {
                 <div
                   className=""
                   style={{
-                    backgroundColor: `${isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
-                      }`,
+                    backgroundColor: `${
+                      isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
+                    }`,
                     borderRadius: "4px",
                     color: "#82828e",
                     display: "inline-block",
@@ -990,10 +1080,13 @@ export default function ItemEndActivity (props) {
                 <div className="comment-to bg">
                   <i className="icofont-comment" /> Bình luận
                 </div>
-                <div className="share" onClick={() => {
-                  setShare(true);
-                  setShareActivityID(ItemActivity.activityId)
-                }}>
+                <div
+                  className="share"
+                  onClick={() => {
+                    setShare(true);
+                    setShareActivityID(ItemActivity.activityId);
+                  }}
+                >
                   <i className="icofont-share-alt" /> Chia sẻ
                 </div>
               </div>
@@ -1182,9 +1275,26 @@ export default function ItemEndActivity (props) {
           </div>
         </div>
       </div>
-      <UpdateActivity openpro1={openpro1} popupStyle4={popupStyle4} handleClick6={handleClick6} />
-      <ReportActivity report={report} reportid={reportid} popupStyle3={popupStyle3} handleClick={handleClick} arrReportType={arrReportType} />
-      <ShareActivity share={share} handleClickShare={handleClickShare} popupStyleShare={popupStyleShare} activityId={shareActivityID} />
+      <UpdateActivity
+        openpro1={openpro1}
+        popupStyle4={popupStyle4}
+        handleClick6={handleClick6}
+      />
+      <ReportActivity
+        report={report}
+        reportid={reportid}
+        popupStyle3={popupStyle3}
+        handleClick={handleClick}
+        arrReportType={arrReportType}
+      />
+      <ShareActivity
+        share={share}
+        handleClickShare={handleClickShare}
+        popupStyleShare={popupStyleShare}
+        activityId={shareActivityID}
+      />
+      <CreateResultActivity popupStyleCreate ={popupStyleCreate} handleClickCreate= {handleClickCreate} idActivity = {idActivity} isOpen = {isOpen} />
+      <ResultActivity popupStyle1={popupStyle1}  handleClick1={handleClick1} isOpen1={isOpen1} idActivity={idActivity} />
     </div>
   );
 }

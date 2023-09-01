@@ -1436,3 +1436,19 @@ cursor: pointer;
     padding: 5px 10px 5px 30px;
     cursor: pointer;
 }
+.btn-change-1 {
+  background:  rgb(8, 141, 205);
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(8, 141, 205);
+  height: 28px;
+  width: 110px;
+  border-radius: 16px;
+  display: block;
+  margin-left: 50px;
+  font-size: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.error{
+  color: red;
+}

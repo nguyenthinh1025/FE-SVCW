@@ -65,7 +65,7 @@ export default function ShareActivity (props) {
                         fontWeight: 500,
                         marginBottom: 0,
                         color:'#3f6ad8'
-                        }} onClick={copyTextToClipboard}>{textToCopy1 ? "Sao chép" :"Đã sao chép"}</button>
+                        }} onClick={copyTextToClipboard}>{textToCopy1 ? "Sao chép liên kết" :"Đã sao chép liên kết"}</button>
                         </div>
                     </div>
                 </div>
