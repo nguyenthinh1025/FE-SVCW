@@ -279,8 +279,12 @@ export default function ItemActivity(props) {
     }
     dispatch(action);
   };
-  const endDate = moment(ItemActivity.endDate, "DD-MM-YYYY HH:mm:ss");
-  const currentDate = moment();
+  const endDate = moment(ItemActivity.endDate);
+const currentDate = moment();
+
+console.log(currentDate);
+console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
+console.log(ItemActivity.title, endDate.isAfter(currentDate));
   const popupStyle4 = {
     opacity: openpro1 ? 1 : 0,
     visibility: openpro1 ? "visible" : "hidden",
@@ -600,164 +604,182 @@ export default function ItemActivity(props) {
                 </div>
               </figure>
 
-              {ItemActivity.targetDonation !== 0 ? (
-                <div className="mb-4">
-                  <p
-                    style={{
-                      color: "blue",
-                      fontWeight: "400",
-                      fontSize: "15px",
-                    }}
-                  >
-                    Đã quyên góp được <br />
-                    <span
-                      style={{
-                        color: "blue",
-                        fontSize: "15px",
-                      }}
-                    >
-                      <span style={{ color: "blue", fontSize: "15px" }}>
-                        {ItemActivity.realDonation.toLocaleString()}
-                      </span>{" "}
-                      đ /
-                      <span
-                        style={{
-                          color: "blue",
-                          fontSize: "15px",
-                        }}
-                      >
-                        {ItemActivity.targetDonation.toLocaleString()} đ
-                      </span>{" "}
-                    </span>
-                  </p>
+              {ItemActivity.process?.map((pro, index) => {
+                console.log(ItemActivity.title, pro.isDonateProcess);
+                if (
+                  moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
+                  moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                ) {
+                  if (pro.isDonateProcess === true) {
+                    return <div>
+                      {pro.isDonateProcess === true ? (
+                      <div className="mb-4 mt-4">
+                        <p
+                          style={{
+                            color: "blue",
+                            fontWeight: "400",
+                            fontSize: "15px",
+                          }}
+                        >
+                          Đã quyên góp được <br />
+                          <span
+                            style={{
+                              color: "blue",
+                              fontSize: "15px",
+                            }}
+                          >
+                            <span style={{ color: "blue", fontSize: "15px" }}>
+                              {pro.realDonation.toLocaleString()}
+                            </span>{" "}
+                            đ /
+                            <span
+                              style={{
+                                color: "blue",
+                                fontSize: "15px",
+                              }}
+                            >
+                              {pro.targetDonation.toLocaleString()} đ
+                            </span>{" "}
+                          </span>
+                        </p>
 
-                  <input
-                    type="range"
-                    min="0"
-                    max={ItemActivity.targetDonation}
-                    value={ItemActivity.realDonation}
-                    // onChange={handleChange}
-                    className="range-slider"
-                    style={{
-                      background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                        (ItemActivity.realDonation /
-                          ItemActivity.targetDonation) *
-                        100
-                      }%, #ddd ${
-                        (ItemActivity.realDonation /
-                          ItemActivity.targetDonation) *
-                        100
-                      }%, #ddd 100%)`,
-                    }}
-                  />
-                  {/* <div className="range-value" style={{ position: 'absolute', left: `${((ItemActivity.realDonation - 5) * 100) / (100 - 0)}%` }}>{ItemActivity.realDonation}%</div> */}
-                  {ItemActivity.realDonation !== 0 ? (
-                    <div></div>
-                  ) : (
-                    <div
-                      className="range-value"
-                      style={{ position: "absolute" }}
-                    >
-                      0
-                    </div>
-                  )}
-                  <div className="range-value" style={{ position: "absolute" }}>
-                    0
-                  </div>
-                  {ItemActivity.realDonation !== 0 ? (
-                    <div
-                      className="range-value"
-                      style={{
-                        position: "absolute",
-                        left: `${
-                          ((ItemActivity.realDonation - 5) * 100) / (100 - 0)
-                        }%`,
-                      }}
-                    >
-                      {
-                        (
-                          (ItemActivity.realDonation /
-                            ItemActivity.targetDonation) *
-                          100
-                        )
-                          .toString()
-                          .split(".")[0]
-                      }
-                      %
-                    </div>
-                  ) : (
-                    <div
-                      className="range-value"
-                      style={{
-                        position: "absolute",
-                        left: `${
-                          ((ItemActivity.realDonation - 0) * 100) / (100 - 0)
-                        }%`,
-                      }}
-                    >
-                      {
-                        (
-                          (ItemActivity.realDonation /
-                            ItemActivity.targetDonation) *
-                          100
-                        )
-                          .toString()
-                          .split(".")[0]
-                      }
-                      %
-                    </div>
-                  )}
-                  {ItemActivity.realDonation === 0 ? (
-                    <div></div>
-                  ) : (
-                    <div
-                      className="range-value"
-                      style={{
-                        position: "absolute",
-                        left: `${
-                          (ItemActivity.realDonation /
-                            ItemActivity.targetDonation) *
-                          100
-                        }%`,
-                      }}
-                    >
-                      {" "}
-                      {(ItemActivity.realDonation /
-                        ItemActivity.targetDonation) *
-                        100}
-                      %
-                    </div>
-                  )}
-                  <div
-                    className="range-value"
-                    style={{
-                      color: "blue",
-                      position: "absolute",
-                      right: "10px",
-                    }}
-                  >
-                    {ItemActivity.targetDonation.toLocaleString()} vnđ
-                  </div>
-                </div>
-              ) : (
-                <div></div>
-              )}
+                        <input
+                          type="range"
+                          min="0"
+                          max={pro.targetDonation}
+                          value={pro.realDonation}
+                          // onChange={handleChange}
+                          className="range-slider"
+                          style={{
+                            background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
+                              (pro.realDonation /
+                                pro.targetDonation) *
+                              100
+                            }%, #ddd ${
+                              (pro.realDonation /
+                                pro.targetDonation) *
+                              100
+                            }%, #ddd 100%)`,
+                          }}
+                        />
+                        {/* <div className="range-value" style={{ position: 'absolute', left: `${((pro.realDonation - 5) * 100) / (100 - 0)}%` }}>{pro.realDonation}%</div> */}
+                        {pro.realDonation !== 0 ? (
+                          <div></div>
+                        ) : (
+                          <div
+                            className="range-value"
+                            style={{ position: "absolute" }}
+                          >
+                            0
+                          </div>
+                        )}
+                        <div
+                          className="range-value"
+                          style={{ position: "absolute" }}
+                        >
+                          
+                        </div>
+                        {pro.realDonation !== 0 ? (
+                          <div
+                            className="range-value"
+                            style={{
+                              position: "absolute",
+                              left: `${
+                                ((pro.realDonation - 5) * 100) /
+                                (100 - 0)
+                              }%`,
+                            }}
+                          >
+                            {
+                              (
+                                (pro.realDonation /
+                                  pro.targetDonation) *
+                                100
+                              )
+                                .toString()
+                                .split(".")[0]
+                            }
+                            %
+                          </div>
+                        ) : (
+                          <div
+                            className="range-value"
+                            style={{
+                              position: "absolute",
+                              left: `${
+                                ((pro.realDonation - 0) * 100) /
+                                (100 - 0)
+                              }%`,
+                            }}
+                          >
+                            {
+                              (
+                                (pro.realDonation /
+                                  pro.targetDonation) *
+                                100
+                              )
+                                .toString()
+                                .split(".")[0]
+                            }
+                            %
+                          </div>
+                        )}
+                        {pro.realDonation === 0 ? (
+                          <div></div>
+                        ) : (
+                          <div
+                            className="range-value"
+                            style={{
+                              position: "absolute",
+                              left: `${
+                                (pro.realDonation /
+                                  pro.targetDonation) *
+                                100
+                              }%`,
+                            }}
+                          >
+                            {" "}
+                            {(pro.realDonation /
+                              pro.targetDonation) *
+                              100}
+                            %
+                          </div>
+                        )}
+                        <div
+                          className="range-value"
+                          style={{
+                            color: "blue",
+                            position: "absolute",
+                            right: "10px",
+                          }}
+                        >
+                          {pro.targetDonation.toLocaleString()} vnđ
+                        </div>
+                      </div>
+                  )
+                   : (
+                      <div></div>
+                    )
+                   }</div>
+                  }
+                }
+              })}
               {endDate.isBefore(currentDate) ? (
                 <div></div>
               ) : (
                 <div>
                   {ItemActivity.process?.map((pro, index) => {
                     if (
-                      moment(pro.startDate, "DD-MM-YYYY").isBefore(
+                      moment(pro.startDate, "YYYY-MM-DD").isBefore(
                         currentDate
                       ) &&
-                      moment(pro.endDate, "DD-MM-YYYY").isAfter(currentDate)
+                      moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
                     ) {
                       if (pro.isParticipant === true) {
                         return (
-                          <div style={{padding:'30px 0 0 40px'}}>
-                            Số người tham gia: {pro.realParticipant}/
-                            {pro.targetParticipant}
+                          <div style={{ padding: "30px 0 0 40px" }}>
+                            Số người tham gia: {Number(pro?.realParticipant)}/
+                            {Number(pro?.targetParticipant)}
                           </div>
                         );
                       }
@@ -781,48 +803,45 @@ export default function ItemActivity(props) {
                     : "noprocessform")
                 }
               >
-                {endDate.isBefore(currentDate) ? (
+                 {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "DD-MM-YYYY").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "DD-MM-YYYY").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
                       ) {
                         if (pro.isParticipant === true) {
                           return (
-                            <div>
-                              <button
-                                className={` ${
-                                  isAlreadyJoined ? "btn-change" : "btn-color"
-                                } mb-4 mt-4 btn-add ${
-                                  ItemActivity.targetDonation !== 0
-                                    ? "marginfollow"
-                                    : "sas"
-                                }`}
-                                onClick={() => {
-                                  handleJoinClick(
-                                    index,
-                                    ItemActivity.activityId,
-                                    isAlreadyJoined,
-                                    ItemActivity.title
-                                  );
-                                }}
-                              >
-                                {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
-                              </button>
-                              {/* Số người tham gia: {pro.realParticipant}/ */}
-                              {/* {pro.targetParticipant} */}
-                            </div>
+                            <button
+                              className={` ${
+                                isAlreadyJoined ? "btn-change" : "btn-color"
+                              } mb-4 mt-4 btn-add ${
+                                ItemActivity.targetDonation !== 0
+                                  ? "marginfollow"
+                                  : "sas"
+                              }`}
+                              onClick={() => {
+                                handleJoinClick(
+                                  index,
+                                  ItemActivity.activityId,
+                                  isAlreadyJoined,
+                                  ItemActivity.title
+                                );
+                              }}
+                            >
+                              {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
+                            </button>
                           );
                         }
                       }
                     })}
                   </div>
                 )}
+
                 {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
@@ -849,23 +868,33 @@ export default function ItemActivity(props) {
                   <div></div>
                 ) : (
                   <div>
-                    {ItemActivity.targetDonation !== 0 ? (
-                      <button
-                        className=" btn-color btn-donate"
-                        onClick={() => {
-                          // setActi(ItemActivity.activityId)
-                          formik1.setFieldValue(
-                            "activityId",
-                            ItemActivity.activityId
+                    {ItemActivity.process?.map((pro, index) => {
+                      console.log(ItemActivity.title, pro.isDonateProcess);
+                      if (
+                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                          currentDate
+                        ) &&
+                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      ) {
+                        if (pro.isDonateProcess === true) {
+                          return (
+                            <button
+                              className=" btn-color btn-donate"
+                              onClick={() => {
+                                // setActi(ItemActivity.activityId)
+                                formik1.setFieldValue(
+                                  "activityId",
+                                  ItemActivity.activityId
+                                );
+                                openPopup();
+                              }}
+                            >
+                              Ủng hộ
+                            </button>
                           );
-                          openPopup();
-                        }}
-                      >
-                        Ủng hộ
-                      </button>
-                    ) : (
-                      <div></div>
-                    )}
+                        }
+                      }
+                    })}
                   </div>
                 )}
                 {ItemActivity.process.length !== 0 ? (

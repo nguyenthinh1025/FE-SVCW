@@ -24,7 +24,18 @@ import {
 import Swal from "sweetalert2";
 import { DonationAction } from "../redux/actions/DonationAction";
 import { NavLink } from "react-router-dom";
+import ShareActivity from "./ShareActivity";
 export default function DetailActivity(props) {
+  const [share, setShare] = useState(false);
+  const [shareActivityID, setShareActivityID] = useState("");
+  const handleClickShare = () => {
+    setShare((prevIsOpen) => !prevIsOpen);
+  };
+  const popupStyleShare = {
+    opacity: share ? 1 : 0,
+    visibility: share ? "visible" : "hidden",
+    overflow: share ? "auto" : "hidden",
+  };
   const { userID } = useSelector((root) => root.LoginReducer);
   const [content, setContent] = useState("");
   const [onID, setOnID] = useState("");
@@ -35,8 +46,12 @@ export default function DetailActivity(props) {
 
   const { activityById } = useSelector((root) => root.ActivityReducer);
   console.log(activityById);
-  const endDate = moment(activityById?.endDate, "DD-MM-YYYY");
+  const endDate = moment(activityById.endDate);
   const currentDate = moment();
+
+  console.log(currentDate);
+  console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
+  console.log(activityById.title, endDate.isAfter(currentDate));
   const settings = {
     dots: true,
     infinite: true,
@@ -260,7 +275,8 @@ export default function DetailActivity(props) {
     }
   };
   return (
-    <div className="fade-1 modal-1" id="img-comt">
+    <div>
+      <div className="fade-1 modal-1" id="img-comt">
       <div className="modal-dialog">
         <div className="modal-content" style={{ position: "relative" }}>
           {/* Modal Header */}
@@ -327,7 +343,7 @@ export default function DetailActivity(props) {
               </div>
               <div className="col-lg-3">
                 <div className="commentbar">
-                  <div className="user">
+                  <div className="user" style={{display:'flex'}}>
                     <figure>
                       <img
                         src={
@@ -348,131 +364,162 @@ export default function DetailActivity(props) {
                       </h4>
                       <span>{DateTime(activityById?.createAt)}</span>
                     </div>
-                    <a href="#" title="Follow" data-ripple>
-                      Follow
-                    </a>
+                    {endDate.isBefore(currentDate) ? (
+                  <div></div>
+                ) : (
+                  <button
+                    className={`btn-change-1`}
+                    onClick={() => {
+                      handleFollowClick(
+                        1,
+                        activityById.activityId,
+                        isAlreadyFollowed,
+                        activityById.title
+                      );
+                    }}
+                  >
+                    {
+                      //TODO
+                    }
+                    {isAlreadyFollowed ? "Hủy theo dõi" : "Theo dõi"}
+                  </button>
+                )}
+                  
                   </div>
                   <div style={{ paddingLeft: "20px" }}>
                     <h3> {activityById?.title}</h3>
                     <p>{activityById?.description}</p>
                   </div>
                   {endDate.isBefore(currentDate) ? (
-                    <div></div>
-                  ) : (
-                    <div>
-                      {activityById.process?.map((pro, index) => {
-                        if (
-                          moment(pro.startDate, "DD-MM-YYYY").isBefore(
-                            currentDate
-                          ) &&
-                          moment(pro.endDate, "DD-MM-YYYY").isAfter(currentDate)
-                        ) {
-                          if (pro.isParticipant === true) {
-                            return (
-                              <div style={{ padding: "10px 0 0 40px" }}>
-                                Số người tham gia: {pro.realParticipant}/
-                                {pro.targetParticipant}
-                              </div>
-                            );
-                          }
-                        }
-                      })}
-                    </div>
-                  )}
-                  <div style={{ display: "flex" }}>
-                    {endDate.isBefore(currentDate) ? (
-                      <div></div>
-                    ) : (
-                      <div>
-                        {activityById.process?.map((pro, index) => {
-                          if (
-                            moment(pro.startDate, "DD-MM-YYYY").isBefore(
-                              currentDate
-                            ) &&
-                            moment(pro.endDate, "DD-MM-YYYY").isAfter(
-                              currentDate
-                            )
-                          ) {
-                            if (pro.isParticipant === true) {
-                              return (
-                                <div>
-                                  <button
-                                    className={` ${
-                                      isAlreadyJoined
-                                        ? "btn-change"
-                                        : "btn-color"
-                                    } mb-4 mt-4 btn-add ${
-                                      activityById.targetDonation !== 0
-                                        ? "marginfollow"
-                                        : "sas"
-                                    }`}
-                                    onClick={() => {
-                                      handleJoinClick(
-                                        index,
-                                        activityById.activityId,
-                                        isAlreadyJoined,
-                                        activityById.title
-                                      );
-                                    }}
-                                  >
-                                    {isAlreadyJoined
-                                      ? "Hủy Tham gia"
-                                      : "Tham gia"}
-                                  </button>
-                                </div>
-                              );
-                            }
-                          }
-                        })}
-                      </div>
-                    )}
-
-                    {endDate.isBefore(currentDate) ? (
-                      <div></div>
-                    ) : (
-                      <button
-                        className={` ${
-                          isAlreadyFollowed ? "btn-change" : "btn-color"
-                        } mb-4 mt-4`}
-                        onClick={() => {
-                          handleFollowClick(
-                            1,
-                            activityById.activityId,
-                            isAlreadyFollowed,
-                            activityById.title
+                <div></div>
+              ) : (
+                <div>
+                  {activityById.process?.map((pro, index) => {
+                    if (
+                      moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        currentDate
+                      ) &&
+                      moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                    ) {
+                      if (pro.isParticipant === true) {
+                        return (
+                          <div style={{ padding: "30px 0 0 40px" }}>
+                            Số người tham gia: {Number(pro?.realParticipant)}/
+                            {Number(pro?.targetParticipant)}
+                          </div>
+                        );
+                      }
+                    }
+                  })}
+                </div>
+              )}
+                 <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+                className={
+                  (activityById?.targetDonation !== 0
+                    ? "marginform"
+                    : "nomarginform") +
+                  " " +
+                  (activityById?.process?.length !== 0
+                    ? "processform"
+                    : "noprocessform")
+                }
+              >
+                {endDate.isBefore(currentDate) ? (
+                  <div></div>
+                ) : (
+                  <div>
+                    {activityById?.process?.map((pro, index) => {
+                      if (
+                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                          currentDate
+                        ) &&
+                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      ) {
+                        if (pro.isParticipant === true) {
+                          return (
+                            <button
+                              className={` ${
+                                isAlreadyJoined ? "btn-change" : "btn-color"
+                              } mb-4 mt-4 btn-add ${
+                                activityById.targetDonation !== 0
+                                  ? "marginfollow"
+                                  : "sas"
+                              }`}
+                              onClick={() => {
+                                handleJoinClick(
+                                  index,
+                                  activityById.activityId,
+                                  isAlreadyJoined,
+                                  activityById.title
+                                );
+                              }}
+                            >
+                              {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
+                            </button>
                           );
-                        }}
-                      >
-                        {
-                          //TODO
                         }
-                        {isAlreadyFollowed ? "Hủy theo dõi" : "Theo dõi"}
-                      </button>
-                    )}
-                    {endDate.isBefore(currentDate) ? (
-                      <div></div>
-                    ) : (
-                      <div>
-                        {activityById?.targetDonation !== 0 ? (
-                          <button
-                            className=" btn-color btn-donate"
-                            onClick={() => {
-                              // setActi(ItemActivity.activityId)
-                              formik1.setFieldValue(
-                                "activityId",
-                                activityById?.activityId
-                              );
-                              openPopup();
-                            }}
-                          >
-                            Ủng hộ
-                          </button>
-                        ) : (
-                          <div></div>
-                        )}
-                      </div>
-                    )}
+                      }
+                    })}
                   </div>
+                )}
+
+              
+                {endDate.isBefore(currentDate) ? (
+                  <div></div>
+                ) : (
+                  <div>
+                    {activityById?.process?.map((pro, index) => {
+                      console.log(activityById.title, pro.isDonateProcess);
+                      if (
+                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                          currentDate
+                        ) &&
+                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      ) {
+                        if (pro.isDonateProcess === true) {
+                          return (
+                            <button
+                              className=" btn-color btn-donate"
+                              onClick={() => {
+                                // setActi(activityById.activityId)
+                                formik1.setFieldValue(
+                                  "activityId",
+                                  activityById.activityId
+                                );
+                                openPopup();
+                              }}
+                            >
+                              Ủng hộ
+                            </button>
+                          );
+                        }
+                      }
+                    })}
+                  </div>
+                )}
+                {activityById?.process?.length !== 0 ? (
+                  <NavLink
+                    to={`/detailprocess/${activityById.activityId}`}
+                    style={{
+                      marginTop: "10x",
+                    }}
+                    className="btn-color mb-4 mt-4"
+                    onClick={() => {
+                      // handleClick2()
+                      // const action = GetProcessByActivityAction(item.activityId);
+                      // dispatch(action)
+                    }}
+                  >
+                    Xem tiến trình
+                  </NavLink>
+                ) : (
+                  <div></div>
+                )}
+              </div>
                   <div className="stat-tools" style={{ paddingLeft: "20px" }}>
                     <div
                       className=""
@@ -502,9 +549,15 @@ export default function DetailActivity(props) {
                     <div className="comment-to bg">
                       <i className="icofont-comment" /> Bình luận
                     </div>
-                    <a title href="#" className="share-to">
-                      <i className="icofont-share-alt" /> Chia sẻ
-                    </a>
+                    <div
+                  className="share"
+                  onClick={() => {
+                    setShare(true);
+                    setShareActivityID(activityById.activityId);
+                  }}
+                >
+                  <i className="icofont-share-alt" /> Chia sẻ
+                </div>
                   </div>
                   <div className="new-comment" style={{ display: "block" }}>
                     <form
@@ -696,6 +749,13 @@ export default function DetailActivity(props) {
           </div>
         </div>
       </div>
+    </div>
+    <ShareActivity
+        share={share}
+        handleClickShare={handleClickShare}
+        popupStyleShare={popupStyleShare}
+        activityId={shareActivityID}
+      />
     </div>
   );
 }

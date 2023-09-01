@@ -107,13 +107,12 @@ export const CreateActivityAction = (value) => {
 export const GetActivityTitleAction = (value) => {
     return async (dispatch) => {
         try {
-            let result = await http.get(`/Activity/get-activity-title?search=${value}`)
+            let result = await http.get(`/Activity/get-activity-title?search=43432`)
             const action = {
                 type: "GET_LIST_ACTIVITY_TITLE",
                 arrActivity: result.data.data
             }
             dispatch(action)
-            console.log(result.data);
             localStorage.setItem('activity', JSON.stringify(result.data.data))
         } catch (error) {
             console.log(error);

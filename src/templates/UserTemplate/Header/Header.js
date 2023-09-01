@@ -32,15 +32,15 @@ export default function Header (props) {
         console.log(value);
         const action =await GetActivityTitleAction(value.title);
         dispatch(action)
-        const value1 = {
+        // const value1 = {
          
-            userId: userID,
-            searchContent: value.title
+        //     userId: userID,
+        //     searchContent: value.title
    
-        }
-        console.log(value1)
-        const action1 =await RecommentActivityAction(value1, userID);
-        dispatch(action1);
+        // }
+        // console.log(value1)
+        // const action1 =await RecommentActivityAction(value1, userID);
+        // dispatch(action1);
       }
       else {
         const action = GetListActivityAction();
