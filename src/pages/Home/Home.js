@@ -22,7 +22,6 @@ export default function Home (props) {
     const { arrFanpage } = useSelector((root) => root.FanpageReducer);
     const { arrActivity, activityId, arrActivityRecomment } = useSelector((root) => root.ActivityReducer);
     const { arrEndActivity } = useSelector((root) => root.EndActivityReducer);
-    console.log(localStorage.getItem('title'));
     useEffect(() => {
         // const user = localStorage.getItem('userID');
         // if (user) {
