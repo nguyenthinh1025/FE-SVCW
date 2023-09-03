@@ -37,8 +37,9 @@ import { history } from "../App";
 import ShareActivity from "./ShareActivity";
 import CreateResultActivity from "../pages/Result/CreateResultActivity";
 import ResultActivity from "../pages/Result/ResultActivity";
+import { GetProcessByActivityAction } from "../redux/actions/ProcessAction";
 
-export default function ItemEndActivity(props) {
+export default function ItemEndActivity (props) {
   const [isReadMore, setReadMore] = useState(false);
   const [share, setShare] = useState(false);
   const [shareActivityID, setShareActivityID] = useState("");
@@ -56,7 +57,7 @@ export default function ItemEndActivity(props) {
     visibility: isOpen ? 'visible' : 'hidden',
     overflow: isOpen ? 'auto' : 'hidden',
   };
-  const [idActivity,setIDActivity] = useState('')
+  const [idActivity, setIDActivity] = useState('')
   const handleClickCreate = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
@@ -383,8 +384,8 @@ export default function ItemEndActivity(props) {
                   </i>
                   <ul>
                     {userID === ItemActivity.userId &&
-                    endDate.isBefore(currentDate) === false &&
-                    ItemActivity.targetDonation === 0 ? (
+                      endDate.isBefore(currentDate) === false &&
+                      ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
                           handleClick6();
@@ -403,8 +404,8 @@ export default function ItemEndActivity(props) {
                     )}
 
                     {userID === ItemActivity.userId &&
-                    ItemActivity.targetDonation === 0 &&
-                    endDate.isBefore(currentDate) === false ? (
+                      ItemActivity.targetDonation === 0 &&
+                      endDate.isBefore(currentDate) === false ? (
                       <li
                         onClick={() => {
                           Swal.fire({
@@ -456,16 +457,16 @@ export default function ItemEndActivity(props) {
                     ) : (
                       <div></div>
                     )}
-                     {endDate.isBefore(currentDate) === true && userID === ItemActivity.userId ? (
+                    {endDate.isBefore(currentDate) === true && userID === ItemActivity.userId ? (
                       <li
                         onClick={() => {
                           handleClickCreate();
-                         setIDActivity(ItemActivity.activityId)
-                         console.log(ItemActivity.activityId)
+                          setIDActivity(ItemActivity.activityId)
+                          console.log(ItemActivity.activityId)
                         }}
                       >
                         <i className="icofont-pen-alt-1" />
-                      Kết quả chiến dịch
+                        Kết quả chiến dịch
                         <span>Thêm kết quả của chiến dịch</span>
                       </li>) : (
                       <div></div>
@@ -488,7 +489,7 @@ export default function ItemEndActivity(props) {
                     ) : (
                       <div></div>
                     )}
-                     
+
                   </ul>
                 </div>
               </div>
@@ -504,27 +505,7 @@ export default function ItemEndActivity(props) {
               </span>
             </div>
             <div className="post-meta">
-              {ItemActivity.process.length !== 0 ? (
-                <NavLink
-                  to={`/detailprocess/${ItemActivity.activityId}`}
-                  style={{
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                    color: "#3f6ad8",
-                    marginBottom: "20px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    // handleClick2()
-                    // const action = GetProcessByActivityAction(item.activityId);
-                    // dispatch(action)
-                  }}
-                >
-                  Xem tiến trình
-                </NavLink>
-              ) : (
-                <div></div>
-              )}
+
               <div className="row">
                 <div
                   style={{
@@ -534,8 +515,8 @@ export default function ItemEndActivity(props) {
                   }}
                   className="col-lg-12"
                 >
-                   <NavLink
-                              to={`/detailactivity/${ItemActivity.activityId}`}
+                  <NavLink
+                    to={`/detailactivity/${ItemActivity.activityId}`}
                     style={{
                       fontSize: "25px",
                       fontWeight: "bold",
@@ -615,72 +596,72 @@ export default function ItemEndActivity(props) {
                 <div className="image-gallery-flex">
                   {ItemActivity?.media?.length <= 3
                     ? ItemActivity.media.map((image, index) => {
-                        return (
-                          <div key={index} className={`image-container-post`}>
-                            <NavLink
-                              to={`/detailactivity/${ItemActivity.activityId}`}
-                              onClick={() => {
-                                console.log(ItemActivity.activity);
-                                const action = GetActivityIDAction(
-                                  ItemActivity.activityId
-                                );
-                                dispatch(action);
-                              }}
-                            >
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </NavLink>
-                          </div>
-                        );
-                      })
-                    : ItemActivity.media?.slice(0, 4).map((image, index) => {
-                        return index !== 3 ? (
-                          <div key={index} className={`image-container-post`}>
-                            <div
-                              href="images/resources/album1.jpg"
-                              onClick={() => {
-                                console.log(ItemActivity.activity);
-                                const action = GetActivityIDAction(
-                                  ItemActivity.activityId
-                                );
-                                dispatch(action);
-                                history.push(
-                                  `/detailactivity/${ItemActivity.activityId}`
-                                );
-                              }}
-                            >
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </div>
-                          </div>
-                        ) : (
-                          <div
-                            key={index}
-                            className={`image-container-post-last`}
+                      return (
+                        <div key={index} className={`image-container-post`}>
+                          <NavLink
+                            to={`/detailactivity/${ItemActivity.activityId}`}
+                            onClick={() => {
+                              console.log(ItemActivity.activity);
+                              const action = GetActivityIDAction(
+                                ItemActivity.activityId
+                              );
+                              dispatch(action);
+                            }}
                           >
-                            <a
-                              data-toggle="modal"
-                              data-target="#img-comt"
-                              href="images/resources/album1.jpg"
-                              onClick={() => {
-                                setDetail(detailItem);
-                              }}
-                            >
-                              <div className="overlay">
-                                +{ItemActivity.media.length - 4}
-                              </div>
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </a>
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
+                          </NavLink>
+                        </div>
+                      );
+                    })
+                    : ItemActivity.media?.slice(0, 4).map((image, index) => {
+                      return index !== 3 ? (
+                        <div key={index} className={`image-container-post`}>
+                          <div
+                            href="images/resources/album1.jpg"
+                            onClick={() => {
+                              console.log(ItemActivity.activity);
+                              const action = GetActivityIDAction(
+                                ItemActivity.activityId
+                              );
+                              dispatch(action);
+                              history.push(
+                                `/detailactivity/${ItemActivity.activityId}`
+                              );
+                            }}
+                          >
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
                           </div>
-                        );
-                      })}
+                        </div>
+                      ) : (
+                        <div
+                          key={index}
+                          className={`image-container-post-last`}
+                        >
+                          <a
+                            data-toggle="modal"
+                            data-target="#img-comt"
+                            href="images/resources/album1.jpg"
+                            onClick={() => {
+                              setDetail(detailItem);
+                            }}
+                          >
+                            <div className="overlay">
+                              +{ItemActivity.media.length - 4}
+                            </div>
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
+                          </a>
+                        </div>
+                      );
+                    })}
                 </div>
               </figure>
 
@@ -733,11 +714,9 @@ export default function ItemEndActivity(props) {
                               // onChange={handleChange}
                               className="range-slider"
                               style={{
-                                background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                  (pro.realDonation / pro.targetDonation) * 100
-                                }%, #ddd ${
-                                  (pro.realDonation / pro.targetDonation) * 100
-                                }%, #ddd 100%)`,
+                                background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(pro.realDonation / pro.targetDonation) * 100
+                                  }%, #ddd ${(pro.realDonation / pro.targetDonation) * 100
+                                  }%, #ddd 100%)`,
                               }}
                             />
                             {/* <div className="range-value" style={{ position: 'absolute', left: `${((pro.realDonation - 5) * 100) / (100 - 0)}%` }}>{pro.realDonation}%</div> */}
@@ -760,9 +739,8 @@ export default function ItemEndActivity(props) {
                                 className="range-value"
                                 style={{
                                   position: "absolute",
-                                  left: `${
-                                    ((pro.realDonation - 5) * 100) / (100 - 0)
-                                  }%`,
+                                  left: `${((pro.realDonation - 5) * 100) / (100 - 0)
+                                    }%`,
                                 }}
                               >
                                 {
@@ -780,9 +758,8 @@ export default function ItemEndActivity(props) {
                                 className="range-value"
                                 style={{
                                   position: "absolute",
-                                  left: `${
-                                    ((pro.realDonation - 0) * 100) / (100 - 0)
-                                  }%`,
+                                  left: `${((pro.realDonation - 0) * 100) / (100 - 0)
+                                    }%`,
                                 }}
                               >
                                 {
@@ -803,10 +780,9 @@ export default function ItemEndActivity(props) {
                                 className="range-value"
                                 style={{
                                   position: "absolute",
-                                  left: `${
-                                    (pro.realDonation / pro.targetDonation) *
+                                  left: `${(pro.realDonation / pro.targetDonation) *
                                     100
-                                  }%`,
+                                    }%`,
                                 }}
                               >
                                 {" "}
@@ -884,13 +860,11 @@ export default function ItemEndActivity(props) {
                         if (pro.isParticipant === true) {
                           return (
                             <button
-                              className={` ${
-                                isAlreadyJoined ? "btn-change" : "btn-color"
-                              } mb-4 mt-4 btn-add ${
-                                ItemActivity.targetDonation !== 0
+                              className={` ${isAlreadyJoined ? "btn-change" : "btn-color"
+                                } mb-4 mt-4 btn-add ${ItemActivity.targetDonation !== 0
                                   ? "marginfollow"
                                   : "sas"
-                              }`}
+                                }`}
                               onClick={() => {
                                 handleJoinClick(
                                   index,
@@ -913,9 +887,8 @@ export default function ItemEndActivity(props) {
                   <div></div>
                 ) : (
                   <button
-                    className={` ${
-                      isAlreadyFollowed ? "btn-change" : "btn-color"
-                    } mb-4 mt-4`}
+                    className={` ${isAlreadyFollowed ? "btn-change" : "btn-color"
+                      } mb-4 mt-4`}
                     onClick={() => {
                       handleFollowClick(
                         index,
@@ -972,8 +945,8 @@ export default function ItemEndActivity(props) {
                     className="btn-color mb-4 mt-4"
                     onClick={() => {
                       // handleClick2()
-                      // const action = GetProcessByActivityAction(item.activityId);
-                      // dispatch(action)
+                      const action = GetProcessByActivityAction(ItemActivity.activityId);
+                      dispatch(action)
                     }}
                   >
                     Xem tiến trình
@@ -1004,21 +977,21 @@ export default function ItemEndActivity(props) {
                       <ul className="namelist">
                         {ItemActivity?.like?.length <= 4
                           ? ItemActivity?.like.map((userItem) => {
-                              return <li>{userItem?.user?.username}</li>;
-                            })
+                            return <li>{userItem?.user?.username}</li>;
+                          })
                           : ItemActivity?.like
-                              ?.slice(0, 4)
-                              .map((userItem, index) => {
-                                index < 4 ? (
-                                  <li>{userItem.user?.username}</li>
-                                ) : (
-                                  <li>
-                                    <span>
-                                      +{ItemActivity?.like.length - 5}
-                                    </span>
-                                  </li>
-                                );
-                              })}
+                            ?.slice(0, 4)
+                            .map((userItem, index) => {
+                              index < 4 ? (
+                                <li>{userItem.user?.username}</li>
+                              ) : (
+                                <li>
+                                  <span>
+                                    +{ItemActivity?.like.length - 5}
+                                  </span>
+                                </li>
+                              );
+                            })}
                       </ul>
                     </div>
                   </div>
@@ -1048,9 +1021,8 @@ export default function ItemEndActivity(props) {
                 <div
                   className=""
                   style={{
-                    backgroundColor: `${
-                      isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
-                    }`,
+                    backgroundColor: `${isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
+                      }`,
                     borderRadius: "4px",
                     color: "#82828e",
                     display: "inline-block",
@@ -1286,8 +1258,8 @@ export default function ItemEndActivity(props) {
         popupStyleShare={popupStyleShare}
         activityId={shareActivityID}
       />
-      <CreateResultActivity popupStyleCreate ={popupStyleCreate} handleClickCreate= {handleClickCreate} idActivity = {idActivity} isOpen = {isOpen} />
-      <ResultActivity popupStyle1={popupStyle1}  handleClick1={handleClick1} isOpen1={isOpen1} idActivity={idActivity} />
+      <CreateResultActivity popupStyleCreate={popupStyleCreate} handleClickCreate={handleClickCreate} idActivity={idActivity} isOpen={isOpen} />
+      <ResultActivity popupStyle1={popupStyle1} handleClick1={handleClick1} isOpen1={isOpen1} idActivity={idActivity} />
     </div>
   );
 }

@@ -10,7 +10,7 @@ export const GetListProcessTypeAction = () => {
                 processType: result.data.data
             }
             dispatch(action)
-
+            localStorage.setItem('processtype', JSON.stringify(result.data.data))
         } catch (error) {
             console.log(error);
         }

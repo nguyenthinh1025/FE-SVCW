@@ -14,6 +14,7 @@ import StatisticalUser from './pages/StatisticalUser/StatisticalUser';
 import Group from './pages/Groups/Group';
 import SendEmailComponent from './SendEmailComponent';
 import DynamicForm from './Test';
+import DetailProcess from './pages/DetailProcess/DetailProcess';
 export const history = createBrowserHistory()
 
 function App () {
@@ -30,6 +31,7 @@ function App () {
         <UserTemplate exact path="/groups" Component={Group} />
         <UserTemplate exact path="/send" Component={SendEmailComponent} />
         <UserTemplate exact path="/test" Component={DynamicForm} />
+        <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
         <Route path="/" exact component={Login} />
       </Switch>
     </Router>

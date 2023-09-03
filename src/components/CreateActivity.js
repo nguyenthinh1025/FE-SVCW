@@ -10,11 +10,13 @@ import { storage_bucket } from "../firebase";
 import { useEffect } from "react";
 import { GetUserByIdAction } from "../redux/actions/UserAction";
 import moment from "moment";
+import { GetListProcessTypeAction } from "../redux/actions/ProcessTypeAction";
+import { CreateProcessAction } from "../redux/actions/ProcessAction";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 export default function CreateActivity () {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpen1, setIsOpen1] = useState(true);
+  const [isOpen1, setIsOpen1] = useState(false);
   const [isDisplay, setIsDisplay] = useState(true);
   const [images, setImages] = useState([]);
   const [coords, setCoords] = useState([]);
@@ -24,6 +26,7 @@ export default function CreateActivity () {
   const { configActivity, isValidCreate, isFanpage } = useSelector(
     (root) => root.ConfigActivityReducer
   );
+
   const { userID } = useSelector((root) => root.LoginReducer);
   const { getUserId } = useSelector((root) => root.ProfileReducer);
   const [currentForm, setCurrentForm] = useState(0);
@@ -43,6 +46,7 @@ export default function CreateActivity () {
     opacity: isOpen1 ? 1 : 0,
     visibility: isOpen1 ? "visible" : "hidden",
     overflow: isOpen1 ? "auto" : "hidden",
+    zIndex: 300
   };
   const toggleTextInput1 = () => {
     setTextInputVisible1(!isTextInputVisible1);
@@ -211,13 +215,12 @@ export default function CreateActivity () {
   });
 
 
-  const process = [
-    { id: "1", value: "phu" },
-    { id: "2", value: "thinh" },
-    { id: "3", value: "dung" },
-    { id: "4", value: "teo" },
-    { id: "5", value: "mbs" },
-  ];
+  const process = processType?.map((item, index) => {
+    return {
+      id: item.processTypeId,
+      value: item.processTypeName
+    }
+  })
   const [inputFields, setInputFields] = useState([
     {
       processTitle: "",
@@ -228,7 +231,7 @@ export default function CreateActivity () {
       processTypeId: "",
       isKeyProcess: true,
       processNo: 0,
-      location: "",
+      location: "online",
       targetParticipant: 0,
       realParticipant: 0,
       isDonateProcess: true,
@@ -236,70 +239,148 @@ export default function CreateActivity () {
       realDonation: 0,
       targetDonation: 0,
       meida: [],
-      media: [
-        {
-          linkMedia: "",
-          type: "string"
-        }
-      ]
+      media: []
     }
 
   ]);
   const addInputField = () => {
-    setInputFields([
-      ...inputFields,
-      {
-        processTitle: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        activityId: localStorage.getItem('activityprocess'),
-        processTypeId: "",
-        isKeyProcess: true,
-        processNo: 0,
-        location: "",
-        targetParticipant: 0,
-        realParticipant: 0,
-        isDonateProcess: true,
-        isParticipant: true,
-        realDonation: 0,
-        targetDonation: 0,
-        meida: [],
-        media: [
-          {
-            linkMedia: "",
-            type: "string"
-          }
-        ]
-      },
-    ]);
+    if (error === '1') {
+      console.log(inputFields);
+      console.log(localStorage.getItem('startactivity'));
+      setInputFields([
+        ...inputFields,
+        {
+          processTitle: "",
+          description: "",
+          startDate: "",
+          endDate: "",
+          activityId: localStorage.getItem('activityprocess'),
+          processTypeId: "",
+          isKeyProcess: true,
+          processNo: 0,
+          location: "online",
+          targetParticipant: 0,
+          realParticipant: 0,
+          isDonateProcess: true,
+          isParticipant: true,
+          realDonation: 0,
+          targetDonation: 0,
+          meida: [],
+          media: []
+        },
+      ]);
+    }
+    else {
+      Swal.fire({
+        title: 'Cảnh báo',
+        text: "Vui lòng điền thông tin đầy đủ và phù hợp",
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Hoàn thành',
+        zIndex: 999
+      })
+    }
+
   };
   const removeInputField = (index) => {
     const updatedInputFields = [...inputFields];
     updatedInputFields.splice(index, 1);
     setInputFields(updatedInputFields);
   };
-
+  const [error, setError] = useState('1')
   const handleInputChange = (index, field, value) => {
     const updatedInputFields = [...inputFields];
     updatedInputFields[index][field] = value;
-    if (updatedInputFields[index].processTypeId === '1') {
-      updatedInputFields[index].targetDonation = 0
-    } else if (updatedInputFields[index].processTypeId === '2') {
-      updatedInputFields[index].targetParticipant = 0
+    if (updatedInputFields[index].processTypeId === 'pt002') {
+      updatedInputFields[index].targetDonation = 0;
+      updatedInputFields[index].isDonateProcess = false;
+      updatedInputFields[index].isParticipant = true;
+    } else if (updatedInputFields[index].processTypeId === 'pt001') {
+      updatedInputFields[index].targetParticipant = 0;
+      updatedInputFields[index].isDonateProcess = true;
+      updatedInputFields[index].isParticipant = false;
     }
     else if (moment(localStorage.getItem('startactivity')).isAfter(updatedInputFields[index].startDate)) {
       console.log("trước ngày tạo");
+      Swal.fire({
+        title: 'Cảnh báo',
+        text: `Ngày bắt đầu tiến trình không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(localStorage.getItem('startactivity')).format('DD-MM-YYYY')}`,
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Hoàn thành',
+        zIndex: 999
+      })
+      setError('2')
+    }
+    else if (moment(localStorage.getItem('endstart')).isBefore(updatedInputFields[index].startDate)) {
+      console.log("trước ngày tạo");
+      Swal.fire({
+        title: 'Cảnh báo',
+        text: `Ngày bắt đầu tiến trình không lớn hơn ngày kết thúc chiến dịch! ${moment(localStorage.getItem('endstart')).format('DD-MM-YYYY')}`,
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Hoàn thành',
+        zIndex: 999
+      })
+      setError('2')
     }
     else if (moment(localStorage.getItem('endstart')).isBefore(updatedInputFields[index].endDate)) {
       console.log("sau ngày tạo");
+      Swal.fire({
+        title: 'Cảnh báo',
+        text: `Ngày kết thúc tiến trình không lớn hơn ngày kết thúc chiến dịch! ${moment(localStorage.getItem('endstart')).format('DD-MM-YYYY')}`,
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Hoàn thành',
+        zIndex: 999
+      })
+      setError('2')
     }
+    else if (moment(localStorage.getItem('startactivity')).isAfter(updatedInputFields[index].endDate)) {
+      console.log("sau ngày tạo 1");
+      Swal.fire({
+        title: 'Cảnh báo',
+        text: `Ngày kết thúc tiến trình không bé hơn ngày bắt đầu chiến dịch! ${moment(localStorage.getItem('startactivity')).format('DD-MM-YYYY')}`,
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Hoàn thành',
+        zIndex: 999
+      })
+      setError('2')
+    }
+    else {
+      setError('1')
+
+    }
+
+    updatedInputFields[index].processNo = index + 1;
     setInputFields(updatedInputFields);
+
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(inputFields);
-    console.log(localStorage.getItem('startactivity'));
+    if (error === '1') {
+      console.log(inputFields);
+      console.log(localStorage.getItem('startactivity'));
+      const action1 = await CreateProcessAction(inputFields);
+      dispatch(action1)
+    }
+    else {
+      Swal.fire({
+        title: 'Cảnh báo',
+        text: "Vui lòng điền thông tin đầy đủ và phù hợp",
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Hoàn thành',
+        zIndex: 999
+      })
+    }
   };
   const handleClick = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -361,6 +442,7 @@ export default function CreateActivity () {
       console.log('có user');
       const action = GetUserByIdAction(user);
       dispatch(action);
+
     }
   }, []);
   return (
@@ -833,7 +915,7 @@ export default function CreateActivity () {
                   {inputFields?.map((data, index) => (
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Tiến trình thứ {index}</div>
+                        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Tiến trình thứ {index + 1}</div>
                         <div className="">
                           {inputFields.length !== 1 && (
                             <button
@@ -860,7 +942,7 @@ export default function CreateActivity () {
                                 handleInputChange(index, "processTitle", event.target.value)
                               }
                               className="form-control"
-                              placeholder="Process Title"
+                              placeholder="Tên tiến trình"
                             />
                           </div>
                         </div>
@@ -876,7 +958,7 @@ export default function CreateActivity () {
                                 handleInputChange(index, "description", event.target.value)
                               }
                               className="form-control"
-                              placeholder="Description"
+                              placeholder="Chi tiết"
                             />
                           </div>
                         </div>
@@ -919,7 +1001,7 @@ export default function CreateActivity () {
                           </div>
                         </div>
                         <div className="row">
-                          <div className="col-md-12">
+                          <div className="col-md-6">
                             <label id="name-label" htmlFor="name" style={{
                               fontSize: "18px",
                               color: "#000"
@@ -930,9 +1012,6 @@ export default function CreateActivity () {
                               onChange={(e) =>
                                 handleInputChange(index, "processTypeId", e.target.value)
                               }
-                              onClick={(e) => {
-                                console.log(e.target.value);
-                              }}
                             >
                               <option value="">Chọn loại</option>
                               {process?.map((item) => (
@@ -943,13 +1022,31 @@ export default function CreateActivity () {
                               ))}
                             </select>
                           </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label id="name-label" htmlFor="name">
+                                Địa điểm
+                              </label>
+                              <input
+                                type="text"
+                                name="location"
+                                value={data.location}
+                                onChange={(event) =>
+                                  handleInputChange(index, "location", event.target.value)
+                                }
+                                id="name"
+                                className="form-control"
+                                required
+                              />
+                            </div>
+                          </div>
                         </div>
                         <div className="row" >
                           <div className="col-md-6">
-                            {data.processTypeId === "1" ? (
-                              <div className="form-group">
+                            {data.processTypeId === "pt002" ? (
+                              <div className="form-group mt-3" >
                                 <label id="name-label" htmlFor="name">
-                                  Chọn số người
+                                  Số người tham gia
                                 </label>
                                 <input
                                   type="number"
@@ -963,10 +1060,10 @@ export default function CreateActivity () {
                                   required
                                 />
                               </div>
-                            ) : data.processTypeId === "2" ? (
-                              <div className="form-group">
+                            ) : data.processTypeId === "pt001" ? (
+                              <div className="form-group mt-3">
                                 <label id="name-label" htmlFor="name">
-                                  Chọn số tiền
+                                  Số tiền ủng hộ
                                 </label>
                                 <input
                                   type="text"
@@ -982,52 +1079,17 @@ export default function CreateActivity () {
                               </div>
                             ) : null}
                           </div>
-
                         </div>
-                        <div className="row">
-                          <div className="col-md-12">
-                            <div className="form-group">
-                              <label id="name-label" htmlFor="name">
-                                Hình ảnh
-                              </label>
-                              <fieldset className="upload_dropZone text-center mb-3 p-4">
-                                <legend className="visually-hidden">
-                                  Tải hình ảnh
-                                </legend>
-                                <svg
-                                  className="upload_svg"
-                                  width={60}
-                                  height={60}
-                                  aria-hidden="true"
-                                >
-                                  <use href="#icon-imageUpload" />
-                                </svg>
-                                <p className="small my-2">
-                                  Kéo &amp; Thả (các) hình nền bên trong vùng nét
-                                  đứt
-                                  <br />
-                                  <i>hoặc</i>
-                                </p>
-                                <input
-                                  id="upload_image_background"
-                                  // ref={fileInputRef}
-                                  data-post-name="image_background"
-                                  data-post-url="https://someplace.com/image/uploads/backgrounds/"
-                                  className="position-absolute invisible"
-                                  type="file"
-                                  multiple
-                                  onChange={(event) => handleImageChange1(index, event)}
-                                // accept="image/jpeg, image/png, image/svg+xml"
-                                />
-                                <label
-                                  className="btn btn-upload mb-3"
-                                  htmlFor="upload_image_background"
-                                >
-                                  Chọn hình ảnh
-                                </label>
-                                <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
-                              </fieldset>
 
+                        <div className="row">
+                          <div className="col">
+                            <div className="form-group">
+
+                              <input
+                                type="file"
+                                onChange={(event) => handleImageChange1(index, event)}
+                                multiple
+                              />
                               <div>
                                 <div className="image-container image-container-flex">
                                   {data?.meida?.map((image, index) => (
@@ -1049,20 +1111,7 @@ export default function CreateActivity () {
                                     </div>
                                   ))}
                                 </div>
-                                {/* {data.meida.map((imageUrl, imgIndex) => (
-                                <div key={imgIndex} className="image-preview">
-                                  <img
-                                    src={imageUrl}
-                                    alt={`Image ${imgIndex}`}
-                                    className="image"
-                                    style={{ display: "none" }}
-                                    onLoad={(e) => (e.target.style.display = "block")} // Show the image when it's loaded
-                                  />
-                                  <div className="spinner" style={{ display: "block" }}>
-                                    Loading...
-                                  </div>
-                                </div>
-                              ))} */}
+
                               </div>
                             </div>
                           </div>
@@ -1077,13 +1126,13 @@ export default function CreateActivity () {
                     <div className="col-sm-12">
                       <button
                         type="button"
-                        className="btn btn-outline-success"
+                        className="btn btn-success mr-4"
                         onClick={addInputField}
                       >
-                        Add New
+                        Thêm mới
                       </button>
                       <button type="submit" className="btn btn-primary">
-                        Submit
+                        Hoàn thành
                       </button>
                     </div>
                   </div>

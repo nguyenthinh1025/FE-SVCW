@@ -1,13 +1,17 @@
 let activity = ''
 let activityprocess = []
+let process = []
 if (localStorage.getItem('activityProcess') !== '') {
     activity = localStorage.getItem('activityProcess')
 }
 if (localStorage.getItem('activityprocess')) {
     activityprocess = localStorage.getItem('activityprocess')
 }
+if (JSON.parse(localStorage.getItem('processtype'))) {
+    process = JSON.parse(localStorage.getItem('processtype'))
+}
 const stateDefault = {
-    processType: [],
+    processType: process,
     activityProcess: activity,
     processactivity: activityprocess
 }

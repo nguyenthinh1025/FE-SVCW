@@ -16,6 +16,7 @@ import YourFanpage from '../../components/YourFanpage';
 import { GetListReportAction, GetListReportByTypeAction } from '../../redux/actions/ReportAction';
 import EndActivity from '../Profile/EndActivity';
 import RecommentActivity from '../../components/RecommentActivity';
+import { GetListProcessTypeAction } from '../../redux/actions/ProcessTypeAction';
 export default function Home (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector((root) => root.LoginReducer);
@@ -26,20 +27,22 @@ export default function Home (props) {
         // const user = localStorage.getItem('userID');
         // if (user) {
         //     console.log('có user');
-            const action3 = GetListActivityAction();
-            dispatch(action3)
-            const action = GetUserByIdAction(localStorage.getItem('userID'));
-            dispatch(action);
-            const action1 = GetProfileByIdAction(userID);
-            dispatch(action1)
-            const action2 = GetListFanpageAction();
-            dispatch(action2)
-            const action4 = GetListReportAction();
-            dispatch(action4);
-            const action5 = GetListEndActivityAction();
-            dispatch(action5)
-            const action9 = GetRecommentActivityAction(userID);
-            dispatch(action9);
+        const action3 = GetListActivityAction();
+        dispatch(action3)
+        const action = GetUserByIdAction(localStorage.getItem('userID'));
+        dispatch(action);
+        const action1 = GetProfileByIdAction(userID);
+        dispatch(action1)
+        const action2 = GetListFanpageAction();
+        dispatch(action2)
+        const action4 = GetListReportAction();
+        dispatch(action4);
+        const action5 = GetListEndActivityAction();
+        dispatch(action5)
+        const action9 = GetRecommentActivityAction(userID);
+        dispatch(action9);
+        const action10 = GetListProcessTypeAction();
+        dispatch(action10)
 
         // } else {
         //     alert('Vui lòng đăng nhập để trải nghiệm tốt hơn');
@@ -97,8 +100,8 @@ export default function Home (props) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='col-lg-3'>                                       
-                                    <YourFanpage />
+                                    <div className='col-lg-3'>
+                                        <YourFanpage />
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +119,7 @@ export default function Home (props) {
                     </div>
                 </div>
             </div>
-           
+
         </div>
     )
 }
