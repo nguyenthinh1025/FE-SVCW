@@ -9,10 +9,12 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage_bucket } from "../firebase";
 import { useEffect } from "react";
 import { GetUserByIdAction } from "../redux/actions/UserAction";
+import moment from "moment";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
-export default function CreateActivity() {
+export default function CreateActivity () {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen1, setIsOpen1] = useState(true);
   const [isDisplay, setIsDisplay] = useState(true);
   const [images, setImages] = useState([]);
   const [coords, setCoords] = useState([]);
@@ -36,6 +38,11 @@ export default function CreateActivity() {
     opacity: isOpen ? 1 : 0,
     visibility: isOpen ? "visible" : "hidden",
     overflow: isOpen ? "auto" : "hidden",
+  };
+  const popupStyle10 = {
+    opacity: isOpen1 ? 1 : 0,
+    visibility: isOpen1 ? "visible" : "hidden",
+    overflow: isOpen1 ? "auto" : "hidden",
   };
   const toggleTextInput1 = () => {
     setTextInputVisible1(!isTextInputVisible1);
@@ -77,55 +84,22 @@ export default function CreateActivity() {
           updatedImages[i].url = downloadURL;
 
           setImages([...images, ...updatedImages]);
-         const img =  [...images, ...updatedImages].map((item,index)=>{
-          const images = {
-            type: "string",
-            linkMedia:item.url
-          }
-          return images
-         })
-          formik.setFieldValue('media',img)
+          const img = [...images, ...updatedImages].map((item, index) => {
+            const images = {
+              type: "string",
+              linkMedia: item.url
+            }
+            return images
+          })
+          formik.setFieldValue('media', img)
         }
       } catch (error) { }
     }
     setIsLoading(false);
     setUploadProgress(0);
   };
-  const initialValues = {
-    forms: [
-      // { name: '', email: '', selectField: '', media: [] },
-      {
-        processTitle: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        activityId: activityProcess,
-        processTypeId: "",
-        isKeyProcess: true,
-        processNo: 0,
-        media: [],
-      },
-    ],
-  };
- 
-  const [formData, setFormData] = useState(initialValues.forms);
-  const handleCreateNewForm = () => {
-    setFormData((prevData) => [
-      ...prevData,
-      {
-        processTitle: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        activityId: localStorage.getItem("activityProcess"),
-        processTypeId: "",
-        isKeyProcess: true,
-        processNo: 0,
-        media: [],
-      },
-    ]);
-    setCurrentForm((prevForm) => prevForm + 1);
-  };
+
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -143,8 +117,8 @@ export default function CreateActivity() {
     enableReinitialize: false,
     onSubmit: async (value) => {
       console.log(value);
-      const action = await CreateActivityAction(value);
-      await dispatch(action);
+      // const action = await CreateActivityAction(value);
+      // await dispatch(action);
       formik.setFieldValue("title", "");
       formik.setFieldValue("description", "");
       formik.setFieldValue("location", "");
@@ -154,9 +128,18 @@ export default function CreateActivity() {
       formik.setFieldValue("endactivity", "");
       formik.setFieldValue("isFanpageAvtivity", false);
       // formik.setFieldValue("media", []);
+
+      Swal.fire({
+        title: 'Thành công',
+        text: "Tạo chiến dịch mới thành công!",
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Hoàn thành'
+      })
       setIsOpen((prevIsOpen) => !prevIsOpen);
       setIsDisplay(false);
-      // setIsOpen((prevIsOpen) => !prevIsOpen);
+
       // const Toast = Swal.mixin({
       //     toast: true,
       //     position: 'top-end',
@@ -174,64 +157,166 @@ export default function CreateActivity() {
       //     title: `Tạo Mới Thành Công Sự Kiện `
       // })
 
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-success",
-          cancelButton: "btn btn-danger",
-        },
-        buttonsStyling: false,
-      });
+      //   const swalWithBootstrapButtons = Swal.mixin({
+      //     customClass: {
+      //       confirmButton: "btn btn-success",
+      //       cancelButton: "btn btn-danger",
+      //     },
+      //     buttonsStyling: false,
+      //   });
 
-      swalWithBootstrapButtons
-        .fire({
-          title: "Tạo mới chiến dịch thành công",
-          text: "Bạn muốn thêm chi tiết tiến trình cho chiến dịch",
-          icon: "success",
-          showCancelButton: true,
-          confirmButtonText: "Thêm tiến trình",
-          cancelButtonText: "Hoàn thành",
-          reverseButtons: true,
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            setTT(true);
-            handleCreateNewForm();
-            setTT(true);
-            // swalWithBootstrapButtons.fire(
-            //   "Thành công!",
-            //   "Thêm tiến trình thành công.",
-            //   "success"
-            // );
-            formik.setFieldValue("title", "");
-            formik.setFieldValue("description", "");
-            formik.setFieldValue("location", "");
-            formik.setFieldValue("targetDonation", 0);
-            // formik.setFieldValue("media", []);
-          } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-          ) {
-            swalWithBootstrapButtons.fire(
-              "Thành công",
-              "Thêm tiến trình thành  công",
-              "success"
-            );
-            formik.setFieldValue("title", "");
-            formik.setFieldValue("description", "");
-            formik.setFieldValue("location", "");
-            formik.setFieldValue("targetDonation", 0);
-            formik.setFieldValue("media", []);
-            setImages([]);
-          }
-        });
+      //   swalWithBootstrapButtons
+      //     .fire({
+      //       title: "Tạo mới chiến dịch thành công",
+      //       text: "Bạn muốn thêm chi tiết tiến trình cho chiến dịch",
+      //       icon: "success",
+      //       showCancelButton: true,
+      //       confirmButtonText: "Thêm tiến trình",
+      //       cancelButtonText: "Hoàn thành",
+      //       reverseButtons: true,
+      //     })
+      //     .then((result) => {
+      //       if (result.isConfirmed) {
+      //         setTT(true);
+      //         handleCreateNewForm();
+      //         setTT(true);
+      //         // swalWithBootstrapButtons.fire(
+      //         //   "Thành công!",
+      //         //   "Thêm tiến trình thành công.",
+      //         //   "success"
+      //         // );
+      //         formik.setFieldValue("title", "");
+      //         formik.setFieldValue("description", "");
+      //         formik.setFieldValue("location", "");
+      //         formik.setFieldValue("targetDonation", 0);
+      //         // formik.setFieldValue("media", []);
+      //       } else if (
+      //         /* Read more about handling dismissals below */
+      //         result.dismiss === Swal.DismissReason.cancel
+      //       ) {
+      //         swalWithBootstrapButtons.fire(
+      //           "Thành công",
+      //           "Thêm tiến trình thành  công",
+      //           "success"
+      //         );
+      //         formik.setFieldValue("title", "");
+      //         formik.setFieldValue("description", "");
+      //         formik.setFieldValue("location", "");
+      //         formik.setFieldValue("targetDonation", 0);
+      //         formik.setFieldValue("media", []);
+      //         setImages([]);
+      //       }
+      //     });
     },
   });
+
+
+  const process = [
+    { id: "1", value: "phu" },
+    { id: "2", value: "thinh" },
+    { id: "3", value: "dung" },
+    { id: "4", value: "teo" },
+    { id: "5", value: "mbs" },
+  ];
+  const [inputFields, setInputFields] = useState([
+    {
+      processTitle: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      activityId: localStorage.getItem('activityprocess'),
+      processTypeId: "",
+      isKeyProcess: true,
+      processNo: 0,
+      location: "",
+      targetParticipant: 0,
+      realParticipant: 0,
+      isDonateProcess: true,
+      isParticipant: true,
+      realDonation: 0,
+      targetDonation: 0,
+      meida: [],
+      media: [
+        {
+          linkMedia: "",
+          type: "string"
+        }
+      ]
+    }
+
+  ]);
+  const addInputField = () => {
+    setInputFields([
+      ...inputFields,
+      {
+        processTitle: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        activityId: localStorage.getItem('activityprocess'),
+        processTypeId: "",
+        isKeyProcess: true,
+        processNo: 0,
+        location: "",
+        targetParticipant: 0,
+        realParticipant: 0,
+        isDonateProcess: true,
+        isParticipant: true,
+        realDonation: 0,
+        targetDonation: 0,
+        meida: [],
+        media: [
+          {
+            linkMedia: "",
+            type: "string"
+          }
+        ]
+      },
+    ]);
+  };
+  const removeInputField = (index) => {
+    const updatedInputFields = [...inputFields];
+    updatedInputFields.splice(index, 1);
+    setInputFields(updatedInputFields);
+  };
+
+  const handleInputChange = (index, field, value) => {
+    const updatedInputFields = [...inputFields];
+    updatedInputFields[index][field] = value;
+    if (updatedInputFields[index].processTypeId === '1') {
+      updatedInputFields[index].targetDonation = 0
+    } else if (updatedInputFields[index].processTypeId === '2') {
+      updatedInputFields[index].targetParticipant = 0
+    }
+    else if (moment(localStorage.getItem('startactivity')).isAfter(updatedInputFields[index].startDate)) {
+      console.log("trước ngày tạo");
+    }
+    else if (moment(localStorage.getItem('endstart')).isBefore(updatedInputFields[index].endDate)) {
+      console.log("sau ngày tạo");
+    }
+    setInputFields(updatedInputFields);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(inputFields);
+    console.log(localStorage.getItem('startactivity'));
+  };
   const handleClick = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
     setIsDisplay(true);
     formik.setFieldValue("title", "");
     formik.setFieldValue("description", "");
     formik.setFieldValue("location", "");
+    formik.setFieldValue("targetDonation", 0);
+    formik.setFieldValue("startDate", "");
+    formik.setFieldValue("endDate", "");
+    formik.setFieldValue("endactivity", "");
+    formik.setFieldValue("isFanpageAvtivity", false);
+  };
+  const handleClick1 = () => {
+    setIsOpen1((prevIsOpen) => !prevIsOpen);
+
+
   };
   const handleImageDelete = (index) => {
     setImages((prevImages) => {
@@ -240,10 +325,37 @@ export default function CreateActivity() {
       return updatedImages;
     });
   };
+  const [imageUrls1, setImageUrls1] = useState([]);
+  const handleImageChange1 = async (index, event) => {
+    const updatedInputFields = [...inputFields];
+    updatedInputFields[index].images = event.target.files;
+    setInputFields(updatedInputFields); // Update the inputFields with selected images
+
+    const uploadedImageUrls = [];
+
+    for (const image of updatedInputFields[index].images) {
+      const fileRef = ref(storage_bucket, image.name);
+      const uploadTask = uploadBytesResumable(fileRef, image);
+
+      await uploadTask;
+
+      const downloadURL = await getDownloadURL(fileRef);
+      uploadedImageUrls.push(downloadURL);
+    }
+
+    updatedInputFields[index].meida = uploadedImageUrls;
+    setInputFields(updatedInputFields); // Update the inputFields with image URLs
+    await setImageUrls1((prevImageUrls) => {
+      const newImageUrls = [...prevImageUrls];
+      newImageUrls[index] = uploadedImageUrls;
+      return newImageUrls;
+    });
+    console.log(imageUrls1);
+  };
 
   useEffect(() => {
-   
-    
+
+
     const user = localStorage.getItem('userID');
     if (user) {
       console.log('có user');
@@ -502,24 +614,24 @@ export default function CreateActivity() {
                   <div className="col-md-6">
                     <div className="form-group">
                       {getUserId?.fanpage?.status === "Active" && isFanpage ? (
-                          <div
-                            className="form-group"
-                            style={{ display: "flex" }}
+                        <div
+                          className="form-group"
+                          style={{ display: "flex" }}
+                        >
+                          <label
+                            id="name-label"
+                            style={{ marginRight: "20px" }}
+                            htmlFor="name"
                           >
-                            <label
-                              id="name-label"
-                              style={{ marginRight: "20px" }}
-                              htmlFor="name"
-                            >
-                              Chia sẻ lên nhóm của bạn
-                            </label>
-                            <input
-                              type="checkbox"
-                              onChange={toggleTextInput1}
-                              // checked={isTextInputVisible1}
-                            />
-                          </div>
-                       
+                            Chia sẻ lên nhóm của bạn
+                          </label>
+                          <input
+                            type="checkbox"
+                            onChange={toggleTextInput1}
+                          // checked={isTextInputVisible1}
+                          />
+                        </div>
+
                       ) : (
                         <div></div>
                       )}
@@ -627,7 +739,7 @@ export default function CreateActivity() {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-md-6">
                     <button
                       type="submit"
                       id="submit"
@@ -636,8 +748,349 @@ export default function CreateActivity() {
                       Hoàn thành
                     </button>
                   </div>
+                  <div className="col-md-6">
+                    <button
+                      className="btn btn-success btn-block"
+                      onClick={async () => {
+                        if (formik.values.location !== '') {
+                          console.log(formik.values);
+                          const action = await CreateActivityAction(formik.values)
+                          dispatch(action)
+                          setIsOpen((prevIsOpen) => !prevIsOpen);
+                          setIsDisplay(false);
+                          setIsOpen1((prevIsOpen) => !prevIsOpen);
+                        } else {
+                          Swal.fire({
+                            title: 'Cảnh báo',
+                            text: "Vui lòng tạo chiến dịch trước",
+                            icon: 'warning',
+                            showCancelButton: false, // Set this to false to hide the cancel button
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Hoàn thành'
+                          })
+
+                        }
+                      }}
+                    >
+                      Thêm tiến trình
+                    </button>
+                  </div>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {isOpen1 === true ? (
+        <div className="post-new-popup" style={popupStyle10}>
+          <div
+            className="popupPost"
+            style={{
+              width: 800,
+              zIndex: 80,
+              height: "100vh",
+              overflowY: "scroll",
+              margin: "1rem",
+            }}
+          >
+            <span className="popup-closed" onClick={handleClick1}>
+              <i className="icofont-close" />
+            </span>
+            <div className="popup-meta">
+              <div className="popup-head">
+                <h5>
+                  <i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-plus"
+                    >
+                      <line x1={12} y1={5} x2={12} y2={19} />
+                      <line x1={5} y1={12} x2={19} y2={12} />
+                    </svg>
+                  </i>
+                  Thêm tiến trình
+                </h5>
+              </div>
+            </div>
+
+            <div className="">
+              <br />
+
+              <div style={{ textAlign: 'center', margin: '40px 0', fontSize: '25px' }}>Tên chiến dịch :<span style={{ fontWeight: 'bold' }}>{formik.values.title}</span></div>
+
+              <div className="container">
+                <form onSubmit={handleSubmit}>
+                  {inputFields?.map((data, index) => (
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Tiến trình thứ {index}</div>
+                        <div className="">
+                          {inputFields.length !== 1 && (
+                            <button
+                              type="button"
+                              className="btn-delete"
+                              onClick={() => removeInputField(index)}
+                            >
+                              x
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      <div className="row my-3" key={index}>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label id="name-label" htmlFor="name">
+                              Tên tiến trình
+                            </label>
+                            <input
+                              type="text"
+                              value={data.processTitle}
+                              onChange={(event) =>
+                                handleInputChange(index, "processTitle", event.target.value)
+                              }
+                              className="form-control"
+                              placeholder="Process Title"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label id="name-label" htmlFor="name">
+                              Chi tiết tiến trình
+                            </label>
+                            <input
+                              type="text"
+                              value={data.description}
+                              onChange={(event) =>
+                                handleInputChange(index, "description", event.target.value)
+                              }
+                              className="form-control"
+                              placeholder="Description"
+                            />
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label id="name-label" htmlFor="name">
+                                Ngày bắt đầu
+                              </label>
+                              <input
+                                type="date"
+                                name="startDate"
+                                value={data.startDate}
+                                onChange={(event) =>
+                                  handleInputChange(index, "startDate", event.target.value)
+                                }
+                                id="name"
+                                className="form-control"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label id="name-label" htmlFor="name">
+                                Ngày kết thúc
+                              </label>
+                              <input
+                                type="date"
+                                name="endDate"
+                                value={data.endDate}
+                                onChange={(event) =>
+                                  handleInputChange(index, "endDate", event.target.value)
+                                }
+                                id="name"
+                                className="form-control"
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-12">
+                            <label id="name-label" htmlFor="name" style={{
+                              fontSize: "18px",
+                              color: "#000"
+                            }}>
+                              Loại tiến trình
+                            </label>
+                            <select className="form-control"
+                              onChange={(e) =>
+                                handleInputChange(index, "processTypeId", e.target.value)
+                              }
+                              onClick={(e) => {
+                                console.log(e.target.value);
+                              }}
+                            >
+                              <option value="">Chọn loại</option>
+                              {process?.map((item) => (
+
+                                <option key={item.id} value={item.id}>
+                                  {item.value}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="row" >
+                          <div className="col-md-6">
+                            {data.processTypeId === "1" ? (
+                              <div className="form-group">
+                                <label id="name-label" htmlFor="name">
+                                  Chọn số người
+                                </label>
+                                <input
+                                  type="number"
+                                  name="targetParticipant"
+                                  value={data.targetParticipant}
+                                  onChange={(event) =>
+                                    handleInputChange(index, "targetParticipant", event.target.value)
+                                  }
+                                  id="name"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            ) : data.processTypeId === "2" ? (
+                              <div className="form-group">
+                                <label id="name-label" htmlFor="name">
+                                  Chọn số tiền
+                                </label>
+                                <input
+                                  type="text"
+                                  name="targetDonation"
+                                  value={data.targetDonation}
+                                  onChange={(event) =>
+                                    handleInputChange(index, "targetDonation", event.target.value)
+                                  }
+                                  id="name"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            ) : null}
+                          </div>
+
+                        </div>
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label id="name-label" htmlFor="name">
+                                Hình ảnh
+                              </label>
+                              <fieldset className="upload_dropZone text-center mb-3 p-4">
+                                <legend className="visually-hidden">
+                                  Tải hình ảnh
+                                </legend>
+                                <svg
+                                  className="upload_svg"
+                                  width={60}
+                                  height={60}
+                                  aria-hidden="true"
+                                >
+                                  <use href="#icon-imageUpload" />
+                                </svg>
+                                <p className="small my-2">
+                                  Kéo &amp; Thả (các) hình nền bên trong vùng nét
+                                  đứt
+                                  <br />
+                                  <i>hoặc</i>
+                                </p>
+                                <input
+                                  id="upload_image_background"
+                                  // ref={fileInputRef}
+                                  data-post-name="image_background"
+                                  data-post-url="https://someplace.com/image/uploads/backgrounds/"
+                                  className="position-absolute invisible"
+                                  type="file"
+                                  multiple
+                                  onChange={(event) => handleImageChange1(index, event)}
+                                // accept="image/jpeg, image/png, image/svg+xml"
+                                />
+                                <label
+                                  className="btn btn-upload mb-3"
+                                  htmlFor="upload_image_background"
+                                >
+                                  Chọn hình ảnh
+                                </label>
+                                <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
+                              </fieldset>
+
+                              <div>
+                                <div className="image-container image-container-flex">
+                                  {data?.meida?.map((image, index) => (
+                                    <div
+                                      className="image-item image-item-relative"
+                                      key={index}
+                                    >
+                                      <img
+                                        src={image}
+                                        alt={`Image ${index}`}
+                                        className="image-preview image-item-flex"
+                                      />
+                                      <button
+                                        className="delete-button"
+                                        onClick={() => handleImageDelete(index)}
+                                      >
+                                        <span>&times;</span>
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                                {/* {data.meida.map((imageUrl, imgIndex) => (
+                                <div key={imgIndex} className="image-preview">
+                                  <img
+                                    src={imageUrl}
+                                    alt={`Image ${imgIndex}`}
+                                    className="image"
+                                    style={{ display: "none" }}
+                                    onLoad={(e) => (e.target.style.display = "block")} // Show the image when it's loaded
+                                  />
+                                  <div className="spinner" style={{ display: "block" }}>
+                                    Loading...
+                                  </div>
+                                </div>
+                              ))} */}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  ))}
+
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <button
+                        type="button"
+                        className="btn btn-outline-success"
+                        onClick={addInputField}
+                      >
+                        Add New
+                      </button>
+                      <button type="submit" className="btn btn-primary">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+
             </div>
           </div>
         </div>
