@@ -96,6 +96,8 @@ export const CreateActivityAction = (value) => {
             const action5 = GetListEndActivityAction();
             dispatch(action5)
             localStorage.setItem('activityprocess', result.data.data.activityId)
+            localStorage.setItem('startactivity', value.startDate)
+            localStorage.setItem('endstart', value.endDate)
 
         } catch (error) {
             console.log(error);

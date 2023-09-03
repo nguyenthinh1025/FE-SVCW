@@ -11,7 +11,7 @@ const process = [
   { id: "4", value: "teo" },
   { id: "5", value: "mbs" },
 ];
-function DynamicForm() {
+function DynamicForm () {
   const [inputFields, setInputFields] = useState([
     {
       processTitle: "",
@@ -44,19 +44,6 @@ function DynamicForm() {
     ]);
   };
 
-  const removeInputField = (index) => {
-    const updatedInputFields = [...inputFields];
-    updatedInputFields.splice(index, 1);
-    setInputFields(updatedInputFields);
-  };
-
-  const handleInputChange = (index, field, value) => {
-    const updatedInputFields = [...inputFields];
-    updatedInputFields[index][field] = value;
-    setInputFields(updatedInputFields);
-  };
-
-
   const [imageUrls1, setImageUrls1] = useState([]);
   const handleImageChange = async (index, event) => {
     const updatedInputFields = [...inputFields];
@@ -84,6 +71,20 @@ function DynamicForm() {
     });
     console.log(imageUrls1);
   };
+  const removeInputField = (index) => {
+    const updatedInputFields = [...inputFields];
+    updatedInputFields.splice(index, 1);
+    setInputFields(updatedInputFields);
+  };
+
+  const handleInputChange = (index, field, value) => {
+    const updatedInputFields = [...inputFields];
+    updatedInputFields[index][field] = value;
+    setInputFields(updatedInputFields);
+  };
+
+
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -156,9 +157,9 @@ function DynamicForm() {
                   console.log(e.target.value);
                 }}
               >
-                  <option value="">Chọn loại</option>
+                <option value="">Chọn loại</option>
                 {process.map((item) => (
-                
+
                   <option key={item.id} value={item.id}>
                     {item.value}
                   </option>
