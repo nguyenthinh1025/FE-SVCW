@@ -1,6 +1,8 @@
+import Swal from "sweetalert2";
 import { http } from "../../utils/reponse";
 import { GetFanpageByIDAction } from "./FanpageAction";
 import { GetProfileByIdAction } from "./ProfileAction";
+import { SendEmail } from "../../utils/emailService";
 export const GetListActivityAction = () => {
     return async (dispatch) => {
         try {
@@ -46,7 +48,6 @@ export const GetListEndActivityAction = () => {
         try {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get('/Activity/get-activity-after-enddate');
-            console.log(result.data.data);
 
             const action = {
                 type: "GET_LIST_END_ACTIVITY",
@@ -66,7 +67,6 @@ export const GetListEndActivityByUserIDAction = (id) => {
         try {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get(`/Activity/get-activity-after-enddate-user?userId=${id}`);
-            console.log(result.data.data);
 
             const action = {
                 type: "GET_LIST_END_ACTIVITY_BY_USERID",
@@ -85,7 +85,6 @@ export const CreateActivityAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Activity/Insert-Activity', value);
-            console.log(result.data.data);
             const action1 = {
                 type: "CREATE_PROCEESS",
                 activityProcess: result.data.data.activityId
@@ -194,7 +193,6 @@ export const ResultActivityAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/ActivityResult/Insert-activityresult', value)
-            console.log(result.data.data);
             const action1 = GetListEndActivityAction()
             dispatch(action1)
             const action5 = GetListEndActivityAction();
@@ -210,7 +208,6 @@ export const DeleteActivityAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.delete(`/Activity/delete-activity?id=${value}`)
-            console.log(result.data.data);
             const action1 = GetListActivityAction()
             dispatch(action1)
             const action5 = GetListEndActivityAction();
@@ -224,7 +221,6 @@ export const DeleteActivityByUserAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.delete(`/Activity/delete-activity-user?id=${value}`)
-            console.log(result.data.data);
             const action1 = GetListActivityAction()
             dispatch(action1)
             const action = GetProfileByIdAction(localStorage.getItem('userID'));
@@ -241,7 +237,6 @@ export const GetActivityByIDAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.get(`/Activity/get-activity-id?id=${value}`)
-            console.log(result.data.data);
             const action = {
                 type: "GET_ACTIVITY_ID",
                 activityId: result.data.data
@@ -258,7 +253,6 @@ export const UpdateActivityAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.put(`/Activity/update-activity`, value)
-            console.log(result.data.data);
             const action1 = GetListActivityAction()
             dispatch(action1)
             const action = GetProfileByIdAction(localStorage.getItem('userID'));
@@ -273,7 +267,6 @@ export const GetActivityLoginAction = () => {
     return async (dispatch) => {
         try {
             let result = await http.get(`/Activity/get-activity-login-page`)
-            console.log(result.data.data);
             const action = {
                 type: 'GET_ACTIVITY_LOGIN',
                 arrActivityLogin: result.data.data
@@ -289,7 +282,7 @@ export const GetRecommentActivityAction = (id) => {
     return async (dispatch) => {
         try {
             let result = await http.get(`/UserSearch/recommend-activity?userId=${id}`)
-            console.log(result.data.data);
+
             const action = {
                 type: 'GET_ACTIVITY_RECOMMENT',
                 arrActivityRecomment: result.data.data
@@ -305,11 +298,78 @@ export const RecommentActivityAction = (value, id) => {
     return async (dispatch) => {
         try {
             let result = await http.post(`/UserSearch/create`, value)
-            console.log(result.data.data);
+
             const action = GetRecommentActivityAction(id)
             dispatch(action)
             const action1 = GetListActivityAction();
             dispatch(action1)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+export const ActiveActivityAction = (id, email, fullname, activityName) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.put(`/Activity/active-activity-pending?activityId=${id}`)
+            const action1 = GetListActivityAction();
+            dispatch(action1)
+            Swal.fire({
+                title: 'Thành công!',
+                text: 'Cập nhật trạng thái hoạt động cho chiến dịch thành công',
+                icon: 'success',
+                confirmButtonText: 'Thành công'
+            })
+            SendEmail(email, 'Bài viết được duyệt thành công', `<!DOCTYPE html>
+            <html lang="vi">
+            
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width,initial-scale=1"> 
+                <title>Chúc Mừng Chiến Dịch Duyệt Thành Công</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif
+                    }
+            
+                    .container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px
+                    }
+            
+                    .header {
+                        background-color: #18dcff;
+                        color: #fff;
+                        text-align: center;
+                        padding: 10px
+                    }
+            
+                    .content {
+                        padding: 20px
+                    }
+                </style>
+            </head>
+            
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h1>Chúc Mừng</h1>
+                    </div>
+                    <div class="content">
+                        <p>Xin chào <span style="font-weight: 800">${fullname}</span>,</p>
+                        <p>Chào mừng bạn đến với SVCW!</p>
+                        <p>Bài viết <span style="font-weight: 800">${activityName}</span> đã được duyệt thành công và đăng trên trang chủ cộng đồng. Bạn đã trở thành một phần quan trọng của cộng đồng, và chúng tôi mong rằng bạn sẽ có những trải nghiệm thú vị và tìm kiếm được các hoạt động phù hợp.</p>
+                        <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ, đừng ngần ngại hãy  liên hệ với đội người hỗ trợ của chúng
+                            tôi.</p>
+                        <p>Chúc bạn có những trải nghiệm tuyệt vời!</p>
+                        <p>Trân trọng,<br>SVCW</p>
+                    </div>
+                </div>
+            </body>            
+            `)
         } catch (error) {
             console.log(error);
         }

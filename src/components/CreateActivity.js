@@ -121,8 +121,8 @@ export default function CreateActivity () {
     enableReinitialize: false,
     onSubmit: async (value) => {
       console.log(value);
-      // const action = await CreateActivityAction(value);
-      // await dispatch(action);
+      const action = await CreateActivityAction(value);
+      await dispatch(action);
       formik.setFieldValue("title", "");
       formik.setFieldValue("description", "");
       formik.setFieldValue("location", "");

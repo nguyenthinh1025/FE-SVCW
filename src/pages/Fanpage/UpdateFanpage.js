@@ -10,7 +10,7 @@ import {
 } from "../../redux/actions/FanpageAction";
 import { useDispatch } from "react-redux";
 
-export default function UpdateFanpage(props) {
+export default function UpdateFanpage (props) {
   const dispatch = useDispatch();
   const { update, handleClickUpdate, popupStyleUpdate, fanpageId } = props;
   const [isLoading, setIsLoading] = useState(false);
@@ -109,7 +109,7 @@ export default function UpdateFanpage(props) {
                 width: "65%",
                 marginTop: "0px",
                 zIndex: 80,
-                height: "100%",
+
               }}
             >
               <span
@@ -237,7 +237,7 @@ export default function UpdateFanpage(props) {
                           onChange={(e) => uploadFile(e)}
                           style={{ marginLeft: "20px" }}
                         >
-                          <div className="file-upload">
+                          <div className="file-upload" style={{ width: '220px' }}>
                             <input type="file" />
                             <i className="fa fa-arrow-up" />
                           </div>
@@ -278,6 +278,7 @@ export default function UpdateFanpage(props) {
                         <h4 className="main-title">Ảnh Bìa</h4>
                         <div className="wrapper" style={{ marginLeft: "20px" }}>
                           <div
+                            style={{ width: '220px' }}
                             className="file-upload"
                             onChange={(e) => uploadFile1(e)}
                           >

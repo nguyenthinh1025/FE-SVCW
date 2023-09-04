@@ -8,6 +8,9 @@ export const CreateProcessAction = (value) => {
             console.log(result.data);
             const action = GetListActivityAction()
             dispatch(action)
+            localStorage.setItem('activityprocess', '')
+            localStorage.setItem('startactivity', '')
+            localStorage.setItem('endstart', '')
         } catch (error) {
             console.log(error);
         }

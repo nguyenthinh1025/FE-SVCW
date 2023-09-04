@@ -8,7 +8,7 @@ import { CreateFanpageAction } from "../../redux/actions/FanpageAction";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
 
-export default function CreateFanpage(props) {
+export default function CreateFanpage (props) {
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,8 +53,8 @@ export default function CreateFanpage(props) {
     validationSchema: validationSchema,
     onSubmit: (value) => {
       console.log(value);
-      // const action = CreateFanpageAction(value, props);
-      // dispatch(action)
+      const action = CreateFanpageAction(value, props);
+      dispatch(action)
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -74,7 +74,7 @@ export default function CreateFanpage(props) {
     },
   });
   const [avartar, setAvatar] = useState("");
-  useEffect(() => {}, [formik.values.avatar, formik.values.coverImage]);
+  useEffect(() => { }, [formik.values.avatar, formik.values.coverImage]);
   console.log(avartar);
 
   const uploadFile = (e) => {
@@ -168,7 +168,7 @@ export default function CreateFanpage(props) {
                                 placeholder="Tên Fanpage"
                               />
                               {formik.touched.fanpageName &&
-                              formik.errors.fanpageName ? (
+                                formik.errors.fanpageName ? (
                                 <div className="error">
                                   {formik.errors.fanpageName}
                                 </div>
@@ -231,7 +231,7 @@ export default function CreateFanpage(props) {
                                 placeholder="Nhập Mô Tả"
                               />
                               {formik.touched.description &&
-                              formik.errors.description ? (
+                                formik.errors.description ? (
                                 <div className="error">
                                   {formik.errors.description}
                                 </div>
@@ -298,7 +298,7 @@ export default function CreateFanpage(props) {
                                   borderRadius: "50%",
                                 }}
                               />
-                             
+
                             </div>
                           ) : (
                             <div></div>
@@ -361,7 +361,7 @@ export default function CreateFanpage(props) {
             className="bg-image"
             style={{ backgroundImage: "url(images/resources/footer-bg.png)" }}
           />
-       
+
         </div>
       </footer>
     </div>

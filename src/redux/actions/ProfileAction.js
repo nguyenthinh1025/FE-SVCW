@@ -1,4 +1,5 @@
 import { http } from "../../utils/reponse";
+import { GetListActivityAction } from "./ActivityAction";
 import { GetUserBystatisticAction } from "./UserAction";
 
 export const GetProfileByIdAction = (id) => {
@@ -46,6 +47,8 @@ export const UpdateProfileById = (userInfo) => {
       dispatch(action);
       const action1 = GetUserBystatisticAction(localStorage.getItem("userID"));
       dispatch(action1);
+      const action2 = GetListActivityAction();
+      dispatch(action2);
     } catch (error) {
       console.log(error);
     }

@@ -4,13 +4,13 @@ import { NavLink } from "react-router-dom/cjs/react-router-dom";
 import RecommentActivity from "./RecommentActivity";
 import Game from "./Game";
 
-export default function YourFanpage() {
+export default function YourFanpage () {
   const { getUserId } = useSelector((root) => root.ProfileReducer);
   return (
     <div className="">
       <aside className="sidebar static right">
         {localStorage.getItem("userID") &&
-        getUserId?.fanpage?.status === "Active" ? (
+          getUserId?.fanpage?.status === "Active" ? (
           <div className="widget">
             <h4 className="widget-title">Fanpage của bạn</h4>
             <ul className="ak-groups">
@@ -35,8 +35,8 @@ export default function YourFanpage() {
                       title
                       style={{
                         fontSize: "20px",
-                        width: "200px",
-                        wordWrap: "break-word",
+                        width: "350px",
+
                       }}
                     >
                       {getUserId?.fanpage?.fanpageName}
@@ -47,7 +47,7 @@ export default function YourFanpage() {
                     href="group-feed.html"
                     title
                     className="fanpage-y"
-                    onClick={() => {}}
+                    onClick={() => { }}
                   >
                     Chi tiết
                   </NavLink>
