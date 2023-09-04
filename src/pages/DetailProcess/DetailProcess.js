@@ -301,7 +301,7 @@ export default function DetailProcess (props) {
                     Trang chủ
                   </h4> */}
                   <h2 style={{ color: '#00a6d3', textAlign: 'center', fontSize: '40px', fontWeight: 800 }}>{currentObject?.activity?.title}</h2>
-                  <p style={{ fontSize: '25px', marginLeft: '100px', color: 'rgb(0, 166, 211)' }}>Tiến trình : {currentObject.processNo}</p>
+                  <p style={{ fontSize: '25px', marginLeft: '100px', color: 'rgb(0, 166, 211)' }}>Tiến trình : {currentObject?.processNo}</p>
                 </div>
               </div>
               <div className="more">
@@ -422,14 +422,14 @@ export default function DetailProcess (props) {
                       {currentObject.isParticipant ?
                         <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
                           <div>{currentObject.isParticipant ? <div> - Kêu gọi người tham gia :</div> : <div></div>}</div>
-                          <div style={{ marginLeft: '5px' }}>{currentObject.targetParticipant !== 0 ? <div style={{ fontWeight: 600 }}> {currentObject.targetParticipant} người</div> : <div></div>}</div>
+                          <div style={{ marginLeft: '5px' }}>{currentObject.targetParticipant !== 0 ? <div style={{ fontWeight: 600 }}> {(currentObject.targetParticipant).toLocaleString()} người</div> : <div></div>}</div>
                         </div> : <div></div>}
                       {currentObject.isDonateProcess ?
                         <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
                           <div>{currentObject.isDonateProcess ? <div> - Kêu gọi quyên góp :</div> : <div></div>}</div>
                           <div style={{ marginLeft: '5px' }}>{currentObject.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {currentObject.targetDonation} vnđ</div> : <div></div>}</div>
                         </div> : <div></div>}
-                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm : <span style={{ fontWeight: 600 }}>{currentObject.location}</span></div>
+                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm : <span style={{ fontWeight: 600 }}>{(currentObject.location).toLocaleString()}</span></div>
                     </div>
                     <div
                       className="next-prev-posts"
