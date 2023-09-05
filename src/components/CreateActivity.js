@@ -103,7 +103,7 @@ export default function CreateActivity () {
     setUploadProgress(0);
   };
 
-
+  const [create,setCreate] = useState(activityProcess)
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -121,7 +121,7 @@ export default function CreateActivity () {
     enableReinitialize: false,
     onSubmit: async (value) => {
       console.log(value);
-      const action = await CreateActivityAction(value);
+      const action = await CreateActivityAction(value, setCreate);
       await dispatch(action);
       formik.setFieldValue("title", "");
       formik.setFieldValue("description", "");
@@ -143,77 +143,9 @@ export default function CreateActivity () {
       })
       setIsOpen((prevIsOpen) => !prevIsOpen);
       setIsDisplay(false);
-
-      // const Toast = Swal.mixin({
-      //     toast: true,
-      //     position: 'top-end',
-      //     showConfirmButton: false,
-      //     timer: 3000,
-      //     timerProgressBar: true,
-      //     didOpen: (toast) => {
-      //         toast.addEventListener('mouseenter', Swal.stopTimer)
-      //         toast.addEventListener('mouseleave', Swal.resumeTimer)
-      //     }
-      // })
-
-      // Toast.fire({
-      //     icon: 'success',
-      //     title: `Tạo Mới Thành Công Sự Kiện `
-      // })
-
-      //   const swalWithBootstrapButtons = Swal.mixin({
-      //     customClass: {
-      //       confirmButton: "btn btn-success",
-      //       cancelButton: "btn btn-danger",
-      //     },
-      //     buttonsStyling: false,
-      //   });
-
-      //   swalWithBootstrapButtons
-      //     .fire({
-      //       title: "Tạo mới chiến dịch thành công",
-      //       text: "Bạn muốn thêm chi tiết tiến trình cho chiến dịch",
-      //       icon: "success",
-      //       showCancelButton: true,
-      //       confirmButtonText: "Thêm tiến trình",
-      //       cancelButtonText: "Hoàn thành",
-      //       reverseButtons: true,
-      //     })
-      //     .then((result) => {
-      //       if (result.isConfirmed) {
-      //         setTT(true);
-      //         handleCreateNewForm();
-      //         setTT(true);
-      //         // swalWithBootstrapButtons.fire(
-      //         //   "Thành công!",
-      //         //   "Thêm tiến trình thành công.",
-      //         //   "success"
-      //         // );
-      //         formik.setFieldValue("title", "");
-      //         formik.setFieldValue("description", "");
-      //         formik.setFieldValue("location", "");
-      //         formik.setFieldValue("targetDonation", 0);
-      //         // formik.setFieldValue("media", []);
-      //       } else if (
-      //         /* Read more about handling dismissals below */
-      //         result.dismiss === Swal.DismissReason.cancel
-      //       ) {
-      //         swalWithBootstrapButtons.fire(
-      //           "Thành công",
-      //           "Thêm tiến trình thành  công",
-      //           "success"
-      //         );
-      //         formik.setFieldValue("title", "");
-      //         formik.setFieldValue("description", "");
-      //         formik.setFieldValue("location", "");
-      //         formik.setFieldValue("targetDonation", 0);
-      //         formik.setFieldValue("media", []);
-      //         setImages([]);
-      //       }
-      //     });
     },
   });
-
+console.log(create)
 
   const process = processType?.map((item, index) => {
     return {
@@ -227,15 +159,15 @@ export default function CreateActivity () {
       description: "",
       startDate: "",
       endDate: "",
-      activityId: localStorage.getItem('activityprocess'),
+      activityId: create,
       processTypeId: "",
       isKeyProcess: true,
       processNo: 0,
       location: "online",
       targetParticipant: 0,
       realParticipant: 0,
-      isDonateProcess: true,
-      isParticipant: true,
+      isDonateProcess: false,
+      isParticipant: false,
       realDonation: 0,
       targetDonation: 0,
       meida: [],
@@ -254,15 +186,15 @@ export default function CreateActivity () {
           description: "",
           startDate: "",
           endDate: "",
-          activityId: localStorage.getItem('activityprocess'),
+          activityId: create,
           processTypeId: "",
           isKeyProcess: true,
           processNo: 0,
           location: "online",
           targetParticipant: 0,
           realParticipant: 0,
-          isDonateProcess: true,
-          isParticipant: true,
+          isDonateProcess: false,
+          isParticipant: false,
           realDonation: 0,
           targetDonation: 0,
           meida: [],
@@ -309,7 +241,7 @@ export default function CreateActivity () {
         icon: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Hoàn thành',
+        confirmButtonText: 'Đồng ý',
         zIndex: 999
       })
       setError('2')
@@ -322,7 +254,7 @@ export default function CreateActivity () {
         icon: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Hoàn thành',
+        confirmButtonText: 'Đồng ý',
         zIndex: 999
       })
       setError('2')
@@ -335,7 +267,7 @@ export default function CreateActivity () {
         icon: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Hoàn thành',
+        confirmButtonText: 'Đồng ý',
         zIndex: 999
       })
       setError('2')
@@ -348,10 +280,23 @@ export default function CreateActivity () {
         icon: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Hoàn thành',
+        confirmButtonText: 'Đồng ý',
         zIndex: 999
       })
       setError('2')
+    }else if (parseFloat(updatedInputFields[index].targetDonation) > 100) {
+     
+      Swal.fire({
+        title: 'Cảnh báo',
+        text: `Số tiền tối đa bạn có thể tạo cho chiến dịch là ${Number(localStorage.getItem('maxDonate'))}`,
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Đồng ý',
+        zIndex: 999
+      })
+      setError('2')
+      console.log('1')
     }
     else {
       setError('1')
@@ -366,9 +311,32 @@ export default function CreateActivity () {
     event.preventDefault();
     if (error === '1') {
       console.log(inputFields);
+      const text = inputFields.map((item,index)=>{
+        return {
+          processTitle: item.processTitle,
+          description: item.description,
+          startDate: item.startDate,
+          endDate: item.endDate,
+          activityId: create,
+          processTypeId: item.processTypeId,
+          isKeyProcess: true,
+          processNo: item.processNo,
+          location: item.location,
+          targetParticipant: item.targetParticipant,
+          realParticipant: item.realParticipant,
+          isDonateProcess: item.isDonateProcess,
+          isParticipant: item.isParticipant,
+          realDonation: item.realDonation,
+          targetDonation: item.targetDonation,
+          meida: item.meida,
+          media: item.media
+        }
+      })
+      console.log(text)
       console.log(localStorage.getItem('startactivity'));
-      const action1 = await CreateProcessAction(inputFields);
+      const action1 = await CreateProcessAction(text, handleClick1);
       dispatch(action1)
+      
     }
     else {
       Swal.fire({
@@ -425,6 +393,13 @@ export default function CreateActivity () {
     }
 
     updatedInputFields[index].meida = uploadedImageUrls;
+    const img = uploadedImageUrls.map((item,index)=>{
+      return {
+        linkMedia: item,
+        type: "string"
+      }
+    })
+    updatedInputFields[index].media = img;
     setInputFields(updatedInputFields); // Update the inputFields with image URLs
     await setImageUrls1((prevImageUrls) => {
       const newImageUrls = [...prevImageUrls];
@@ -435,16 +410,14 @@ export default function CreateActivity () {
   };
 
   useEffect(() => {
-
-
     const user = localStorage.getItem('userID');
     if (user) {
       console.log('có user');
       const action = GetUserByIdAction(user);
       dispatch(action);
-
+  
     }
-  }, []);
+  }, [create]);
   return (
     <div>
       {isValidCreate === "true" ? (
@@ -475,7 +448,6 @@ export default function CreateActivity () {
             className="popupPost"
             style={{
               width: 800,
-              zIndex: 80,
               height: "100vh",
               overflowY: "scroll",
               margin: "1rem",
@@ -608,65 +580,9 @@ export default function CreateActivity () {
                     </div>
                   </div>
                   <div className="col-md-6">
-                    {/* <div className="form-group">
-                          {configActivity === "true" ? (
-                            <div>
-                              <div
-                                className="form-group"
-                                style={{ display: "flex" }}
-                              >
-                                <label
-                                  id="name-label"
-                                  style={{ marginRight: "20px" }}
-                                  htmlFor="name"
-                                >
-                                  Nhận ủng hộ
-                                </label>
-                                <input
-                                  type="checkbox"
-                                  onChange={toggleTextInput}
-                                />
-                              </div>
-                              {isTextInputVisible === true && (
-                                <div className="form-group">
-                                  <input
-                                    type="number"
-                                    name="targetDonation"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.targetDonation}
-                                    id="name"
-                                    placeholder="Nhập số tiền cần nhận"
-                                    className="form-control"
-                                    style={{ marginTop: "-2rem" }}
-                                    required
-                                  />
-                                </div>
-                              )}
-                            </div>
-                          ) : (
-                            <div></div>
-                          )}
-                        </div> */}
+                  
                   </div>
-                  {/* <div className="col-md-12">
-                    <div className="form-group">
-                      <label id="name-label" htmlFor="name">
-                        Lựa chọn
-                      </label>
-                      <select
-                        type="text"
-                        name="location"
-
-                        value={formik.values.location}
-                        id="name"
-                        className="form-control"
-                        required
-                      >
-                        <option>Không nhận donation</option>
-                        <option>Có nhận donation</option>
-                      </select>
-                    </div>
-                  </div> */}
+                
                   <div className="col-md-12">
                     <div style={{ height: "200px", width: "100%" }}>
                       <GoogleMapReact
@@ -836,19 +752,21 @@ export default function CreateActivity () {
                       onClick={async () => {
                         if (formik.values.location !== '') {
                           console.log(formik.values);
-                          const action = await CreateActivityAction(formik.values)
+                          const action = await CreateActivityAction(formik.values, setCreate)
                           dispatch(action)
                           setIsOpen((prevIsOpen) => !prevIsOpen);
                           setIsDisplay(false);
                           setIsOpen1((prevIsOpen) => !prevIsOpen);
                         } else {
+                          setIsOpen((prevIsOpen) => !prevIsOpen);
                           Swal.fire({
                             title: 'Cảnh báo',
                             text: "Vui lòng tạo chiến dịch trước",
                             icon: 'warning',
                             showCancelButton: false, // Set this to false to hide the cancel button
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Hoàn thành'
+                            confirmButtonText: 'Hoàn thành',
+                            zIndex:999
                           })
 
                         }
@@ -1050,6 +968,7 @@ export default function CreateActivity () {
                                 </label>
                                 <input
                                   type="number"
+                                  min={0}
                                   name="targetParticipant"
                                   value={data.targetParticipant}
                                   onChange={(event) =>
@@ -1066,11 +985,28 @@ export default function CreateActivity () {
                                   Số tiền ủng hộ
                                 </label>
                                 <input
-                                  type="text"
+                                  type="number"
+                                  min={0}
                                   name="targetDonation"
                                   value={data.targetDonation}
-                                  onChange={(event) =>
-                                    handleInputChange(index, "targetDonation", event.target.value)
+                                  onChange={(event) =>{
+                                   
+                                    if(Number(event.target.value) >Number(localStorage.getItem('maxDonate'))){
+                                      Swal.fire({
+                                        title: 'Cảnh báo',
+                                        text: `Số tiền lớn hơn số tiền tối đa bạn có thể tạo cho chiến dịch! ${Number(localStorage.getItem('maxDonate'))?.toLocaleString()} vnđ`,
+                                        icon: 'warning',
+                                        showCancelButton: false,
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Đồng ý',
+                                        zIndex: 999
+                                      })
+                                      setError('2')
+                                    }else{
+                                      handleInputChange(index, "targetDonation", event.target.value)
+                                      setError('1')
+                                    }
+                                  }
                                   }
                                   id="name"
                                   className="form-control"

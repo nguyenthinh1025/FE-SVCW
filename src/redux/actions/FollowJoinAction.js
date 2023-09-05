@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { http } from "../../utils/reponse";
 import { GetActivityIDAction, GetListActivityAction, GetListEndActivityAction, GetListEndActivityByUserIDAction, GetRecommentActivityAction } from "./ActivityAction";
 import { GetFanpageByIDAction } from "./FanpageAction";
@@ -22,6 +23,22 @@ export const FollowAction = (activity, user) => {
             dispatch(action7)
             const action8 = GetListEndActivityByUserIDAction(user);
             dispatch(action8)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+        
+              Toast.fire({
+                icon: "success",
+                title: `Theo dõi chiến dịch thành công `,
+              });
         } catch (error) {
             console.log(error.response?.data.message);
         }
@@ -48,6 +65,22 @@ export const UnFollowAction = (activity, user) => {
             dispatch(action7)
             const action8 = GetListEndActivityByUserIDAction(user);
             dispatch(action8)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+        
+              Toast.fire({
+                icon: "error",
+                title: `Bỏ theo dõi chiến dịch thành công `,
+              });
         } catch (error) {
             console.log(error);
         }
@@ -76,6 +109,22 @@ export const JoinAction = (activity, user) => {
             dispatch(action7)
             const action8 = GetListEndActivityByUserIDAction(user);
             dispatch(action8)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+        
+              Toast.fire({
+                icon: "success",
+                title: `Tham gia thành công sự kiện`,
+              });
         } catch (error) {
             console.log(error.response?.data.message);
         }
@@ -100,6 +149,23 @@ export const UnJoinAction = (activity, user) => {
             dispatch(action7)
             const action8 = GetListEndActivityByUserIDAction(user);
             dispatch(action8)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+        
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+        
+              Toast.fire({
+                icon: "error",
+                title: `Bỏ tham gia sự kiện thành công`,
+              });
         } catch (error) {
             console.log(error);
         }

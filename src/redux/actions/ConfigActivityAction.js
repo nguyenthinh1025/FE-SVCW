@@ -16,6 +16,7 @@ export const ConfigActivityAction = (value) => {
             }
             localStorage.setItem('donation', result.data.data.isDonatable)
             localStorage.setItem('isValidCreate', result.data.data.isValidCreate)
+            localStorage.setItem('maxDonate', result.data.data.maxDonate)
             localStorage.setItem('message', result.data.data.message)
             localStorage.setItem('isFanpage', result.data.data.isFanpage)
             dispatch(action)

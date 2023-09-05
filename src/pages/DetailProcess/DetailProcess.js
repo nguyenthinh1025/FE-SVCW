@@ -373,14 +373,13 @@ export default function DetailProcess (props) {
                       }}
                     >
 
-                      <h2 style={{ color: '#00a6d3', width: '300px' }}>{currentObject?.processTitle}</h2>
+                      <h2 style={{ color: '#00a6d3', width: '800px' }}>{currentObject?.processTitle}</h2>
 
                     </div>
                     <p style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>
                       - {currentObject?.description}
                     </p>
                     <div className="blog-details-meta">
-                      {/* <figure><img src="https://picsum.photos/200" alt style={{ height: '300px' }} /></figure> */}
                       {currentObject?.media?.length !== 0 ?
 
                         <Slider {...settings}>
@@ -422,14 +421,14 @@ export default function DetailProcess (props) {
                       {currentObject.isParticipant ?
                         <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
                           <div>{currentObject.isParticipant ? <div> - Kêu gọi người tham gia :</div> : <div></div>}</div>
-                          <div style={{ marginLeft: '5px' }}>{currentObject.targetParticipant !== 0 ? <div style={{ fontWeight: 600 }}> {(currentObject.targetParticipant).toLocaleString()} người</div> : <div></div>}</div>
+                          <div style={{ marginLeft: '5px' }}>{currentObject.targetParticipant !== 0 ? <div style={{ fontWeight: 600 }}> {(currentObject?.targetParticipant)?.toLocaleString()} người</div> : <div></div>}</div>
                         </div> : <div></div>}
                       {currentObject.isDonateProcess ?
                         <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
                           <div>{currentObject.isDonateProcess ? <div> - Kêu gọi quyên góp :</div> : <div></div>}</div>
-                          <div style={{ marginLeft: '5px' }}>{currentObject.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {currentObject.targetDonation} vnđ</div> : <div></div>}</div>
+                          <div style={{ marginLeft: '5px' }}>{currentObject.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {currentObject?.targetDonation} vnđ</div> : <div></div>}</div>
                         </div> : <div></div>}
-                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm : <span style={{ fontWeight: 600 }}>{(currentObject.location).toLocaleString()}</span></div>
+                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm : <span style={{ fontWeight: 600 }}>{(currentObject?.location)?.toLocaleString()}</span></div>
                     </div>
                     <div
                       className="next-prev-posts"
@@ -542,7 +541,7 @@ export default function DetailProcess (props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
-                          Tên Tiến Trình
+                          Tên tiến trình
                         </label>
                         <input
                           type="text"
@@ -577,12 +576,14 @@ export default function DetailProcess (props) {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-
+                      <label id="email-label" htmlFor="email">
+                          Ngày bắt đầu
+                        </label>
                         <input
                           type="date"
                           name="startDate"
                           onChange={formik.handleChange}
-                          value={formik.values.startDate}
+                          value={moment(formik.values.startDate).format('YYYY-MM-DD')}
                           id="name"
                           className="form-control"
                           required
@@ -591,12 +592,14 @@ export default function DetailProcess (props) {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-
+                      <label id="email-label" htmlFor="email">
+                          Ngày kết thúc
+                        </label>
                         <input
                           type="date"
                           name="endDate"
                           onChange={formik.handleChange}
-                          value={formik.values.endDate}
+                          value={moment(formik.values.endDate).format('YYYY-MM-DD')}
                           id="name"
                           placeholder="Nhập Nơi Diễn Ra"
                           className="form-control"

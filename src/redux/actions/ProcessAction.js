@@ -1,7 +1,7 @@
 import { http } from "../../utils/reponse";
 import { GetListActivityAction } from "./ActivityAction";
 import Swal from 'sweetalert2'
-export const CreateProcessAction = (value) => {
+export const CreateProcessAction = (value,handleClick1) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Process/Insert-process-list', value);
@@ -11,6 +11,7 @@ export const CreateProcessAction = (value) => {
             localStorage.setItem('activityprocess', '')
             localStorage.setItem('startactivity', '')
             localStorage.setItem('endstart', '')
+            handleClick1()
         } catch (error) {
             console.log(error);
         }
