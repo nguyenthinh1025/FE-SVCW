@@ -34,6 +34,7 @@ import ReportActivity from "./ReportActivity";
 import { useEffect } from "react";
 import { GetListReportTypeAction } from "../redux/actions/ReportTypeAction";
 import ShareActivity from "./ShareActivity";
+import Donate from "./Donate";
 
 export default function ItemActivity(props) {
   const [share, setShare] = useState(false);
@@ -81,8 +82,14 @@ export default function ItemActivity(props) {
     visibility: report ? "visible" : "hidden",
     overflow: report ? "auto" : "hidden",
   };
-  const openPopup = () => {
-    setPopupOpen(true);
+  const [donate ,setDonate] = useState('')
+   const openPopup = () => {
+    setPopupOpen( (prevIsOpen) => !prevIsOpen)
+    const action2 = {
+      type: "DONATE",
+      message: "",
+    };
+    dispatch(action2);
   };
   useEffect(() => {
     const action4 = GetListReportTypeAction();
@@ -162,43 +169,12 @@ export default function ItemActivity(props) {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "error",
-        title: `Hủy tham gia sự kiện ${title} thành công`,
-      });
+     
     } else {
       setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: `Tham Gia Thành Công Sự Kiện ${title}`,
-      });
+      
     }
     const action = GetListActivityAction();
     await dispatch(action);
@@ -221,43 +197,13 @@ export default function ItemActivity(props) {
       setFollowIndex(null);
       const action =await UnFollowAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "error",
-        title: `Hủy theo dõi chiến dịch ${title} thành công `,
-      });
+    
     } else {
       setFollowIndex(index);
       console.log(activity, userID);
       const action =await FollowAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: `Theo dõi chiến dịch ${title} thành công `,
-      });
+     
     }
   };
   const handleLikeClick = (id) => {
@@ -882,10 +828,10 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                               className=" btn-color btn-donate"
                               onClick={() => {
                                 // setActi(ItemActivity.activityId)
-                                formik1.setFieldValue(
-                                  "activityId",
+                                setDonate(
                                   ItemActivity.activityId
                                 );
+                               
                                 openPopup();
                               }}
                             >
@@ -1220,6 +1166,7 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
         popupStyleShare={popupStyleShare}
         activityId={shareActivityID}
       />
+        <Donate isPopupOpen = {isPopupOpen}  openPopup={openPopup} donate={donate} />
     </Fragment>
   );
 }

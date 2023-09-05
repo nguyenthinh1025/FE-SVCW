@@ -38,6 +38,7 @@ import ShareActivity from "./ShareActivity";
 import CreateResultActivity from "../pages/Result/CreateResultActivity";
 import ResultActivity from "../pages/Result/ResultActivity";
 import { GetProcessByActivityAction } from "../redux/actions/ProcessAction";
+import Donate from "./Donate";
 
 export default function ItemEndActivity (props) {
   const [isReadMore, setReadMore] = useState(false);
@@ -96,7 +97,12 @@ export default function ItemEndActivity (props) {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
   };
   const openPopup = () => {
-    setPopupOpen(true);
+    setPopupOpen( (prevIsOpen) => !prevIsOpen)
+    const action2 = {
+      type: "DONATE",
+      message: "",
+    };
+    dispatch(action2);
   };
   const handleClick = () => {
     setReport((prevIsOpen) => !prevIsOpen);
@@ -117,7 +123,8 @@ export default function ItemEndActivity (props) {
       value: item.reportTypeId,
     };
   });
-
+const [donate ,setDonate] = useState('')
+const [donate1 ,setDonate1] = useState(0)
   const formik1 = useFormik({
     initialValues: {
       title: "",
@@ -217,43 +224,12 @@ export default function ItemEndActivity (props) {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "error",
-        title: `Hủy tham gia sự kiện ${title} thành công`,
-      });
+      
     } else {
       setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: `Tham gia thành công sự kiện ${title}`,
-      });
+     
     }
     const action = GetListActivityAction();
     await dispatch(action);
@@ -276,42 +252,12 @@ export default function ItemEndActivity (props) {
       setFollowIndex(null);
       const action = UnFollowAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "error",
-        title: `Hủy theo dõi chiến dịch ${title} thành công `,
-      });
+      
     } else {
       setFollowIndex(index);
       const action = FollowAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: `Theo dõi chiến dịch ${title} thành công `,
-      });
+      
     }
   };
   const handleLikeClick = (id) => {
@@ -921,10 +867,10 @@ export default function ItemEndActivity (props) {
                               className=" btn-color btn-donate"
                               onClick={() => {
                                 // setActi(ItemActivity.activityId)
-                                formik1.setFieldValue(
-                                  "activityId",
+                                setDonate(
                                   ItemActivity.activityId
                                 );
+                               
                                 openPopup();
                               }}
                             >
@@ -1260,6 +1206,7 @@ export default function ItemEndActivity (props) {
       />
       <CreateResultActivity popupStyleCreate={popupStyleCreate} handleClickCreate={handleClickCreate} idActivity={idActivity} isOpen={isOpen} />
       <ResultActivity popupStyle1={popupStyle1} handleClick1={handleClick1} isOpen1={isOpen1} idActivity={idActivity} />
+      <Donate isPopupOpen = {isPopupOpen}  openPopup={openPopup} donate={donate} />
     </div>
   );
 }

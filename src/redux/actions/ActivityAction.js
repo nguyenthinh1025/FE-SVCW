@@ -81,7 +81,7 @@ export const GetListEndActivityByUserIDAction = (id) => {
         }
     }
 }
-export const CreateActivityAction = (value) => {
+export const CreateActivityAction = (value,setCreate) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Activity/Insert-Activity', value);
@@ -95,9 +95,10 @@ export const CreateActivityAction = (value) => {
             const action5 = GetListEndActivityAction();
             dispatch(action5)
             localStorage.setItem('activityprocess', result.data.data.activityId)
+            localStorage.setItem('activityprocessid', result.data.data.activityId)
             localStorage.setItem('startactivity', value.startDate)
             localStorage.setItem('endstart', value.endDate)
-
+            setCreate(result.data.data.activityId)
         } catch (error) {
             console.log(error);
         }

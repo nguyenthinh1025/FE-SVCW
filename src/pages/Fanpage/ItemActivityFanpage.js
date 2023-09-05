@@ -31,6 +31,7 @@ import UpdateActivity from "../../components/UpdateActivity";
 import ReportActivity from "../../components/ReportActivity";
 import ShareActivity from "../../components/ShareActivity";
 import Game from "../../components/Game";
+import Donate from "../../components/Donate";
 
 export default function ItemActivityFanpage(props) {
   const [share, setShare] = useState(false);
@@ -67,11 +68,17 @@ export default function ItemActivityFanpage(props) {
   const [tcss, setTcss] = useState("css");
   const [commentI, setCommentI] = useState("commentContent");
   const [reportid, setReportID] = useState("");
+  const [donate ,setDonate] = useState('')
   const handleClick6 = () => {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
   };
   const openPopup = () => {
-    setPopupOpen(true);
+    setPopupOpen( (prevIsOpen) => !prevIsOpen)
+    const action2 = {
+      type: "DONATE",
+      message: "",
+    };
+    dispatch(action2);
   };
   const handleClick = () => {
     setReport((prevIsOpen) => !prevIsOpen);
@@ -192,43 +199,12 @@ export default function ItemActivityFanpage(props) {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "error",
-        title: `Hủy tham gia sự kiện ${title} thành công`,
-      });
+      
     } else {
       setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: `Tham Gia Thành Công Sự Kiện ${title}`,
-      });
+      
     }
     const action = GetListActivityAction();
     await dispatch(action);
@@ -251,42 +227,12 @@ export default function ItemActivityFanpage(props) {
       setFollowIndex(null);
       const action = UnFollowAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "error",
-        title: `Hủy theo dõi chiến dịch ${title} thành công `,
-      });
+      
     } else {
       setFollowIndex(index);
       const action = FollowAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: `Theo dõi chiến dịch ${title} thành công `,
-      });
+     
     }
   };
   const handleLikeClick = (id) => {
@@ -919,10 +865,10 @@ export default function ItemActivityFanpage(props) {
                               className=" btn-color btn-donate"
                               onClick={() => {
                                 // setActi(ItemActivity.activityId)
-                                formik1.setFieldValue(
-                                  "activityId",
+                                setDonate(
                                   ItemActivity.activityId
                                 );
+                               
                                 openPopup();
                               }}
                             >
@@ -1313,7 +1259,7 @@ export default function ItemActivityFanpage(props) {
           popupStyleShare={popupStyleShare}
           activityId={shareActivityID}
         />
-      
+       <Donate isPopupOpen = {isPopupOpen}  openPopup={openPopup} donate={donate} />
     </div>
   );
 }

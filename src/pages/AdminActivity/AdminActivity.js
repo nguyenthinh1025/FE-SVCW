@@ -31,7 +31,7 @@ import Swal from "sweetalert2";
 import { SendEmail } from "../../utils/emailService";
 import Slider from "react-slick";
 
-export default function AdminActivity () {
+export default function AdminActivity() {
   const dispatch = useDispatch();
   const { arrActivity } = useSelector((root) => root.ActivityReducer);
   console.log(arrActivity);
@@ -136,7 +136,11 @@ export default function AdminActivity () {
     console.log(productItem?.title);
     setSubmitted(true);
 
-    SendEmail(productItem.user?.email, 'Cảnh báo bài viết', `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thư cảnh báo</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#ff1827;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Thư cảnh báo từ SVCW</h1></div><div class="content"><p>Xin chào ${productItem.user?.fullName},</p><p>Chúng tôi thấy bài viết <span style="font-weight:bold;">${productItem?.title}</span> bạn có nội dung không phù hợp với cộng đồng trên SVCW!</p><p>Bạn nên chỉnh sửa lại nội dung bài viết cho phù hợp, nếu không bài viết của bạn sẽ bị xóa.</p><p>Chúc bạn có những trải nghiệm của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
+    SendEmail(
+      productItem.user?.email,
+      "Cảnh báo bài viết",
+      `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thư cảnh báo</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#ff1827;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Thư cảnh báo từ SVCW</h1></div><div class="content"><p>Xin chào ${productItem.user?.fullName},</p><p>Chúng tôi thấy bài viết <span style="font-weight:bold;">${productItem?.title}</span> bạn có nội dung không phù hợp với cộng đồng trên SVCW!</p><p>Bạn nên chỉnh sửa lại nội dung bài viết cho phù hợp, nếu không bài viết của bạn sẽ bị xóa.</p><p>Chúc bạn có những trải nghiệm của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`
+    );
     setProductDialog(false);
   };
 
@@ -172,7 +176,7 @@ export default function AdminActivity () {
   const findIndexById = (id) => {
     let index = -1;
 
-    for (let i = 0;i < products.length;i++) {
+    for (let i = 0; i < products.length; i++) {
       if (products[i].id === id) {
         index = i;
         break;
@@ -187,7 +191,7 @@ export default function AdminActivity () {
     let chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for (let i = 0;i < 5;i++) {
+    for (let i = 0; i < 5; i++) {
       id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
 
@@ -303,17 +307,17 @@ export default function AdminActivity () {
       ></Tag>
     );
   };
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const popupStyle9 = {
     opacity: isOpen ? 1 : 0,
     visibility: isOpen ? "visible" : "hidden",
     overflow: isOpen ? "auto" : "hidden",
-    height: '1000px'
+    height: "1000px",
   };
   const handleClick = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
-  }
-  const [activity, setActivity] = useState({})
+  };
+  const [activity, setActivity] = useState({});
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -327,12 +331,9 @@ export default function AdminActivity () {
             console.log(rowData.user?.email);
             console.log(rowData.user?.username);
             console.log(rowData.title);
-            setIsOpen(true)
-            setActivity(rowData)
-          }
-
-
-          }
+            setIsOpen(true);
+            setActivity(rowData);
+          }}
         />
         <Button
           icon="pi pi-pencil"
@@ -340,11 +341,8 @@ export default function AdminActivity () {
           outlined
           className="mr-2"
           onClick={() => {
-            editProduct(rowData)
-          }
-
-
-          }
+            editProduct(rowData);
+          }}
         />
         <Button
           icon="pi pi-trash"
@@ -429,7 +427,7 @@ export default function AdminActivity () {
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
   };
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
@@ -548,8 +546,8 @@ export default function AdminActivity () {
           onHide={hideDialog}
         >
           <span>
-            Bạn có muốn gửi cảnh báo đến người tạo bài viết <b>{product.title}</b>?
-
+            Bạn có muốn gửi cảnh báo đến người tạo bài viết{" "}
+            <b>{product.title}</b>?
           </span>
         </Dialog>
 
@@ -605,9 +603,9 @@ export default function AdminActivity () {
               width: 1300,
               zIndex: 80,
               height: "750px",
-              position: 'absolute',
-              top: '417px',
-              left: '880px',
+              position: "absolute",
+              top: "417px",
+              left: "880px",
               overflowY: "scroll",
               margin: "1rem",
             }}
@@ -642,12 +640,7 @@ export default function AdminActivity () {
 
             <div className="">
               <br />
-              <form
-                id="survey-form"
-                method="post"
-
-              >
-
+              <form id="survey-form" method="post">
                 {/* <div className="row">
                   <div className="col-md-6">
                     <button
@@ -660,61 +653,200 @@ export default function AdminActivity () {
                   </div>
 
                 </div> */}
-                <div style={{ paddingLeft: '30px', position: 'relative' }}>
-                  <div style={{ position: 'absolute', right: '20px', marginBottom: '20px' }}>
-                    <div style={{ cursor: 'pointer', border: 'none', padding: '8px 20px', background: '#3f6ad8', color: 'white', borderRadius: '5px' }} onClick={async () => {
-                      const action = await ActiveActivityAction(activity?.activityId, activity?.user?.email, activity?.user?.username, activity?.title);
-                      dispatch(action)
+                <div style={{ paddingLeft: "30px", position: "relative" }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: "20px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        cursor: "pointer",
+                        border: "none",
+                        padding: "8px 20px",
+                        background: "#3f6ad8",
+                        color: "white",
+                        borderRadius: "5px",
+                      }}
+                      onClick={async () => {
+                        const action = await ActiveActivityAction(
+                          activity?.activityId,
+                          activity?.user?.email,
+                          activity?.user?.username,
+                          activity?.title
+                        );
+                        dispatch(action);
 
-                      setIsOpen(false)
-
-                    }}>Hoạt động</div>
+                        setIsOpen(false);
+                      }}
+                    >
+                      Hoạt động
+                    </div>
                   </div>
-                  <h2 style={{ color: '#3f6ad8', textAlign: 'center', padding: '50px 0' }}>{activity?.title}</h2>
-                  <p style={{ fontSize: '18px', marginBottom: '30px', marginLeft: '200px', width: '800px' }}>{activity?.description}</p>
-                  <div style={{ textAlign: 'center', width: '800px', marginLeft: '200px' }}>
-                    <Slider {...settings} style={{ height: '500px' }}>
+                  <h2
+                    style={{
+                      color: "#3f6ad8",
+                      textAlign: "center",
+                      padding: "50px 0",
+                    }}
+                  >
+                    {activity?.title}
+                  </h2>
+                  <p
+                    style={{
+                      fontSize: "18px",
+                      marginBottom: "30px",
+                      marginLeft: "200px",
+                      width: "800px",
+                    }}
+                  >
+                    {activity?.description}
+                  </p>
+                  <div
+                    style={{
+                      textAlign: "center",
+                      width: "800px",
+                      marginLeft: "200px",
+                    }}
+                  >
+                    <Slider {...settings} style={{ height: "500px" }}>
                       {activity.media?.map((item, index) => {
-                        return <div style={{ textAlign: 'center' }}>
-                          <img src={item.linkMedia} width={800} height={500} />
-                        </div>
+                        return (
+                          <div style={{ textAlign: "center" }}>
+                            <img
+                              src={item.linkMedia}
+                              width={800}
+                              height={500}
+                            />
+                          </div>
+                        );
                       })}
                     </Slider>
                   </div>
-                  <div style={{ paddingLeft: '200px', marginTop: '40px', paddingBottom: '100px' }}>
-                    <p style={{ fontWeight: 800 }}>Bắt đầu : {moment(activity?.startDate).format('DD-MM-YYYY')}</p>
-                    <p style={{ fontWeight: 800 }}>Kết thúc : {moment(activity?.endDate).format('DD-MM-YYYY')}</p>
+                  <div
+                    style={{
+                      paddingLeft: "200px",
+                      marginTop: "40px",
+                      paddingBottom: "100px",
+                    }}
+                  >
+                    <p style={{ fontWeight: 800 }}>
+                      Bắt đầu :{" "}
+                      {moment(activity?.startDate).format("DD-MM-YYYY")}
+                    </p>
+                    <p style={{ fontWeight: 800 }}>
+                      Kết thúc :{" "}
+                      {moment(activity?.endDate).format("DD-MM-YYYY")}
+                    </p>
                     {/* <p style={{ fontWeight: 800 }}>Tiến trình :</p> */}
-                    <div style={{ width: '800px' }}>
-                      <Slider {...settings} >
+                    <div style={{ width: "800px" }}>
+                      <Slider {...settings}>
                         {activity.process?.map((item, index) => {
-                          return <div style={{ textAlign: 'center' }} key={index}>
-                            <p style={{ fontWeight: 800 }}>Tiến trình : {item.processNo}</p>
-                            <p style={{ fontSize: '20px', color: '#3f6ad8' }}>{item.processTitle}</p>
-                            <p>- {item.description}</p>
-                            <div style={{ width: '800px' }}>
-                              {item.media?.map((item1, index) => {
-                                return <img src={item1.linkMedia} width={800} height={500} />
-                              })}
+                          return (
+                            <div style={{ textAlign: "center" }} key={index}>
+                              <p style={{ fontWeight: 800 }}>
+                                Tiến trình : {item.processNo}
+                              </p>
+                              <p style={{ fontSize: "20px", color: "#3f6ad8" }}>
+                                {item.processTitle}
+                              </p>
+                              <p>- {item.description}</p>
+                              <div style={{ width: "800px", height: "400px" }}>
+                                <Slider {...settings}>
+                                  {item.media?.map((item1, index) => {
+                                    return (
+                                      <img
+                                        src={item1.linkMedia}
+                                        width={800}
+                                        height={400}
+                                      />
+                                    );
+                                  })}
+                                </Slider>
+                              </div>
+                              {item.isParticipant ? (
+                                <div
+                                  style={{
+                                    fontSize: "20px",
+                                    color: "black",
+                                    fontWeight: 400,
+                                    display: "flex",
+                                    paddingBottom: "20px",
+                                  }}
+                                >
+                                  <div>
+                                    {item.isParticipant ? (
+                                      <div> - Kêu gọi người tham gia :</div>
+                                    ) : (
+                                      <div></div>
+                                    )}
+                                  </div>
+                                  <div style={{ marginLeft: "5px" }}>
+                                    {item.targetParticipant !== 0 ? (
+                                      <div style={{ fontWeight: 600 }}>
+                                        {" "}
+                                        {item.targetParticipant.toLocaleString()}{" "}
+                                        người
+                                      </div>
+                                    ) : (
+                                      <div></div>
+                                    )}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div></div>
+                              )}
+                              {item.isDonateProcess ? (
+                                <div
+                                  style={{
+                                    fontSize: "20px",
+                                    color: "black",
+                                    fontWeight: 400,
+                                    display: "flex",
+                                    paddingBottom: "20px",
+                                  }}
+                                >
+                                  <div>
+                                    {item.isDonateProcess ? (
+                                      <div> - Kêu gọi quyên góp :</div>
+                                    ) : (
+                                      <div></div>
+                                    )}
+                                  </div>
+                                  <div style={{ marginLeft: "5px" }}>
+                                    {item.targetDonation !== 0 ? (
+                                      <div style={{ fontWeight: 600 }}>
+                                        {" "}
+                                        {item.targetDonation.toLocaleString()}{" "}
+                                        vnđ
+                                      </div>
+                                    ) : (
+                                      <div></div>
+                                    )}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div></div>
+                              )}
+                              <div
+                                style={{
+                                  fontSize: "20px",
+                                  color: "black",
+                                  fontWeight: 400,
+                                }}
+                              >
+                                - Địa điểm :{" "}
+                                <span style={{ fontWeight: 600 }}>
+                                  {item.location}
+                                </span>
+                              </div>
                             </div>
-                            {item.isParticipant ?
-                              <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
-                                <div>{item.isParticipant ? <div> - Kêu gọi người tham gia :</div> : <div></div>}</div>
-                                <div style={{ marginLeft: '5px' }}>{item.targetParticipant !== 0 ? <div style={{ fontWeight: 600 }}> {(item.targetParticipant).toLocaleString()} người</div> : <div></div>}</div>
-                              </div> : <div></div>}
-                            {item.isDonateProcess ?
-                              <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
-                                <div>{item.isDonateProcess ? <div> - Kêu gọi quyên góp :</div> : <div></div>}</div>
-                                <div style={{ marginLeft: '5px' }}>{item.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {(item.targetDonation).toLocaleString()} vnđ</div> : <div></div>}</div>
-                              </div> : <div></div>}
-                            <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm : <span style={{ fontWeight: 600 }}>{item.location}</span></div>
-                          </div>
-
-
+                          );
                         })}
                       </Slider>
                     </div>
-
                   </div>
                 </div>
               </form>

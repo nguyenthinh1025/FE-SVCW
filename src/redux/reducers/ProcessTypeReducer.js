@@ -1,8 +1,8 @@
 let activity = ''
 let activityprocess = []
 let process = []
-if (localStorage.getItem('activityProcess') !== '') {
-    activity = localStorage.getItem('activityProcess')
+if (localStorage.getItem('activityprocess')) {
+    activity = localStorage.getItem('activityprocess')
 }
 if (localStorage.getItem('activityprocess')) {
     activityprocess = localStorage.getItem('activityprocess')
@@ -12,7 +12,7 @@ if (JSON.parse(localStorage.getItem('processtype'))) {
 }
 const stateDefault = {
     processType: process,
-    activityProcess: activity,
+    activityProcess: '',
     processactivity: activityprocess
 }
 
