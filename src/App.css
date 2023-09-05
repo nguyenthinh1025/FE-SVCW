@@ -1369,75 +1369,80 @@ i.fa.fa-arrow-up {
 
 .tab-content .tab-pane h4 {
 
-text-transform: none; 
+  text-transform: none;
 
 }
 
-.group-avatar .follow{
+.group-avatar .follow {
   width: 87px;
-    position: absolute;
-    bottom: 30px;
-    right: 28px;
-    color: black;
-    background: white;
-    padding: 3px 5px;
-    border-radius: 8px;
+  position: absolute;
+  bottom: 30px;
+  right: 28px;
+  color: black;
+  background: white;
+  padding: 3px 5px;
+  border-radius: 8px;
 }
-.name-user{
+
+.name-user {
   font-size: 15px;
 }
-.model-1{
+
+.model-1 {
   position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1050;
-    /* display: none; */
-    display: block;
-    width: 100%;
-    height: 100%;
-    /* overflow: hidden; */
-    outline: 0;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  /* display: none; */
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+  outline: 0;
 }
 
 .fade-1:not(.show) {
   opacity: 1;
 }
-.style_slick-slider__bQI7O{
+
+.style_slick-slider__bQI7O {
   margin-right: 300px;
   padding-left: 300px;
-  width: 100%!important;
+  width: 100% !important;
 }
+
 .style_carousel-item__fTD3A img {
-  width: 100%!important;
+  width: 100% !important;
   height: 600px;
   object-fit: contain;
 }
 
-.share{ 
-    background: #eae9ee;
-    border-radius: 4px;
-    color: #82828e;
-    display: inline-block;
-    font-size: 13px;
-    padding: 5px 20px;
-    vertical-align: middle;
-    transition: all 0.2s linear 0s;
-cursor: pointer;
+.share {
+  background: #eae9ee;
+  border-radius: 4px;
+  color: #82828e;
+  display: inline-block;
+  font-size: 13px;
+  padding: 5px 20px;
+  vertical-align: middle;
+  transition: all 0.2s linear 0s;
+  cursor: pointer;
 }
 
-.fanpage-y{
-  width: 100px!important;
-    background: none 0px 0px repeat scroll rgb(8, 141, 205);
-    border-radius: 16px;
-    color: rgb(255, 255, 255)!important;
-    display: block;
-    font-size: 12px;
-    margin-top: 10px;
-    padding: 5px 10px 5px 30px;
-    cursor: pointer;
+.fanpage-y {
+  width: 100px !important;
+  background: none 0px 0px repeat scroll rgb(8, 141, 205);
+  border-radius: 16px;
+  color: rgb(255, 255, 255) !important;
+  display: block;
+  font-size: 12px;
+  margin-top: 10px;
+  padding: 5px 10px 5px 30px;
+  cursor: pointer;
 }
+
 .btn-change-1 {
-  background:  rgb(8, 141, 205);
+  background: rgb(8, 141, 205);
   color: rgb(255, 255, 255);
   border: 1px solid rgb(8, 141, 205);
   height: 28px;
@@ -1449,6 +1454,11 @@ cursor: pointer;
   padding: 5px 10px;
   cursor: pointer;
 }
-.error{
+
+.error {
   color: red;
+}
+
+.link-item>a p {
+  text-transform: none
 }

@@ -104,7 +104,7 @@ function SuggestedFanpage (props) {
               </a>
             </ins>
             <span>
-              <i className="icofont-runner-alt-1" /> Theo dõi fanpage tương tự
+              <i className="icofont-runner-alt-1" /> Theo dõi tổ chức tương tự
             </span>
           </div>
           <Slider {...settings}>
