@@ -97,7 +97,7 @@ export default function ItemEndActivity (props) {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
   };
   const openPopup = () => {
-    setPopupOpen( (prevIsOpen) => !prevIsOpen)
+    setPopupOpen((prevIsOpen) => !prevIsOpen)
     const action2 = {
       type: "DONATE",
       message: "",
@@ -123,8 +123,8 @@ export default function ItemEndActivity (props) {
       value: item.reportTypeId,
     };
   });
-const [donate ,setDonate] = useState('')
-const [donate1 ,setDonate1] = useState(0)
+  const [donate, setDonate] = useState('')
+  const [donate1, setDonate1] = useState(0)
   const formik1 = useFormik({
     initialValues: {
       title: "",
@@ -224,12 +224,12 @@ const [donate1 ,setDonate1] = useState(0)
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
-      
+
     } else {
       setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
-     
+
     }
     const action = GetListActivityAction();
     await dispatch(action);
@@ -252,12 +252,12 @@ const [donate1 ,setDonate1] = useState(0)
       setFollowIndex(null);
       const action = UnFollowAction(activity, userID);
       dispatch(action);
-      
+
     } else {
       setFollowIndex(index);
       const action = FollowAction(activity, userID);
       dispatch(action);
-      
+
     }
   };
   const handleLikeClick = (id) => {
@@ -722,17 +722,21 @@ const [donate1 ,setDonate1] = useState(0)
                             {pro.realDonation === 0 ? (
                               <div></div>
                             ) : (
-                              <div
-                                className="range-value"
-                                style={{
-                                  position: "absolute",
-                                  left: `${(pro.realDonation / pro.targetDonation) *
-                                    100
-                                    }%`,
-                                }}
-                              >
-                                {" "}
-                                {(pro.realDonation / pro.targetDonation) * 100}%
+                              <div style={{ position: 'relative' }}>
+                                <div
+                                  className="range-value"
+                                  style={{
+                                    position: "absolute",
+                                    left: `${(pro.realDonation / pro.targetDonation) *
+                                      96
+                                      }%`,
+                                    top: '-60px',
+                                    right: '30px'
+                                  }}
+                                >
+                                  {" "}
+                                  {(pro.realDonation / pro.targetDonation) * 100}%
+                                </div>
                               </div>
                             )}
                             <div
@@ -870,7 +874,7 @@ const [donate1 ,setDonate1] = useState(0)
                                 setDonate(
                                   ItemActivity.activityId
                                 );
-                               
+
                                 openPopup();
                               }}
                             >
@@ -1206,7 +1210,7 @@ const [donate1 ,setDonate1] = useState(0)
       />
       <CreateResultActivity popupStyleCreate={popupStyleCreate} handleClickCreate={handleClickCreate} idActivity={idActivity} isOpen={isOpen} />
       <ResultActivity popupStyle1={popupStyle1} handleClick1={handleClick1} isOpen1={isOpen1} idActivity={idActivity} />
-      <Donate isPopupOpen = {isPopupOpen}  openPopup={openPopup} donate={donate} />
+      <Donate isPopupOpen={isPopupOpen} openPopup={openPopup} donate={donate} />
     </div>
   );
 }

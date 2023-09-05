@@ -23,7 +23,7 @@ import {
 import { GetListReportTypeAction } from "../../redux/actions/ReportTypeAction";
 import YourFanpage from "../../components/YourFanpage";
 
-export default function Profile(props) {
+export default function Profile (props) {
   const { id } = props.match.params;
   const dispatch = useDispatch();
   const [reloadPage, setReloadPage] = useState(false);
@@ -198,8 +198,8 @@ export default function Profile(props) {
                                   <Other />
                                 </div>
                               </div>
-                          
-                                <Albums arrActivity={getUserId?.activity} />
+
+                              <Albums arrActivity={getUserId?.activity} />
                               <div className="tab-pane fade" id="about">
                                 <div className="row merged20">
                                   <div className="col-lg-12">

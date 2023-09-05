@@ -345,7 +345,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
             </div>
             <div class="col-md-6">
               <label for="validationDefault06" class="form-label">
-                Ngày tham gia
+                Ngày sinh nhật
               </label>
               <input
                 type="date"

@@ -103,7 +103,7 @@ export default function CreateActivity () {
     setUploadProgress(0);
   };
 
-  const [create,setCreate] = useState(activityProcess)
+  const [create, setCreate] = useState(activityProcess)
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -145,7 +145,7 @@ export default function CreateActivity () {
       setIsDisplay(false);
     },
   });
-console.log(create)
+  console.log(create)
 
   const process = processType?.map((item, index) => {
     return {
@@ -284,8 +284,8 @@ console.log(create)
         zIndex: 999
       })
       setError('2')
-    }else if (parseFloat(updatedInputFields[index].targetDonation) > 100) {
-     
+    } else if (parseFloat(updatedInputFields[index].targetDonation) > 100) {
+
       Swal.fire({
         title: 'Cảnh báo',
         text: `Số tiền tối đa bạn có thể tạo cho chiến dịch là ${Number(localStorage.getItem('maxDonate'))}`,
@@ -311,7 +311,7 @@ console.log(create)
     event.preventDefault();
     if (error === '1') {
       console.log(inputFields);
-      const text = inputFields.map((item,index)=>{
+      const text = inputFields.map((item, index) => {
         return {
           processTitle: item.processTitle,
           description: item.description,
@@ -336,7 +336,7 @@ console.log(create)
       console.log(localStorage.getItem('startactivity'));
       const action1 = await CreateProcessAction(text, handleClick1);
       dispatch(action1)
-      
+
     }
     else {
       Swal.fire({
@@ -393,7 +393,7 @@ console.log(create)
     }
 
     updatedInputFields[index].meida = uploadedImageUrls;
-    const img = uploadedImageUrls.map((item,index)=>{
+    const img = uploadedImageUrls.map((item, index) => {
       return {
         linkMedia: item,
         type: "string"
@@ -415,7 +415,7 @@ console.log(create)
       console.log('có user');
       const action = GetUserByIdAction(user);
       dispatch(action);
-  
+
     }
   }, [create]);
   return (
@@ -562,7 +562,7 @@ console.log(create)
                   <div className="col-md-6">
                     <div className="form-group">
                       <label id="name-label" htmlFor="name">
-                        Nơi diễn ra
+                        Đối tượng hỗ trợ
                       </label>
                       <input
                         type="text"
@@ -573,16 +573,16 @@ console.log(create)
                         }}
                         value={formik.values.location}
                         id="name"
-                        placeholder="Nhập nơi diễn ra"
+                        placeholder=" Đối tượng hỗ trợ"
                         className="form-control"
                         required
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
-                  
+
                   </div>
-                
+
                   <div className="col-md-12">
                     <div style={{ height: "200px", width: "100%" }}>
                       <GoogleMapReact
@@ -765,8 +765,8 @@ console.log(create)
                             icon: 'warning',
                             showCancelButton: false, // Set this to false to hide the cancel button
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Hoàn thành',
-                            zIndex:999
+                            confirmButtonText: 'Đồng ý',
+                            zIndex: 999
                           })
 
                         }
@@ -989,9 +989,9 @@ console.log(create)
                                   min={0}
                                   name="targetDonation"
                                   value={data.targetDonation}
-                                  onChange={(event) =>{
-                                   
-                                    if(Number(event.target.value) >Number(localStorage.getItem('maxDonate'))){
+                                  onChange={(event) => {
+
+                                    if (Number(event.target.value) > Number(localStorage.getItem('maxDonate'))) {
                                       Swal.fire({
                                         title: 'Cảnh báo',
                                         text: `Số tiền lớn hơn số tiền tối đa bạn có thể tạo cho chiến dịch! ${Number(localStorage.getItem('maxDonate'))?.toLocaleString()} vnđ`,
@@ -1002,7 +1002,7 @@ console.log(create)
                                         zIndex: 999
                                       })
                                       setError('2')
-                                    }else{
+                                    } else {
                                       handleInputChange(index, "targetDonation", event.target.value)
                                       setError('1')
                                     }
