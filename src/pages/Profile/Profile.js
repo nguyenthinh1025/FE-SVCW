@@ -99,7 +99,7 @@ export default function Profile (props) {
                               {moment(getUserId?.createAt).format("DD-MM-YYYY")}
                             </li>
                             <li>
-                              <span>Số nhóm đã theo dõi:</span>{" "}
+                              <span>Số tổ chức đang theo dõi:</span>{" "}
                               {getUserId?.followFanpage?.length}
                             </li>
                             <li>

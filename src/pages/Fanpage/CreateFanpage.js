@@ -17,7 +17,7 @@ export default function CreateFanpage (props) {
   const [uploadProgress1, setUploadProgress1] = useState(0);
 
   const validationSchema = Yup.object({
-    fanpageName: Yup.string().required("Tên Fanpage không được bỏ trống"),
+    fanpageName: Yup.string().required("Tên tổ chức không được bỏ trống"),
     mst: Yup.string()
       .matches(/^\d+$/, "Mã Số Thuế chỉ được nhập số")
       .test(
@@ -69,7 +69,7 @@ export default function CreateFanpage (props) {
 
       Toast.fire({
         icon: "success",
-        title: `Gửi yêu cầu tạo nhóm thành công. Chờ admin kiểm duyệt nhé!!!`,
+        title: `Gửi yêu cầu tạo tổ chức thành công. Chờ admin kiểm duyệt nhé!!!`,
       });
     },
   });
@@ -153,7 +153,7 @@ export default function CreateFanpage (props) {
                     <div className="col-lg-8">
                       <div className="main-wraper">
                         <h4 className="main-title">
-                          <i className="icofont-bill" /> Tạo Mới Fanpage
+                          <i className="icofont-bill" /> Tạo mới tổ chức
                         </h4>
                         <div className="billing">
                           <div className="row">
@@ -251,7 +251,7 @@ export default function CreateFanpage (props) {
                           !formik.values.coverImage
                         }
                       >
-                        Tạo Fanpage
+                        Tạo tổ chức
                       </button>
                     </div>
                     <div className="col-lg-4">

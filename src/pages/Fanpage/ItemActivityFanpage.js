@@ -423,7 +423,7 @@ export default function ItemActivityFanpage(props) {
                       // dispatch(action)
                     }}
                   >
-                    Xem tiến trình
+                    Xem hoạt động
                   </NavLink>
                 ) : (
                   <div></div>
@@ -893,7 +893,7 @@ export default function ItemActivityFanpage(props) {
                         // dispatch(action)
                       }}
                     >
-                      Xem tiến trình
+                      Xem hoạt động
                     </NavLink>
                   ) : (
                     <div></div>

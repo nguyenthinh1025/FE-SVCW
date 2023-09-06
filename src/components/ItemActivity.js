@@ -394,7 +394,7 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                     // dispatch(action)
                   }}
                 >
-                  Xem tiến trình
+                  Xem hoạt động
                 </NavLink>
               ) : (
                 <div></div>
@@ -856,7 +856,7 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                       // dispatch(action)
                     }}
                   >
-                    Xem tiến trình
+                    Xem hoạt động
                   </NavLink>
                 ) : (
                   <div></div>

@@ -140,7 +140,7 @@ export default function UpdateFanpage (props) {
                         <line x1={5} y1={12} x2={19} y2={12} />
                       </svg>
                     </i>
-                    Chỉnh sửa Fanpage của bạn
+                    Chỉnh sửa tổ chức của bạn
                   </h5>
                 </div>
               </div>
@@ -161,7 +161,7 @@ export default function UpdateFanpage (props) {
                   <div className="col-lg-8">
                     <div className="main-wraper">
                       <h4 className="main-title">
-                        <i className="icofont-bill" /> Chỉnh sửa Fanpage
+                        <i className="icofont-bill" /> Chỉnh sửa tổ chức
                       </h4>
                       <div className="billing">
                         <div className="row">
@@ -172,7 +172,7 @@ export default function UpdateFanpage (props) {
                               value={formik.values.fanpageName}
                               onChange={formik.handleChange}
                               type="text"
-                              placeholder="Tên Fanpage"
+                              placeholder="Tên tổ chức"
                             />
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-12 mb-4">

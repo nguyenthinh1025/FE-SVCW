@@ -19,7 +19,7 @@ export default function CompleteInfo () {
   return (
     <div className="widget">
       <h4 className="widget-title">Thông tin cá nhân bạn</h4>
-      <span>Tiến trình hoàn thiện thông tin cá nhân</span>
+      <span>Hoạt động hoàn thiện thông tin cá nhân</span>
       <div
         data-progress="tip"
         className="progress__outer"

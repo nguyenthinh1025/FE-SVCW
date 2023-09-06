@@ -12,7 +12,7 @@ export default function YourFanpage () {
         {localStorage.getItem("userID") &&
           getUserId?.fanpage?.status === "Active" ? (
           <div className="widget">
-            <h4 className="widget-title">Fanpage của bạn</h4>
+            <h4 className="widget-title">Tổ chức của bạn</h4>
             <ul className="ak-groups">
               <li>
                 <figure>

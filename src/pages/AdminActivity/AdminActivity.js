@@ -740,14 +740,14 @@ export default function AdminActivity() {
                       Kết thúc :{" "}
                       {moment(activity?.endDate).format("DD-MM-YYYY")}
                     </p>
-                    {/* <p style={{ fontWeight: 800 }}>Tiến trình :</p> */}
+                    {/* <p style={{ fontWeight: 800 }}>Hoạt động :</p> */}
                     <div style={{ width: "800px" }}>
                       <Slider {...settings}>
                         {activity.process?.map((item, index) => {
                           return (
                             <div style={{ textAlign: "center" }} key={index}>
                               <p style={{ fontWeight: 800 }}>
-                                Tiến trình : {item.processNo}
+                                Hoạt động : {item.processNo}
                               </p>
                               <p style={{ fontSize: "20px", color: "#3f6ad8" }}>
                                 {item.processTitle}

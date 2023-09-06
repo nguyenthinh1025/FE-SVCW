@@ -152,7 +152,7 @@ export default function DetailProcess (props) {
       if (moment(value.startDate).isBefore(currentObject.activity?.startDate)) {
         Swal.fire({
           title: 'Cảnh báo',
-          text: `Ngày bắt đầu tiến trình không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(currentObject.activity?.startDate).format('DD-MM-YYYY')}`,
+          text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(currentObject.activity?.startDate).format('DD-MM-YYYY')}`,
           icon: 'warning',
           showCancelButton: false,
           confirmButtonColor: '#3085d6',
@@ -162,7 +162,7 @@ export default function DetailProcess (props) {
       } else if (moment(value.endDate).isAfter(currentObject.activity?.endDate)) {
         Swal.fire({
           title: 'Cảnh báo',
-          text: `Ngày kết thúc tiến trình không lớn hơn ngày kết thúc chiến dịch! ${moment(currentObject.activity?.endDate).format('DD-MM-YYYY')}`,
+          text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(currentObject.activity?.endDate).format('DD-MM-YYYY')}`,
           icon: 'warning',
           showCancelButton: false,
           confirmButtonColor: '#3085d6',
@@ -231,7 +231,7 @@ export default function DetailProcess (props) {
     swalWithBootstrapButtons
       .fire({
         title: "Bạn đã chắc chắn?",
-        text: "Bạn muốn xóa tiến trình này!",
+        text: "Bạn muốn xóa hoạt động này!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Đồng Ý!",
@@ -250,7 +250,7 @@ export default function DetailProcess (props) {
 
           swalWithBootstrapButtons.fire(
             "Xóa!",
-            "Xóa Thành Công Tiến Trình.",
+            "Xóa thành công hoạt động.",
             "success"
           );
         } else if (
@@ -259,7 +259,7 @@ export default function DetailProcess (props) {
         ) {
           swalWithBootstrapButtons.fire(
             "Hủy bỏ",
-            "Hủy bỏ xóa tiến trình",
+            "Hủy bỏ xóa hoạt động",
             "error"
           );
         }
@@ -301,7 +301,7 @@ export default function DetailProcess (props) {
                     Trang chủ
                   </h4> */}
                   <h2 style={{ color: '#00a6d3', textAlign: 'center', fontSize: '40px', fontWeight: 800 }}>{currentObject?.activity?.title}</h2>
-                  <p style={{ fontSize: '25px', marginLeft: '100px', color: 'rgb(0, 166, 211)' }}>Tiến trình : {currentObject?.processNo}</p>
+                  <p style={{ fontSize: '25px', marginLeft: '100px', color: 'rgb(0, 166, 211)' }}>Hoạt động : {currentObject?.processNo}</p>
                 </div>
               </div>
               <div className="more">
@@ -328,12 +328,12 @@ export default function DetailProcess (props) {
                     <li onClick={handleClick1}>
                       <i className="icofont-pen-alt-1" />
                       Thêm mới
-                      <span>Thêm mới tiến trình</span>
+                      <span>Thêm mới hoạt động</span>
                     </li>
                     <li onClick={handleClick}>
                       <i className="icofont-pen-alt-1" />
                       Chỉnh sửa
-                      <span>Chỉnh sửa tiến trình</span>
+                      <span>Chỉnh sửa hoạt động</span>
                     </li>
                     <li
                       onClick={() => {
@@ -342,7 +342,7 @@ export default function DetailProcess (props) {
                     >
                       <i className="icofont-ban" />
                       Xóa
-                      <span>Xóa tiến trình</span>
+                      <span>Xóa hoạt động</span>
                     </li>
                   </ul>
                 </div>
@@ -357,7 +357,7 @@ export default function DetailProcess (props) {
                   color: "#3f6ad8",
                 }}
               >
-                Chưa có tiến trình
+                Chưa có hoạt động
               </h2>
             ) : (
               <div className="row">
@@ -449,7 +449,7 @@ export default function DetailProcess (props) {
                             <span className="pe" style={{ color: "#00a6d3" }}>
                               Trang trước
                             </span>
-                            <p>Xem lại tiến trình trước.</p>
+                            <p>Xem lại hoạt động trước.</p>
                           </div>
                         </div>
                       </div>
@@ -470,7 +470,7 @@ export default function DetailProcess (props) {
                             <span className="per" style={{ color: "#00a6d3" }}>
                               Trang sau
                             </span>
-                            <p>Xem tiếp tiến trình sau.</p>
+                            <p>Xem tiếp hoạt động sau.</p>
                           </div>
                         </div>
                       </div>
@@ -524,7 +524,7 @@ export default function DetailProcess (props) {
                       <line x1={5} y1={12} x2={19} y2={12} />
                     </svg>
                   </i>
-                  Chỉnh sửa tiến trình
+                  Chỉnh sửa hoạt động
                 </h5>
               </div>
             </div>
@@ -541,7 +541,7 @@ export default function DetailProcess (props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
-                          Tên tiến trình
+                          Tên hoạt động
                         </label>
                         <input
                           type="text"
@@ -549,7 +549,7 @@ export default function DetailProcess (props) {
                           onChange={formik.handleChange}
                           value={formik.values.processTitle}
                           id="name"
-                          placeholder="Nhập Tên Tiến Trình"
+                          placeholder="Nhập tên hoạt động"
                           className="form-control"
                           required
                         />
@@ -558,7 +558,7 @@ export default function DetailProcess (props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="email-label" htmlFor="email">
-                          Mô tả tiến trình
+                          Mô tả hoạt động
                         </label>
                         <input
                           type="text"
@@ -612,7 +612,7 @@ export default function DetailProcess (props) {
                     <div className="col-md-12">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
-                          Loại tiến trình
+                          Loại hoạt động
                         </label>
                         <select
                           data-te-select-init
@@ -687,7 +687,7 @@ export default function DetailProcess (props) {
                       <line x1={5} y1={12} x2={19} y2={12} />
                     </svg>
                   </i>
-                  Thêm MớiTiến Trình
+                  Thêm mới hoạt động
                 </h5>
               </div>
             </div>
@@ -704,14 +704,14 @@ export default function DetailProcess (props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
-                          Tên tiến trình
+                          Tên hoạt động
                         </label>
                         <input
                           type="text"
                           name="processTitle"
                           onChange={formik1.handleChange}
                           id="name"
-                          placeholder="Nhập Tên Tiến Trình"
+                          placeholder="Nhập tên hoạt động"
                           className="form-control"
                           required
                         />
@@ -720,7 +720,7 @@ export default function DetailProcess (props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="email-label" htmlFor="email">
-                          Mô tả tiến trình
+                          Mô tả hoạt động
                         </label>
                         <input
                           type="text"
@@ -771,7 +771,7 @@ export default function DetailProcess (props) {
                     <div className="col-md-12">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
-                          Loại tiến trình
+                          Loại hoạt động
                         </label>
                         <select
                           data-te-select-init
@@ -781,7 +781,7 @@ export default function DetailProcess (props) {
                           id="name"
                           className="form-control"
                         >
-                          <option value={""}>Chọn loại tiến trình</option>
+                          <option value={""}>Chọn loại hoạt động</option>
                           {processType.map((item, index) => {
                             return (
                               <option value={item.processTypeId} key={index} onClick={() => {
@@ -978,7 +978,7 @@ export default function DetailProcess (props) {
                       <line x1={5} y1={12} x2={19} y2={12} />
                     </svg>
                   </i>
-                  Thêm MớiTiến Trình
+                  Thêm mới hoạt động 
                 </h5>
               </div>
             </div>
@@ -995,14 +995,14 @@ export default function DetailProcess (props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
-                          Tên Tiến Trình
+                          Tên hoạt động
                         </label>
                         <input
                           type="text"
                           name="processTitle"
                           onChange={formik1.handleChange}
                           id="name"
-                          placeholder="Nhập Tên Tiến Trình"
+                          placeholder="Nhập tên hoạt động"
                           className="form-control"
                           required
                         />
@@ -1011,7 +1011,7 @@ export default function DetailProcess (props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="email-label" htmlFor="email">
-                          Mô Tả Tiến Trình
+                          Mô tả hoạt động
                         </label>
                         <input
                           type="text"
@@ -1062,7 +1062,7 @@ export default function DetailProcess (props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
-                          Loại tiến trình
+                          Loại hoạt động
                         </label>
                         <select
                           data-te-select-init
@@ -1087,7 +1087,7 @@ export default function DetailProcess (props) {
                           id="name"
                           className="form-control"
                         >
-                          <option value={""}>Chọn loại tiến trình</option>
+                          <option value={""}>Chọn loại hoạt động</option>
                           {processType.map((item, index) => {
                             return (
                               <option value={item.processTypeId} key={index} >

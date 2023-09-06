@@ -56,7 +56,7 @@ export default function ProcessType () {
   };
 
   const [inputValue, setInputValue] = useState("");
-  const [text, setText] = useState("Thêm mới loại tiến trình");
+  const [text, setText] = useState("Thêm mới loại hoạt động");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -119,7 +119,7 @@ export default function ProcessType () {
         toast.current.show({
           severity: "success",
           summary: "Thành công",
-          detail: `Cập nhật loại tiến trình ${product.processTypeId} thành công`,
+          detail: `Cập nhật loại hoạt động ${product.processTypeId} thành công`,
           life: 3000,
         });
       } else {
@@ -128,7 +128,7 @@ export default function ProcessType () {
         toast.current.show({
           severity: "success",
           summary: "Thành công",
-          detail: "Tạo  mới loại tiến trình thành công",
+          detail: "Tạo  mới loại hoạt động thành công",
           life: 3000,
         });
       }
@@ -140,7 +140,7 @@ export default function ProcessType () {
   };
 
   const editProduct = (product) => {
-    setText("Chỉnh sửa loại tiến trình");
+    setText("Chỉnh sửa loại hoạt động");
     setProduct({ ...product });
     setProductDialog(true);
     setTempProduct({ ...product });
@@ -159,7 +159,7 @@ export default function ProcessType () {
     toast.current.show({
       severity: "error",
       summary: "Thành công",
-      detail: `Xóa loại tiến trình ${product.processTypeId} thành công`,
+      detail: `Xóa loại hoạt động ${product.processTypeId} thành công`,
       life: 3000,
       options: {
         style: {
@@ -363,7 +363,7 @@ export default function ProcessType () {
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0 mb-4">Quản lý loại tiến trình</h4>
+      <h4 className="m-0 mb-4">Quản lý loại hoạt động</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -449,13 +449,13 @@ export default function ProcessType () {
             ></Column>
             {/* <Column
               field="processTypeName"
-              header="Tên Loại Tiến Trình"
+              header="Tên Loại hoạt động"
               sortable
               style={{ minWidth: "11rem" }}
             ></Column> */}
             <Column
               field="processTypeName"
-              header="Tên loại tiến trình"
+              header="Tên loại hoạt động"
               sortable
               style={{ minWidth: "12rem" }}
               body={(rowData) => {
@@ -515,7 +515,7 @@ export default function ProcessType () {
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
           onClick={() => {
-            setText("Thêm mới toại tiến trình");
+            setText("Thêm mới toại hoạt động");
           }}
           header={text}
           modal
@@ -529,7 +529,7 @@ export default function ProcessType () {
               className="font-bold"
               style={{ fontWeight: "bold" }}
             >
-              Tên loại tiến trình
+              Tên loại hoạt động
             </label>
             <br />
             <InputText
@@ -544,7 +544,7 @@ export default function ProcessType () {
             />
             {submitted && !product.processTypeName && (
               <small className="p-error">
-                Tên loại tiến trình không được để trống.
+                Tên loại hoạt động không được để trống.
               </small>
             )}
           </div>
@@ -586,7 +586,7 @@ export default function ProcessType () {
             />
             {product && (
               <span>
-                Bạn có chắc chắn muốn xóa loại tiến trình{" "}
+                Bạn có chắc chắn muốn xóa loại hoạt động{" "}
                 <b>{product.processTypeId}</b>?
               </span>
             )}

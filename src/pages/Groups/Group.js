@@ -71,7 +71,7 @@ export default function Group () {
                                 <div id="page-contents" className="row merged20">
                                     <div className="col-lg-12">
                                         <div className="main-wraper">
-                                            <h4 className="main-title"><i className><svg className="feather feather-users" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={18} width={18} xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle r={4} cy={7} cx={9} /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg></i> Fanpages</h4>
+                                            <h4 className="main-title"><i className><svg className="feather feather-users" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={18} width={18} xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle r={4} cy={7} cx={9} /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg></i> Tổ chức</h4>
                                             <div className="row col-xs-6">
                                                 {arrFanpage.filter(item => item.status === "Active").map((item, index) => {
                                                     let isAlreadyFollowed = false;

@@ -903,10 +903,10 @@ export default function Home (props) {
       swalWithBootstrapButtons
         .fire({
           title: 'Tạo mới chiến dịch thành công',
-          text: 'Bạn muốn thêm chi tiết tiến trình cho chiến dịch',
+          text: 'Bạn muốn thêm chi tiết hoạt động cho chiến dịch',
           icon: 'success',
           showCancelButton: true,
-          confirmButtonText: 'Thêm tiến trình',
+          confirmButtonText: 'Thêm hoạt động',
           cancelButtonText: 'Hoàn thành',
           reverseButtons: true,
         })
@@ -917,7 +917,7 @@ export default function Home (props) {
             setTT(true);
             // swalWithBootstrapButtons.fire(
             //   "Thành công!",
-            //   "Thêm tiến trình thành công.",
+            //   "Thêm hoạt động thành công.",
             //   "success"
             // );
             formik.setFieldValue('title', '');
@@ -931,7 +931,7 @@ export default function Home (props) {
           ) {
             swalWithBootstrapButtons.fire(
               'Thành công',
-              'Thêm tiến trình thành  công',
+              'Thêm hoạt động thành  công',
               'success'
             );
             formik.setFieldValue('title', '');
@@ -1362,7 +1362,7 @@ export default function Home (props) {
                 {userByID.fanpage === null ? (
                   <li>
                     <NavLink to="/createfanpage" title>
-                      <i className="icofont-plus" /> Tạo Fanpage
+                      <i className="icofont-plus" /> Tạo tổ chức
                     </NavLink>
                   </li>
                 ) : (
@@ -1450,7 +1450,7 @@ export default function Home (props) {
                     </div>
                     <div className="widget">
                       <h4 className="widget-title">Thông tin cá nhân bạn</h4>
-                      <span>Tiến trình hoàn thiện thông tin cá nhân</span>
+                      <span>Hoạt động hoàn thiện thông tin cá nhân</span>
                       <div
                         data-progress="tip"
                         className="progress__outer"
@@ -1672,7 +1672,7 @@ export default function Home (props) {
                           </ins>
                           <span>
                             <i className="icofont-runner-alt-1" /> Theo dõi
-                            fanpage tương tự
+                            tổ chức tương tự
                           </span>
                         </div>
                         <SimpleSlider arrFanpage={arrFanpage} />
@@ -1885,7 +1885,7 @@ export default function Home (props) {
                                       // dispatch(action)
                                     }}
                                   >
-                                    Xem tiến trình
+                                    Xem hoạt động
                                   </NavLink>
                                 ) : (
                                   <div></div>
@@ -2300,7 +2300,7 @@ export default function Home (props) {
                                         // dispatch(action)
                                       }}
                                     >
-                                      Xem tiến trình
+                                      Xem hoạt động
                                     </NavLink>
                                   ) : (
                                     <div></div>
@@ -2705,7 +2705,7 @@ export default function Home (props) {
                     {localStorage.getItem('userID') &&
                       userByID?.fanpage?.status === 'Active' ? (
                       <div className="widget">
-                        <h4 className="widget-title">Nhóm của bạn</h4>
+                        <h4 className="widget-title">Tổ chức của bạn</h4>
                         <ul className="ak-groups">
                           <li>
                             <figure>
@@ -3389,7 +3389,7 @@ export default function Home (props) {
                               style={{ marginRight: '20px' }}
                               htmlFor="name"
                             >
-                              Chia sẻ lên nhóm của bạn
+                              Chia sẻ lên tổ chức của bạn
                             </label>
                             <input
                               type="checkbox"
@@ -3804,7 +3804,7 @@ export default function Home (props) {
 
                               <div className="form-group">
                                 <label htmlFor={`processTypeId_${index}`}>
-                                  Thể loại tiến trình
+                                  Thể loại hoạt động
                                 </label>
                                 <select
                                   name={`forms[${index}].processTypeId`}
@@ -3975,7 +3975,7 @@ export default function Home (props) {
               <form onSubmit={formik6.handleSubmit}>
                 <div className="form row mt-3">
                   <div className="form-group">
-                    <label>Thể loại tiến trình</label>
+                    <label>Thể loại hoạt động</label>
                     <select
                       value="" // Bind the select value to the formData value
                       onChange={(e) => onInputDropdown(e)} // Pass the formIndex to handleSelectChange
@@ -4031,7 +4031,7 @@ export default function Home (props) {
                                     <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus">
                                         <line x1={12} y1={5} x2={12} y2={19} />
                                         <line x1={5} y1={12} x2={19} y2={12} />
-                                    </svg></i>Xem Tiến Trình</h5>
+                                    </svg></i>Xem hoạt động</h5>
                             </div>
                         </div>
 

@@ -514,7 +514,7 @@ export default function DetailActivity(props) {
                       // dispatch(action)
                     }}
                   >
-                    Xem tiến trình
+                    Xem hoạt động
                   </NavLink>
                 ) : (
                   <div></div>

@@ -332,7 +332,7 @@ export default function Result () {
                                             </div>
                                             <div className="tab-pane fade" id="groups">
                                                 <div className="main-wraper">
-                                                    <h4 className="main-title">Fanpages</h4>
+                                                    <h4 className="main-title">Tổ chức</h4>
                                                     <div className="row col-xs-6">
                                                         <div className="col-lg-3 col-md-4 col-sm-4">
                                                             <div className="group-box">

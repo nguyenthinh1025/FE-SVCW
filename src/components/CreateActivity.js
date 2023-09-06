@@ -237,7 +237,7 @@ export default function CreateActivity () {
       console.log("trước ngày tạo");
       Swal.fire({
         title: 'Cảnh báo',
-        text: `Ngày bắt đầu tiến trình không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(localStorage.getItem('startactivity')).format('DD-MM-YYYY')}`,
+        text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(localStorage.getItem('startactivity')).format('DD-MM-YYYY')}`,
         icon: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
@@ -250,7 +250,7 @@ export default function CreateActivity () {
       console.log("trước ngày tạo");
       Swal.fire({
         title: 'Cảnh báo',
-        text: `Ngày bắt đầu tiến trình không lớn hơn ngày kết thúc chiến dịch! ${moment(localStorage.getItem('endstart')).format('DD-MM-YYYY')}`,
+        text: `Ngày bắt đầu hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(localStorage.getItem('endstart')).format('DD-MM-YYYY')}`,
         icon: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
@@ -263,7 +263,7 @@ export default function CreateActivity () {
       console.log("sau ngày tạo");
       Swal.fire({
         title: 'Cảnh báo',
-        text: `Ngày kết thúc tiến trình không lớn hơn ngày kết thúc chiến dịch! ${moment(localStorage.getItem('endstart')).format('DD-MM-YYYY')}`,
+        text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(localStorage.getItem('endstart')).format('DD-MM-YYYY')}`,
         icon: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
@@ -276,7 +276,7 @@ export default function CreateActivity () {
       console.log("sau ngày tạo 1");
       Swal.fire({
         title: 'Cảnh báo',
-        text: `Ngày kết thúc tiến trình không bé hơn ngày bắt đầu chiến dịch! ${moment(localStorage.getItem('startactivity')).format('DD-MM-YYYY')}`,
+        text: `Ngày kết thúc hoạt động không bé hơn ngày bắt đầu chiến dịch! ${moment(localStorage.getItem('startactivity')).format('DD-MM-YYYY')}`,
         icon: 'warning',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
@@ -621,7 +621,7 @@ export default function CreateActivity () {
                             style={{ marginRight: "20px" }}
                             htmlFor="name"
                           >
-                            Chia sẻ lên nhóm của bạn
+                            Chia sẻ lên tổ chức của bạn
                           </label>
                           <input
                             type="checkbox"
@@ -772,7 +772,7 @@ export default function CreateActivity () {
                         }
                       }}
                     >
-                      Thêm tiến trình
+                      Thêm hoạt động
                     </button>
                   </div>
                 </div>
@@ -818,7 +818,7 @@ export default function CreateActivity () {
                       <line x1={5} y1={12} x2={19} y2={12} />
                     </svg>
                   </i>
-                  Thêm tiến trình
+                  Thêm hoạt động
                 </h5>
               </div>
             </div>
@@ -833,7 +833,7 @@ export default function CreateActivity () {
                   {inputFields?.map((data, index) => (
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Tiến trình thứ {index + 1}</div>
+                        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Hoạt động thứ {index + 1}</div>
                         <div className="">
                           {inputFields.length !== 1 && (
                             <button
@@ -851,7 +851,7 @@ export default function CreateActivity () {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label id="name-label" htmlFor="name">
-                              Tên tiến trình
+                              Tên hoạt động
                             </label>
                             <input
                               type="text"
@@ -860,14 +860,14 @@ export default function CreateActivity () {
                                 handleInputChange(index, "processTitle", event.target.value)
                               }
                               className="form-control"
-                              placeholder="Tên tiến trình"
+                              placeholder="Tên hoạt động"
                             />
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label id="name-label" htmlFor="name">
-                              Chi tiết tiến trình
+                              Chi tiết hoạt động
                             </label>
                             <input
                               type="text"
@@ -924,7 +924,7 @@ export default function CreateActivity () {
                               fontSize: "18px",
                               color: "#000"
                             }}>
-                              Loại tiến trình
+                              Loại hoạt động
                             </label>
                             <select className="form-control"
                               onChange={(e) =>

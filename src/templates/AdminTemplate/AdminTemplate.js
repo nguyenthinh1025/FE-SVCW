@@ -627,11 +627,11 @@ export const AdminTemplate = (props) => {
                                                 Huy hiệu
                                             </NavLink>
                                         </li>
-                                        <li className="app-sidebar__heading">Tiến trình</li>
+                                        <li className="app-sidebar__heading">Hoạt động</li>
                                         <li>
                                             <NavLink to='/processtype'>
                                                 <i className="metismenu-icon pe-7s-mouse">
-                                                </i>Loại tiến trình
+                                                </i>Loại hoạt động
                                             </NavLink>
                                         </li>
 
@@ -660,11 +660,11 @@ export const AdminTemplate = (props) => {
                                             </li>
 
                                         </Fragment> : <Fragment></Fragment>}
-                                        <li className="app-sidebar__heading">Fanpage</li>
+                                        <li className="app-sidebar__heading">Tổ chức</li>
                                         <li>
                                             <NavLink to='/adminfanpage'>
                                                 <i className="metismenu-icon pe-7s-graph2">
-                                                </i>Fanpage
+                                                </i>Tổ chức
                                             </NavLink>
                                         </li>
                                         <li className="app-sidebar__heading">Báo cáo</li>
