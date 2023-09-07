@@ -899,7 +899,7 @@ export default function ItemEndActivity (props) {
                       dispatch(action)
                     }}
                   >
-                    Xem tiến trình
+                    Xem hoạt động
                   </NavLink>
                 ) : (
                   <div></div>
