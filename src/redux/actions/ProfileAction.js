@@ -18,6 +18,10 @@ export const GetProfileByIdAction = (id) => {
         JSON.stringify(result.data?.data?.user)
       );
       localStorage.setItem(
+        "useridprofile",
+        result.data?.data?.user.userId
+      );
+      localStorage.setItem(
         "arrActivityUser",
         JSON.stringify(result.data.data?.user?.activity)
       );

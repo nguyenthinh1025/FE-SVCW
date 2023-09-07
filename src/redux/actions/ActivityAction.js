@@ -147,7 +147,7 @@ export const PostLikeAction = (value) => {
             dispatch(action)
             const action1 = GetListEndActivityAction()
             dispatch(action1)
-            const action2 = GetProfileByIdAction(value.userId)
+            const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'))
             dispatch(action2)
             const action3 = GetActivityIDAction(value.activityId)
             dispatch(action3)
@@ -175,7 +175,7 @@ export const DeleteLikeAction = (value) => {
             dispatch(action)
             const action1 = GetListEndActivityAction()
             dispatch(action1)
-            const action2 = GetProfileByIdAction(value.userId)
+            const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'))
             dispatch(action2)
             const action3 = GetActivityIDAction(value.activityId)
             dispatch(action3)
@@ -371,6 +371,34 @@ export const ActiveActivityAction = (id, email, fullname, activityName) => {
                 </div>
             </body>            
             `)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+
+export const GetQRActivityAction = (id) => {
+    return async (dispatch) => {
+        try {
+            let response = await http.get(`/QR/QR?activityId=${id}`, { responseType: 'arraybuffer' });
+
+            // Tạo một blob từ dữ liệu nhận được từ API
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+
+            // Tạo URL cho blob
+            const url = window.URL.createObjectURL(blob);
+
+            // Tạo một link để tải xuống tệp tin
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'ma_QR.png'); // Đặt tên và định dạng tệp tin
+            document.body.appendChild(link);
+            link.click();
+
+            // Thu hồi URL blob
+            window.URL.revokeObjectURL(url);
+
         } catch (error) {
             console.log(error);
         }

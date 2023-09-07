@@ -1,5 +1,5 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React from "react";
+import { useEffect } from "react";
 import {
   CreateActivityAction,
   DeleteActivityByUserAction,
@@ -11,80 +11,80 @@ import {
   PostLikeAction,
   RecommentActivityAction,
   UpdateActivityAction,
-} from '../../redux/actions/ActivityAction';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import moment from 'moment';
-import DetailActivity from '../../component/DetailActivity';
-import { Fragment } from 'react';
-import { NavLink } from 'react-router-dom';
-import { FilePond, registerPlugin } from 'react-filepond';
-import Swal from 'sweetalert2';
-import { Dropdown } from 'primereact/dropdown';
-import GoogleMapReact from 'google-map-react';
-import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
+} from "../../redux/actions/ActivityAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import moment from "moment";
+import DetailActivity from "../../component/DetailActivity";
+import { Fragment } from "react";
+import { NavLink } from "react-router-dom";
+import { FilePond, registerPlugin } from "react-filepond";
+import Swal from "sweetalert2";
+import { Dropdown } from "primereact/dropdown";
+import GoogleMapReact from "google-map-react";
+import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 // Import FilePond styles
-import 'filepond/dist/filepond.min.css';
+import "filepond/dist/filepond.min.css";
 
 // Import the Image EXIF Orientation and Image Preview plugins
 // Note: These need to be installed separately
 // `npm i filepond-plugin-image-preview filepond-plugin-image-exif-orientation --save`
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import { storage_bucket } from '../../firebase';
-import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
-import SimpleSlider from '../../component/SimpleSlider';
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import { storage_bucket } from "../../firebase";
+import { GetListFanpageAction } from "../../redux/actions/FanpageAction";
+import SimpleSlider from "../../component/SimpleSlider";
 import {
   getStorage,
   getDownloadURL,
   ref,
   uploadBytesResumable,
-} from 'firebase/storage';
-import { useFormik } from 'formik';
-import { DonationAction } from '../../redux/actions/DonationAction';
+} from "firebase/storage";
+import { useFormik } from "formik";
+import { DonationAction } from "../../redux/actions/DonationAction";
 import {
   FollowAction,
   JoinAction,
   UnFollowAction,
   UnJoinAction,
-} from '../../redux/actions/FollowJoinAction';
+} from "../../redux/actions/FollowJoinAction";
 import {
   CommentAction,
   CommentRepllyAction,
-} from '../../redux/actions/CommentAction';
-import Loading from '../../component/Loading';
-import MultiForm from '../../MultiForm';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { GetListProcessTypeAction } from '../../redux/actions/ProcessTypeAction';
+} from "../../redux/actions/CommentAction";
+import Loading from "../../component/Loading";
+import MultiForm from "../../MultiForm";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { GetListProcessTypeAction } from "../../redux/actions/ProcessTypeAction";
 import {
   CreateProcessAction,
   GetProcessByActivityAction,
-} from '../../redux/actions/ProcessAction';
+} from "../../redux/actions/ProcessAction";
 import {
   GetUserByIdAction,
   GetUserBystatisticAction,
-} from '../../redux/actions/UserAction';
-import { GetListReportTypeAction } from '../../redux/actions/ReportTypeAction';
-import { Toolbar } from 'primereact/toolbar';
-import { CreateReportAction } from '../../redux/actions/ReportAction';
-import { GetProfileByIdAction } from '../../redux/actions/ProfileAction';
-import Config from '../../component/Config';
-import ResponsiveHeader from '../../templates/UserTemplate/ResponsiveHeader/ResponsiveHeader';
-import Header from '../../templates/UserTemplate/Header/Header';
-import Carousel from '../../templates/UserTemplate/Carousel/Carousel';
-import SideBar from '../../templates/UserTemplate/SideBar/SideBar';
-import RecommentActivity from '../../component/RecommentActivity';
-import PostDescription from './PostDescription';
-import { history } from '../../App';
-import { Redirect, useHistory } from 'react-router-dom';
-import { http } from '../../utils/reponse';
+} from "../../redux/actions/UserAction";
+import { GetListReportTypeAction } from "../../redux/actions/ReportTypeAction";
+import { Toolbar } from "primereact/toolbar";
+import { CreateReportAction } from "../../redux/actions/ReportAction";
+import { GetProfileByIdAction } from "../../redux/actions/ProfileAction";
+import Config from "../../component/Config";
+import ResponsiveHeader from "../../templates/UserTemplate/ResponsiveHeader/ResponsiveHeader";
+import Header from "../../templates/UserTemplate/Header/Header";
+import Carousel from "../../templates/UserTemplate/Carousel/Carousel";
+import SideBar from "../../templates/UserTemplate/SideBar/SideBar";
+import RecommentActivity from "../../component/RecommentActivity";
+import PostDescription from "./PostDescription";
+import { history } from "../../App";
+import { Redirect, useHistory } from "react-router-dom";
+import { http } from "../../utils/reponse";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-export default function Home (props) {
+export default function Home(props) {
   const defaultProps = {
     center: {
       lat: 10.99835602,
@@ -94,7 +94,7 @@ export default function Home (props) {
   };
 
   const [coords, setCoords] = useState([]);
-  const [places, setPlaces] = useState('');
+  const [places, setPlaces] = useState("");
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -118,17 +118,17 @@ export default function Home (props) {
   const [images, setImages] = useState([]);
 
   console.log(images);
-  const [tcss, setTcss] = useState('css');
+  const [tcss, setTcss] = useState("css");
   const [vprocess, setVProcess] = useState(false);
   const dandleCSS = () => {
-    if (tcss === 'css') {
+    if (tcss === "css") {
     }
   };
   const { userByStatis, usertotal } = useSelector((root) => root.UserReducer);
-  const change = usertotal.replace(',', '.');
-  console.log('change' + change);
+  const change = usertotal.replace(",", ".");
+  console.log("change" + change);
   useEffect(() => {
-    const existingData = JSON.parse(localStorage.getItem('activity'));
+    const existingData = JSON.parse(localStorage.getItem("activity"));
     const action = GetListActivityAction();
     dispatch(action);
     const action1 = GetListFanpageAction();
@@ -149,10 +149,10 @@ export default function Home (props) {
     // if (existingData) {
     //     setCmt(existingData);
     //     dispatch({ type: "HIDE_LOADING" });
-    const user = localStorage.getItem('userID');
+    const user = localStorage.getItem("userID");
     if (user) {
-      console.log('có user');
-      const action = GetUserByIdAction(localStorage.getItem('userID'));
+      console.log("có user");
+      const action = GetUserByIdAction(localStorage.getItem("userID"));
       dispatch(action);
     } else {
       // console.log('không có user');
@@ -172,12 +172,12 @@ export default function Home (props) {
     forms: [
       // { name: '', email: '', selectField: '', media: [] },
       {
-        processTitle: '',
-        description: '',
-        startDate: '',
-        endDate: '',
+        processTitle: "",
+        description: "",
+        startDate: "",
+        endDate: "",
         activityId: activityProcess,
-        processTypeId: '',
+        processTypeId: "",
         isKeyProcess: true,
         processNo: 0,
         media: [],
@@ -211,12 +211,12 @@ export default function Home (props) {
     setFormData((prevData) => [
       ...prevData,
       {
-        processTitle: '',
-        description: '',
-        startDate: '',
-        endDate: '',
-        activityId: localStorage.getItem('activityProcess'),
-        processTypeId: '',
+        processTitle: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        activityId: localStorage.getItem("activityProcess"),
+        processTypeId: "",
         isKeyProcess: true,
         processNo: 0,
         media: [],
@@ -226,7 +226,7 @@ export default function Home (props) {
   };
   const [arrDelete, setArrDelete] = useState([0]);
 
-  useEffect(() => { }, [arrDelete]);
+  useEffect(() => {}, [arrDelete]);
   const handleDeleteForm = () => {
     if (formData.length > 1) {
       setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
@@ -273,7 +273,7 @@ export default function Home (props) {
     const newImages = [];
 
     console.log(fileList);
-    for (let i = 0;i < fileList.length;i++) {
+    for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ linkMedia: imageUrl, type: file.type });
@@ -282,7 +282,7 @@ export default function Home (props) {
         const fileRef = ref(storage_bucket, file.name);
         const uploadTask = uploadBytesResumable(fileRef, file);
 
-        uploadTask.on('state_changed', (snapshot) => {
+        uploadTask.on("state_changed", (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           // setUploadProgress(progress);
@@ -290,11 +290,11 @@ export default function Home (props) {
 
         const snapshot = await uploadTask;
 
-        if (snapshot.state === 'success') {
+        if (snapshot.state === "success") {
           const downloadURL = await getDownloadURL(snapshot.ref);
           newImages[i].linkMedia = downloadURL; // Cập nhật link downloadURL vào mảng newImages
         }
-      } catch (error) { }
+      } catch (error) {}
     }
     setFormData((prevData) =>
       prevData.map((form, index) =>
@@ -317,14 +317,14 @@ export default function Home (props) {
   const { arrActivity, activityId, arrActivityRecomment } = useSelector(
     (root) => root.ActivityReducer
   );
-  console.log('comment', arrActivityRecomment);
+  console.log("comment", arrActivityRecomment);
   const { arrFanpage } = useSelector((root) => root.FanpageReducer);
   const { isLoadingM } = useSelector((root) => root.LoadingReducer);
   const [cmt, setCmt] = useState([]);
   const [time, setTime] = useState([]);
   const [detail, setDetail] = useState({});
   const [create, setCreate] = useState(true);
-  const textOptions = ['Theo Dõi', 'Bỏ theo Dõi'];
+  const textOptions = ["Theo Dõi", "Bỏ theo Dõi"];
   const [text, setText] = useState(0);
 
   const handleYesClick = (activity, title) => {
@@ -335,25 +335,25 @@ export default function Home (props) {
   const [data, setData] = useState(cmt);
   const callAPI = (text, activity, title) => {
     // Gọi API ở đây, sử dụng giá trị của `text`
-    if (text === 'Theo dõi') {
+    if (text === "Theo dõi") {
       // Gọi API Theo Dõi
 
       const action = FollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: 'success',
+        icon: "success",
         title: `Theo Dõi chiến dịch ${title} thành công `,
       });
       // ...
@@ -361,18 +361,18 @@ export default function Home (props) {
       // Gọi API Bỏ Theo Dõi
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: 'error',
+        icon: "error",
         title: `Bỏ Theo dõi chiến dịch ${title} thành công  `,
       });
       // ...
@@ -476,19 +476,19 @@ export default function Home (props) {
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
 
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: 'error',
+        icon: "error",
         title: `Hủy tham gia sự kiện ${title} thành công`,
       });
     } else {
@@ -497,18 +497,18 @@ export default function Home (props) {
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: 'success',
+        icon: "success",
         title: `Tham Gia Thành Công Sự Kiện ${title}`,
       });
     }
@@ -576,18 +576,18 @@ export default function Home (props) {
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: 'error',
+        icon: "error",
         title: `Bỏ theo dõi chiến dịch ${title} thành công `,
       });
     } else {
@@ -596,18 +596,18 @@ export default function Home (props) {
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: 'success',
+        icon: "success",
         title: `Theo dõi chiến dịch ${title} thành công `,
       });
     }
@@ -621,11 +621,11 @@ export default function Home (props) {
     });
   };
 
-  const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map(
+  const initialCommentData = JSON.parse(localStorage.getItem("activity"))?.map(
     (comment) => ({
       id: comment.activityId,
       isCmt: true,
-      color: '#eae9ee',
+      color: "#eae9ee",
     })
   );
   const [commentData, setCommentData] = useState(initialCommentData);
@@ -639,7 +639,7 @@ export default function Home (props) {
   };
   const toggleTextInput1 = () => {
     setTextInputVisible1(!isTextInputVisible1);
-    formik.setFieldValue('isFanpageAvtivity', isTextInputVisible1);
+    formik.setFieldValue("isFanpageAvtivity", isTextInputVisible1);
   };
   const openPopup = () => {
     setPopupOpen(true);
@@ -647,16 +647,16 @@ export default function Home (props) {
   const closePopup = () => {
     setPopupOpen(false);
   };
-  const [acti, setActi] = useState('');
+  const [acti, setActi] = useState("");
   const formik1 = useFormik({
     initialValues: {
-      title: '',
+      title: "",
       amount: 0,
-      email: localStorage.getItem('emailuser'),
-      phone: '',
-      name: localStorage.getItem('username'),
+      email: localStorage.getItem("emailuser"),
+      phone: "",
+      name: localStorage.getItem("username"),
       isAnonymous: true,
-      activityId: '',
+      activityId: "",
     },
     enableReinitialize: true,
     onSubmit: async (value) => {
@@ -666,40 +666,40 @@ export default function Home (props) {
     },
   });
 
-  const [commentI, setCommentI] = useState('commentContent');
-  const [content, setContent] = useState('');
-  const [onID, setOnID] = useState('');
+  const [commentI, setCommentI] = useState("commentContent");
+  const [content, setContent] = useState("");
+  const [onID, setOnID] = useState("");
   const formik2 = useFormik({
     enableReinitialize: true,
     initialValues: {
       userId: userID,
-      activityId: '',
-      commentContent: '',
+      activityId: "",
+      commentContent: "",
       status: true,
-      commentIdReply: '',
+      commentIdReply: "",
     },
     onSubmit: (value) => {
-      if (value.commentIdReply === '') {
+      if (value.commentIdReply === "") {
         const action = CommentAction(value);
         dispatch(action);
-        formik2.setFieldValue('commentContent', '');
+        formik2.setFieldValue("commentContent", "");
       } else {
         const action = CommentRepllyAction(value);
         dispatch(action);
         // formik2.setFieldValue('commentIdReply', '');
         // setCommentI('commentContent')
         // setContent(true)
-        formik2.setFieldValue('commentContent', '');
-        formik2.setFieldValue('commentIdReply', '');
+        formik2.setFieldValue("commentContent", "");
+        formik2.setFieldValue("commentIdReply", "");
       }
     },
   });
-  function calculateImageClass (imageCount) {
-    let imageClass = 'full-width';
+  function calculateImageClass(imageCount) {
+    let imageClass = "full-width";
     if (imageCount === 2) {
-      imageClass = 'half-width';
+      imageClass = "half-width";
     } else if (imageCount === 3 || imageCount === 4) {
-      imageClass = 'quarter-width';
+      imageClass = "quarter-width";
     }
     return imageClass;
   }
@@ -713,9 +713,9 @@ export default function Home (props) {
   const handleClick = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
     setIsDisplay(true);
-    formik.setFieldValue('title', '');
-    formik.setFieldValue('description', '');
-    formik.setFieldValue('location', '');
+    formik.setFieldValue("title", "");
+    formik.setFieldValue("description", "");
+    formik.setFieldValue("location", "");
   };
 
   const handleClick1 = () => {
@@ -732,40 +732,40 @@ export default function Home (props) {
     // setIsDisplay(true)
   };
   const [openpro, setOpenPro] = useState(false);
-  console.log('open' + openpro);
+  console.log("open" + openpro);
   const [report, setReport] = useState(false);
   const popupStyle = {
     opacity: isOpen ? 1 : 0,
-    visibility: isOpen ? 'visible' : 'hidden',
-    overflow: isOpen ? 'auto' : 'hidden',
-    display: isDisplay ? 'block' : 'none',
+    visibility: isOpen ? "visible" : "hidden",
+    overflow: isOpen ? "auto" : "hidden",
+    display: isDisplay ? "block" : "none",
   };
   const popupStyle1 = {
     opacity: isOpen1 ? 1 : 0,
-    visibility: isOpen1 ? 'visible' : 'hidden',
-    overflow: isOpen1 ? 'auto' : 'hidden',
+    visibility: isOpen1 ? "visible" : "hidden",
+    overflow: isOpen1 ? "auto" : "hidden",
   };
   const [tt, setTT] = useState(false);
   const popupStyle9 = {
     opacity: tt ? 1 : 0,
-    visibility: tt ? 'visible' : 'hidden',
-    overflow: tt ? 'auto' : 'hidden',
+    visibility: tt ? "visible" : "hidden",
+    overflow: tt ? "auto" : "hidden",
   };
   const popupStyle2 = {
     opacity: isOpen2 ? 1 : 0,
-    visibility: isOpen2 ? 'visible' : 'hidden',
-    overflow: isOpen2 ? 'auto' : 'hidden',
+    visibility: isOpen2 ? "visible" : "hidden",
+    overflow: isOpen2 ? "auto" : "hidden",
   };
   const popupStyle3 = {
     opacity: report ? 1 : 0,
-    visibility: report ? 'visible' : 'hidden',
-    overflow: report ? 'auto' : 'hidden',
+    visibility: report ? "visible" : "hidden",
+    overflow: report ? "auto" : "hidden",
   };
   const [openpro1, setOpenPro1] = useState(false);
   const popupStyle4 = {
     opacity: openpro1 ? 1 : 0,
-    visibility: openpro1 ? 'visible' : 'hidden',
-    overflow: openpro1 ? 'auto' : 'hidden',
+    visibility: openpro1 ? "visible" : "hidden",
+    overflow: openpro1 ? "auto" : "hidden",
   };
   const handleClick6 = () => {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
@@ -785,14 +785,14 @@ export default function Home (props) {
 
   const formik6 = useFormik({
     initialValues: {
-      reportId: 'string',
-      title: 'string',
-      reason: '',
-      reportTypeId: 'string',
-      description: 'string',
+      reportId: "string",
+      title: "string",
+      reason: "",
+      reportTypeId: "string",
+      description: "string",
       status: true,
       userId: userID,
-      activityId: '',
+      activityId: "",
     },
     onSubmit: async (value) => {
       // console.log(value);
@@ -800,18 +800,18 @@ export default function Home (props) {
       await dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: 'success',
+        icon: "success",
         title: `Báo cáo chiến dịch thành công `,
       });
       setReport((prevIsOpen) => !prevIsOpen);
@@ -819,39 +819,39 @@ export default function Home (props) {
   });
   const onInputDropdown = (e, field) => {
     // console.log(e.target.value)
-    formik6.setFieldValue('reportTypeId', e.target.value);
+    formik6.setFieldValue("reportTypeId", e.target.value);
   };
 
   const history1 = useHistory();
 
   useEffect(() => {
-    const userID = localStorage.getItem('userID');
+    const userID = localStorage.getItem("userID");
 
-    if (userID !== '') {
+    if (userID !== "") {
       // Do something if userID is available in localStorage
     } else {
-      alert('Vui lòng đăng nhập để trải nghiệm tốt hơn');
-      history.push('/');
+      alert("Vui lòng đăng nhập để trải nghiệm tốt hơn");
+      history.push("/");
     }
   }, [arrDelete, reportType, history]);
-  const [files, setFiles] = useState('');
+  const [files, setFiles] = useState("");
 
   useEffect(() => {
     const arrMedia = images.map((image) => ({
       linkMedia: image.url,
-      type: 'image',
+      type: "image",
     }));
-    formik.setFieldValue('media', arrMedia);
+    formik.setFieldValue("media", arrMedia);
   }, [images]);
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      description: '',
-      startDate: '',
-      endDate: '',
+      title: "",
+      description: "",
+      startDate: "",
+      endDate: "",
       // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
-      location: '',
+      location: "",
       targetDonation: 0,
       userId: userID,
       isFanpageAvtivity: false,
@@ -863,15 +863,15 @@ export default function Home (props) {
       console.log(value);
       const action = await CreateActivityAction(value);
       await dispatch(action);
-      formik.setFieldValue('title', '');
-      formik.setFieldValue('description', '');
-      formik.setFieldValue('location', '');
-      formik.setFieldValue('targetDonation', 0);
-      formik.setFieldValue('startDate', '');
-      formik.setFieldValue('endDate', '');
-      formik.setFieldValue('endactivity', '');
-      formik.setFieldValue('isFanpageAvtivity', false);
-      formik.setFieldValue('media', []);
+      formik.setFieldValue("title", "");
+      formik.setFieldValue("description", "");
+      formik.setFieldValue("location", "");
+      formik.setFieldValue("targetDonation", 0);
+      formik.setFieldValue("startDate", "");
+      formik.setFieldValue("endDate", "");
+      formik.setFieldValue("endactivity", "");
+      formik.setFieldValue("isFanpageAvtivity", false);
+      formik.setFieldValue("media", []);
       setIsOpen((prevIsOpen) => !prevIsOpen);
       setIsDisplay(false);
       // setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -894,20 +894,20 @@ export default function Home (props) {
 
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger',
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
         },
         buttonsStyling: false,
       });
 
       swalWithBootstrapButtons
         .fire({
-          title: 'Tạo mới chiến dịch thành công',
-          text: 'Bạn muốn thêm chi tiết hoạt động cho chiến dịch',
-          icon: 'success',
+          title: "Tạo mới chiến dịch thành công",
+          text: "Bạn muốn thêm chi tiết hoạt động cho chiến dịch",
+          icon: "success",
           showCancelButton: true,
-          confirmButtonText: 'Thêm hoạt động',
-          cancelButtonText: 'Hoàn thành',
+          confirmButtonText: "Thêm hoạt động",
+          cancelButtonText: "Hoàn thành",
           reverseButtons: true,
         })
         .then((result) => {
@@ -920,32 +920,32 @@ export default function Home (props) {
             //   "Thêm hoạt động thành công.",
             //   "success"
             // );
-            formik.setFieldValue('title', '');
-            formik.setFieldValue('description', '');
-            formik.setFieldValue('location', '');
-            formik.setFieldValue('targetDonation', 0);
-            formik.setFieldValue('media', []);
+            formik.setFieldValue("title", "");
+            formik.setFieldValue("description", "");
+            formik.setFieldValue("location", "");
+            formik.setFieldValue("targetDonation", 0);
+            formik.setFieldValue("media", []);
           } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
           ) {
             swalWithBootstrapButtons.fire(
-              'Thành công',
-              'Thêm hoạt động thành  công',
-              'success'
+              "Thành công",
+              "Thêm hoạt động thành  công",
+              "success"
             );
-            formik.setFieldValue('title', '');
-            formik.setFieldValue('description', '');
-            formik.setFieldValue('location', '');
-            formik.setFieldValue('targetDonation', 0);
-            formik.setFieldValue('media', []);
+            formik.setFieldValue("title", "");
+            formik.setFieldValue("description", "");
+            formik.setFieldValue("location", "");
+            formik.setFieldValue("targetDonation", 0);
+            formik.setFieldValue("media", []);
             setImages([]);
           }
         });
     },
   });
   console.log(activityId.title);
-  console.log(moment(activityId.startDate).format('MM/DD/YYYY'));
+  console.log(moment(activityId.startDate).format("MM/DD/YYYY"));
   const formik9 = useFormik({
     initialValues: {
       activityId: activityId.activityId,
@@ -964,18 +964,18 @@ export default function Home (props) {
       await dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: 'success',
+        icon: "success",
         title: `Cập nhật chiến dịch ${value.title} thành công `,
       });
       // formik.setFieldValue("title", "");
@@ -998,7 +998,7 @@ export default function Home (props) {
     console.log(fileList);
     const newImages = [];
 
-    for (let i = 0;i < fileList.length;i++) {
+    for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ file, url: imageUrl });
@@ -1007,7 +1007,7 @@ export default function Home (props) {
         const fileRef = ref(storage_bucket, file.name);
         const uploadTask = uploadBytesResumable(fileRef, file);
 
-        uploadTask.on('state_changed', (snapshot) => {
+        uploadTask.on("state_changed", (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setUploadProgress(progress);
@@ -1015,14 +1015,14 @@ export default function Home (props) {
 
         const snapshot = await uploadTask;
 
-        if (snapshot.state === 'success') {
+        if (snapshot.state === "success") {
           const downloadURL = await getDownloadURL(snapshot.ref);
           const updatedImages = [...newImages];
           updatedImages[i].url = downloadURL;
 
           setImages([...images, ...updatedImages]);
         }
-      } catch (error) { }
+      } catch (error) {}
     }
     setIsLoading(false);
     setUploadProgress(0);
@@ -1037,17 +1037,17 @@ export default function Home (props) {
   const handleLikeClick = (id) => {
     const updatedComments = commentData.map((comment) => {
       if (comment.id === id) {
-        if (comment.color === 'rgb(117, 189, 240)') {
-          return { ...comment, color: '#eae9ee' };
+        if (comment.color === "rgb(117, 189, 240)") {
+          return { ...comment, color: "#eae9ee" };
         } else {
-          return { ...comment, color: 'rgb(117, 189, 240)' };
+          return { ...comment, color: "rgb(117, 189, 240)" };
         }
       }
       return comment;
     });
     let alreadyLiked = false;
 
-    JSON.parse(localStorage.getItem('activity'))?.map((comment) => {
+    JSON.parse(localStorage.getItem("activity"))?.map((comment) => {
       if (comment.activityId === id && comment.like.length > 0) {
         comment.like.map((item) => {
           if (item.userId === userID) {
@@ -1109,7 +1109,7 @@ export default function Home (props) {
     const inputTime = moment(item);
     const duration = moment.duration(currentTime.diff(inputTime));
     const hoursAgo = duration.asHours();
-    let timeAgoString = '';
+    let timeAgoString = "";
     if (hoursAgo < 1) {
       const daysAgo = Math.floor(duration.asMinutes());
       timeAgoString = `${daysAgo} phút trước`;
@@ -1122,7 +1122,7 @@ export default function Home (props) {
     }
     return timeAgoString;
   };
-  const [titlen, setTitlen] = useState('');
+  const [titlen, setTitlen] = useState("");
   const [listActivity, setListActivity] = useState([]);
 
   console.log(titlen);
@@ -1141,7 +1141,7 @@ export default function Home (props) {
     const inputValue = e.target.value;
     setTitlen(inputValue);
 
-    formik7.setFieldValue('searchContent', inputValue); // Gán giá trị vào trường "title" trong Formik
+    formik7.setFieldValue("searchContent", inputValue); // Gán giá trị vào trường "title" trong Formik
   };
 
   return (
@@ -1187,9 +1187,13 @@ export default function Home (props) {
                         />
                       </figure> */}
                       {arrActivityRecomment.map((item, index) => {
-                        return <div style={{ display: 'flex', flexDirection: 'column' }}>
-                          <span className="long-text">-{item.title}</span>
-                        </div>
+                        return (
+                          <div
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <span className="long-text">-{item.title}</span>
+                          </div>
+                        );
                       })}
                     </div>
                     {/* <span className="trash">
@@ -1211,24 +1215,17 @@ export default function Home (props) {
             <li>
               <div className="user-dp">
                 <NavLink
-                  to={`/profile/${localStorage.getItem('userID')}`}
+                  to={`/profile/${localStorage.getItem("userID")}`}
                   title
                 >
                   <img alt src={userByID?.image} />
                   <div className="name">
-                    <h4>{localStorage.getItem('username')}</h4>
+                    <h4>{localStorage.getItem("username")}</h4>
                   </div>
                 </NavLink>
               </div>
             </li>
-            {/* <li className="go-live">
-                        <a href="live-stream.html" title="Go Live" data-toggle="tooltip">
-                            <i>
-                                <svg fill="#f00" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="18px" height="18px">
-                                    <path d="M 6.1015625 6.1015625 C 3.5675625 8.6345625 2 12.134 2 16 C 2 19.866 3.5675625 23.365437 6.1015625 25.898438 L 7.5195312 24.480469 C 5.3465312 22.307469 4 19.308 4 16 C 4 12.692 5.3465312 9.6925313 7.5195312 7.5195312 L 6.1015625 6.1015625 z M 25.898438 6.1015625 L 24.480469 7.5195312 C 26.653469 9.6925312 28 12.692 28 16 C 28 19.308 26.653469 22.307469 24.480469 24.480469 L 25.898438 25.898438 C 28.432437 23.365437 30 19.866 30 16 C 30 12.134 28.432437 8.6345625 25.898438 6.1015625 z M 9.6367188 9.6367188 C 8.0077188 11.265719 7 13.515 7 16 C 7 18.485 8.0077187 20.734281 9.6367188 22.363281 L 11.052734 20.947266 C 9.7847344 19.680266 9 17.93 9 16 C 9 14.07 9.7847344 12.319734 11.052734 11.052734 L 9.6367188 9.6367188 z M 22.363281 9.6367188 L 20.947266 11.052734 C 22.215266 12.319734 23 14.07 23 16 C 23 17.93 22.215266 19.680266 20.947266 20.947266 L 22.363281 22.363281 C 23.992281 20.734281 25 18.485 25 16 C 25 13.515 23.992281 11.265719 22.363281 9.6367188 z M 16 12 A 4 4 0 0 0 16 20 A 4 4 0 0 0 16 12 z" />
-                                </svg></i>
-                        </a>
-                    </li> */}
+           
             <li>
               <a
                 href="http://localhost:3000/home"
@@ -1340,7 +1337,7 @@ export default function Home (props) {
               </a>
 
               <ul className="dropdown">
-                {localStorage.getItem('userID') ? (
+                {localStorage.getItem("userID") ? (
                   <li>
                     <a href="profile.html" title>
                       <i className="icofont-user-alt-3" /> Trang cá nhân
@@ -1403,18 +1400,18 @@ export default function Home (props) {
                   className="logout"
                   onClick={() => {
                     const action = {
-                      type: 'LOGOUT',
+                      type: "LOGOUT",
                     };
                     dispatch(action);
                     const action1 = {
-                      type: 'LOGOUT1',
+                      type: "LOGOUT1",
                     };
                     dispatch(action1);
                   }}
                 >
                   <NavLink to="/" title>
-                    <i className="icofont-power" />{' '}
-                    {localStorage.getItem('userID') ? 'Đăng xuất' : 'Đăng nhập'}
+                    <i className="icofont-power" />{" "}
+                    {localStorage.getItem("userID") ? "Đăng xuất" : "Đăng nhập"}
                   </NavLink>
                 </li>
               </ul>
@@ -1456,7 +1453,9 @@ export default function Home (props) {
                         className="progress__outer"
                         data-value={change.toString()}
                       >
-                        <div className="progress__inner">{(parseFloat(change) * 100).toFixed(1)}%</div>
+                        <div className="progress__inner">
+                          {(parseFloat(change) * 100).toFixed(1)}%
+                        </div>
                       </div>
                       <ul className="prof-complete">
                         {userByStatis.phone === null ? (
@@ -1470,9 +1469,9 @@ export default function Home (props) {
                         ) : (
                           <div></div>
                         )}
-                        {userByStatis.fullName === 'none' ? (
+                        {userByStatis.fullName === "none" ? (
                           <li>
-                            <i className="icofont-plus-square" />{' '}
+                            <i className="icofont-plus-square" />{" "}
                             <NavLink to={`/profile/${userID}`}>
                               Cập nhật họ tên
                             </NavLink>
@@ -1481,9 +1480,9 @@ export default function Home (props) {
                         ) : (
                           <div></div>
                         )}
-                        {userByStatis.image === 'none' ? (
+                        {userByStatis.image === "none" ? (
                           <li>
-                            <i className="icofont-plus-square" />{' '}
+                            <i className="icofont-plus-square" />{" "}
                             <NavLink to={`/profile/${userID}`}>
                               Cập nhật avartar
                             </NavLink>
@@ -1492,9 +1491,9 @@ export default function Home (props) {
                         ) : (
                           <div></div>
                         )}
-                        {userByStatis.coverImage === 'none' ? (
+                        {userByStatis.coverImage === "none" ? (
                           <li>
-                            <i className="icofont-plus-square" />{' '}
+                            <i className="icofont-plus-square" />{" "}
                             <NavLink to={`/profile/${userID}`}>
                               Cập nhật ảnh bìa
                             </NavLink>
@@ -1635,11 +1634,11 @@ export default function Home (props) {
                                             <li><a href="#" title>Recent</a></li>
                                             <li><a href="#" title>Favourit</a></li>
                                         </ul>tab buttons */}
-                  {isValidCreate === 'true' ? (
+                  {isValidCreate === "true" ? (
                     <div
                       className="main-wraper"
                       onClick={handleClick}
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: "pointer" }}
                     >
                       <span className="new-title">
                         Bạn muốn tạo chiến dịch mới
@@ -1671,8 +1670,8 @@ export default function Home (props) {
                             </a>
                           </ins>
                           <span>
-                            <i className="icofont-runner-alt-1" /> Theo dõi
-                            tổ chức tương tự
+                            <i className="icofont-runner-alt-1" /> Theo dõi tổ
+                            chức tương tự
                           </span>
                         </div>
                         <SimpleSlider arrFanpage={arrFanpage} />
@@ -1683,7 +1682,7 @@ export default function Home (props) {
                   {cmt
                     .filter(
                       (item) =>
-                        item.status === 'Active' &&
+                        item.status === "Active" &&
                         item.title.toLowerCase().includes(titlen)
                     )
                     .map((item, index) => {
@@ -1814,8 +1813,8 @@ export default function Home (props) {
                                           <i className="icofont-ui-delete" />
                                           Xóa bài đăng
                                           <span>
-                                            Xóa những bài đăng khi bạn cảm
-                                            thấy có vấn đề không ổn
+                                            Xóa những bài đăng khi bạn cảm thấy
+                                            có vấn đề không ổn
                                           </span>
                                         </li>
                                       ) : (
@@ -1834,8 +1833,8 @@ export default function Home (props) {
                                           <i className="icofont-flag" />
                                           Báo cáo bài đăng
                                           <span>
-                                            nhầm báo cáo những vấn đề bất
-                                            thường đến cho người quản lý
+                                            nhầm báo cáo những vấn đề bất thường
+                                            đến cho người quản lý
                                           </span>
                                         </li>
                                       ) : (
@@ -1847,7 +1846,7 @@ export default function Home (props) {
                                 <ins>
                                   <NavLink
                                     to={`/profile/${localStorage.getItem(
-                                      'userID'
+                                      "userID"
                                     )}`}
                                     title
                                   >
@@ -1873,11 +1872,11 @@ export default function Home (props) {
                                   <NavLink
                                     to={`/detailprocess/${item.activityId}`}
                                     style={{
-                                      fontSize: '20px',
-                                      fontWeight: 'bold',
-                                      color: '#3f6ad8',
-                                      marginBottom: '20px',
-                                      cursor: 'pointer',
+                                      fontSize: "20px",
+                                      fontWeight: "bold",
+                                      color: "#3f6ad8",
+                                      marginBottom: "20px",
+                                      cursor: "pointer",
                                     }}
                                     onClick={() => {
                                       // handleClick2()
@@ -1893,19 +1892,19 @@ export default function Home (props) {
                                 <div className="row">
                                   <div
                                     style={{
-                                      padding: '0',
-                                      display: 'flex',
-                                      alignContent: 'center',
+                                      padding: "0",
+                                      display: "flex",
+                                      alignContent: "center",
                                     }}
                                     className="col-lg-12"
                                   >
                                     <h3
                                       style={{
-                                        fontSize: '25px',
-                                        fontWeight: 'bold',
-                                        width: '450px',
-                                        wordWrap: 'break-word',
-                                        color: '#2d3436',
+                                        fontSize: "25px",
+                                        fontWeight: "bold",
+                                        width: "450px",
+                                        wordWrap: "break-word",
+                                        color: "#2d3436",
                                       }}
                                       className="col-lg-12"
                                     >
@@ -1916,18 +1915,19 @@ export default function Home (props) {
                                   </div>
                                 </div>
                                 <div style={{ display: "flex" }}>
-                                  <div style={{
-                                    color: '#747d8c',
-                                    fontWeight: 400,
-                                    fontSize: '15px',
-                                  }}>
+                                  <div
+                                    style={{
+                                      color: "#747d8c",
+                                      fontWeight: 400,
+                                      fontSize: "15px",
+                                    }}
+                                  >
                                     {" "}
                                     <span
                                       style={{
-
-                                        color: '#747d8c',
+                                        color: "#747d8c",
                                         fontWeight: 400,
-                                        fontSize: '15px',
+                                        fontSize: "15px",
                                       }}
                                     >
                                       Thời gian:{" "}
@@ -1943,34 +1943,40 @@ export default function Home (props) {
                                       padding: "0 0.5rem",
                                     }}
                                   >
-                                    <span style={{
-                                      color: '#747d8c',
-                                      fontWeight: 400,
-                                      fontSize: '15px',
-                                    }}>-</span>
+                                    <span
+                                      style={{
+                                        color: "#747d8c",
+                                        fontWeight: 400,
+                                        fontSize: "15px",
+                                      }}
+                                    >
+                                      -
+                                    </span>
                                   </div>
-                                  <div style={{
-                                    color: '#747d8c',
-                                    fontWeight: 400,
-                                    fontSize: '15px',
-                                  }}>
+                                  <div
+                                    style={{
+                                      color: "#747d8c",
+                                      fontWeight: 400,
+                                      fontSize: "15px",
+                                    }}
+                                  >
                                     {" "}
                                     <span
                                       style={{
-                                        color: '#747d8c',
+                                        color: "#747d8c",
                                         fontWeight: 400,
-                                        fontSize: '15px',
+                                        fontSize: "15px",
                                       }}
-                                    > </span>{" "}
-                                    {moment(item.endDate).format(
-                                      "DD/MM/YYYY"
-                                    )}
+                                    >
+                                      {" "}
+                                    </span>{" "}
+                                    {moment(item.endDate).format("DD/MM/YYYY")}
                                   </div>
                                 </div>
 
                                 {/* chi tiết chiến dịch */}
                                 <p className="mt-3 mt-detail">
-                                  <span className="mt-detail"></span>{' '}
+                                  <span className="mt-detail"></span>{" "}
                                   <PostDescription
                                     description={item.description}
                                   />
@@ -1987,31 +1993,7 @@ export default function Home (props) {
                                   <div className="image-gallery-flex">
                                     {item?.media?.length <= 3
                                       ? item.media.map((image, index) => {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className={`image-container-post`}
-                                          >
-                                            <a
-                                              data-toggle="modal"
-                                              data-target="#img-comt"
-                                              href="images/resources/album1.jpg"
-                                              onClick={() => {
-                                                setDetail(detailItem);
-                                              }}
-                                            >
-                                              <img
-                                                src={image.linkMedia}
-                                                alt={`Image ${image.id}`}
-                                              />
-                                            </a>
-                                          </div>
-                                        );
-                                      })
-                                      : item.media
-                                        ?.slice(0, 4)
-                                        .map((image, index) => {
-                                          return index !== 3 ? (
+                                          return (
                                             <div
                                               key={index}
                                               className={`image-container-post`}
@@ -2030,30 +2012,54 @@ export default function Home (props) {
                                                 />
                                               </a>
                                             </div>
-                                          ) : (
-                                            <div
-                                              key={index}
-                                              className={`image-container-post-last`}
-                                            >
-                                              <a
-                                                data-toggle="modal"
-                                                data-target="#img-comt"
-                                                href="images/resources/album1.jpg"
-                                                onClick={() => {
-                                                  setDetail(detailItem);
-                                                }}
-                                              >
-                                                <div className="overlay">
-                                                  +{item.media.length - 4}
-                                                </div>
-                                                <img
-                                                  src={image.linkMedia}
-                                                  alt={`Image ${image.id}`}
-                                                />
-                                              </a>
-                                            </div>
                                           );
-                                        })}
+                                        })
+                                      : item.media
+                                          ?.slice(0, 4)
+                                          .map((image, index) => {
+                                            return index !== 3 ? (
+                                              <div
+                                                key={index}
+                                                className={`image-container-post`}
+                                              >
+                                                <a
+                                                  data-toggle="modal"
+                                                  data-target="#img-comt"
+                                                  href="images/resources/album1.jpg"
+                                                  onClick={() => {
+                                                    setDetail(detailItem);
+                                                  }}
+                                                >
+                                                  <img
+                                                    src={image.linkMedia}
+                                                    alt={`Image ${image.id}`}
+                                                  />
+                                                </a>
+                                              </div>
+                                            ) : (
+                                              <div
+                                                key={index}
+                                                className={`image-container-post-last`}
+                                              >
+                                                <a
+                                                  data-toggle="modal"
+                                                  data-target="#img-comt"
+                                                  href="images/resources/album1.jpg"
+                                                  onClick={() => {
+                                                    setDetail(detailItem);
+                                                  }}
+                                                >
+                                                  <div className="overlay">
+                                                    +{item.media.length - 4}
+                                                  </div>
+                                                  <img
+                                                    src={image.linkMedia}
+                                                    alt={`Image ${image.id}`}
+                                                  />
+                                                </a>
+                                              </div>
+                                            );
+                                          })}
                                   </div>
                                 </figure>
 
@@ -2080,36 +2086,36 @@ export default function Home (props) {
                                   <div className="mb-4">
                                     <p
                                       style={{
-                                        color: 'blue',
-                                        fontWeight: '400',
-                                        fontSize: '15px',
+                                        color: "blue",
+                                        fontWeight: "400",
+                                        fontSize: "15px",
                                       }}
                                     >
                                       Đã quyên góp được <br />
                                       <span
                                         style={{
-                                          color: 'blue',
-                                          fontSize: '15px',
+                                          color: "blue",
+                                          fontSize: "15px",
                                         }}
                                       >
                                         <span
                                           style={{
-                                            color: 'blue',
-                                            fontSize: '15px',
+                                            color: "blue",
+                                            fontSize: "15px",
                                           }}
                                         >
                                           {item.realDonation.toLocaleString()}
-                                        </span>{' '}
+                                        </span>{" "}
                                         đ /
                                         <span
                                           style={{
-                                            color: 'blue',
-                                            fontSize: '15px',
+                                            color: "blue",
+                                            fontSize: "15px",
                                           }}
                                         >
-                                          {item.targetDonation.toLocaleString()}{' '}
+                                          {item.targetDonation.toLocaleString()}{" "}
                                           đ
-                                        </span>{' '}
+                                        </span>{" "}
                                       </span>
                                     </p>
 
@@ -2161,13 +2167,15 @@ export default function Home (props) {
                                       // onChange={handleChange}
                                       className="range-slider"
                                       style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation /
+                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
+                                          (item.realDonation /
                                             item.targetDonation) *
                                           100
-                                          }%, #ddd ${(item.realDonation /
+                                        }%, #ddd ${
+                                          (item.realDonation /
                                             item.targetDonation) *
                                           100
-                                          }%, #ddd 100%)`,
+                                        }%, #ddd 100%)`,
                                       }}
                                     />
                                     {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
@@ -2176,7 +2184,7 @@ export default function Home (props) {
                                     ) : (
                                       <div
                                         className="range-value"
-                                        style={{ position: 'absolute' }}
+                                        style={{ position: "absolute" }}
                                       >
                                         0
                                       </div>
@@ -2189,14 +2197,15 @@ export default function Home (props) {
                                       <div
                                         className="range-value"
                                         style={{
-                                          position: 'absolute',
-                                          left: `${(item.realDonation /
+                                          position: "absolute",
+                                          left: `${
+                                            (item.realDonation /
                                               item.targetDonation) *
                                             100
-                                            }%`,
+                                          }%`,
                                         }}
                                       >
-                                        {' '}
+                                        {" "}
                                         {(item.realDonation /
                                           item.targetDonation) *
                                           100}
@@ -2206,9 +2215,9 @@ export default function Home (props) {
                                     <div
                                       className="range-value"
                                       style={{
-                                        color: 'blue',
-                                        position: 'absolute',
-                                        right: '10px',
+                                        color: "blue",
+                                        position: "absolute",
+                                        right: "10px",
                                       }}
                                     >
                                       {item.targetDonation.toLocaleString()} vnđ
@@ -2222,19 +2231,27 @@ export default function Home (props) {
                                   style={{
                                     display: "flex",
                                     justifyContent: "space-between",
-
                                   }}
                                   className={
-                                    (item.targetDonation !== 0 ? 'marginform' : 'nomarginform') +
-                                    ' ' +
-                                    (item.process.length !== 0 ? 'processform' : 'noprocessform')
+                                    (item.targetDonation !== 0
+                                      ? "marginform"
+                                      : "nomarginform") +
+                                    " " +
+                                    (item.process.length !== 0
+                                      ? "processform"
+                                      : "noprocessform")
                                   }
                                 >
                                   <button
-                                    className={` ${isAlreadyJoined
-                                      ? "btn-change"
-                                      : "btn-color"
-                                      } mb-4 mt-4 btn-add ${item.targetDonation !== 0 ? 'marginfollow' : 'sas'}`}
+                                    className={` ${
+                                      isAlreadyJoined
+                                        ? "btn-change"
+                                        : "btn-color"
+                                    } mb-4 mt-4 btn-add ${
+                                      item.targetDonation !== 0
+                                        ? "marginfollow"
+                                        : "sas"
+                                    }`}
                                     onClick={() => {
                                       handleJoinClick(
                                         index,
@@ -2250,10 +2267,11 @@ export default function Home (props) {
                                   </button>
 
                                   <button
-                                    className={` ${isAlreadyFollowed
-                                      ? "btn-change"
-                                      : "btn-color"
-                                      } mb-4 mt-4`}
+                                    className={` ${
+                                      isAlreadyFollowed
+                                        ? "btn-change"
+                                        : "btn-color"
+                                    } mb-4 mt-4`}
                                     onClick={() => {
                                       handleFollowClick(
                                         index,
@@ -2291,7 +2309,7 @@ export default function Home (props) {
                                     <NavLink
                                       to={`/detailprocess/${item.activityId}`}
                                       style={{
-                                        marginTop: '10x'
+                                        marginTop: "10x",
                                       }}
                                       className="btn-color mb-4 mt-4"
                                       onClick={() => {
@@ -2311,9 +2329,9 @@ export default function Home (props) {
                                   <div
                                     className="emoji-state"
                                     style={{
-                                      display: 'flex',
-                                      alignContent: 'center',
-                                      paddingTop: '20px',
+                                      display: "flex",
+                                      alignContent: "center",
+                                      paddingTop: "20px",
                                     }}
                                   >
                                     <div className="popover_wrapper">
@@ -2338,27 +2356,27 @@ export default function Home (props) {
                                         <ul className="namelist">
                                           {item?.like?.length <= 4
                                             ? item?.like.map((userItem) => {
-                                              return (
-                                                <li>
-                                                  {userItem.user.username}
-                                                </li>
-                                              );
-                                            })
-                                            : item?.like
-                                              ?.slice(0, 4)
-                                              .map((userItem, index) => {
-                                                index < 4 ? (
+                                                return (
                                                   <li>
                                                     {userItem.user.username}
                                                   </li>
-                                                ) : (
-                                                  <li>
-                                                    <span>
-                                                      +{item?.like.length - 5}
-                                                    </span>
-                                                  </li>
                                                 );
-                                              })}
+                                              })
+                                            : item?.like
+                                                ?.slice(0, 4)
+                                                .map((userItem, index) => {
+                                                  index < 4 ? (
+                                                    <li>
+                                                      {userItem.user.username}
+                                                    </li>
+                                                  ) : (
+                                                    <li>
+                                                      <span>
+                                                        +{item?.like.length - 5}
+                                                      </span>
+                                                    </li>
+                                                  );
+                                                })}
                                         </ul>
                                       </div>
                                     </div>
@@ -2372,9 +2390,14 @@ export default function Home (props) {
                                         }}
                                       >
                                         <span>
-                                          {(item.comment ? item.comment.length : 0) +
-                                            (item.comment.inverseReply ? item.comment?.inverseReply?.length : 0)
-                                          } bình luận
+                                          {(item.comment
+                                            ? item.comment.length
+                                            : 0) +
+                                            (item.comment.inverseReply
+                                              ? item.comment?.inverseReply
+                                                  ?.length
+                                              : 0)}{" "}
+                                          bình luận
                                         </span>
                                       </div>
                                     </div>
@@ -2384,10 +2407,11 @@ export default function Home (props) {
                                   <div
                                     className=""
                                     style={{
-                                      backgroundColor: `${isAlreadyLiked
-                                        ? "rgb(117, 189, 240)"
-                                        : "#eae9ee"
-                                        }`,
+                                      backgroundColor: `${
+                                        isAlreadyLiked
+                                          ? "rgb(117, 189, 240)"
+                                          : "#eae9ee"
+                                      }`,
                                       borderRadius: "4px",
                                       color: "#82828e",
                                       display: "inline-block",
@@ -2435,12 +2459,10 @@ export default function Home (props) {
                                       handleCommentClick(item.activityId)
                                     }
                                   >
-                                    <i className="icofont-comment" /> Bình
-                                    luận
+                                    <i className="icofont-comment" /> Bình luận
                                   </div>
                                   <a title href="#" className="share-to">
-                                    <i className="icofont-share-alt" /> Chia
-                                    sẻ
+                                    <i className="icofont-share-alt" /> Chia sẻ
                                   </a>
                                   {/* <div className="emoji-state" style={{ display: 'flex', alignContent: 'center' }}>
                                                                     <div className="popover_wrapper" >
@@ -2466,42 +2488,42 @@ export default function Home (props) {
                                 </div>
                                 <div
                                   className="new-comment"
-                                  style={{ display: 'block' }}
+                                  style={{ display: "block" }}
                                 >
                                   <form
                                     method="post"
                                     onSubmit={formik2.handleSubmit}
-                                    style={{ position: 'relative' }}
+                                    style={{ position: "relative" }}
                                   >
-                                    <div style={{ paddingBottom: '10px' }}>
+                                    <div style={{ paddingBottom: "10px" }}>
                                       {onID === item.activityId ? (
                                         <div
                                           className="commentT"
                                           style={{
-                                            display: 'flex',
-                                            alignContent: 'center',
+                                            display: "flex",
+                                            alignContent: "center",
                                           }}
                                         >
-                                          <span style={{ paddingTop: '6px' }}>
-                                            Trả lời bình luận :{' '}
+                                          <span style={{ paddingTop: "6px" }}>
+                                            Trả lời bình luận :{" "}
                                           </span>
                                           <div
-                                            style={{ marginLeft: '10px' }}
+                                            style={{ marginLeft: "10px" }}
                                             className="textcmt"
                                           >
-                                            {' '}
+                                            {" "}
                                             @{content}
                                             {setOnID === item.activityId ? (
                                               <span
                                                 style={{
-                                                  color: 'red',
-                                                  fontSize: '18px',
-                                                  cursor: 'pointer',
-                                                  paddingLeft: '4px',
+                                                  color: "red",
+                                                  fontSize: "18px",
+                                                  cursor: "pointer",
+                                                  paddingLeft: "4px",
                                                 }}
                                                 onClick={() => {
-                                                  setOnID('');
-                                                  setTcss('35px');
+                                                  setOnID("");
+                                                  setTcss("35px");
                                                 }}
                                               >
                                                 x
@@ -2509,14 +2531,14 @@ export default function Home (props) {
                                             ) : (
                                               <span
                                                 style={{
-                                                  color: 'red',
-                                                  fontSize: '18px',
-                                                  cursor: 'pointer',
-                                                  paddingLeft: '4px',
+                                                  color: "red",
+                                                  fontSize: "18px",
+                                                  cursor: "pointer",
+                                                  paddingLeft: "4px",
                                                 }}
                                                 onClick={() => {
-                                                  setOnID('');
-                                                  setTcss('10px');
+                                                  setOnID("");
+                                                  setTcss("10px");
                                                 }}
                                               >
                                                 x
@@ -2527,8 +2549,8 @@ export default function Home (props) {
                                       ) : (
                                         <div
                                           style={{
-                                            paddingTop: '6px',
-                                            paddingBottom: '10px',
+                                            paddingTop: "6px",
+                                            paddingBottom: "10px",
                                           }}
                                         ></div>
                                       )}
@@ -2544,14 +2566,14 @@ export default function Home (props) {
                                     {onID === item.activityId ? (
                                       <button
                                         style={{
-                                          position: 'absolute',
-                                          top: '52px',
+                                          position: "absolute",
+                                          top: "52px",
                                         }}
                                         type="submit"
                                         onClick={async () => {
                                           // await setTextI(item.activityId)
                                           formik2.setFieldValue(
-                                            'activityId',
+                                            "activityId",
                                             item.activityId
                                           );
                                         }}
@@ -2561,14 +2583,14 @@ export default function Home (props) {
                                     ) : (
                                       <button
                                         style={{
-                                          position: 'absolute',
-                                          top: '40px',
+                                          position: "absolute",
+                                          top: "40px",
                                         }}
                                         type="submit"
                                         onClick={async () => {
                                           // await setTextI(item.activityId)
                                           formik2.setFieldValue(
-                                            'activityId',
+                                            "activityId",
                                             item.activityId
                                           );
                                         }}
@@ -2702,8 +2724,8 @@ export default function Home (props) {
                 </div>
                 <div className="col-lg-3">
                   <aside className="sidebar static right">
-                    {localStorage.getItem('userID') &&
-                      userByID?.fanpage?.status === 'Active' ? (
+                    {localStorage.getItem("userID") &&
+                    userByID?.fanpage?.status === "Active" ? (
                       <div className="widget">
                         <h4 className="widget-title">Tổ chức của bạn</h4>
                         <ul className="ak-groups">
@@ -2711,9 +2733,9 @@ export default function Home (props) {
                             <figure>
                               <img
                                 style={{
-                                  width: '50px',
-                                  height: '50px',
-                                  objectfit: 'cover',
+                                  width: "50px",
+                                  height: "50px",
+                                  objectfit: "cover",
                                 }}
                                 src={userByID?.fanpage?.avatar}
                                 alt
@@ -2723,13 +2745,13 @@ export default function Home (props) {
                               <h5>
                                 <NavLink
                                   to={`/fanpage/${localStorage.getItem(
-                                    'userID'
+                                    "userID"
                                   )}`}
                                   title
                                   style={{
-                                    fontSize: '20px',
-                                    width: '200px',
-                                    wordWrap: 'break-word',
+                                    fontSize: "20px",
+                                    width: "200px",
+                                    wordWrap: "break-word",
                                   }}
                                 >
                                   {userByID?.fanpage?.fanpageName}
@@ -2745,7 +2767,7 @@ export default function Home (props) {
                                 href="group-feed.html"
                                 title
                                 className="promote"
-                                onClick={() => { }}
+                                onClick={() => {}}
                               >
                                 Chi tiết
                               </NavLink>
@@ -2917,7 +2939,7 @@ export default function Home (props) {
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6" />
                   </svg>
-                </i>{' '}
+                </i>{" "}
                 Invite Colleagues
               </h5>
             </div>
@@ -2961,7 +2983,7 @@ export default function Home (props) {
                   >
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
-                </i>{' '}
+                </i>{" "}
                 Send Message
               </h5>
             </div>
@@ -2969,7 +2991,7 @@ export default function Home (props) {
               <form method="post" className="c-form">
                 <input type="text" placeholder="Enter Name.." />
                 <input type="text" placeholder="Subject" />
-                <textarea placeholder="Write Message" defaultValue={''} />
+                <textarea placeholder="Write Message" defaultValue={""} />
                 <div className="uploadimage">
                   <i className="icofont-file-jpg" />
                   <label className="fileContainer">
@@ -3158,9 +3180,9 @@ export default function Home (props) {
             style={{
               width: 800,
               zIndex: 80,
-              height: '100vh',
-              overflowY: 'scroll',
-              margin: '1rem',
+              height: "100vh",
+              overflowY: "scroll",
+              margin: "1rem",
             }}
           >
             <span className="popup-closed" onClick={handleClick}>
@@ -3304,10 +3326,7 @@ export default function Home (props) {
                             >
                               Nhận ủng hộ
                             </label>
-                            <input
-                              type="checkbox"
-                              onChange={toggleTextInput}
-                            />
+                            <input type="checkbox" onChange={toggleTextInput} />
                           </div>
                           {isTextInputVisible === true && (
                             <div className="form-group">
@@ -3371,22 +3390,21 @@ export default function Home (props) {
                         />
                       </GoogleMapReact>
                     </div>
-
                   </div>
                 </div>
 
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      {userByID.fanpage?.status === 'Active' && isFanpage ? (
+                      {userByID.fanpage?.status === "Active" && isFanpage ? (
                         <div>
                           <div
                             className="form-group"
-                            style={{ display: 'flex' }}
+                            style={{ display: "flex" }}
                           >
                             <label
                               id="name-label"
-                              style={{ marginRight: '20px' }}
+                              style={{ marginRight: "20px" }}
                               htmlFor="name"
                             >
                               Chia sẻ lên tổ chức của bạn
@@ -3394,7 +3412,7 @@ export default function Home (props) {
                             <input
                               type="checkbox"
                               onChange={toggleTextInput1}
-                            // checked={isTextInputVisible1}
+                              // checked={isTextInputVisible1}
                             />
                           </div>
                         </div>
@@ -3448,7 +3466,7 @@ export default function Home (props) {
                             <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
                           </fieldset>
                         </form>
-                        <svg style={{ display: 'none' }}>
+                        <svg style={{ display: "none" }}>
                           <defs>
                             <symbol
                               id="icon-imageUpload"
@@ -3496,8 +3514,8 @@ export default function Home (props) {
                         </div>
                       )}
 
-                      {files !== '' ? (
-                        <img src={files} style={{ height: '300px' }} />
+                      {files !== "" ? (
+                        <img src={files} style={{ height: "300px" }} />
                       ) : (
                         <div></div>
                       )}
@@ -3526,7 +3544,7 @@ export default function Home (props) {
         <div className="post-new-popup" style={popupStyle4}>
           <div
             className="popup"
-            style={{ width: 800, marginTop: '100px', zIndex: 80 }}
+            style={{ width: 800, marginTop: "100px", zIndex: 80 }}
           >
             <span className="popup-closed" onClick={handleClick6}>
               <i className="icofont-close" />
@@ -3716,221 +3734,220 @@ export default function Home (props) {
         <div></div>
       )}
 
-      {
-        tt ? (
-          <div className="popup-overlay" style={popupStyle9}>
-            <div
-              className="popup1"
-              style={{
-                width: 800,
-                zIndex: 80,
-                height: "800px",
-                //  overflowY: "scroll", //#uoc
-                marginTop: "50px",
-                padding: "10px",
-              }}
-            >
-              <div className="multi-form">
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={handleSubmit1}
-                >
-                  <div className="container">
-                    <header className="header">
-                      {/* <h1 id="title" className="text-center">Survey Form</h1>
+      {tt ? (
+        <div className="popup-overlay" style={popupStyle9}>
+          <div
+            className="popup1"
+            style={{
+              width: 800,
+              zIndex: 80,
+              height: "800px",
+              //  overflowY: "scroll", //#uoc
+              marginTop: "50px",
+              padding: "10px",
+            }}
+          >
+            <div className="multi-form">
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit1}
+              >
+                <div className="container">
+                  <header className="header">
+                    {/* <h1 id="title" className="text-center">Survey Form</h1>
                                 <p id="description" className="text-center">
                                     Thank you for taking the time to help us improve the platform
                                 </p>
                                 <button className="close-button" onClick={closePopup}>&times;</button> */}
-                    </header>
-                    <div className="form-wrap">
-                      <Form>
-                        <button className="close-button" onClick={closePopup}>
-                          &times;
-                        </button>
-                        <div className="form">
-                          {formData.map((form, index) => (
-                            <div
-                              key={index}
-                              className={`form-group  hidden `}
-                              style={{ display: index === 0 ? 'none' : 'block' }}
-                            >
-                              <h3 style={{ textAlign: 'center' }}>
-                                Vui lòng điền quy trình {index}
-                              </h3>
-                              <div className="form-group">
-                                <label htmlFor={`processTitle_${index}`}>
-                                  Tiêu đề
-                                </label>
-                                <Field
-                                  type="text"
-                                  name={`forms[${index}].processTitle`}
-                                  className="form-control"
-                                />
-                              </div>
-                              <div className="form-group">
-                                <label htmlFor={`description_${index}`}>
-                                  Mô tả
-                                </label>
-                                <textarea
-                                  type="text"
-                                  name={`forms[${index}].description`}
-                                  className="form-control"
-                                />
-                              </div>
-                              <dv className="row">
-                                <div className="form-group col-md-6">
-                                  <label htmlFor={`startDate_${index}`}>
-                                    Thời gian diễn ra
-                                  </label>
-                                  <Field
-                                    type="datetime-local"
-                                    name={`forms[${index}].startDate`}
-                                    className="form-control"
-                                  />
-                                </div>
-                                <div className="form-group col-md-6">
-                                  <label htmlFor={`endDate_${index}`}>
-                                    Thời gian kết thúc
-                                  </label>
-                                  <Field
-                                    type="datetime-local"
-                                    name={`forms[${index}].endDate`}
-                                    className="form-control"
-                                  />
-                                </div>
-                              </dv>
-
-                              <div className="form-group">
-                                <label htmlFor={`processTypeId_${index}`}>
-                                  Thể loại hoạt động
-                                </label>
-                                <select
-                                  name={`forms[${index}].processTypeId`}
-                                  value={form.processTypeId} // Bind the select value to the formData value
-                                  onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
-                                  className="form-control"
-                                >
-                                  <option value="">Chọn </option>
-                                  {processType.map((item, index) => {
-                                    return (
-                                      <option
-                                        value={item.processTypeId}
-                                        key={index}
-                                      >
-                                        {item.processTypeName}
-                                      </option>
-                                    );
-                                  })}
-                                </select>
-                              </div>
-                              <div className="form-group">
-                                <Field
-                                  type="text"
-                                  hidden
-                                  name={`forms[${index}].processNo`}
-                                  value={index + 1}
-                                  className="form-control"
-                                />
-                              </div>
-
-                              <div className="form-group">
-                                <label htmlFor={`media_${index}`}>Hình ảnh</label>
-                                <div>
-                                  <Field
-                                    name={`forms[${index}].media`}
-                                    id={`media_${index}`}
-                                    type="file"
-                                    multiple
-                                    onChange={(e) => handleImageChange1(e, index)}
-                                  />
-                                  <div className="image-container">
-                                    {form.media.map((image, imageIndex) => (
-                                      <div
-                                        className="image-item"
-                                        key={imageIndex}
-                                      >
-                                        <img
-                                          src={image.linkMedia}
-                                          alt={`Image ${imageIndex}`}
-                                          className="image-preview"
-                                        />
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                              {index === currentForm && (
-                                <div className="form-buttons">
-                                  {index > 0 && (
-                                    <button
-                                      type="button"
-                                      className="btn btn-secondary"
-                                      onClick={handlePrevious}
-                                    >
-                                      Về sau
-                                    </button>
-                                  )}
-                                  {index < formData.length - 1 && (
-                                    <button
-                                      type="button"
-                                      className="btn btn-primary"
-                                      onClick={handleNext}
-                                    >
-                                      Tiếp tục
-                                    </button>
-                                  )}
-                                  {index > 0 && (
-                                    <button
-                                      style={{
-                                        marginLeft: '1rem',
-                                        width: '12%',
-                                      }}
-                                      type="button"
-                                      className="btn btn-danger delete"
-                                      onClick={handleDeleteForm}
-                                    >
-                                      Xóa
-                                    </button>
-                                  )}
-                                </div>
-                              )}
+                  </header>
+                  <div className="form-wrap">
+                    <Form>
+                      <button className="close-button" onClick={closePopup}>
+                        &times;
+                      </button>
+                      <div className="form">
+                        {formData.map((form, index) => (
+                          <div
+                            key={index}
+                            className={`form-group  hidden `}
+                            style={{ display: index === 0 ? "none" : "block" }}
+                          >
+                            <h3 style={{ textAlign: "center" }}>
+                              Vui lòng điền quy trình {index}
+                            </h3>
+                            <div className="form-group">
+                              <label htmlFor={`processTitle_${index}`}>
+                                Tiêu đề
+                              </label>
+                              <Field
+                                type="text"
+                                name={`forms[${index}].processTitle`}
+                                className="form-control"
+                              />
                             </div>
-                          ))}
-                        </div>
+                            <div className="form-group">
+                              <label htmlFor={`description_${index}`}>
+                                Mô tả
+                              </label>
+                              <textarea
+                                type="text"
+                                name={`forms[${index}].description`}
+                                className="form-control"
+                              />
+                            </div>
+                            <dv className="row">
+                              <div className="form-group col-md-6">
+                                <label htmlFor={`startDate_${index}`}>
+                                  Thời gian diễn ra
+                                </label>
+                                <Field
+                                  type="datetime-local"
+                                  name={`forms[${index}].startDate`}
+                                  className="form-control"
+                                />
+                              </div>
+                              <div className="form-group col-md-6">
+                                <label htmlFor={`endDate_${index}`}>
+                                  Thời gian kết thúc
+                                </label>
+                                <Field
+                                  type="datetime-local"
+                                  name={`forms[${index}].endDate`}
+                                  className="form-control"
+                                />
+                              </div>
+                            </dv>
 
-                        {currentForm === formData.length - 1 && (
-                          <div className="form-buttons">
-                            <button
-                              style={{ width: '25%' }}
-                              type="button"
-                              className="btn btn-primary"
-                              onClick={handleCreateNewForm}
-                            >
-                              Thêm quy trình
-                            </button>
-                            {currentForm >= 1 && (
-                              <button
-                                style={{ marginLeft: '1rem' }}
-                                type="submit"
-                                className="btn btn-success"
+                            <div className="form-group">
+                              <label htmlFor={`processTypeId_${index}`}>
+                                Thể loại hoạt động
+                              </label>
+                              <select
+                                name={`forms[${index}].processTypeId`}
+                                value={form.processTypeId} // Bind the select value to the formData value
+                                onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
+                                className="form-control"
                               >
-                                Hoàn thành
-                              </button>
+                                <option value="">Chọn </option>
+                                {processType.map((item, index) => {
+                                  return (
+                                    <option
+                                      value={item.processTypeId}
+                                      key={index}
+                                    >
+                                      {item.processTypeName}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                            <div className="form-group">
+                              <Field
+                                type="text"
+                                hidden
+                                name={`forms[${index}].processNo`}
+                                value={index + 1}
+                                className="form-control"
+                              />
+                            </div>
+
+                            <div className="form-group">
+                              <label htmlFor={`media_${index}`}>Hình ảnh</label>
+                              <div>
+                                <Field
+                                  name={`forms[${index}].media`}
+                                  id={`media_${index}`}
+                                  type="file"
+                                  multiple
+                                  onChange={(e) => handleImageChange1(e, index)}
+                                />
+                                <div className="image-container">
+                                  {form.media.map((image, imageIndex) => (
+                                    <div
+                                      className="image-item"
+                                      key={imageIndex}
+                                    >
+                                      <img
+                                        src={image.linkMedia}
+                                        alt={`Image ${imageIndex}`}
+                                        className="image-preview"
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                            {index === currentForm && (
+                              <div className="form-buttons">
+                                {index > 0 && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={handlePrevious}
+                                  >
+                                    Về sau
+                                  </button>
+                                )}
+                                {index < formData.length - 1 && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={handleNext}
+                                  >
+                                    Tiếp tục
+                                  </button>
+                                )}
+                                {index > 0 && (
+                                  <button
+                                    style={{
+                                      marginLeft: "1rem",
+                                      width: "12%",
+                                    }}
+                                    type="button"
+                                    className="btn btn-danger delete"
+                                    onClick={handleDeleteForm}
+                                  >
+                                    Xóa
+                                  </button>
+                                )}
+                              </div>
                             )}
                           </div>
-                        )}
-                      </Form>
-                    </div>
+                        ))}
+                      </div>
+
+                      {currentForm === formData.length - 1 && (
+                        <div className="form-buttons">
+                          <button
+                            style={{ width: "25%" }}
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={handleCreateNewForm}
+                          >
+                            Thêm quy trình
+                          </button>
+                          {currentForm >= 1 && (
+                            <button
+                              style={{ marginLeft: "1rem" }}
+                              type="submit"
+                              className="btn btn-success"
+                            >
+                              Hoàn thành
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </Form>
                   </div>
-                </Formik>
-              </div>
+                </div>
+              </Formik>
             </div>
           </div>
-        ) : (
-          <div></div>
-        )}
+        </div>
+      ) : (
+        <div></div>
+      )}
       {report ? (
         <div className="post-new-popup1" style={popupStyle3}>
           <div
@@ -3940,8 +3957,8 @@ export default function Home (props) {
               zIndex: 80,
               height: 450,
               // overflowY: "scroll",
-              padding: '10px',
-              marginTop: '-100px',
+              padding: "10px",
+              marginTop: "-100px",
             }}
           >
             <span className="popup-closed" onClick={handleClick3}>
@@ -4079,14 +4096,14 @@ export default function Home (props) {
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                     <line x1={12} y1={17} x2="12.01" y2={17} />
                   </svg>
-                </i>{' '}
+                </i>{" "}
                 Ask Question
               </h5>
             </div>
             <div className="post-new">
               <form method="post" className="c-form">
                 <input type="text" placeholder="Question Title" />
-                <textarea placeholder="Write Question" defaultValue={''} />
+                <textarea placeholder="Write Question" defaultValue={""} />
                 <select>
                   <option>Select Your Question Type</option>
                   <option>Article</option>
@@ -4147,7 +4164,7 @@ export default function Home (props) {
             Share To!
           </h5>
           <form method="post">
-            <textarea placeholder="Write Something" defaultValue={''} />
+            <textarea placeholder="Write Something" defaultValue={""} />
           </form>
           <ul>
             <li>
@@ -4166,7 +4183,7 @@ export default function Home (props) {
               </a>
             </li>
           </ul>
-          <div style={{ display: 'block' }} className="social-media">
+          <div style={{ display: "block" }} className="social-media">
             <ul>
               <li>
                 <a title href="#" className="facebook">
@@ -4205,7 +4222,7 @@ export default function Home (props) {
               </li>
             </ul>
           </div>
-          <div style={{ display: 'none' }} className="friends-to">
+          <div style={{ display: "none" }} className="friends-to">
             <div className="follow-men">
               <figure>
                 <img
@@ -4272,7 +4289,6 @@ export default function Home (props) {
           </button>
         </div>
       </div>
-
 
       <DetailActivity item={detail} dateTime={DateTime} />
 

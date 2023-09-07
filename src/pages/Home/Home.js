@@ -77,7 +77,7 @@ export default function Home (props) {
                                             </li>
                                             <li className="nav-item">
                                                 <a className href="#endactivity" data-toggle="tab">
-                                                    Danh sách kết thúc chiến dịch
+                                                   Chiến dịch kết thúc
                                                 </a>
                                             </li>
                                             {/* <li><NavLink className="active" to="/home" title>Trang chủ</NavLink></li>

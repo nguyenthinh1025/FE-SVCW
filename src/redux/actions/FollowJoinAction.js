@@ -13,7 +13,7 @@ export const FollowAction = (activity, user) => {
             dispatch(action)
             const action1 = GetRecommentActivityAction(user);
             dispatch(action1)
-            const action2 = GetProfileByIdAction(user);
+            const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'));
             dispatch(action2)
             const action3 = GetActivityIDAction(activity)
             dispatch(action3)
@@ -55,7 +55,7 @@ export const UnFollowAction = (activity, user) => {
             dispatch(action)
             const action1 = GetRecommentActivityAction(user);
             dispatch(action1)
-            const action2 = GetProfileByIdAction(user);
+            const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'));
             dispatch(action2)
             const action3 = GetActivityIDAction(activity)
             dispatch(action3)
@@ -99,7 +99,7 @@ export const JoinAction = (activity, user) => {
             dispatch(action)
             const action1 = GetRecommentActivityAction(user);
             dispatch(action1)
-            const action2 = GetProfileByIdAction(user);
+            const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'));
             dispatch(action2)
             const action3 = GetActivityIDAction(activity)
             dispatch(action3)
@@ -139,7 +139,7 @@ export const UnJoinAction = (activity, user) => {
             dispatch(action)
             const action1 = GetRecommentActivityAction(user);
             dispatch(action1)
-            const action2 = GetProfileByIdAction(user);
+            const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'));
             dispatch(action2)
             const action3 = GetActivityIDAction(activity)
             dispatch(action3)

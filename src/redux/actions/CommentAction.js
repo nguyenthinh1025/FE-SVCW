@@ -10,7 +10,7 @@ export const CommentAction = (value) => {
             console.log(result);
             const action = GetListActivityAction();
             dispatch(action)
-            const action2 = GetProfileByIdAction(value.userId)
+            const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'))
             dispatch(action2)
             const action3 = GetActivityIDAction(value.activityId);
             dispatch(action3)
@@ -46,7 +46,7 @@ export const CommentRepllyAction = (value) => {
             console.log(result);
             const action = GetListActivityAction();
             dispatch(action)
-            const action2 = GetProfileByIdAction(value.userId)
+            const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'))
             dispatch(action2)
             const action3 = GetActivityIDAction(value.activityId);
             dispatch(action3)
