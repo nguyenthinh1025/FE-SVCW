@@ -29,6 +29,7 @@ export default function Profile (props) {
   const [reloadPage, setReloadPage] = useState(false);
   const { userID } = useSelector((root) => root.LoginReducer);
   const { getUserId } = useSelector((root) => root.ProfileReducer);
+  console.log(getUserId)
   const { arrEndActivityByUserID } = useSelector(
     (root) => root.EndActivityReducer
   );
@@ -39,7 +40,7 @@ export default function Profile (props) {
     dispatch(action1);
     const action4 = GetListReportTypeAction();
     dispatch(action4);
-  }, []);
+  }, [id]);
   return (
     <div>
       <div className="theme-layout">

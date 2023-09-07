@@ -23,6 +23,8 @@ import Moderator from './pages/Moderator/Moderator';
 import AdminFanpage from './pages/AdminFanpage/AdminFanpage';
 import AdminActivity from './pages/AdminActivity/AdminActivity';
 import Report from './pages/Report/Report';
+import LoginMobile from './pages/LoginMobile/LoginMobile';
+import HomeMobile from './pages/HomeMobile/HomeMobile';
 export const history = createBrowserHistory()
 
 function App () {
@@ -49,6 +51,8 @@ function App () {
         <UserTemplate exact path="/groups" Component={Group} />
         <UserTemplate exact path="/test" Component={DynamicForm} />
         <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
+        <Route exact path="/loginmobile" component={LoginMobile} />
+        <Route exact path="/homemobile" component={HomeMobile} />
         <Route path="/" exact component={Login} />
       </Switch>
     </Router>

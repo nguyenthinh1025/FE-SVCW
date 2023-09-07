@@ -45,6 +45,44 @@ export const LoginUserAction = (value, props) => {
         }
     }
 }
+export const LoginUserMobileAction = (value, props) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post(`/User/validate-login-user`, value);
+            console.log(result.data.data.user?.userId);
+            const action = {
+                type: "GET_USER_LOGIN_MOBILE",
+                userIDMobile: result.data.data.user?.userId
+            }
+            dispatch(action)
+            localStorage.setItem('userIDMobile', result.data.data.user?.userId)
+
+            if (result.data.data.resultCode === 104) {
+                dispatch({
+                    type: "CHECH_LOGIN",
+                    data: "Emai không hợp lệ"
+                })
+
+            } else {
+                dispatch({
+                    type: "CHECH_LOGIN",
+                    data: ""
+                })
+                const email = {
+                    "email": result.data.data.user?.email
+                }
+                const action = await ConfigActivityAction(email)
+                dispatch(action)
+                props.history.push("/homemobile");
+
+
+
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 
 
 export const LoginModeratorAction = (value, props) => {
