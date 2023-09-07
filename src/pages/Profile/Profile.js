@@ -131,11 +131,11 @@ export default function Profile (props) {
                               </a>
                             </li>
 
-                            <li className="nav-item">
+                            {getUserId?.userId === userID ? <li className="nav-item">
                               <a className href="#about" data-toggle="tab">
                                 Thông tin cá nhân
                               </a>
-                            </li>
+                            </li> : <li></li>}
                             <li className="nav-item">
                               <a
                                 className

@@ -9,6 +9,7 @@
     "apexcharts": "^3.42.0",
     "axios": "^1.4.0",
     "firebase": "^10.2.0",
+    "firebase-admin": "^11.10.1",
     "font-awesome": "^4.7.0",
     "formik": "^2.4.3",
     "google-map-react": "^2.2.1",
@@ -24,6 +25,7 @@
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
     "react-google-places-autocomplete": "^4.0.1",
+    "react-number-format": "^5.3.1",
     "react-redux": "^8.1.2",
     "react-router-dom": "^5.3.3",
     "react-scripts": "^5.0.1",
@@ -33,7 +35,7 @@
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
     "slick-carousel": "^1.8.1",
-    "sweetalert2": "^11.7.27",
+    "sweetalert2": "^11.6.13",
     "web-vitals": "^2.1.4",
     "yup": "^1.2.0"
   },
@@ -60,5 +62,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

@@ -17,16 +17,41 @@ import { GetListReportAction, GetListReportByTypeAction } from '../../redux/acti
 import EndActivity from '../Profile/EndActivity';
 import RecommentActivity from '../../components/RecommentActivity';
 import { GetListProcessTypeAction } from '../../redux/actions/ProcessTypeAction';
+import Swal from 'sweetalert2';
+import { useState } from 'react';
 export default function Home (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector((root) => root.LoginReducer);
     const { arrFanpage } = useSelector((root) => root.FanpageReducer);
     const { arrActivity, activityId, arrActivityRecomment } = useSelector((root) => root.ActivityReducer);
     const { arrEndActivity } = useSelector((root) => root.EndActivityReducer);
+    const [isMatch, setIsMatch] = useState(false);
     useEffect(() => {
         // const user = localStorage.getItem('userID');
         // if (user) {
         //     console.log('có user');
+        const stringToCompare = 'success';
+
+        // Get the current URL
+        const currentUrl = window.location.href;
+
+        // Check if the current URL contains the given string
+        const match = currentUrl.includes(stringToCompare);
+
+        // Set the state based on the result
+        setIsMatch(match);
+         if (match) {
+            Swal.fire({
+                title: 'Thành công!',
+                text: 'Bạn đã ủng hộ thành công cho chiến dịch!',
+                icon: 'success',
+            }).then((result) => {
+                props.history.push('/home')
+
+                // Reset isMatch to false
+                setIsMatch(false);
+            });
+        }
         const action3 = GetListActivityAction();
         dispatch(action3)
         const action = GetUserByIdAction(localStorage.getItem('userID'));

@@ -40,6 +40,8 @@ import CreateResultActivity from "../pages/Result/CreateResultActivity";
 import ResultActivity from "../pages/Result/ResultActivity";
 import { GetProcessByActivityAction } from "../redux/actions/ProcessAction";
 import Donate from "./Donate";
+import ListDonate from "./ListDonate";
+import ListFollowJoin from "./ListFollowJoin";
 
 export default function ItemEndActivity(props) {
   const [isReadMore, setReadMore] = useState(false);
@@ -68,6 +70,30 @@ export default function ItemEndActivity(props) {
     opacity: isOpen1 ? 1 : 0,
     visibility: isOpen1 ? "visible" : "hidden",
     overflow: isOpen1 ? "auto" : "hidden",
+  };
+
+  const [isDonate, setIsDonate] = useState(false);
+  const [listDonate, setIsListDonate] = useState([]);
+  const handleClickDonate = () => {
+    setIsDonate((prevIsOpen) => !prevIsOpen);
+  };
+
+  const popupStyleDonate = {
+    opacity: isDonate ? 1 : 0,
+    visibility: isDonate ? "visible" : "hidden",
+    overflow: isDonate ? "auto" : "hidden",
+  };
+  const [isFolowJoin, setIsFolowJoin] = useState(false);
+  const [listFolowJoin, setFolowJoin] = useState([]);
+  const [listJoinFollow, setJoinFollow] = useState([]);
+  const handleClickFolowJoin = () => {
+    setIsFolowJoin((prevIsOpen) => !prevIsOpen);
+  };
+
+  const popupStyleFolowJoin = {
+    opacity: isFolowJoin ? 1 : 0,
+    visibility: isFolowJoin ? "visible" : "hidden",
+    overflow: isFolowJoin ? "auto" : "hidden",
   };
   const handleClick1 = () => {
     setIsOpen1((prevIsOpen) => !prevIsOpen);
@@ -222,7 +248,7 @@ export default function ItemEndActivity(props) {
     return timeAgoString;
   };
   const handleJoinClick = async (index, activity, isJoin, title) => {
-    if (isJoin) {
+    if (isJoin ==="Join") {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
@@ -404,24 +430,64 @@ export default function ItemEndActivity(props) {
                     ) : (
                       <div></div>
                     )}
-                    { ItemActivity?.process?.filter(
+                    {endDate.isAfter(currentDate) === true &&
+                    ItemActivity?.process?.filter(
                       (item) => item.processTypeId === "pt003"
                     ).length > 0 ? (
-                      
-                        <li
-                          onClick={() => {
-                            // handleClickCreate();
-                            // setIDActivity(ItemActivity.activityId);
-                            console.log(ItemActivity.activityId);
-                            const action = GetQRActivityAction(ItemActivity.activityId);
-                            dispatch(action)
-                          }}
-                        >
-                          <i className="icofont-pen-alt-1" />
-                          Mã QR
-                          <span>Lấy mã QR của sự kiện</span>
-                        </li>
-                   
+                      <li
+                        onClick={() => {
+                          // handleClickCreate();
+                          // setIDActivity(ItemActivity.activityId);
+                          console.log(ItemActivity.activityId);
+                          const action = GetQRActivityAction(
+                            ItemActivity.activityId
+                          );
+                          dispatch(action);
+                        }}
+                      >
+                        <i className="icofont-pen-alt-1" />
+                        Mã QR
+                        <span>Lấy mã QR của sự kiện</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
+                    {endDate.isAfter(currentDate) === true ? (
+                      <li
+                        onClick={() => {
+                          handleClickDonate();
+                          setIsListDonate(ItemActivity?.donation);
+                          console.log(ItemActivity.activityId);
+                        }}
+                      >
+                        <i className="icofont-pen-alt-1" />
+                        Danh sách donate
+                        <span>Danh sách đã donate cho sự kiện</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
+                    {endDate.isAfter(currentDate) === true ? (
+                      <li
+                        onClick={() => {
+                          handleClickFolowJoin();
+                          setFolowJoin(
+                            ItemActivity?.followJoinAvtivity?.filter(
+                              (item) => item.isFollow === true
+                            )
+                          );
+                          setJoinFollow(
+                            ItemActivity?.followJoinAvtivity?.filter(
+                              (item) => item.isJoin === "Join"
+                            )
+                          );
+                          console.log(ItemActivity.activityId);
+                        }}
+                      >
+                        <i className="icofont-pen-alt-1" />
+                        Danh sách theo dõi tham gia
+                        <span> Danh sách theo dõi tham gia sự kiện</span>
+                      </li>
                     ) : (
                       <div></div>
                     )}
@@ -546,7 +612,7 @@ export default function ItemEndActivity(props) {
               </p>
               <figure style={{}}>
                 <div className="image-gallery-flex">
-                  {ItemActivity?.media?.length <= 3
+                  {ItemActivity?.media?.length <= 4
                     ? ItemActivity.media.map((image, index) => {
                         return (
                           <div key={index} className={`image-container-post`}>
@@ -824,7 +890,7 @@ export default function ItemEndActivity(props) {
                           return (
                             <button
                               className={` ${
-                                isAlreadyJoined ? "btn-change" : "btn-color"
+                                isAlreadyJoined  ==="Join"? "btn-change" : "btn-color"
                               } mb-4 mt-4 btn-add ${
                                 ItemActivity.targetDonation !== 0
                                   ? "marginfollow"
@@ -839,7 +905,7 @@ export default function ItemEndActivity(props) {
                                 );
                               }}
                             >
-                              {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
+                              {isAlreadyJoined ==="Join"? "Hủy Tham gia" : "Tham gia"}
                             </button>
                           );
                         }
@@ -1015,8 +1081,35 @@ export default function ItemEndActivity(props) {
                 <div
                   className="share"
                   onClick={() => {
-                    setShare(true);
-                    setShareActivityID(ItemActivity.activityId);
+
+                    const textToCopy = `http://localhost:3000/detailactivity/${ItemActivity.activityId}`;
+
+                    const copyTextToClipboard = () => {
+                      const textArea = document.createElement("textarea");
+                      textArea.value = textToCopy;
+                      document.body.appendChild(textArea);
+                      textArea.select();
+                      document.execCommand("copy");
+                      document.body.removeChild(textArea);
+                    };
+
+                    copyTextToClipboard(); 
+                    const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                              toast.addEventListener("mouseenter", Swal.stopTimer);
+                              toast.addEventListener("mouseleave", Swal.resumeTimer);
+                            },
+                          });
+                    
+                          Toast.fire({
+                            icon: "success",
+                            title: `Sao chép liên kết thành công`,
+                          });
                   }}
                 >
                   <i className="icofont-share-alt" /> Chia sẻ
@@ -1238,6 +1331,19 @@ export default function ItemEndActivity(props) {
         idActivity={idActivity}
       />
       <Donate isPopupOpen={isPopupOpen} openPopup={openPopup} donate={donate} />
+      <ListDonate
+        handleClickDonate={handleClickDonate}
+        isDonate={isDonate}
+        listDonate={listDonate}
+        popupStyleDonate={popupStyleDonate}
+      />
+      <ListFollowJoin
+        handleClickFolowJoin={handleClickFolowJoin}
+        isFolowJoin={isFolowJoin}
+        listFolowJoin={listFolowJoin}
+        listJoinFollow={listJoinFollow}
+        popupStyleFolowJoin={popupStyleFolowJoin}
+      />
     </div>
   );
 }

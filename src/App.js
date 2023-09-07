@@ -39,11 +39,8 @@ function App () {
         <AdminTemplate exact path="/adminfanpage" Component={AdminFanpage} />
         <AdminTemplate exact path="/adminactivity" Component={AdminActivity} />
         <AdminTemplate exact path="/report" Component={Report} />
-
-
         <UserTemplate path="/profile/:id" exact Component={Profile} />
         <UserTemplate path="/home" exact Component={Home} />
-        <Route path="/detailactivity/:id" exact component={DetailActivity} />
         <UserTemplate exact path="/fanpage/:id" Component={DetailFanpage} />
         <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
         <UserTemplate exact path="/history" Component={Result} />
@@ -51,6 +48,7 @@ function App () {
         <UserTemplate exact path="/groups" Component={Group} />
         <UserTemplate exact path="/test" Component={DynamicForm} />
         <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
+        <Route path="/detailactivity/:id" exact component={DetailActivity} />
         <Route exact path="/loginmobile" component={LoginMobile} />
         <Route exact path="/homemobile" component={HomeMobile} />
         <Route path="/" exact component={Login} />
