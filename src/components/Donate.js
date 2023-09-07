@@ -2,12 +2,12 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DonationAction } from "../redux/actions/DonationAction";
-
+import { NumericFormat } from "react-number-format";
 export default function Donate(props) {
   const { isPopupOpen, openPopup, donate } = props;
   const [error, setError] = useState("1");
-  const {message} = useSelector(root =>root.DonationReducer);
-  console.log(message)
+  const { message } = useSelector((root) => root.DonationReducer);
+  console.log(message);
   const dispatch = useDispatch();
   const formik1 = useFormik({
     initialValues: {
@@ -21,12 +21,11 @@ export default function Donate(props) {
     },
     enableReinitialize: true,
     onSubmit: async (value) => {
-        const action = await DonationAction(value ,openPopup);
-        await dispatch(action);
-      
-      
+      const action = await DonationAction(value, openPopup);
+      await dispatch(action);
     },
   });
+
   return (
     <div>
       {isPopupOpen && (
@@ -76,16 +75,17 @@ export default function Donate(props) {
                       <label id="email-label" htmlFor="email">
                         Số tiền:
                       </label>
-                      <input
-                        type="number"
-                        name="amount"
-                        onChange={formik1.handleChange}
-                        id="email"
+
+                      <NumericFormat
                         placeholder="Nhập số tiền"
                         className="form-control"
-                        required
+                        name="amount"
+                        onChange={formik1.handleChange}
+                        value=""
+                        allowLeadingZeros
+                        thousandSeparator=","
                       />
-                      <div style={{color:'red'}}>{message}</div>
+                      <div style={{ color: "red" }}>{message}</div>
                     </div>
                   </div>
                 </div>

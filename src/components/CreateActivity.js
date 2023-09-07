@@ -13,7 +13,7 @@ import moment from "moment";
 import { GetListProcessTypeAction } from "../redux/actions/ProcessTypeAction";
 import { CreateProcessAction } from "../redux/actions/ProcessAction";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
-export default function CreateActivity () {
+export default function CreateActivity() {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen1, setIsOpen1] = useState(false);
@@ -46,7 +46,7 @@ export default function CreateActivity () {
     opacity: isOpen1 ? 1 : 0,
     visibility: isOpen1 ? "visible" : "hidden",
     overflow: isOpen1 ? "auto" : "hidden",
-    zIndex: 300
+    zIndex: 300,
   };
   const toggleTextInput1 = () => {
     setTextInputVisible1(!isTextInputVisible1);
@@ -65,7 +65,7 @@ export default function CreateActivity () {
     console.log(fileList);
     const newImages = [];
 
-    for (let i = 0;i < fileList.length;i++) {
+    for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ file, url: imageUrl });
@@ -74,7 +74,7 @@ export default function CreateActivity () {
         const fileRef = ref(storage_bucket, file.name);
         const uploadTask = uploadBytesResumable(fileRef, file);
 
-        uploadTask.on('state_changed', (snapshot) => {
+        uploadTask.on("state_changed", (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setUploadProgress(progress);
@@ -82,7 +82,7 @@ export default function CreateActivity () {
 
         const snapshot = await uploadTask;
 
-        if (snapshot.state === 'success') {
+        if (snapshot.state === "success") {
           const downloadURL = await getDownloadURL(snapshot.ref);
           const updatedImages = [...newImages];
           updatedImages[i].url = downloadURL;
@@ -91,19 +91,19 @@ export default function CreateActivity () {
           const img = [...images, ...updatedImages].map((item, index) => {
             const images = {
               type: "string",
-              linkMedia: item.url
-            }
-            return images
-          })
-          formik.setFieldValue('media', img)
+              linkMedia: item.url,
+            };
+            return images;
+          });
+          formik.setFieldValue("media", img);
         }
-      } catch (error) { }
+      } catch (error) {}
     }
     setIsLoading(false);
     setUploadProgress(0);
   };
 
-  const [create, setCreate] = useState(activityProcess)
+  const [create, setCreate] = useState(activityProcess);
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -134,25 +134,25 @@ export default function CreateActivity () {
       // formik.setFieldValue("media", []);
 
       Swal.fire({
-        title: 'Thành công',
+        title: "Thành công",
         text: "Tạo chiến dịch mới thành công!",
-        icon: 'success',
+        icon: "success",
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Hoàn thành'
-      })
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Hoàn thành",
+      });
       setIsOpen((prevIsOpen) => !prevIsOpen);
       setIsDisplay(false);
     },
   });
-  console.log(create)
+  console.log(create);
 
   const process = processType?.map((item, index) => {
     return {
       id: item.processTypeId,
-      value: item.processTypeName
-    }
-  })
+      value: item.processTypeName,
+    };
+  });
   const [inputFields, setInputFields] = useState([
     {
       processTitle: "",
@@ -171,14 +171,13 @@ export default function CreateActivity () {
       realDonation: 0,
       targetDonation: 0,
       meida: [],
-      media: []
-    }
-
+      media: [],
+    },
   ]);
   const addInputField = () => {
-    if (error === '1') {
+    if (error === "1") {
       console.log(inputFields);
-      console.log(localStorage.getItem('startactivity'));
+      console.log(localStorage.getItem("startactivity"));
       setInputFields([
         ...inputFields,
         {
@@ -198,118 +197,134 @@ export default function CreateActivity () {
           realDonation: 0,
           targetDonation: 0,
           meida: [],
-          media: []
+          media: [],
         },
       ]);
-    }
-    else {
+    } else {
       Swal.fire({
-        title: 'Cảnh báo',
+        title: "Cảnh báo",
         text: "Vui lòng điền thông tin đầy đủ và phù hợp",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Hoàn thành',
-        zIndex: 999
-      })
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Hoàn thành",
+        zIndex: 999,
+      });
     }
-
   };
   const removeInputField = (index) => {
     const updatedInputFields = [...inputFields];
     updatedInputFields.splice(index, 1);
     setInputFields(updatedInputFields);
   };
-  const [error, setError] = useState('1')
+  const [error, setError] = useState("1");
   const handleInputChange = (index, field, value) => {
     const updatedInputFields = [...inputFields];
     updatedInputFields[index][field] = value;
-    if (updatedInputFields[index].processTypeId === 'pt002') {
+    if (updatedInputFields[index].processTypeId === "pt002") {
       updatedInputFields[index].targetDonation = 0;
       updatedInputFields[index].isDonateProcess = false;
       updatedInputFields[index].isParticipant = true;
-    } else if (updatedInputFields[index].processTypeId === 'pt001') {
+    } else if (updatedInputFields[index].processTypeId === "pt001") {
       updatedInputFields[index].targetParticipant = 0;
       updatedInputFields[index].isDonateProcess = true;
       updatedInputFields[index].isParticipant = false;
-    }
-    else if (moment(localStorage.getItem('startactivity')).isAfter(updatedInputFields[index].startDate)) {
+    } else if (
+      moment(localStorage.getItem("startactivity")).isAfter(
+        updatedInputFields[index].startDate
+      )
+    ) {
       console.log("trước ngày tạo");
       Swal.fire({
-        title: 'Cảnh báo',
-        text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(localStorage.getItem('startactivity')).format('DD-MM-YYYY')}`,
-        icon: 'warning',
+        title: "Cảnh báo",
+        text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(
+          localStorage.getItem("startactivity")
+        ).format("DD-MM-YYYY")}`,
+        icon: "warning",
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Đồng ý',
-        zIndex: 999
-      })
-      setError('2')
-    }
-    else if (moment(localStorage.getItem('endstart')).isBefore(updatedInputFields[index].startDate)) {
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
+    } else if (
+      moment(localStorage.getItem("endstart")).isBefore(
+        updatedInputFields[index].startDate
+      )
+    ) {
       console.log("trước ngày tạo");
       Swal.fire({
-        title: 'Cảnh báo',
-        text: `Ngày bắt đầu hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(localStorage.getItem('endstart')).format('DD-MM-YYYY')}`,
-        icon: 'warning',
+        title: "Cảnh báo",
+        text: `Ngày bắt đầu hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(
+          localStorage.getItem("endstart")
+        ).format("DD-MM-YYYY")}`,
+        icon: "warning",
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Đồng ý',
-        zIndex: 999
-      })
-      setError('2')
-    }
-    else if (moment(localStorage.getItem('endstart')).isBefore(updatedInputFields[index].endDate)) {
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
+    } else if (
+      moment(localStorage.getItem("endstart")).isBefore(
+        updatedInputFields[index].endDate
+      )
+    ) {
       console.log("sau ngày tạo");
       Swal.fire({
-        title: 'Cảnh báo',
-        text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(localStorage.getItem('endstart')).format('DD-MM-YYYY')}`,
-        icon: 'warning',
+        title: "Cảnh báo",
+        text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(
+          localStorage.getItem("endstart")
+        ).format("DD-MM-YYYY")}`,
+        icon: "warning",
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Đồng ý',
-        zIndex: 999
-      })
-      setError('2')
-    }
-    else if (moment(localStorage.getItem('startactivity')).isAfter(updatedInputFields[index].endDate)) {
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
+    } else if (
+      moment(localStorage.getItem("startactivity")).isAfter(
+        updatedInputFields[index].endDate
+      )
+    ) {
       console.log("sau ngày tạo 1");
       Swal.fire({
-        title: 'Cảnh báo',
-        text: `Ngày kết thúc hoạt động không bé hơn ngày bắt đầu chiến dịch! ${moment(localStorage.getItem('startactivity')).format('DD-MM-YYYY')}`,
-        icon: 'warning',
+        title: "Cảnh báo",
+        text: `Ngày kết thúc hoạt động không bé hơn ngày bắt đầu chiến dịch! ${moment(
+          localStorage.getItem("startactivity")
+        ).format("DD-MM-YYYY")}`,
+        icon: "warning",
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Đồng ý',
-        zIndex: 999
-      })
-      setError('2')
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
     } else if (parseFloat(updatedInputFields[index].targetDonation) > 100) {
-
       Swal.fire({
-        title: 'Cảnh báo',
-        text: `Số tiền tối đa bạn có thể tạo cho chiến dịch là ${Number(localStorage.getItem('maxDonate'))}`,
-        icon: 'warning',
+        title: "Cảnh báo",
+        text: `Số tiền tối đa bạn có thể tạo cho chiến dịch là ${Number(
+          localStorage.getItem("maxDonate")
+        )}`,
+        icon: "warning",
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Đồng ý',
-        zIndex: 999
-      })
-      setError('2')
-      console.log('1')
-    }
-    else {
-      setError('1')
-
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
+      console.log("1");
+    } else {
+      setError("1");
     }
 
     updatedInputFields[index].processNo = index + 1;
     setInputFields(updatedInputFields);
-
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (error === '1') {
+    if (error === "1") {
       console.log(inputFields);
       const text = inputFields.map((item, index) => {
         return {
@@ -329,25 +344,23 @@ export default function CreateActivity () {
           realDonation: item.realDonation,
           targetDonation: item.targetDonation,
           meida: item.meida,
-          media: item.media
-        }
-      })
-      console.log(text)
-      console.log(localStorage.getItem('startactivity'));
+          media: item.media,
+        };
+      });
+      console.log(text);
+      console.log(localStorage.getItem("startactivity"));
       const action1 = await CreateProcessAction(text, handleClick1);
-      dispatch(action1)
-
-    }
-    else {
+      dispatch(action1);
+    } else {
       Swal.fire({
-        title: 'Cảnh báo',
+        title: "Cảnh báo",
         text: "Vui lòng điền thông tin đầy đủ và phù hợp",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Hoàn thành',
-        zIndex: 999
-      })
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Hoàn thành",
+        zIndex: 999,
+      });
     }
   };
   const handleClick = () => {
@@ -364,8 +377,6 @@ export default function CreateActivity () {
   };
   const handleClick1 = () => {
     setIsOpen1((prevIsOpen) => !prevIsOpen);
-
-
   };
   const handleImageDelete = (index) => {
     setImages((prevImages) => {
@@ -396,9 +407,9 @@ export default function CreateActivity () {
     const img = uploadedImageUrls.map((item, index) => {
       return {
         linkMedia: item,
-        type: "string"
-      }
-    })
+        type: "string",
+      };
+    });
     updatedInputFields[index].media = img;
     setInputFields(updatedInputFields); // Update the inputFields with image URLs
     await setImageUrls1((prevImageUrls) => {
@@ -410,12 +421,11 @@ export default function CreateActivity () {
   };
 
   useEffect(() => {
-    const user = localStorage.getItem('userID');
+    const user = localStorage.getItem("userID");
     if (user) {
-      console.log('có user');
+      console.log("có user");
       const action = GetUserByIdAction(user);
       dispatch(action);
-
     }
   }, [create]);
   return (
@@ -579,9 +589,7 @@ export default function CreateActivity () {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
-
-                  </div>
+                  <div className="col-md-6"></div>
 
                   <div className="col-md-12">
                     <div style={{ height: "200px", width: "100%" }}>
@@ -612,10 +620,7 @@ export default function CreateActivity () {
                   <div className="col-md-6">
                     <div className="form-group">
                       {getUserId?.fanpage?.status === "Active" && isFanpage ? (
-                        <div
-                          className="form-group"
-                          style={{ display: "flex" }}
-                        >
+                        <div className="form-group" style={{ display: "flex" }}>
                           <label
                             id="name-label"
                             style={{ marginRight: "20px" }}
@@ -626,10 +631,9 @@ export default function CreateActivity () {
                           <input
                             type="checkbox"
                             onChange={toggleTextInput1}
-                          // checked={isTextInputVisible1}
+                            // checked={isTextInputVisible1}
                           />
                         </div>
-
                       ) : (
                         <div></div>
                       )}
@@ -680,7 +684,7 @@ export default function CreateActivity () {
                             <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
                           </fieldset>
                         </form>
-                        <svg style={{ display: 'none' }}>
+                        <svg style={{ display: "none" }}>
                           <defs>
                             <symbol
                               id="icon-imageUpload"
@@ -728,8 +732,8 @@ export default function CreateActivity () {
                         </div>
                       )}
 
-                      {files !== '' ? (
-                        <img src={files} style={{ height: '300px' }} />
+                      {files !== "" ? (
+                        <img src={files} style={{ height: "300px" }} />
                       ) : (
                         <div></div>
                       )}
@@ -750,25 +754,27 @@ export default function CreateActivity () {
                     <button
                       className="btn btn-success btn-block"
                       onClick={async () => {
-                        if (formik.values.location !== '') {
+                        if (formik.values.location !== "") {
                           console.log(formik.values);
-                          const action = await CreateActivityAction(formik.values, setCreate)
-                          dispatch(action)
+                          const action = await CreateActivityAction(
+                            formik.values,
+                            setCreate
+                          );
+                          dispatch(action);
                           setIsOpen((prevIsOpen) => !prevIsOpen);
                           setIsDisplay(false);
                           setIsOpen1((prevIsOpen) => !prevIsOpen);
                         } else {
                           setIsOpen((prevIsOpen) => !prevIsOpen);
                           Swal.fire({
-                            title: 'Cảnh báo',
+                            title: "Cảnh báo",
                             text: "Vui lòng tạo chiến dịch trước",
-                            icon: 'warning',
+                            icon: "warning",
                             showCancelButton: false, // Set this to false to hide the cancel button
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Đồng ý',
-                            zIndex: 999
-                          })
-
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "Đồng ý",
+                            zIndex: 999,
+                          });
                         }
                       }}
                     >
@@ -826,14 +832,32 @@ export default function CreateActivity () {
             <div className="">
               <br />
 
-              <div style={{ textAlign: 'center', margin: '40px 0', fontSize: '25px' }}>Tên chiến dịch :<span style={{ fontWeight: 'bold' }}>{formik.values.title}</span></div>
+              <div
+                style={{
+                  textAlign: "center",
+                  margin: "40px 0",
+                  fontSize: "25px",
+                }}
+              >
+                Tên chiến dịch :
+                <span style={{ fontWeight: "bold" }}>
+                  {formik.values.title}
+                </span>
+              </div>
 
               <div className="container">
                 <form onSubmit={handleSubmit}>
                   {inputFields?.map((data, index) => (
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Hoạt động thứ {index + 1}</div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div style={{ fontSize: "18px", fontWeight: "bold" }}>
+                          Hoạt động thứ {index + 1}
+                        </div>
                         <div className="">
                           {inputFields.length !== 1 && (
                             <button
@@ -847,7 +871,6 @@ export default function CreateActivity () {
                         </div>
                       </div>
                       <div className="row my-3" key={index}>
-
                         <div className="col-md-6">
                           <div className="form-group">
                             <label id="name-label" htmlFor="name">
@@ -857,7 +880,11 @@ export default function CreateActivity () {
                               type="text"
                               value={data.processTitle}
                               onChange={(event) =>
-                                handleInputChange(index, "processTitle", event.target.value)
+                                handleInputChange(
+                                  index,
+                                  "processTitle",
+                                  event.target.value
+                                )
                               }
                               className="form-control"
                               placeholder="Tên hoạt động"
@@ -873,7 +900,11 @@ export default function CreateActivity () {
                               type="text"
                               value={data.description}
                               onChange={(event) =>
-                                handleInputChange(index, "description", event.target.value)
+                                handleInputChange(
+                                  index,
+                                  "description",
+                                  event.target.value
+                                )
                               }
                               className="form-control"
                               placeholder="Chi tiết"
@@ -891,7 +922,11 @@ export default function CreateActivity () {
                                 name="startDate"
                                 value={data.startDate}
                                 onChange={(event) =>
-                                  handleInputChange(index, "startDate", event.target.value)
+                                  handleInputChange(
+                                    index,
+                                    "startDate",
+                                    event.target.value
+                                  )
                                 }
                                 id="name"
                                 className="form-control"
@@ -909,7 +944,11 @@ export default function CreateActivity () {
                                 name="endDate"
                                 value={data.endDate}
                                 onChange={(event) =>
-                                  handleInputChange(index, "endDate", event.target.value)
+                                  handleInputChange(
+                                    index,
+                                    "endDate",
+                                    event.target.value
+                                  )
                                 }
                                 id="name"
                                 className="form-control"
@@ -920,20 +959,28 @@ export default function CreateActivity () {
                         </div>
                         <div className="row">
                           <div className="col-md-6">
-                            <label id="name-label" htmlFor="name" style={{
-                              fontSize: "18px",
-                              color: "#000"
-                            }}>
+                            <label
+                              id="name-label"
+                              htmlFor="name"
+                              style={{
+                                fontSize: "18px",
+                                color: "#000",
+                              }}
+                            >
                               Loại hoạt động
                             </label>
-                            <select className="form-control"
+                            <select
+                              className="form-control"
                               onChange={(e) =>
-                                handleInputChange(index, "processTypeId", e.target.value)
+                                handleInputChange(
+                                  index,
+                                  "processTypeId",
+                                  e.target.value
+                                )
                               }
                             >
                               <option value="">Chọn loại</option>
                               {process?.map((item) => (
-
                                 <option key={item.id} value={item.id}>
                                   {item.value}
                                 </option>
@@ -950,7 +997,11 @@ export default function CreateActivity () {
                                 name="location"
                                 value={data.location}
                                 onChange={(event) =>
-                                  handleInputChange(index, "location", event.target.value)
+                                  handleInputChange(
+                                    index,
+                                    "location",
+                                    event.target.value
+                                  )
                                 }
                                 id="name"
                                 className="form-control"
@@ -959,10 +1010,10 @@ export default function CreateActivity () {
                             </div>
                           </div>
                         </div>
-                        <div className="row" >
+                        <div className="row">
                           <div className="col-md-6">
                             {data.processTypeId === "pt002" ? (
-                              <div className="form-group mt-3" >
+                              <div className="form-group mt-3">
                                 <label id="name-label" htmlFor="name">
                                   Số người tham gia
                                 </label>
@@ -972,7 +1023,11 @@ export default function CreateActivity () {
                                   name="targetParticipant"
                                   value={data.targetParticipant}
                                   onChange={(event) =>
-                                    handleInputChange(index, "targetParticipant", event.target.value)
+                                    handleInputChange(
+                                      index,
+                                      "targetParticipant",
+                                      event.target.value
+                                    )
                                   }
                                   id="name"
                                   className="form-control"
@@ -990,24 +1045,31 @@ export default function CreateActivity () {
                                   name="targetDonation"
                                   value={data.targetDonation}
                                   onChange={(event) => {
-
-                                    if (Number(event.target.value) > Number(localStorage.getItem('maxDonate'))) {
+                                    if (
+                                      Number(event.target.value) >
+                                      Number(localStorage.getItem("maxDonate"))
+                                    ) {
                                       Swal.fire({
-                                        title: 'Cảnh báo',
-                                        text: `Số tiền lớn hơn số tiền tối đa bạn có thể tạo cho chiến dịch! ${Number(localStorage.getItem('maxDonate'))?.toLocaleString()} vnđ`,
-                                        icon: 'warning',
+                                        title: "Cảnh báo",
+                                        text: `Số tiền lớn hơn số tiền tối đa bạn có thể tạo cho chiến dịch! ${Number(
+                                          localStorage.getItem("maxDonate")
+                                        )?.toLocaleString()} vnđ`,
+                                        icon: "warning",
                                         showCancelButton: false,
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Đồng ý',
-                                        zIndex: 999
-                                      })
-                                      setError('2')
+                                        confirmButtonColor: "#3085d6",
+                                        confirmButtonText: "Đồng ý",
+                                        zIndex: 999,
+                                      });
+                                      setError("2");
                                     } else {
-                                      handleInputChange(index, "targetDonation", event.target.value)
-                                      setError('1')
+                                      handleInputChange(
+                                        index,
+                                        "targetDonation",
+                                        event.target.value
+                                      );
+                                      setError("1");
                                     }
-                                  }
-                                  }
+                                  }}
                                   id="name"
                                   className="form-control"
                                   required
@@ -1020,10 +1082,11 @@ export default function CreateActivity () {
                         <div className="row">
                           <div className="col">
                             <div className="form-group">
-
                               <input
                                 type="file"
-                                onChange={(event) => handleImageChange1(index, event)}
+                                onChange={(event) =>
+                                  handleImageChange1(index, event)
+                                }
                                 multiple
                               />
                               <div>
@@ -1047,15 +1110,12 @@ export default function CreateActivity () {
                                     </div>
                                   ))}
                                 </div>
-
                               </div>
                             </div>
                           </div>
                         </div>
-
                       </div>
                     </div>
-
                   ))}
 
                   <div className="row">
@@ -1074,8 +1134,6 @@ export default function CreateActivity () {
                   </div>
                 </form>
               </div>
-
-
             </div>
           </div>
         </div>
