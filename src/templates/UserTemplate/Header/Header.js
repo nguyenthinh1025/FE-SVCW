@@ -25,18 +25,18 @@ export default function Header (props) {
   }, []);
   const formik = useFormik({
     initialValues: {
-      title: title,
+      search: title,
     },
-    onSubmit:async (value) => {
+    onSubmit: async (value) => {
       if (formik.values.title !== '') {
         console.log(value);
-        const action =await GetActivityTitleAction(value.title);
+        const action = await GetActivityTitleAction(value);
         dispatch(action)
         // const value1 = {
-         
+
         //     userId: userID,
         //     searchContent: value.title
-   
+
         // }
         // console.log(value1)
         // const action1 =await RecommentActivityAction(value1, userID);
@@ -64,7 +64,7 @@ export default function Header (props) {
             <input
               type="text"
               placeholder="Tìm Kiếm..."
-              name="title"
+              name="search"
               onChange={formik.handleChange}
             />
             <button type="submit">

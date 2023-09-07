@@ -81,7 +81,7 @@ export const GetListEndActivityByUserIDAction = (id) => {
         }
     }
 }
-export const CreateActivityAction = (value,setCreate) => {
+export const CreateActivityAction = (value, setCreate) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Activity/Insert-Activity', value);
@@ -109,7 +109,7 @@ export const CreateActivityAction = (value,setCreate) => {
 export const GetActivityTitleAction = (value) => {
     return async (dispatch) => {
         try {
-            let result = await http.get(`/Activity/get-activity-title?search=43432`)
+            let result = await http.post(`/Activity/get-activity-title`, value)
             const action = {
                 type: "GET_LIST_ACTIVITY_TITLE",
                 arrActivity: result.data.data

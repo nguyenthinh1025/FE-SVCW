@@ -1,7 +1,7 @@
 import { http } from "../../utils/reponse";
 import { GetListActivityAction } from "./ActivityAction";
 import Swal from 'sweetalert2'
-export const CreateProcessAction = (value,handleClick1) => {
+export const CreateProcessAction = (value, handleClick1) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Process/Insert-process-list', value);
@@ -77,7 +77,7 @@ export const UpdateProcessAction = (value) => {
 
             Toast.fire({
                 icon: 'success',
-                title: `Cập nhật tiến trình ${result.data.data.processTitle} thành công`
+                title: `Cập nhật hoạt động ${result.data.data.processTitle} thành công`
             })
         } catch (error) {
             console.log(error);
