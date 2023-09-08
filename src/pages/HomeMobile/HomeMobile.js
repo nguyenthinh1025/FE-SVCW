@@ -56,7 +56,7 @@ export default function QRScanner () {
   return (
     <div>
       <video ref={videoRef} autoPlay muted playsInline></video>
-      <h1> QR: {scannedData && <div>user: {data.userId} , Activity :{data.activityId}</div>}</h1>
+      <h1> QR là: {scannedData && <div>user: {data.userId} , Activity :{data.activityId}</div>}</h1>
     </div>
   );
 }
