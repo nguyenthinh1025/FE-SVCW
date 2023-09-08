@@ -8,7 +8,7 @@ export default function HomeMobile() {
 
     const setupCamera = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
         videoElement = document.createElement('video');
         document.body.appendChild(videoElement);
 
@@ -25,7 +25,6 @@ export default function HomeMobile() {
             context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
             const imageData = context.getImageData(0, 0, canvasElement.width, canvasElement.height);
 
-            // Sử dụng thư viện jsQR để quét mã QR
             const code = jsQR(imageData.data, imageData.width, imageData.height);
             if (code) {
               console.log('Mã QR được tìm thấy:', code.data);
@@ -55,7 +54,7 @@ export default function HomeMobile() {
 
   return (
     <div>
-      <p>Camera QR Scanner</p>
+      {/* <p>Camera QR Scanner</p> */}
     </div>
   );
 }
