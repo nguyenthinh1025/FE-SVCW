@@ -36,7 +36,7 @@ import { GetListReportTypeAction } from "../redux/actions/ReportTypeAction";
 import ShareActivity from "./ShareActivity";
 import Donate from "./Donate";
 
-export default function ItemActivity(props) {
+export default function ItemActivity (props) {
   const [share, setShare] = useState(false);
   const [shareActivityID, setShareActivityID] = useState("");
   const handleClickShare = () => {
@@ -82,9 +82,9 @@ export default function ItemActivity(props) {
     visibility: report ? "visible" : "hidden",
     overflow: report ? "auto" : "hidden",
   };
-  const [donate ,setDonate] = useState('')
-   const openPopup = () => {
-    setPopupOpen( (prevIsOpen) => !prevIsOpen)
+  const [donate, setDonate] = useState('')
+  const openPopup = () => {
+    setPopupOpen((prevIsOpen) => !prevIsOpen)
     const action2 = {
       type: "DONATE",
       message: "",
@@ -169,12 +169,12 @@ export default function ItemActivity(props) {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
-     
+
     } else {
       setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
-      
+
     }
     const action = GetListActivityAction();
     await dispatch(action);
@@ -185,7 +185,7 @@ export default function ItemActivity(props) {
     //     return newArray;
     // });
   };
-  const handleFollowClick =async (index, activity, isFollow, title) => {
+  const handleFollowClick = async (index, activity, isFollow, title) => {
     // setCmt((prevArray) => {
     //     const newArray = JSON.parse(JSON.stringify(prevArray));
     //     newArray[index].isFollow = !newArray[index].isFollow;
@@ -195,15 +195,15 @@ export default function ItemActivity(props) {
     // });
     if (isFollow) {
       setFollowIndex(null);
-      const action =await UnFollowAction(activity, userID);
+      const action = await UnFollowAction(activity, userID);
       dispatch(action);
-    
+
     } else {
       setFollowIndex(index);
       console.log(activity, userID);
-      const action =await FollowAction(activity, userID);
+      const action = await FollowAction(activity, userID);
       dispatch(action);
-     
+
     }
   };
   const handleLikeClick = (id) => {
@@ -226,11 +226,11 @@ export default function ItemActivity(props) {
     dispatch(action);
   };
   const endDate = moment(ItemActivity.endDate);
-const currentDate = moment();
+  const currentDate = moment();
 
-console.log(currentDate);
-console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
-console.log(ItemActivity.title, endDate.isAfter(currentDate));
+  console.log(currentDate);
+  console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
+  console.log(ItemActivity.title, endDate.isAfter(currentDate));
   const popupStyle4 = {
     opacity: openpro1 ? 1 : 0,
     visibility: openpro1 ? "visible" : "hidden",
@@ -290,8 +290,8 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                   </i>
                   <ul>
                     {userID === ItemActivity.userId &&
-                    endDate.isBefore(currentDate) === false &&
-                    ItemActivity.targetDonation === 0 ? (
+                      endDate.isBefore(currentDate) === false &&
+                      ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
                           console.log(ItemActivity.activityId);
@@ -311,7 +311,7 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                     )}
 
                     {userID === ItemActivity.userId &&
-                    ItemActivity.targetDonation === 0 ? (
+                      ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
                           Swal.fire({
@@ -488,9 +488,9 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                 <div className="image-gallery-flex">
                   {ItemActivity?.media?.length <= 3
                     ? ItemActivity.media.map((image, index) => {
-                        return (
-                          <div key={index} className={`image-container-post`}>
-                           <NavLink to={`/detailactivity/${ItemActivity.activityId}`}
+                      return (
+                        <div key={index} className={`image-container-post`}>
+                          <NavLink to={`/detailactivity/${ItemActivity.activityId}`}
                             onClick={() => {
                               console.log(ItemActivity.activity)
                               const action = GetActivityIDAction(ItemActivity.activityId);
@@ -498,55 +498,55 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
 
                             }}
                           >
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </NavLink>
-                          </div>
-                        );
-                      })
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
+                          </NavLink>
+                        </div>
+                      );
+                    })
                     : ItemActivity.media?.slice(0, 4).map((image, index) => {
-                        return index !== 3 ? (
-                          <div key={index} className={`image-container-post`}>
-                            <a
-                              data-toggle="modal"
-                              data-target="#img-comt"
-                              href="images/resources/album1.jpg"
-                              onClick={() => {
-                                setDetail(detailItem);
-                              }}
-                            >
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </a>
-                          </div>
-                        ) : (
-                          <div
-                            key={index}
-                            className={`image-container-post-last`}
+                      return index !== 3 ? (
+                        <div key={index} className={`image-container-post`}>
+                          <a
+                            data-toggle="modal"
+                            data-target="#img-comt"
+                            href="images/resources/album1.jpg"
+                            onClick={() => {
+                              setDetail(detailItem);
+                            }}
                           >
-                            <a
-                              data-toggle="modal"
-                              data-target="#img-comt"
-                              href="images/resources/album1.jpg"
-                              onClick={() => {
-                                setDetail(detailItem);
-                              }}
-                            >
-                              <div className="overlay">
-                                +{ItemActivity.media.length - 4}
-                              </div>
-                              <img
-                                src={image.linkMedia}
-                                alt={`Image ${image.id}`}
-                              />
-                            </a>
-                          </div>
-                        );
-                      })}
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
+                          </a>
+                        </div>
+                      ) : (
+                        <div
+                          key={index}
+                          className={`image-container-post-last`}
+                        >
+                          <a
+                            data-toggle="modal"
+                            data-target="#img-comt"
+                            href="images/resources/album1.jpg"
+                            onClick={() => {
+                              setDetail(detailItem);
+                            }}
+                          >
+                            <div className="overlay">
+                              +{ItemActivity.media.length - 4}
+                            </div>
+                            <img
+                              src={image.linkMedia}
+                              alt={`Image ${image.id}`}
+                            />
+                          </a>
+                        </div>
+                      );
+                    })}
                 </div>
               </figure>
 
@@ -559,154 +559,149 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                   if (pro.isDonateProcess === true) {
                     return <div>
                       {pro.isDonateProcess === true ? (
-                      <div className="mb-4 mt-4">
-                        <p
-                          style={{
-                            color: "blue",
-                            fontWeight: "400",
-                            fontSize: "15px",
-                          }}
-                        >
-                          Đã quyên góp được <br />
-                          <span
+                        <div className="mb-4 mt-4">
+                          <p
                             style={{
                               color: "blue",
+                              fontWeight: "400",
                               fontSize: "15px",
                             }}
                           >
-                            <span style={{ color: "blue", fontSize: "15px" }}>
-                              {pro.realDonation.toLocaleString()}
-                            </span>{" "}
-                            đ /
+                            Đã quyên góp được <br />
                             <span
                               style={{
                                 color: "blue",
                                 fontSize: "15px",
                               }}
                             >
-                              {pro.targetDonation.toLocaleString()} đ
-                            </span>{" "}
-                          </span>
-                        </p>
+                              <span style={{ color: "blue", fontSize: "15px" }}>
+                                {pro.realDonation.toLocaleString()}
+                              </span>{" "}
+                              đ /
+                              <span
+                                style={{
+                                  color: "blue",
+                                  fontSize: "15px",
+                                }}
+                              >
+                                {pro.targetDonation.toLocaleString()} đ
+                              </span>{" "}
+                            </span>
+                          </p>
 
-                        <input
-                          type="range"
-                          min="0"
-                          max={pro.targetDonation}
-                          value={pro.realDonation}
-                          // onChange={handleChange}
-                          className="range-slider"
-                          style={{
-                            background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                              (pro.realDonation /
-                                pro.targetDonation) *
-                              100
-                            }%, #ddd ${
-                              (pro.realDonation /
-                                pro.targetDonation) *
-                              100
-                            }%, #ddd 100%)`,
-                          }}
-                        />
-                        {/* <div className="range-value" style={{ position: 'absolute', left: `${((pro.realDonation - 5) * 100) / (100 - 0)}%` }}>{pro.realDonation}%</div> */}
-                        {pro.realDonation !== 0 ? (
-                          <div></div>
-                        ) : (
+                          <input
+                            type="range"
+                            min="0"
+                            max={pro.targetDonation}
+                            value={pro.realDonation}
+                            // onChange={handleChange}
+                            className="range-slider"
+                            style={{
+                              background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(pro.realDonation /
+                                  pro.targetDonation) *
+                                100
+                                }%, #ddd ${(pro.realDonation /
+                                  pro.targetDonation) *
+                                100
+                                }%, #ddd 100%)`,
+                            }}
+                          />
+                          {/* <div className="range-value" style={{ position: 'absolute', left: `${((pro.realDonation - 5) * 100) / (100 - 0)}%` }}>{pro.realDonation}%</div> */}
+                          {pro.realDonation !== 0 ? (
+                            <div></div>
+                          ) : (
+                            <div
+                              className="range-value"
+                              style={{ position: "absolute" }}
+                            >
+                              0
+                            </div>
+                          )}
                           <div
                             className="range-value"
                             style={{ position: "absolute" }}
                           >
-                            0
+
                           </div>
-                        )}
-                        <div
-                          className="range-value"
-                          style={{ position: "absolute" }}
-                        >
-                          
+                          {pro.realDonation !== 0 ? (
+                            <div
+                              className="range-value"
+                              style={{
+                                position: "absolute",
+                                left: `${((pro.realDonation - 5) * 100) /
+                                  (100 - 0)
+                                  }%`,
+                              }}
+                            >
+                              {
+                                (
+                                  (pro.realDonation /
+                                    pro.targetDonation) *
+                                  100
+                                )
+                                  .toString()
+                                  .split(".")[0]
+                              }
+                              %
+                            </div>
+                          ) : (
+                            <div
+                              className="range-value"
+                              style={{
+                                position: "absolute",
+                                left: `${((pro.realDonation - 0) * 100) /
+                                  (100 - 0)
+                                  }%`,
+                              }}
+                            >
+                              {
+                                (
+                                  (pro.realDonation /
+                                    pro.targetDonation) *
+                                  100
+                                )
+                                  .toString()
+                                  .split(".")[0]
+                              }
+                              %
+                            </div>
+                          )}
+                          {pro.realDonation === 0 ? (
+                            <div></div>
+                          ) : (
+                            <div
+                              className="range-value"
+                              style={{
+                                position: "absolute",
+                                left: `${(pro.realDonation /
+                                    pro.targetDonation) *
+                                  100
+                                  }%`,
+                              }}
+                            >
+                              {" "}
+                              {(pro.realDonation /
+                                pro.targetDonation) *
+                                100}
+                              %
+                            </div>
+                          )}
+                          <div
+                            className="range-value"
+                            style={{
+                              color: "blue",
+                              position: "absolute",
+                              right: "10px",
+                            }}
+                          >
+                            {pro.targetDonation.toLocaleString()} vnđ
+                          </div>
                         </div>
-                        {pro.realDonation !== 0 ? (
-                          <div
-                            className="range-value"
-                            style={{
-                              position: "absolute",
-                              left: `${
-                                ((pro.realDonation - 5) * 100) /
-                                (100 - 0)
-                              }%`,
-                            }}
-                          >
-                            {
-                              (
-                                (pro.realDonation /
-                                  pro.targetDonation) *
-                                100
-                              )
-                                .toString()
-                                .split(".")[0]
-                            }
-                            %
-                          </div>
-                        ) : (
-                          <div
-                            className="range-value"
-                            style={{
-                              position: "absolute",
-                              left: `${
-                                ((pro.realDonation - 0) * 100) /
-                                (100 - 0)
-                              }%`,
-                            }}
-                          >
-                            {
-                              (
-                                (pro.realDonation /
-                                  pro.targetDonation) *
-                                100
-                              )
-                                .toString()
-                                .split(".")[0]
-                            }
-                            %
-                          </div>
-                        )}
-                        {pro.realDonation === 0 ? (
+                      )
+                        : (
                           <div></div>
-                        ) : (
-                          <div
-                            className="range-value"
-                            style={{
-                              position: "absolute",
-                              left: `${
-                                (pro.realDonation /
-                                  pro.targetDonation) *
-                                100
-                              }%`,
-                            }}
-                          >
-                            {" "}
-                            {(pro.realDonation /
-                              pro.targetDonation) *
-                              100}
-                            %
-                          </div>
-                        )}
-                        <div
-                          className="range-value"
-                          style={{
-                            color: "blue",
-                            position: "absolute",
-                            right: "10px",
-                          }}
-                        >
-                          {pro.targetDonation.toLocaleString()} vnđ
-                        </div>
-                      </div>
-                  )
-                   : (
-                      <div></div>
-                    )
-                   }</div>
+                        )
+                      }</div>
                   }
                 }
               })}
@@ -737,7 +732,7 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                 
+
                 }}
                 className={
                   (ItemActivity.targetDonation !== 0
@@ -749,7 +744,7 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                     : "noprocessform")
                 }
               >
-                 {endDate.isBefore(currentDate) ? (
+                {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <div>
@@ -763,13 +758,11 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                         if (pro.isParticipant === true) {
                           return (
                             <button
-                              className={` ${
-                                isAlreadyJoined ? "btn-change" : "btn-color"
-                              } mb-4 mt-4 btn-add ${
-                                ItemActivity.targetDonation !== 0
+                              className={` ${isAlreadyJoined ? "btn-change" : "btn-color"
+                                } mb-4 mt-4 btn-add ${ItemActivity.targetDonation !== 0
                                   ? "marginfollow"
                                   : "sas"
-                              }`}
+                                }`}
                               onClick={() => {
                                 handleJoinClick(
                                   index,
@@ -792,9 +785,8 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                   <div></div>
                 ) : (
                   <button
-                    className={` ${
-                      isAlreadyFollowed ? "btn-change" : "btn-color"
-                    } mb-4 mt-4`}
+                    className={` ${isAlreadyFollowed ? "btn-change" : "btn-color"
+                      } mb-4 mt-4`}
                     onClick={() => {
                       handleFollowClick(
                         index,
@@ -831,7 +823,7 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                                 setDonate(
                                   ItemActivity.activityId
                                 );
-                               
+
                                 openPopup();
                               }}
                             >
@@ -884,21 +876,21 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                       <ul className="namelist">
                         {ItemActivity?.like?.length <= 4
                           ? ItemActivity?.like.map((userItem) => {
-                              return <li>{userItem.user.username}</li>;
-                            })
+                            return <li>{userItem.user.username}</li>;
+                          })
                           : ItemActivity?.like
-                              ?.slice(0, 4)
-                              .map((userItem, index) => {
-                                index < 4 ? (
-                                  <li>{userItem.user.username}</li>
-                                ) : (
-                                  <li>
-                                    <span>
-                                      +{ItemActivity?.like.length - 5}
-                                    </span>
-                                  </li>
-                                );
-                              })}
+                            ?.slice(0, 4)
+                            .map((userItem, index) => {
+                              index < 4 ? (
+                                <li>{userItem.user.username}</li>
+                              ) : (
+                                <li>
+                                  <span>
+                                    +{ItemActivity?.like.length - 5}
+                                  </span>
+                                </li>
+                              );
+                            })}
                       </ul>
                     </div>
                   </div>
@@ -928,9 +920,8 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
                 <div
                   className=""
                   style={{
-                    backgroundColor: `${
-                      isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
-                    }`,
+                    backgroundColor: `${isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
+                      }`,
                     borderRadius: "4px",
                     color: "#82828e",
                     display: "inline-block",
@@ -1166,7 +1157,7 @@ console.log(ItemActivity.title, endDate.isAfter(currentDate));
         popupStyleShare={popupStyleShare}
         activityId={shareActivityID}
       />
-        <Donate isPopupOpen = {isPopupOpen}  openPopup={openPopup} donate={donate} />
+      <Donate isPopupOpen={isPopupOpen} openPopup={openPopup} donate={donate} />
     </Fragment>
   );
 }
