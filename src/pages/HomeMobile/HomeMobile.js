@@ -50,7 +50,7 @@ export default function QRScanner() {
   return (
     <div>
       <video ref={videoRef} autoPlay muted playsInline></video>
-      {scannedData && <div>Mã QR được tìm thấy: {scannedData}</div>}
+     <h1> Mã QR được tìm thấy: {scannedData && <div> {scannedData}</div>}</h1>
     </div>
   );
 }
