@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import jsQR from 'jsqr';
+import { useFormik } from 'formik';
 
-export default function QRScanner() {
+export default function QRScanner () {
   const videoRef = useRef(null);
   const [scannedData, setScannedData] = useState(null);
-
+  const [data, setData] = useState()
   useEffect(() => {
     const setupCamera = async () => {
       try {
@@ -30,6 +31,11 @@ export default function QRScanner() {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
       if (code) {
         setScannedData(code.data); // Lưu kết quả vào state
+        setData({
+          userId: localStorage.getItem('userIDMobile'),
+          activityId: code.data,
+        })
+
       }
     };
 
@@ -50,7 +56,7 @@ export default function QRScanner() {
   return (
     <div>
       <video ref={videoRef} autoPlay muted playsInline></video>
-     <h1> Mã QR được tìm thấy: {scannedData && <div> {scannedData}</div>}</h1>
+      <h1> Mã QR được tìm thấy: {scannedData && <div> {data}</div>}</h1>
     </div>
   );
 }
