@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import jsQR from 'jsqr';
 
 export default function QRScanner() {
   const videoRef = useRef(null);
+  const [scannedData, setScannedData] = useState(null);
 
   useEffect(() => {
     const setupCamera = async () => {
@@ -28,8 +29,7 @@ export default function QRScanner() {
 
       const code = jsQR(imageData.data, imageData.width, imageData.height);
       if (code) {
-        console.log('Mã QR được tìm thấy:', code.data);
-        // Thực hiện xử lý với mã QR ở đây
+        setScannedData(code.data); // Lưu kết quả vào state
       }
     };
 
@@ -50,6 +50,7 @@ export default function QRScanner() {
   return (
     <div>
       <video ref={videoRef} autoPlay muted playsInline></video>
+      {scannedData && <div>Mã QR được tìm thấy: {scannedData}</div>}
     </div>
   );
 }
