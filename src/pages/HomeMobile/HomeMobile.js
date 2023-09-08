@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import jsQR from 'jsqr';
 import { useFormik } from 'formik';
+import { CheckinActivityAction } from '../../redux/actions/ActivityAction';
+import { useDispatch } from 'react-redux';
 
 export default function QRScanner () {
+  const dispatch = useDispatch()
   const videoRef = useRef(null);
   const [scannedData, setScannedData] = useState(null);
   const [data, setData] = useState()
@@ -35,7 +38,12 @@ export default function QRScanner () {
           userId: localStorage.getItem('userIDMobile'),
           activityId: code.data,
         })
-
+        const checkin = {
+          userId: localStorage.getItem('userIDMobile'),
+          activityId: code.data,
+        }
+        const action = CheckinActivityAction(checkin);
+        dispatch(action)
       }
     };
 

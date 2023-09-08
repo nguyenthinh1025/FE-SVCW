@@ -161,6 +161,31 @@ export const PostLikeAction = (value) => {
     }
 }
 
+export const CheckinActivityAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post('/QR/check-in', value);
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: `Quét mã thành công.`,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 export const DeleteLikeAction = (value) => {
     return async (dispatch) => {
         try {
