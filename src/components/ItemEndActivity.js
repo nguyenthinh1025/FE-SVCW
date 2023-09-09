@@ -6,6 +6,7 @@ import {
   GetActivityByIDAction,
   GetActivityIDAction,
   GetListActivityAction,
+  GetListEndActivityIDAction,
   GetQRActivityAction,
   PostLikeAction,
 } from "../redux/actions/ActivityAction";
@@ -421,6 +422,7 @@ export default function ItemEndActivity(props) {
                           handleClickCreate();
                           setIDActivity(ItemActivity.activityId);
                           console.log(ItemActivity.activityId);
+                         
                         }}
                       >
                         <i className="icofont-pen-alt-1" />
@@ -496,6 +498,8 @@ export default function ItemEndActivity(props) {
                         onClick={() => {
                           handleClick1();
                           setIDActivity(ItemActivity.activityId);
+                          const action1 = GetListEndActivityIDAction(ItemActivity.activityId);
+                          dispatch(action1)
                           const action = GetActivityByIDAction(
                             ItemActivity.activityId
                           );
