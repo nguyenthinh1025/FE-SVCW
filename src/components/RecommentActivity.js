@@ -11,51 +11,18 @@ export default function RecommentActivity () {
   const dispatch = useDispatch()
   console.log("comment", arrActivityRecomment);
   const settings = {
-    dots: false,
-    infinite: false,
+    dots: true,
+    infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    appendDots: `
-      .slick-dots {
-        bottom: 10px;
-      }
-
-      .slick-dots li button:before {
-        font-size: 10px;
-        color: #999;
-      }
-
-      .slick-dots li.slick-active button:before {
-        color: #333;
-      }
-    `,
-    appendArrows: `
-      .slick-prev, .slick-next {
-        background-color: #ddd;
-        color: #333;
-      }
-    `,
-    appendCss: `
-      .slick-slider {
-        overflow: hidden;
-      }
-
-      .slick-list {
-        position: relative;
-        display: block;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-      }
-    `,
-
-
+  
   };
   useEffect(()=>{
     const action9 = GetRecommentActivityAction(userID);
     dispatch(action9);
   },[])
+  console.log(arrActivityRecomment)
   return (
     <div style={{ position: 'relative' }}>
       <Slider {...settings}>

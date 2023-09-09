@@ -62,6 +62,24 @@ export const GetListEndActivityAction = () => {
         }
     }
 }
+export const GetListEndActivityIDAction = (id) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: "DISPLAY_LOADING" })
+            let result = await http.get(`/ActivityResult/get-activityresult-activity-v2?activityId=${id}`);
+
+            const action = {
+                type: "GET_LIST_END_ACTIVITY_ID",
+                arrEndActivityID: result.data.data
+            }
+            dispatch(action)           
+            dispatch({ type: "HIDE_LOADING" })
+        } catch (error) {
+            console.log(error);
+            dispatch({ type: "HIDE_LOADING" })
+        }
+    }
+}
 export const GetListEndActivityByUserIDAction = (id) => {
     return async (dispatch) => {
         try {
@@ -81,6 +99,8 @@ export const GetListEndActivityByUserIDAction = (id) => {
         }
     }
 }
+
+
 export const CreateActivityAction = (value, setCreate) => {
     return async (dispatch) => {
         try {
@@ -116,6 +136,12 @@ export const GetActivityTitleAction = (value) => {
             }
             dispatch(action)
             localStorage.setItem('activity', JSON.stringify(result.data.data))
+            const search = {
+                userId: localStorage.getItem('userID'),
+                searchContent: value.search
+            }
+            const action1 = RecommentActivityAction(search , search.userId);
+            dispatch(action1)
         } catch (error) {
             console.log(error);
         }
