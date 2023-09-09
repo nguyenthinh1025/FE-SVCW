@@ -223,7 +223,7 @@ export default function ListFollowJoin(props) {
                         field={(datetime) =>
                           moment(datetime.datetime).format("DD-MM-YYYY hh:mm A")
                         }
-                        header="Thời gian theo dõi"
+                        header="Thời gian tham gia"
                         sortable
                         style={{ minWidth: "12rem" }}
                       ></Column>

@@ -839,8 +839,8 @@ export default function CreateActivity() {
                   fontSize: "25px",
                 }}
               >
-                Tên chiến dịch :
-                <span style={{ fontWeight: "bold" }}>
+                Tên chiến dịch:
+                <span style={{ fontWeight: "bold", paddingLeft:'5px' }}>
                   {formik.values.title}
                 </span>
               </div>
@@ -888,6 +888,7 @@ export default function CreateActivity() {
                               }
                               className="form-control"
                               placeholder="Tên hoạt động"
+                              required
                             />
                           </div>
                         </div>
@@ -908,6 +909,7 @@ export default function CreateActivity() {
                               }
                               className="form-control"
                               placeholder="Chi tiết"
+                              required
                             />
                           </div>
                         </div>
@@ -978,6 +980,7 @@ export default function CreateActivity() {
                                   e.target.value
                                 )
                               }
+                              required
                             >
                               <option value="">Chọn loại</option>
                               {process?.map((item) => (
@@ -1088,6 +1091,7 @@ export default function CreateActivity() {
                                   handleImageChange1(index, event)
                                 }
                                 multiple
+                                required
                               />
                               <div>
                                 <div className="image-container image-container-flex">

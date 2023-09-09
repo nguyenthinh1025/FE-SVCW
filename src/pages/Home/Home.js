@@ -127,7 +127,6 @@ export default function Home (props) {
                                     </div>
                                     <div className='col-lg-3'>
                                         <YourFanpage />
-                                        <RecommentActivity />
                                     </div>
                                 </div>
                             </div>

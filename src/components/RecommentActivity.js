@@ -5,6 +5,7 @@ import styles from "./RecommentActivity.module.css";
 import { FollowAction, UnFollowAction } from '../redux/actions/FollowJoinAction';
 import Swal from 'sweetalert2';
 import { GetRecommentActivityAction } from '../redux/actions/ActivityAction';
+import {NavLink} from 'react-router-dom'
 export default function RecommentActivity () {
   const { arrActivityRecomment } = useSelector((root) => root.ActivityReducer);
   const { userID } = useSelector((root) => root.LoginReducer);
@@ -31,8 +32,10 @@ export default function RecommentActivity () {
 
           return <div className="widget">
             <h4 className="widget-title">Đề xuất tìm kiếm</h4>
+            <NavLink
+                    to={`/detailactivity/${item.activityId}`}>
             <h3 className="widget-title" style={{ color: ' #1572b8' }}>{item.title}</h3>
-
+            </NavLink>
             <div className="sug-caro">
 
               <div className="friend-box">

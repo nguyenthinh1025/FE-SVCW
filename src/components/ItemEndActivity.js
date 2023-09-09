@@ -314,7 +314,7 @@ export default function ItemEndActivity(props) {
                 alt
                 src={
                   ItemActivity.user?.image === "none"
-                    ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                    ? "./images/avatar.jpg"
                     : ItemActivity.user?.image
                 }
               />
@@ -454,7 +454,7 @@ export default function ItemEndActivity(props) {
                     ) : (
                       <div></div>
                     )}
-                    {endDate.isAfter(currentDate) === true ? (
+                    {endDate.isAfter(currentDate) === true &&  userID === ItemActivity.userId? (
                       <li
                         onClick={() => {
                           handleClickDonate();
@@ -469,7 +469,7 @@ export default function ItemEndActivity(props) {
                     ) : (
                       <div></div>
                     )}
-                    {endDate.isAfter(currentDate) === true ? (
+                    {endDate.isAfter(currentDate) === true &&  userID === ItemActivity.userId? (
                       <li
                         onClick={() => {
                           handleClickFolowJoin();
@@ -1061,7 +1061,9 @@ export default function ItemEndActivity(props) {
                       isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
                     }`,
                     borderRadius: "4px",
-                    color: "#82828e",
+                    color: `${
+                      isAlreadyLiked ? "white" : "#82828e"
+                    }`,
                     display: "inline-block",
                     fontSize: "13px",
                     padding: "5px 20px",
@@ -1235,7 +1237,7 @@ export default function ItemEndActivity(props) {
                                 alt
                                 src={
                                   item.user?.image === "none"
-                                    ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                                    ? "./images/avatar.jpg"
                                     : item.user?.image
                                 }
                               />
@@ -1275,7 +1277,7 @@ export default function ItemEndActivity(props) {
                                       alt
                                       src={
                                         item.user?.image === "none"
-                                          ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                                          ? "./images/avatar.jpg"
                                           : item.user?.image
                                       }
                                     />
