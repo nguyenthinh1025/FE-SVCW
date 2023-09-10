@@ -53,12 +53,29 @@ export default function DetailActivity(props) {
   console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
   console.log(activityById.title, endDate.isAfter(currentDate));
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    customStyle: {
+      backgroundColor: 'red',
+      color: 'white',
+      nextButton: {
+        display: 'none'
+      }
+    }
   };
+  settings.nextArrow = <style>{`
+  .slick-next {
+    position: absolute;
+    right: -300px;
+}
+  }
+  .slick-prev{
+    // display: none!important;
+  }
+`}</style>;
   const DateTime = (item) => {
     const currentTime = moment();
     const inputTime = moment(item);
@@ -137,9 +154,10 @@ export default function DetailActivity(props) {
     // });
   };
   const slides = activityById?.media?.map((item, index) => {
+    
     return (
-      <div className={styles["carousel-item"]} key={index}>
-        <img src={item?.linkMedia} alt="Slide 1" />
+      <div  style={settings.customStyle} key={index}>
+        <img src={item?.linkMedia} alt="Slide 1" style={{width:'1300px', height:'800px'}} />
       </div>
     );
   });
@@ -348,7 +366,7 @@ export default function DetailActivity(props) {
                       <img
                         src={
                           activityById?.user?.image === "none"
-                            ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                            ? "../images/avatar.jpg"
                             : activityById?.user?.image
                         }
                         alt
@@ -528,7 +546,9 @@ export default function DetailActivity(props) {
                           isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
                         }`,
                         borderRadius: "4px",
-                        color: "#82828e",
+                        color: `${
+                          isAlreadyLiked ? "white" : "#82828e"
+                        }`,
                         display: "inline-block",
                         fontSize: "13px",
                         padding: "5px 20px",
@@ -678,7 +698,7 @@ export default function DetailActivity(props) {
                                     alt
                                     src={
                                       comment.user?.image === "none"
-                                        ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                                        ? "../images/avatar.jpg"
                                         : comment.user?.image
                                     }
                                   />
@@ -718,7 +738,7 @@ export default function DetailActivity(props) {
                                           alt
                                           src={
                                             item.user?.image === "none"
-                                              ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                                              ? "../images/avatar.jpg"
                                               : item.user?.image
                                           }
                                         />

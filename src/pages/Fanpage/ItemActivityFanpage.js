@@ -276,7 +276,7 @@ export default function ItemActivityFanpage(props) {
                   alt
                   src={
                     fanpageId?.avatar === "none"
-                      ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                      ? "./../images/giphy-sample.gif"
                       : fanpageId?.avatar
                   }
                 />
@@ -1121,7 +1121,7 @@ export default function ItemActivityFanpage(props) {
                                     item?.user?.userId === fanpageId.fanpageId
                                       ? fanpageId?.avatar
                                       : item.user?.image === "none"
-                                      ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                                      ? "./../images/avatar.jpg"
                                       : item.user?.image
                                   }
                                 />
@@ -1189,7 +1189,7 @@ export default function ItemActivityFanpage(props) {
                                           fanpageId.fanpageId
                                             ? fanpageId?.avatar
                                             : item.user?.image === "none"
-                                            ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                                            ? "./../images/avatar.jpg"
                                             : item.user?.image
                                         }
                                       />

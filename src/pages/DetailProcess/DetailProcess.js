@@ -393,7 +393,7 @@ export default function DetailProcess (props) {
                       <ul style={{ paddingTop: '50px' }}>
 
                         <li style={{ display: 'flex', fontSize: '20px', paddingBottom: '20px' }}>
-                          <div style={{ paddingRight: '10px', color: 'black' }}>- Bắt đầu :</div>
+                          <div style={{ paddingRight: '10px', color: 'black' }}>- Bắt đầu:</div>
                           <i style={{ fontSize: '20px' }}>
 
                             <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-calendar">
@@ -420,15 +420,15 @@ export default function DetailProcess (props) {
 
                       {currentObject.isParticipant ?
                         <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
-                          <div>{currentObject.isParticipant ? <div> - Kêu gọi người tham gia :</div> : <div></div>}</div>
+                          <div>{currentObject.isParticipant ? <div> - Kêu gọi người tham gia:</div> : <div></div>}</div>
                           <div style={{ marginLeft: '5px' }}>{currentObject.targetParticipant !== 0 ? <div style={{ fontWeight: 600 }}> {(currentObject?.targetParticipant)?.toLocaleString()} người</div> : <div></div>}</div>
                         </div> : <div></div>}
                       {currentObject.isDonateProcess ?
                         <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
-                          <div>{currentObject.isDonateProcess ? <div> - Kêu gọi quyên góp :</div> : <div></div>}</div>
+                          <div>{currentObject.isDonateProcess ? <div> - Kêu gọi quyên góp:</div> : <div></div>}</div>
                           <div style={{ marginLeft: '5px' }}>{currentObject.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {currentObject?.targetDonation} vnđ</div> : <div></div>}</div>
                         </div> : <div></div>}
-                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm : <span style={{ fontWeight: 600 }}>{(currentObject?.location)?.toLocaleString()}</span></div>
+                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm: <span style={{ fontWeight: 600 }}>{(currentObject?.location)?.toLocaleString()}</span></div>
                     </div>
                     <div
                       className="next-prev-posts"

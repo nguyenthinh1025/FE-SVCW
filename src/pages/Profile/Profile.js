@@ -60,7 +60,7 @@ export default function Profile (props) {
                       <div className="group-feed">
                         <div className="group-avatar">
                           {getUserId?.coverImage === "none" ? (
-                            <img src="https://img4.thuthuatphanmem.vn/uploads/2020/05/12/hinh-anh-mau-xam-chi_103623490.jpg" />
+                            <img src="../images/back.jpg" />
                           ) : (
                             <img
                               src={getUserId?.coverImage}
@@ -79,7 +79,7 @@ export default function Profile (props) {
                           <figure className="group-dp">
                             {" "}
                             {getUserId?.image === "none" ? (
-                              <img src="https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg" />
+                              <img src="../images/avatar.jpg" />
                             ) : (
                               <img src={getUserId?.image} alt />
                             )}

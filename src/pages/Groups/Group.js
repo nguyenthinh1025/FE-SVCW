@@ -83,7 +83,7 @@ export default function Group () {
                                                     });
                                                     return <div className="col-lg-3 col-md-4 col-sm-4" >
                                                         <div className="group-box">
-                                                            <NavLink to={`/fanpage/${item.fanpageId}`}>  <figure><img style={{ width: "120px", height: "120px", objectFit: "contain", border: '1px solid black', borderRadius: '50%' }} alt src={item.avatar} /></figure></NavLink>
+                                                            <NavLink to={`/fanpage/${item.fanpageId}`}>  <figure><img style={{ width: "120px", height: "120px", objectFit: "contain", border: '1px solid black', borderRadius: '50%' }} alt src={item.avatar ==='none' ? './../images/giphy-sample.gif' : item.avatar} /></figure></NavLink>
                                                             <NavLink to={`/fanpage/${item.fanpageId}`}>     <a title href="#">{item.fanpageName}</a></NavLink>
                                                             <span>{item.numberFollow} người theo dõi</span>
                                                             <div

@@ -48,10 +48,10 @@ export default function DetailFanpage(props) {
                   <div className="col-lg-9">
                     <div className="group-feed">
                       <div className="group-avatar">
-                        <img src={fanpageId?.coverImage} alt />
+                      {fanpageId?.coverImage ==='none' ? <img src="./../images/bg-4.png" alt /> :<img src={fanpageId?.coverImage} alt />}
                         {/* {localStorage.getItem('userID') === fanpageId.fanpageId ? <div></div> : <a href="#" title><i className="icofont-check-circled" />Theo dõi</a>} */}
                         <figure className="group-dp">
-                          <img src={fanpageId?.avatar} alt />
+                        {fanpageId?.avatar ==='none' ? <img src="./../images/giphy-sample.gif" alt /> :<img src={fanpageId?.avatar} alt />}
                         </figure>
                       </div>
                       <div className="grp-info">

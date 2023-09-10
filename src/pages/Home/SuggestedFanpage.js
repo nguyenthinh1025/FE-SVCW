@@ -129,6 +129,12 @@ function SuggestedFanpage (props) {
                       }}
                     >
                       <figure>
+                        {item.avatar ==="none"?  <img src="./../images/giphy-sample.gif" style={{
+                            margin: "0 2.5rem",
+                            height: "80px",
+                            width: "90px",
+                            objectFit: "cover",
+                          }} /> :
                         <img
                           src={item.avatar}
                           style={{
@@ -137,7 +143,7 @@ function SuggestedFanpage (props) {
                             width: "90px",
                             objectFit: "cover",
                           }}
-                        />
+                        />}
                       </figure>
                     </NavLink>
                     <span
@@ -150,9 +156,10 @@ function SuggestedFanpage (props) {
                     <div
                       style={{
                         width: "110px",
-                        background: "#088dcd none repeat scroll 0 0",
+                        background: `${isAlreadyFollowed ? 'white none repeat scroll 0 0' :'#088dcd none repeat scroll 0 0'}`,
+                        border: `${isAlreadyFollowed ? '1px solid rgb(8, 141, 205)' :'none'}`,
                         borderRadius: "16px",
-                        color: "#fff",
+                        color: `${isAlreadyFollowed ? 'rgb(8, 141, 205)' :'#fff'}`,
                         display: "block",
                         marginLeft: "30px",
                         fontSize: "12px",

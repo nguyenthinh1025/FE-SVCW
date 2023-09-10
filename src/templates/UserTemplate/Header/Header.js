@@ -111,7 +111,7 @@ export default function Header (props) {
                   alt
                   src={
                     getUserId?.image === "none"
-                      ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
+                      ?  "../images/avatar.jpg"
                       : getUserId?.image
                   }
                 />

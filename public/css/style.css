@@ -13955,6 +13955,7 @@ nav.sidebar.padding {
 .comments-area {
   display: inline-block;
   width: 100%;
+   margin-left: 20px;
 }
 
 .comments-area>ul {
@@ -14776,7 +14777,7 @@ ul.chat-rooms {
   display: inline-block;
   height: 30px;
   margin: 0;
-  padding: 0;
+  padding: 1px 7px 27px 6px;
   width: 30px;
   z-index: 44;
 }
