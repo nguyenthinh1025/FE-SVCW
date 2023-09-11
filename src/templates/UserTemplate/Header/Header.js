@@ -7,7 +7,7 @@ import { GetProfileByIdAction } from "../../../redux/actions/ProfileAction";
 import { GetActivityTitleAction, GetListActivityAction, RecommentActivityAction } from "../../../redux/actions/ActivityAction";
 import { async } from "q";
 
-export default function Header (props) {
+export default function Header(props) {
   const { userID } = useSelector((root) => root.LoginReducer);
 
   const dispatch = useDispatch();
@@ -59,6 +59,7 @@ export default function Header (props) {
           <img src="../images/logo.png" alt />
           <span>SVCW</span>
         </NavLink>
+
         <div className="searches">
           <form method="post" onSubmit={formik.handleSubmit}>
             <input
@@ -91,27 +92,22 @@ export default function Header (props) {
                     <i className="icofont-close-circled" />
                   </span>
                 </li>
-                {/* <li>
-                                    <div className="searched-user">
-                                        <figure><img src="images/resources/user2.jpg" alt /></figure>
-                                        <span>Maria K</span>
-                                    </div>
-                                    <span className="trash"><i className="icofont-close-circled" /></span>
-                                </li> */}
               </ul>
             </div>
           </form>
         </div>
-        <ul className="web-elements" style={{}}>
+        {/* Search box left */}
+
+        <ul className="web-elements" style={{ width: 400 }}>
           <li>
             <div className="user-dp">
               <NavLink to={`/profile/${localStorage.getItem('userID')}`} title>
-                {/* <NavLink to={`/profile`} title>  */}
                 <img
-                  alt
+                  alt=''
+                  sizes=''
                   src={
                     getUserId?.image === "none"
-                      ?  "../images/avatar.jpg"
+                      ? "https://nhanvietluanvan.com/wp-content/uploads/2023/05/c6e56503cfdd87da299f72dc416023d4-736x620.jpg"
                       : getUserId?.image
                   }
                 />
@@ -121,14 +117,7 @@ export default function Header (props) {
               </NavLink>
             </div>
           </li>
-          {/* <li className="go-live">
-                        <a href="live-stream.html" title="Go Live" data-toggle="tooltip">
-                            <i>
-                                <svg fill="#f00" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="18px" height="18px">
-                                    <path d="M 6.1015625 6.1015625 C 3.5675625 8.6345625 2 12.134 2 16 C 2 19.866 3.5675625 23.365437 6.1015625 25.898438 L 7.5195312 24.480469 C 5.3465312 22.307469 4 19.308 4 16 C 4 12.692 5.3465312 9.6925313 7.5195312 7.5195312 L 6.1015625 6.1015625 z M 25.898438 6.1015625 L 24.480469 7.5195312 C 26.653469 9.6925312 28 12.692 28 16 C 28 19.308 26.653469 22.307469 24.480469 24.480469 L 25.898438 25.898438 C 28.432437 23.365437 30 19.866 30 16 C 30 12.134 28.432437 8.6345625 25.898438 6.1015625 z M 9.6367188 9.6367188 C 8.0077188 11.265719 7 13.515 7 16 C 7 18.485 8.0077187 20.734281 9.6367188 22.363281 L 11.052734 20.947266 C 9.7847344 19.680266 9 17.93 9 16 C 9 14.07 9.7847344 12.319734 11.052734 11.052734 L 9.6367188 9.6367188 z M 22.363281 9.6367188 L 20.947266 11.052734 C 22.215266 12.319734 23 14.07 23 16 C 23 17.93 22.215266 19.680266 20.947266 20.947266 L 22.363281 22.363281 C 23.992281 20.734281 25 18.485 25 16 C 25 13.515 23.992281 11.265719 22.363281 9.6367188 z M 16 12 A 4 4 0 0 0 16 20 A 4 4 0 0 0 16 12 z" />
-                                </svg></i>
-                        </a>
-                    </li> */}
+
           <li>
             <a
               href="http://localhost:3000/home"
@@ -154,10 +143,11 @@ export default function Header (props) {
               </i>
             </a>
           </li>
+
           <li>
             <a
               className="mesg-notif"
-              href="#"
+              href="http://localhost:3000/message"
               title="Tin Nhắn"
               data-toggle="tooltip"
             >
@@ -207,15 +197,7 @@ export default function Header (props) {
             </a>
             <span />
           </li>
-          {/* <li>
-                        <a className="create" href="#" title="Add New" data-toggle="tooltip">
-                            <i>
-                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus">
-                                    <line x1={12} y1={5} x2={12} y2={19} />
-                                    <line x1={5} y1={12} x2={19} y2={12} />
-                                </svg></i>
-                        </a>
-                    </li> */}
+
           <li className="test">
             <a href="#" className="create">
               <i>
@@ -321,7 +303,11 @@ export default function Header (props) {
               </li>
             </ul>
           </li>
+          {/* Drop box header */}
+
         </ul>
+        {/* Function buttons right */}
+
       </div>
     </header>
   );

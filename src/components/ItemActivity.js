@@ -36,7 +36,7 @@ import { GetListReportTypeAction } from "../redux/actions/ReportTypeAction";
 import ShareActivity from "./ShareActivity";
 import Donate from "./Donate";
 
-export default function ItemActivity (props) {
+export default function ItemActivity(props) {
   const [share, setShare] = useState(false);
   const [shareActivityID, setShareActivityID] = useState("");
   const handleClickShare = () => {
@@ -242,7 +242,7 @@ export default function ItemActivity (props) {
         <div className="user-post">
           <div className="friend-info">
             <figure>
-            
+
               <img
                 style={{ height: "40px", width: "40px" }}
                 alt
@@ -342,7 +342,7 @@ export default function ItemActivity (props) {
                         <i className="icofont-flag" />
                         Báo cáo bài đăng
                         <span>
-                          nhầm báo cáo những vấn đề bất thường đến cho người
+                          Nhằm báo cáo những vấn đề bất thường đến cho người
                           quản lý
                         </span>
                       </li>
@@ -584,7 +584,7 @@ export default function ItemActivity (props) {
                             className="range-slider"
                             style={{
                               background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(pro.realDonation /
-                                  pro.targetDonation) *
+                                pro.targetDonation) *
                                 100
                                 }%, #ddd ${(pro.realDonation /
                                   pro.targetDonation) *
@@ -660,7 +660,7 @@ export default function ItemActivity (props) {
                               style={{
                                 position: "absolute",
                                 left: `${(pro.realDonation /
-                                    pro.targetDonation) *
+                                  pro.targetDonation) *
                                   100
                                   }%`,
                               }}
