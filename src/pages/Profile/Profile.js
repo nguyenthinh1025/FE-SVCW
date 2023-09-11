@@ -29,7 +29,6 @@ export default function Profile (props) {
   const [reloadPage, setReloadPage] = useState(false);
   const { userID } = useSelector((root) => root.LoginReducer);
   const { getUserId } = useSelector((root) => root.ProfileReducer);
-  console.log(getUserId)
   const { arrEndActivityByUserID } = useSelector(
     (root) => root.EndActivityReducer
   );
@@ -97,7 +96,7 @@ export default function Profile (props) {
                           <ul className="joined-info">
                             <li>
                               <span>Ngày tạo tài khoản:</span>{" "}
-                              {moment(getUserId?.createAt).format("DD-MM-YYYY")}
+                              {moment(getUserId?.createAt).format("DD/MM/YYYY")}
                             </li>
                             <li>
                               <span>Số tổ chức đang theo dõi:</span>{" "}
@@ -107,9 +106,9 @@ export default function Profile (props) {
                               <span>Số bài viết:</span>{" "}
                               {getUserId?.activity?.length}
                             </li>
-                            <li>
+                            {/* <li>
                               <span>Số người thích:</span>{" "}
-                            </li>
+                            </li> */}
                           </ul>
 
                           <ul

@@ -10,7 +10,7 @@ export default function RecommentActivity () {
   const { arrActivityRecomment } = useSelector((root) => root.ActivityReducer);
   const { userID } = useSelector((root) => root.LoginReducer);
   const dispatch = useDispatch()
-  console.log("comment", arrActivityRecomment);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -23,7 +23,7 @@ export default function RecommentActivity () {
     const action9 = GetRecommentActivityAction(userID);
     dispatch(action9);
   },[])
-  console.log(arrActivityRecomment)
+
   return (
     <div style={{ position: 'relative' }}>
       <Slider {...settings}>
@@ -71,7 +71,6 @@ export default function RecommentActivity () {
                   {item.followJoinAvtivity?.map((item1, index) => {
                     if (item1.userId === userID) {
                       return item1.isFollow ? <div className="btnfollow" onClick={() => {
-                        // console.log(item.activityId);
                         const action = UnFollowAction(item.activityId, userID);
                         dispatch(action);
                         const Toast = Swal.mixin({

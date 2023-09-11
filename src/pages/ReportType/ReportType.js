@@ -20,7 +20,6 @@ import { CreateReportTypeAction, DeleteReportTypeAction, GetListReportTypeAction
 export default function ReportType () {
   const dispatch = useDispatch()
   const { reportType } = useSelector(root => root.ReportType)
-  console.log(reportType);
   let emptyProduct = {
     reportTypeId: "0",
     reportTypeName: "",
@@ -41,7 +40,7 @@ export default function ReportType () {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-  console.log(product);
+
   useEffect(() => {
     const action = GetListReportTypeAction();
     dispatch(action)
@@ -50,11 +49,8 @@ export default function ReportType () {
 
     setProducts(reportType)
   }, [reportType]);
-  console.log(products);
 
-  // const formatCurrency = (value) => {
-  //     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  // };
+
 
   const openNew = () => {
     setProduct(emptyProduct);
@@ -86,7 +82,6 @@ export default function ReportType () {
       if (product.reportTypeId !== '0') {
         const index = findIndexById(product.id);
         _products[index] = _product;
-        console.log(product.reportTypeId);
         const action = await UpdateReportTypeAction(product)
         await dispatch(action)
         setProductDialog(false);
@@ -287,7 +282,6 @@ export default function ReportType () {
       <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
     </React.Fragment>
   );
-  console.log(product);
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
       <div>

@@ -14,7 +14,6 @@ export default function ListDonate(props) {
   useEffect(() => {
     setProducts(listDonate);
   }, [listDonate]);
-  console.log(listDonate)
   
   const leftToolbarTemplate = () => {
     return (

@@ -8,7 +8,6 @@ export const GetListActivityAction = () => {
         try {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get('/Activity/get-activity?pageSize=30&PageLoad=1');
-            console.log(result.data.data.result);
 
             const action = {
                 type: "GET_LIST_ACTIVITY",
@@ -29,8 +28,6 @@ export const GetActivityAction = () => {
         try {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get('/Activity/get-activity?pageSize=5&PageLoad=1');
-            console.log(result.data.data.result);
-
             const action = {
                 type: "GET_ACTIVITY",
                 arrListActivity: result.data.data.result
@@ -155,7 +152,6 @@ export const GetActivityIDAction = (value) => {
                 type: "GET_ACTIVITY_BY_ID",
                 activityById: result.data.data
             }
-            localStorage.setItem('activityID', result.data.data)
             dispatch(action)
         } catch (error) {
             console.log(error);
@@ -165,7 +161,6 @@ export const GetActivityIDAction = (value) => {
 
 
 export const PostLikeAction = (value) => {
-    console.log("sasa" + localStorage.getItem('fanpagedatail'))
     return async (dispatch) => {
         try {
             let result = await http.post('/Like/simple-like', value);

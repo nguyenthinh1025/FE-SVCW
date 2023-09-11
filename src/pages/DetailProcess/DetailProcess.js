@@ -32,7 +32,6 @@ export default function DetailProcess (props) {
   });
   const currentTime = moment();
   const [typeProcess, setType] = useState('')
-  console.log(typeProcess);
   const dispatch = useDispatch();
   const { id } = props.match.params;
   const { processactivity, processType } = useSelector(
@@ -50,12 +49,12 @@ export default function DetailProcess (props) {
     const action1 = GetListProcessTypeAction();
     dispatch(action1);
   }, []);
-  console.log(processType);
+
   const DateTime = (value) => {
     const currentTime = moment(value).format("DD-MM-YYYY");
     return currentTime;
   };
-  console.log(processactivity);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrevious = () => {
@@ -72,7 +71,7 @@ export default function DetailProcess (props) {
   const currentObject = processactivity[currentIndex];
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  console.log(currentObject);
+
   const [isOpen, setIsOpen] = useState(false);
   const popupStyle = {
     opacity: isOpen ? 1 : 0,
@@ -173,7 +172,7 @@ export default function DetailProcess (props) {
 
 
       else {
-        console.log(value);
+
         const action = await UpdateProcessAction(value);
         await dispatch(action);
         const action1 = GetProcessByActivityAction(id);
@@ -203,7 +202,7 @@ export default function DetailProcess (props) {
       media: [],
     },
     onSubmit: async (value) => {
-      console.log(value);
+
       const action = await CreateProcess1Action(value, id);
       await dispatch(action);
       setIsOpen1((prevIsOpen) => !prevIsOpen);
@@ -216,7 +215,7 @@ export default function DetailProcess (props) {
       type: "string",
     }));
     formik1.setFieldValue("media", arrMedia);
-    console.log(arrMedia);
+
   }, [images]);
 
   const DeleteProcess = (id) => {

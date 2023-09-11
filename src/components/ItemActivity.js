@@ -50,7 +50,6 @@ export default function ItemActivity (props) {
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
   const { reportType } = useSelector((root) => root.ReportType);
-  console.log(reportType);
   const {
     ItemActivity,
     isAlreadyFollowed,
@@ -128,7 +127,6 @@ export default function ItemActivity (props) {
       commentIdReply: "",
     },
     onSubmit: (value) => {
-      console.log(value);
       if (value.commentIdReply === "") {
         const action = CommentAction(value);
         dispatch(action);
@@ -200,14 +198,12 @@ export default function ItemActivity (props) {
 
     } else {
       setFollowIndex(index);
-      console.log(activity, userID);
       const action = await FollowAction(activity, userID);
       dispatch(action);
 
     }
   };
   const handleLikeClick = (id) => {
-    console.log(isAlreadyLiked);
     let alreadyLiked = isAlreadyLiked;
 
     let action = null;
@@ -228,9 +224,6 @@ export default function ItemActivity (props) {
   const endDate = moment(ItemActivity.endDate);
   const currentDate = moment();
 
-  console.log(currentDate);
-  console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
-  console.log(ItemActivity.title, endDate.isAfter(currentDate));
   const popupStyle4 = {
     opacity: openpro1 ? 1 : 0,
     visibility: openpro1 ? "visible" : "hidden",
@@ -280,7 +273,6 @@ export default function ItemActivity (props) {
                       ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
-                          console.log(ItemActivity.activityId);
                           handleClick6();
                           const action = GetActivityByIDAction(
                             ItemActivity.activityId
@@ -478,7 +470,6 @@ export default function ItemActivity (props) {
                         <div key={index} className={`image-container-post`}>
                           <NavLink to={`/detailactivity/${ItemActivity.activityId}`}
                             onClick={() => {
-                              console.log(ItemActivity.activity)
                               const action = GetActivityIDAction(ItemActivity.activityId);
                               dispatch(action)
 
@@ -537,7 +528,6 @@ export default function ItemActivity (props) {
               </figure>
 
               {ItemActivity.process?.map((pro, index) => {
-                console.log(ItemActivity.title, pro.isDonateProcess);
                 if (
                   moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
                   moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
@@ -793,7 +783,6 @@ export default function ItemActivity (props) {
                 ) : (
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
-                      console.log(ItemActivity.title, pro.isDonateProcess);
                       if (
                         moment(pro.startDate, "YYYY-MM-DD").isBefore(
                           currentDate

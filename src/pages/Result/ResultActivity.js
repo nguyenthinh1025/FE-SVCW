@@ -15,8 +15,7 @@ export default function ResultActivity(props) {
   const { popupStyle1, handleClick1, isOpen1, idActivity } = props;
   const { activityId } = useSelector((root) => root.ActivityReducer);
   const { arrEndActivityID } = useSelector((root) => root.EndActivityReducer);
-  console.log(arrEndActivityID);
-  console.log(idActivity);
+
   // useEffect(() => {
   //   const action = GetActivityByIDAction(idActivity);
   //   dispatch(action);
@@ -24,7 +23,7 @@ export default function ResultActivity(props) {
   const [isFolowJoin, setIsFolowJoin] = useState(false);
   const [listFolowJoin, setFolowJoin] = useState([]);
   const [listJoinFollow, setJoinFollow] = useState([]);
-  console.log(listJoinFollow);
+
   const handleClickFolowJoin = () => {
     setIsFolowJoin((prevIsOpen) => !prevIsOpen);
   };
@@ -53,7 +52,7 @@ export default function ResultActivity(props) {
       <Button
         label="Tải xuống"
         icon="pi pi-upload"
-        style={{ marginRight: "50px" }}
+        style={{ marginRight: "50px" ,background:'#088dcd', border:'none'}}
         className="p-button-help"
         onClick={exportCSV}
       />
@@ -82,7 +81,7 @@ export default function ResultActivity(props) {
         <div className="post-new-popup" style={popupStyle1}>
           <div
             className="popup"
-            style={{ width: 1000, height: 800, zIndex: 80, marginTop: "200px" }}
+            style={{ width: 1000, height: 800, zIndex: 80, marginTop: "-100px" }}
           >
             <span className="popup-closed" onClick={handleClick1}>
               <i className="icofont-close" />

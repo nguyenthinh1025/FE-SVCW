@@ -23,7 +23,7 @@ import {
 export default function ProcessType () {
   const dispatch = useDispatch();
   const { processType } = useSelector((root) => root.ProcessTypeReducer);
-  console.log(processType);
+ 
   let emptyProduct = {
     processTypeId: "0",
     processTypeName: "",
@@ -42,12 +42,11 @@ export default function ProcessType () {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
+
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           setProduct(updatedProduct);
         });
@@ -68,7 +67,7 @@ export default function ProcessType () {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-  console.log(selectedProducts);
+
   useEffect(() => {
     const action = GetListProcessTypeAction();
     dispatch(action);
@@ -76,7 +75,7 @@ export default function ProcessType () {
   useEffect(() => {
     setProducts(processType);
   }, [processType]);
-  console.log(products);
+
 
   // const formatCurrency = (value) => {
   //     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -112,7 +111,6 @@ export default function ProcessType () {
         const index = findIndexById(product.id);
 
         _products[index] = _product;
-        console.log(product.processTypeId);
         const action = await UpdateProcessTypeAction(product);
         await dispatch(action);
         setProductDialog(false);
@@ -414,7 +412,6 @@ export default function ProcessType () {
     </React.Fragment>
   );
 
-  console.log(product);
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
       <div>

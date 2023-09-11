@@ -4,10 +4,14 @@ import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 import { GetProfileByIdAction } from "../../../redux/actions/ProfileAction";
-import { GetActivityTitleAction, GetListActivityAction, RecommentActivityAction } from "../../../redux/actions/ActivityAction";
+import {
+  GetActivityTitleAction,
+  GetListActivityAction,
+  RecommentActivityAction,
+} from "../../../redux/actions/ActivityAction";
 import { async } from "q";
 
-export default function Header (props) {
+export default function Header(props) {
   const { userID } = useSelector((root) => root.LoginReducer);
 
   const dispatch = useDispatch();
@@ -15,7 +19,10 @@ export default function Header (props) {
   const { getUserId, arrActivityUser } = useSelector(
     (root) => root.ProfileReducer
   );
-  console.log(getUserId);
+  const toggleDarkMode = () => {
+    document.body.classList.toggle("nightview");
+  };
+
   useEffect(() => {
     // const action = GetProfileByIdAction(id);
     // dispatch(action);
@@ -28,29 +35,15 @@ export default function Header (props) {
       search: title,
     },
     onSubmit: async (value) => {
-      if (formik.values.title !== '') {
-        console.log(value);
+      if (formik.values.title !== "") {
         const action = await GetActivityTitleAction(value);
-        dispatch(action)
-        // const value1 = {
-
-        //     userId: userID,
-        //     searchContent: value.title
-
-        // }
-        // console.log(value1)
-        // const action1 =await RecommentActivityAction(value1, userID);
-        // dispatch(action1);
-      }
-      else {
+        dispatch(action);
+      } else {
         const action = GetListActivityAction();
-        dispatch(action)
+        dispatch(action);
       }
     },
   });
-
-
-  // if (!getUserId) return <p>Loading...</p>;
 
   return (
     <header className>
@@ -105,13 +98,13 @@ export default function Header (props) {
         <ul className="web-elements" style={{}}>
           <li>
             <div className="user-dp">
-              <NavLink to={`/profile/${localStorage.getItem('userID')}`} title>
+              <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
                 {/* <NavLink to={`/profile`} title>  */}
                 <img
                   alt
                   src={
                     getUserId?.image === "none"
-                      ?  "../images/avatar.jpg"
+                      ? "../images/avatar.jpg"
                       : getUserId?.image
                   }
                 />
@@ -242,7 +235,10 @@ export default function Header (props) {
             <ul className="dropdown">
               {localStorage.getItem("userID") ? (
                 <li>
-                  <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
+                  <NavLink
+                    to={`/profile/${localStorage.getItem("userID")}`}
+                    title
+                  >
                     <i className="icofont-user-alt-3" /> Trang cá nhân
                   </NavLink>
                 </li>
@@ -258,7 +254,7 @@ export default function Header (props) {
 
               <li>
                 <NavLink to="/statisticaluser" title>
-                  <i className="icofont-flash" /> Thống kê
+                  <i className="fa-solid fa-chart-simple" /> Thống kê
                 </NavLink>
               </li>
               {getUserId?.fanpage === null ? (
@@ -270,34 +266,9 @@ export default function Header (props) {
               ) : (
                 <Fragment></Fragment>
               )}
-              {/* <li>
-                <a className="invite-new" href="#" title>
-                  <i className="icofont-brand-slideshare" /> Invite Collegue
-                </a>
-              </li> */}
-              {/* <li>
-                <a href="pay-out.html" title>
-                  <i className="icofont-price" />
-                </a>
-              </li>
 
               <li>
-                <a href="help-faq.html" title>
-                  <i className="icofont-question-circle" /> Help
-                </a>
-              </li>
-              <li>
-                <a href="settings.html" title>
-                  <i className="icofont-gear" /> Setting
-                </a>
-              </li>
-              <li>
-                <a href="privacy-n-policy.html" title>
-                  <i className="icofont-notepad" /> Privacy
-                </a>
-              </li> */}
-              <li>
-                <a className="dark-mod" href="#" title>
+                <a className="dark-mod" href="#" onClick={toggleDarkMode}>
                   <i className="icofont-moon" /> Sáng/Tối
                 </a>
               </li>

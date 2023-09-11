@@ -42,7 +42,7 @@ export default function ReportActivity (props) {
         },
     });
     const onInputDropdown = (e, field) => {
-        // console.log(e.target.value)
+
         formik6.setFieldValue('reportTypeId', e.target.value);
     };
     return (

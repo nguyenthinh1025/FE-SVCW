@@ -56,7 +56,7 @@ export default function ItemActivityFanpage(props) {
     index,
     fanpageId,
   } = props;
-  console.log(fanpageId);
+
   const [openpro1, setOpenPro1] = useState(false);
   const [detail, setDetail] = useState({});
   const [report, setReport] = useState(false);
@@ -262,9 +262,7 @@ export default function ItemActivityFanpage(props) {
   const endDate = moment(ItemActivity.endDate);
   const currentDate = moment();
 
-  console.log(currentDate);
-  console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
-  console.log(ItemActivity.title, endDate.isAfter(currentDate));
+
   return (
     <div className="">
         <div className="main-wraper">
@@ -522,7 +520,7 @@ export default function ItemActivityFanpage(props) {
                               <NavLink
                                 to={`/detailactivity/${ItemActivity.activityId}`}
                                 onClick={() => {
-                                  console.log(ItemActivity.activity);
+
                                   const action = GetActivityIDAction(
                                     ItemActivity.activityId
                                   );
@@ -543,7 +541,6 @@ export default function ItemActivityFanpage(props) {
                               <div
                                 href="images/resources/album1.jpg"
                                 onClick={() => {
-                                  console.log(ItemActivity.activity);
                                   const action = GetActivityIDAction(
                                     ItemActivity.activityId
                                   );
@@ -587,7 +584,7 @@ export default function ItemActivityFanpage(props) {
                 </figure>
 
                 {ItemActivity.process?.map((pro, index) => {
-                console.log(ItemActivity.title, pro.isDonateProcess);
+
                 if (
                   moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
                   moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
@@ -852,7 +849,7 @@ export default function ItemActivityFanpage(props) {
                 ) : (
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
-                      console.log(ItemActivity.title, pro.isDonateProcess);
+
                       if (
                         moment(pro.startDate, "YYYY-MM-DD").isBefore(
                           currentDate

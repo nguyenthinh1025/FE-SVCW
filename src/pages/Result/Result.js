@@ -48,8 +48,7 @@ export default function Result () {
         const action1 = HistoryDonationAction(userID)
         dispatch(action1)
     }, []);
-    console.log(arrFollowJoin);
-    console.log(arrDonation);
+
     return (
         <div className="theme-layout">
 

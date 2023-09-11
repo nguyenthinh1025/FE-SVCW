@@ -823,7 +823,6 @@ background-color: #e74c3c;
   border-radius: 16px;
   color: rgb(255, 255, 255);
   display: block;
-  margin-left: 30px;
   font-size: 12px;
   margin-top: 10px;
   padding: 5px 10px;
@@ -838,7 +837,7 @@ background-color: #e74c3c;
   width: 110px;
   border-radius: 16px;
   display: block;
-  margin-left: 30px;
+
   font-size: 12px;
   margin-top: 10px;
   padding: 5px 10px;
@@ -871,9 +870,9 @@ background-color: #e74c3c;
   margin-top: 24px;
 }
 
-.marginform {
+/* .marginform {
   margin-left: -43px;
-}
+} */
 
 /* .nomarginform {
   margin-left: 74px;
@@ -1500,4 +1499,10 @@ i.fa.fa-arrow-up {
 
 .link-item>a p {
   text-transform: none
+}
+
+.cmt{
+  position: absolute;
+  bottom: -438px;
+  left: -447px;
 }

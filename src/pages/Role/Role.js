@@ -29,7 +29,6 @@ import {
 export default function Role () {
   const dispatch = useDispatch();
   const { arrRole } = useSelector((root) => root.RoleReducer);
-  console.log(arrRole);
   const [id, setID] = useState("abc");
   let counter = 0;
   let emptyProduct = {
@@ -51,12 +50,12 @@ export default function Role () {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
+
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
+
           const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           setProduct(updatedProduct);
         });
@@ -76,7 +75,7 @@ export default function Role () {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-  console.log(product);
+
   useEffect(() => {
     const action = GetListRoleAction();
     dispatch(action);
@@ -119,10 +118,10 @@ export default function Role () {
         const index = findIndexById(product.id);
 
         _products[index] = _product;
-        console.log(product.roleId);
+
         const action = await UpdateRoleAction(product);
         await dispatch(action);
-        console.log(action);
+
         setProductDialog(false);
         counter++;
         if (action.status) {
@@ -413,7 +412,7 @@ export default function Role () {
       />
     </React.Fragment>
   );
-  console.log(product);
+
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
       <div>

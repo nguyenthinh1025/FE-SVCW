@@ -34,9 +34,9 @@ export default function Report () {
   const { arrReport, arrReportByID } = useSelector(
     (root) => root.ReportReducer
   );
-  console.log(arrReportByID);
+
   const { reportType } = useSelector((root) => root.ReportType);
-  console.log(reportType);
+
   const [showInput, setShowInput] = useState(true);
   const [id, setID] = useState("abc");
   let counter = 0;
@@ -61,7 +61,7 @@ export default function Report () {
 
       setRepo(selectedId);
       if (selectedId === 'Lấy tất cả danh sách') {
-        console.log(selectedId);
+
         setProducts(arrReport);
       } else {
 
@@ -69,7 +69,7 @@ export default function Report () {
         // setProduct(updatedProduct);
         const action = GetListReportByTypeAction(e.target.value);
         dispatch(action);
-        console.log(op);
+
       }
     }
 
@@ -96,13 +96,13 @@ export default function Report () {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
+
         setShowInput(false);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
+
           const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           setProduct(updatedProduct);
         });
@@ -121,18 +121,15 @@ export default function Report () {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-  console.log(product);
+
   useEffect(() => {
     const action = GetListReportAction();
     dispatch(action);
     const action1 = GetListReportTypeAction();
     dispatch(action1);
   }, []);
-  console.log(op);
-  console.log(arrReportByID);
   useEffect(() => {
     if (op === "rong") {
-      console.log(arrReport);
       setProducts(arrReport);
     } else {
       setProducts(arrReportByID);
@@ -166,9 +163,6 @@ export default function Report () {
     setSubmitted(true);
     let _product = { ...product };
     let productItem = { ...product };
-    console.log(productItem?.activity?.user?.email);
-    console.log(productItem.user?.fullName);
-    console.log(productItem?.title);
     SendEmail(productItem?.activity?.user?.email, 'Cảnh báo bài viết', `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thư cảnh báo</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#ff1827;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Thư cảnh báo từ SVCW</h1></div><div class="content"><p>Xin chào ${productItem.user?.fullName},</p><p>Chúng tôi thấy bài viết <span style="font-weight:bold;">${productItem?.title}</span> bạn có nội dung không phù hợp với cộng đồng trên SVCW!</p><p>Bạn nên chỉnh sửa lại nội dung bài viết cho phù hợp, nếu không bài viết của bạn sẽ bị xóa.</p><p>Chúc bạn có những trải nghiệm của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
     setProductDialog(false);
   };
@@ -418,7 +412,7 @@ export default function Report () {
       />
     </React.Fragment>
   );
-  console.log(products);
+
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
       <div>

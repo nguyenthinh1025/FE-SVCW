@@ -77,7 +77,7 @@ export default function DetailFanpage(props) {
                         <ul>
                           <li>
                             <span>Ngày tạo: </span>
-                            {moment(fanpageId?.createAt).format("DD-MM-YYYY")}
+                            {moment(fanpageId?.createAt).format("DD/MM/YYYY")}
                           </li>
                           <li>
                             <span>Số điện thoại: </span> {fanpageId?.phone}

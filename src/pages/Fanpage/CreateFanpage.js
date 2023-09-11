@@ -52,7 +52,7 @@ export default function CreateFanpage (props) {
     },
     validationSchema: validationSchema,
     onSubmit: (value) => {
-      console.log(value);
+
       const action = CreateFanpageAction(value, props);
       dispatch(action)
       const Toast = Swal.mixin({
@@ -75,7 +75,7 @@ export default function CreateFanpage (props) {
   });
   const [avartar, setAvatar] = useState("");
   useEffect(() => { }, [formik.values.avatar, formik.values.coverImage]);
-  console.log(avartar);
+
 
   const uploadFile = (e) => {
     setIsLoading(true);
@@ -90,14 +90,13 @@ export default function CreateFanpage (props) {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
-        // setShowInput(false);
+
         setUploadProgress(progress);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
+
           // const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           // setProduct(updatedProduct);
           formik.setFieldValue("avatar", url);
@@ -120,14 +119,13 @@ export default function CreateFanpage (props) {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
         // setShowInput(false);
         setUploadProgress1(progress);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
+
           // const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           // setProduct(updatedProduct);
           formik.setFieldValue("coverImage", url);
