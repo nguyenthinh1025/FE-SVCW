@@ -4,7 +4,8 @@ const stateDefault = {
     msg: '',
     moderator: localStorage.getItem('moderator'),
     msgModerator: '',
-    userIDMobile:localStorage.getItem('userIDMobile')
+    userIDMobile:localStorage.getItem('userIDMobile'),
+    ModeratorId:{}
 }
 
 
@@ -36,6 +37,10 @@ export const LoginReducer = (state = stateDefault, action) => {
         }
         case 'GET_USER_LOGIN_MOBILE':{
             state.userIDMobile = action.userIDMobile;
+            return { ...state }
+        }
+        case 'GET_LIST_MODERATOR_ID':{
+            state.ModeratorId = action.ModeratorId;
             return { ...state }
         }
         default: return state;

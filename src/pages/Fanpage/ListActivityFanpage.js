@@ -6,8 +6,7 @@ import Game from "../../components/Game";
 
 export default function ListActivityFanpage(props) {
   let { arrActivity, fanpageId } = props;
-  console.log(arrActivity);
-  console.log(fanpageId);
+
   const { userID } = useSelector((root) => root.LoginReducer);
   return (
     <div className="row">

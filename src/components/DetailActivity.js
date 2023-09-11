@@ -25,6 +25,7 @@ import Swal from "sweetalert2";
 import { DonationAction } from "../redux/actions/DonationAction";
 import { NavLink } from "react-router-dom";
 import ShareActivity from "./ShareActivity";
+import { SendEmail } from "../utils/emailService";
 export default function DetailActivity(props) {
   const [share, setShare] = useState(false);
   const [shareActivityID, setShareActivityID] = useState("");
@@ -45,13 +46,9 @@ export default function DetailActivity(props) {
   const dispatch = useDispatch();
 
   const { activityById } = useSelector((root) => root.ActivityReducer);
-  console.log(activityById);
   const endDate = moment(activityById.endDate);
   const currentDate = moment();
 
-  console.log(currentDate);
-  console.log(endDate.format("DD-MM-YYYY HH:mm:ss"));
-  console.log(activityById.title, endDate.isAfter(currentDate));
   const settings = {
     dots: false,
     infinite: true,
@@ -101,48 +98,27 @@ export default function DetailActivity(props) {
   }, []);
   const [joinedIndex, setJoinedIndex] = useState(null);
   const [followIndex, setFollowIndex] = useState(null);
-  const handleJoinClick = async (index, activity, isJoin, title) => {
-    if (isJoin) {
+  const handleJoinClick = async (index, activity, isJoin, title,process) => {
+    if (isJoin ==="Join") {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "error",
-        title: `Hủy tham gia sự kiện ${title} thành công`,
-      });
+     
     } else {
       setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: `Tham Gia Thành Công Sự Kiện ${title}`,
-      });
+      SendEmail(
+        localStorage.getItem("emailuser"),
+        "Thông báo thời gian diễn ra chiến dịch",
+        `Bạn đã tham gia thành công chiến dịch ${title} . Vui lòng đến địa chỉ ${
+          process[0]?.location
+        } từ ngày ${moment(process[0]?.startDate).format(
+          "DD/MM/YYYY hh:mm A"
+        )} đến ngày ${moment(process[0]?.endDate).format(
+          "DD/MM/YYYY hh:mm A"
+        )} để tham gia chiến dịch`
+      );
     }
     const action = GetListActivityAction();
     await dispatch(action);
@@ -361,7 +337,7 @@ export default function DetailActivity(props) {
               </div>
               <div className="col-lg-3">
                 <div className="commentbar">
-                  <div className="user" style={{display:'flex'}}>
+                  <div className="user" style={{display:'flex', marginBottom:'26px'}}>
                     <figure>
                       <img
                         src={
@@ -386,7 +362,12 @@ export default function DetailActivity(props) {
                   <div></div>
                 ) : (
                   <button
-                    className={`btn-change-1`}
+                  className={` ${
+                    isAlreadyFollowed ? "btn-change" : "btn-color"
+                  }  `}
+                  style={{    position: "absolute",
+                    right: "20px",
+                    top: "15px"}}
                     onClick={() => {
                       handleFollowClick(
                         1,
@@ -461,7 +442,7 @@ export default function DetailActivity(props) {
                           return (
                             <button
                               className={` ${
-                                isAlreadyJoined ? "btn-change" : "btn-color"
+                                isAlreadyJoined === "Join" ? "btn-change" : "btn-color"
                               } mb-4 mt-4 btn-add ${
                                 activityById.targetDonation !== 0
                                   ? "marginfollow"
@@ -472,11 +453,14 @@ export default function DetailActivity(props) {
                                   index,
                                   activityById.activityId,
                                   isAlreadyJoined,
-                                  activityById.title
+                                  activityById.title,
+                                  activityById?.process?.filter(
+                                    (item) => item.processTypeId === "pt003"
+                                  )
                                 );
                               }}
                             >
-                              {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
+                              {isAlreadyJoined === "Join" ? "Hủy Tham gia" : "Tham gia"}
                             </button>
                           );
                         }
@@ -491,7 +475,6 @@ export default function DetailActivity(props) {
                 ) : (
                   <div>
                     {activityById?.process?.map((pro, index) => {
-                      console.log(activityById.title, pro.isDonateProcess);
                       if (
                         moment(pro.startDate, "YYYY-MM-DD").isBefore(
                           currentDate

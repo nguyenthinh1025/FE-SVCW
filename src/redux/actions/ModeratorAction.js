@@ -5,10 +5,26 @@ export const GetListModeratorAction = () => {
     return async (dispatch) => {
         try {
             let result = await http.get('/Moderator/get-all');
-            console.log(result.data.data);
+           
             const action = {
                 type: "GET_LIST_MODERATOR",
                 arrModerator: result.data.data
+            }
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+export const GetListModeratorIdAction = (id) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.get(`/Moderator/get-byId?id=${id}`);
+           
+            const action = {
+                type: "GET_LIST_MODERATOR_ID",
+                ModeratorId: result.data.data
             }
             dispatch(action)
 
@@ -22,7 +38,7 @@ export const CreateModeratorAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Moderator/create', value);
-            console.log(result.data.data);
+           
             const action = GetListModeratorAction()
             dispatch(action)
 
@@ -51,7 +67,7 @@ export const DeleteModeratorAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.delete(`/Moderator/delete?id=${value}`);
-            console.log(result.data.data);
+           
             const action = GetListModeratorAction()
             dispatch(action)
 

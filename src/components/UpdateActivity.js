@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UpdateActivityAction } from "../redux/actions/ActivityAction";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
+import moment from "moment";
 
 export default function UpdateActivity(props) {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default function UpdateActivity(props) {
     enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: async (value) => {
-      console.log(value);
+
       const action = await UpdateActivityAction(value);
       await dispatch(action);
       const Toast = Swal.mixin({
@@ -176,7 +177,7 @@ export default function UpdateActivity(props) {
                           type="date"
                           name="startDate"
                           onChange={formik9.handleChange}
-                          value={formik9.values.startDate}
+                          value={moment(formik9.values.startDate).format('YYYY-MM-DD')}
                           id="name"
                           className="form-control"
                           min={new Date().toISOString().split("T")[0]} // Đặt ngày là ngày hiện tại
@@ -192,7 +193,7 @@ export default function UpdateActivity(props) {
                           type="date"
                           name="endDate"
                           onChange={formik9.handleChange}
-                          value={formik9.values.endDate}
+                          value={moment(formik9.values.endDate).format('YYYY-MM-DD')}
                           id="name"
                           className="form-control"
                           min={new Date().toISOString().split("T")[0]}

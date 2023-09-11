@@ -30,9 +30,7 @@ export const GetStatisticalAction = (id) => {
                 type: "GET_STATICAL",
                 arrStatical: allMonthsData,
             });
-            console.log(allMonthsData.userData);
             localStorage.setItem('statistical', JSON.stringify(allMonthsData))
-            console.log(allMonthsData);
         } catch (error) {
             console.log(error);
         }

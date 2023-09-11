@@ -7,7 +7,6 @@ export default function Donate(props) {
   const { isPopupOpen, openPopup, donate } = props;
   const [error, setError] = useState("1");
   const { message } = useSelector((root) => root.DonationReducer);
-  console.log(message);
   const dispatch = useDispatch();
   const formik1 = useFormik({
     initialValues: {

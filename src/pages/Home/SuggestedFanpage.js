@@ -48,7 +48,6 @@ function SuggestedFanpage (props) {
 
   const handleFollowClick = (index, activity, isFollow, title) => {
     if (isFollow) {
-      console.log("Hủy theo dõi");
       const action = UnFollowFanpageAction(userID, activity);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -68,7 +67,6 @@ function SuggestedFanpage (props) {
         title: `Hủy theo dõi fanpage ${title} thành công`,
       });
     } else {
-      console.log("Theo dõi");
       const action = FollowFanpageAction(userID, activity);
       dispatch(action);
       const Toast = Swal.mixin({

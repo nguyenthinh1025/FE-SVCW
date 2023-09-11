@@ -69,7 +69,6 @@ function DynamicForm () {
       newImageUrls[index] = uploadedImageUrls;
       return newImageUrls;
     });
-    console.log(imageUrls1);
   };
   const removeInputField = (index) => {
     const updatedInputFields = [...inputFields];
@@ -88,7 +87,6 @@ function DynamicForm () {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(inputFields);
   };
 
   return (
@@ -154,7 +152,6 @@ function DynamicForm () {
                   handleInputChange(index, "processTypeId", e.target.value)
                 }
                 onClick={(e) => {
-                  console.log(e.target.value);
                 }}
               >
                 <option value="">Chọn loại</option>

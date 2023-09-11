@@ -10,20 +10,20 @@ const StatisticalUser = (props) => {
   const handleOptionClick = (value) => {
     setSelectedValue(value);
   };
-  console.log(selectedValue);
+
   const dispatch = useDispatch();
   const { arrStatical } = useSelector((root) => root.StatisticalReducer);
   useEffect(() => {
     const action = GetStatisticalAction(localStorage.getItem("userID"));
     dispatch(action);
   }, []);
-  console.log(arrStatical);
+
 
   const arr = arrStatical?.map((item, index) => {
     return selectedValue ? item.donated : item.totalDonate;
   });
 
-  console.log(arr);
+
 
   const series = [
     {

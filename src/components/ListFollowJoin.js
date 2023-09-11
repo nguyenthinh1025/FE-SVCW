@@ -14,8 +14,6 @@ export default function ListFollowJoin(props) {
     popupStyleFolowJoin,
     listJoinFollow
   } = props;
-  console.log(listFolowJoin);
-  console.log(listJoinFollow);
   const [products, setProducts] = useState([]);
   const [products1, setProducts1] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState(null);
@@ -26,7 +24,7 @@ export default function ListFollowJoin(props) {
     setProducts(listFolowJoin);
     setProducts1(listJoinFollow)
   }, [listFolowJoin,listJoinFollow]);
-  console.log(listFolowJoin);
+
 
   const leftToolbarTemplate = () => {
     return (
@@ -57,7 +55,7 @@ export default function ListFollowJoin(props) {
       <Button
         label="Tải xuống"
         icon="pi pi-upload"
-        style={{ marginRight: "50px" }}
+        style={{ marginRight: "50px" ,background:'#088dcd', border:'none'}}
         className="p-button-help"
         onClick={exportCSV}
       />
@@ -68,7 +66,7 @@ export default function ListFollowJoin(props) {
       <Button
         label="Tải xuống"
         icon="pi pi-upload"
-        style={{ marginRight: "50px" }}
+        style={{ marginRight: "50px" ,background:'#088dcd', border:'none'}}
         className="p-button-help"
         onClick={exportCSV1}
       />
@@ -165,7 +163,7 @@ export default function ListFollowJoin(props) {
                       ></Column>
                     
                       <Column
-                        field="user.fullName"
+                        field="user.username"
                         header="Họ tên"
                         sortable
                         style={{ minWidth: "12rem" }}
@@ -212,7 +210,7 @@ export default function ListFollowJoin(props) {
                       ></Column>
                     
                       <Column
-                        field="user.fullName"
+                        field="user.username"
                         header="Họ tên"
                         sortable
                         style={{ minWidth: "12rem" }}

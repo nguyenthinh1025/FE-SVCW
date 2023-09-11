@@ -23,7 +23,7 @@ import { SendEmail } from '../../utils/emailService';
 export default function AdminFanpage () {
   const dispatch = useDispatch()
   const { arrFanpage } = useSelector(root => root.FanpageReducer)
-  console.log(arrFanpage);
+
   const [showInput, setShowInput] = useState(true);
   const [id, setID] = useState('abc')
   let counter = 0;
@@ -44,14 +44,14 @@ export default function AdminFanpage () {
     uploadTask.on('state_changed', (snapshot) => {
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       console.log("Upload is " + progress + "% done");
-      // console.log(snapshot);
+
       setShowInput(false);
 
     },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
+
           const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           setProduct(updatedProduct);
         });
@@ -69,7 +69,7 @@ export default function AdminFanpage () {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-  console.log(product);
+
   useEffect(() => {
     const action = GetListFanpageAction();
     dispatch(action)
@@ -78,11 +78,11 @@ export default function AdminFanpage () {
   const [op, setOp] = useState('Active')
   const onInputDropdown = (e, field) => {
 
-    console.log(e.target.value)
+
     setOp(e.target.value)
     // setProduct(updatedProduct);
   };
-  console.log(op);
+
   const arrReportType = [
     { value: 'Pending', label: "Chờ duyệt" },
     { value: 'Active', label: "Hoạt động" },
@@ -148,7 +148,7 @@ export default function AdminFanpage () {
     const action = await UpdateStatusFanpageAction(product.fanpageId)
     await dispatch(action)
     let productItem = { ...product };
-    console.log(productItem.email);
+
     SendEmail(productItem.email, "Tạo mới tổ chức thành công", `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
@@ -317,7 +317,7 @@ export default function AdminFanpage () {
       <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
     </React.Fragment>
   );
-  console.log(product);
+
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
       <div>

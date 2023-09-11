@@ -17,7 +17,7 @@ export default function Login (props) {
     const dispatch = useDispatch()
     const { msg, msgModerator } = useSelector(root => root.LoginReducer)
     const { arrActivityLogin } = useSelector(root => root.ActivityReducer)
-    console.log(arrActivityLogin);
+
     const [isMatch, setIsMatch] = useState(false);
 
     useEffect(() => {
@@ -53,14 +53,14 @@ export default function Login (props) {
         // }
     }, []);
 
-    console.log(isMatch);
+
     const formik = useFormik({
         initialValues: {
             username: '',
             password: ''
         },
         onSubmit: async (value) => {
-            console.log(value);
+
             if (value.username === 'admin' && value.password === '1234') {
 
 
@@ -82,13 +82,13 @@ export default function Login (props) {
             const email = {
                 "email": result.user?.email
             }
-            console.log(result);
+
 
             localStorage.setItem('username', result.user?.displayName)
             localStorage.setItem('emailuser', result.user?.email)
             const action1 = LoginUserAction(email, props);
             dispatch(action1)
-            console.log(localStorage.getItem('userLogin'));
+
         })
             .catch((error) => {
                 console.log(error);

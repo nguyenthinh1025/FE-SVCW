@@ -7,7 +7,6 @@ export const CommentAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Comment/comment', value);
-            console.log(result);
             const action = GetListActivityAction();
             dispatch(action)
             const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'))
@@ -29,7 +28,6 @@ export const CommentFanpageAction = (value, id) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Comment/comment', value);
-            console.log(result);
             const action = GetFanpageByIDAction(id);
             dispatch(action)
         } catch (error) {
@@ -43,7 +41,6 @@ export const CommentRepllyAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Comment/reply-comment', value);
-            console.log(result);
             const action = GetListActivityAction();
             dispatch(action)
             const action2 = GetProfileByIdAction(localStorage.getItem('useridprofile'))
@@ -65,7 +62,6 @@ export const CommentRepllyFanpageAction = (value, id) => {
     return async (dispatch) => {
         try {
             let result = await http.post('/Comment/reply-comment', value);
-            console.log(result);
             const action = GetFanpageByIDAction(id);
             dispatch(action)
         } catch (error) {

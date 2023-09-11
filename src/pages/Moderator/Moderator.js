@@ -33,11 +33,11 @@ import {
 export default function Moderator () {
   const dispatch = useDispatch();
   const { arrModerator, msg } = useSelector((root) => root.ModeratorReducer);
-  console.log(arrModerator);
+
   const [showInput, setShowInput] = useState(true);
   const [id, setID] = useState("abc");
   let counter = 0;
-  console.log(msg);
+
   let emptyProduct = {
     username: "",
     password: "",
@@ -66,13 +66,11 @@ export default function Moderator () {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
         setShowInput(false);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           const updatedProduct = { ...product, image: url }; // Update achivementLogo property in product object
           setProduct(updatedProduct);
         });
@@ -91,7 +89,7 @@ export default function Moderator () {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-  console.log(product);
+
   useEffect(() => {
     const action = GetListModeratorAction();
     dispatch(action);
@@ -103,9 +101,7 @@ export default function Moderator () {
     setProducts(arrModerator1);
   }, [arrModerator]);
 
-  // const formatCurrency = (value) => {
-  //     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  // };
+
 
   const openNew = () => {
     setProduct(emptyProduct);
@@ -126,13 +122,13 @@ export default function Moderator () {
     setDeleteProductsDialog(false);
   };
 
-  console.log(product);
+
   const saveProduct = async () => {
     let check = true;
     setSubmitted(true);
     const action = await CreateModeratorAction(product);
     await dispatch(action);
-    console.log(msg);
+
     if (localStorage.getItem("createmoderator") === "") {
       counter++;
       toast.current.show({
@@ -396,7 +392,7 @@ export default function Moderator () {
       />
     </React.Fragment>
   );
-  console.log(product);
+
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
       <div>
