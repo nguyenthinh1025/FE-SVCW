@@ -32,8 +32,7 @@ export default function Profile (props) {
   const { arrEndActivityByUserID } = useSelector(
     (root) => root.EndActivityReducer
   );
-  useEffect(() => {
-   
+  useEffect(() => {  
     const action = GetProfileByIdAction(id);
     dispatch(action);
     const action1 = GetListEndActivityByUserIDAction(id);

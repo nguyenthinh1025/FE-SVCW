@@ -852,7 +852,7 @@ export default function ItemActivityFanpage(props) {
                                   }}
                                 >
                                   {((pro.realDonation / pro.targetDonation) *
-                                    100).toFixed(1)}
+                                    100).toFixed(0)}
                                   %
                                 </div>
                               </div>
@@ -1116,8 +1116,34 @@ export default function ItemActivityFanpage(props) {
                   <div
                     className="share"
                     onClick={() => {
-                      setShare(true);
-                      setShareActivityID(ItemActivity.activityId);
+                      const textToCopy = `http://localhost:3000/detailactivity/${ItemActivity.activityId}`;
+  
+                      const copyTextToClipboard = () => {
+                        const textArea = document.createElement("textarea");
+                        textArea.value = textToCopy;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(textArea);
+                      };
+  
+                      copyTextToClipboard();
+                      const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.addEventListener("mouseenter", Swal.stopTimer);
+                          toast.addEventListener("mouseleave", Swal.resumeTimer);
+                        },
+                      });
+  
+                      Toast.fire({
+                        icon: "success",
+                        title: `Sao chép liên kết thành công`,
+                      });
                     }}
                   >
                     <i className="icofont-share-alt" /> Chia sẻ
