@@ -41,7 +41,8 @@ export default function Message() {
         // unsub(); dùng để ngắt kết nối với listener
     }, [])
 
-    const handleSend = async () => {
+    const handleSend = async (e) => {
+        e.preventDefault()
         if (!formData.message || formData.message === '') {
             return;
         }
@@ -231,7 +232,7 @@ export default function Message() {
                                                                         <a href="#" title><i className="icofont-location-pin" /> Share Location</a>
                                                                         <a href="#" title><i className="icofont-contact-add" /> Share Contact</a>
                                                                     </div>
-                                                                    <form onSubmit={() => handleSend()} >
+                                                                    <form onSubmit={ handleSend} >
                                                                         <span className="emojie"><img src="images/smiles/happy.png" alt /></span>
                                                                         <textarea
                                                                             rows={1}
@@ -240,21 +241,8 @@ export default function Message() {
                                                                             value={formData.message}
                                                                             onChange={handleChange}
                                                                         />
-                                                                        <button title="send" ><i className="icofont-paper-plane" /></button>
-                                                                        <div className="smiles-bunch">
-                                                                            <i><img src="images/smiles/angry-1.png" alt /></i>
-                                                                            <i><img src="images/smiles/angry.png" alt /></i>
-                                                                            <i><img src="images/smiles/bored-1.png" alt /></i>
-                                                                            <i><img src="images/smiles/bored-2.png" alt /></i>
-                                                                            <i><img src="images/smiles/bored.png" alt /></i>
-                                                                            <i><img src="images/smiles/confused-1.png" alt /></i>
-                                                                            <i><img src="images/smiles/confused.png" alt /></i>
-                                                                            <i><img src="images/smiles/crying-1.png" alt /></i>
-                                                                            <i><img src="images/smiles/crying.png" alt /></i>
-                                                                            <i><img src="images/smiles/tongue-out.png" alt /></i>
-                                                                            <i><img src="images/smiles/wink.png" alt /></i>
-                                                                            <i><img src="images/smiles/suspicious.png" alt /></i>
-                                                                        </div>
+                                                                        <button title="send"  type='submit'><i className="icofont-paper-plane" /></button>
+                                                                       
                                                                     </form>
                                                                 </div>
                                                             </div>
