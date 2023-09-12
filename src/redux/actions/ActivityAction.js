@@ -69,7 +69,7 @@ export const GetListEndActivityIDAction = (id) => {
                 type: "GET_LIST_END_ACTIVITY_ID",
                 arrEndActivityID: result.data.data
             }
-            dispatch(action)           
+            dispatch(action)
             dispatch({ type: "HIDE_LOADING" })
         } catch (error) {
             console.log(error);
@@ -137,7 +137,7 @@ export const GetActivityTitleAction = (value) => {
                 userId: localStorage.getItem('userID'),
                 searchContent: value.search
             }
-            const action1 = RecommentActivityAction(search , search.userId);
+            const action1 = RecommentActivityAction(search, search.userId);
             dispatch(action1)
         } catch (error) {
             console.log(error);
@@ -185,7 +185,8 @@ export const PostLikeAction = (value) => {
 export const CheckinActivityAction = (value) => {
     return async (dispatch) => {
         try {
-            let result = await http.post('/QR/check-in', value);
+            let result = await http.post(`/QR/check-in?userId=${value.userId}&activityId=${value.activityId}`);
+            console.log(result);
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -203,7 +204,23 @@ export const CheckinActivityAction = (value) => {
                 title: `Quét mã thành công.`,
             });
         } catch (error) {
-            console.log(error);
+            console.log(error?.response?.data?.message);
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+            });
+
+            Toast.fire({
+                icon: "warning",
+                title: `${error?.response?.data?.message}`,
+            });
         }
     }
 }
