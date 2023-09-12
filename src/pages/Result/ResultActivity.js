@@ -10,12 +10,12 @@ import { Column } from "primereact/column";
 import moment from "moment";
 import { InputText } from "primereact/inputtext";
 import Slider from "react-slick";
-
 export default function ResultActivity(props) {
   const dispatch = useDispatch();
   const { popupStyle1, handleClick1, isOpen1, idActivity } = props;
   const { activityId } = useSelector((root) => root.ActivityReducer);
   const { arrEndActivityID } = useSelector((root) => root.EndActivityReducer);
+  console.log(arrEndActivityID);
 
   const [isFolowJoin, setIsFolowJoin] = useState(false);
   const [listFolowJoin, setFolowJoin] = useState([]);
@@ -103,7 +103,20 @@ export default function ResultActivity(props) {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+  const parentSettings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  // Thiết lập mặc định cho slider con
+  const childSettings = {
+    dots: true,
+    infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
   };
@@ -230,29 +243,56 @@ export default function ResultActivity(props) {
                         <div className=" tab-pane active fade show " id="posts">
                           <div className="row merged20">
                             <div className="col-lg-12">
-                              <div style={{margin:'0 auto'}}>
-                              <Slider {...settings}>
-                                {arrEndActivityID?.activity?.activityResult?.map(
-                                  (item, index) => {
-                                    return (
-                                      <div style={{}}>
-                                        <h1 style={{textAlign:'center'}}>{item.title}</h1>
-                                        <h1>{item.desciption}</h1>
-                                        <div>
-                                          {item?.media?.map((media, index) => {
-                                            return <img
-                                                src={media.linkMedia}
-                                                width={50}
-                                                height={50}
-                                              />
-                                            
-                                          })}
+                              <div
+                                style={{ margin: "0 auto", padding:'50px 50px' }}
+                              >
+                                <Slider
+                                  {...parentSettings}
+                                  style={{ height: "500px" }}
+                                >
+                                  {arrEndActivityID?.result?.map(
+                                    (item, index) => {
+                                      return (
+                                        <div key={index} >
+                                          <h1 style={{ textAlign: "center" }}>
+                                            {item.title}
+                                          </h1>
+                                          <h1 style={{ textAlign: "center" }}>
+                                            {item.desciption}
+                                          </h1>
+                                          <div
+                                            style={{
+                                              display: "grid",
+                                              justifyContent: "center",
+                                              gridTemplateColumns:'1fr 1fr 1fr 1fr',
+                                              marginTop:'50px', 
+                                              gap:'10px'
+                                            }}
+                                          >
+                                            {item.media?.map(
+                                              (mediaItem, index) => {
+                                                return (
+                                                  <div
+                                                    key={index}
+                                                    className="custom-image-container"
+                                                  >
+                                                    <img
+                                                      src={mediaItem.linkMedia}
+                                                      alt={`Slide ${index + 1}`}
+                                                      className="custom-image"
+                                                       style={{height:'150px', width:'100%', borderRadius:'10px'}}
+                                                    />
+                                                   
+                                                  </div>
+                                                );
+                                              }
+                                            )}
+                                          </div>
                                         </div>
-                                      </div>
-                                    );
-                                  }
-                                )}
-                              </Slider>
+                                      );
+                                    }
+                                  )}
+                                </Slider>
                               </div>
                             </div>
                           </div>

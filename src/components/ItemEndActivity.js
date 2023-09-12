@@ -817,7 +817,7 @@ export default function ItemEndActivity(props) {
                                   }}
                                 >
                                   {((pro.realDonation / pro.targetDonation) *
-                                    100).toFixed(1)}
+                                    100).toFixed(0)}
                                   %
                                 </div>
                               </div>

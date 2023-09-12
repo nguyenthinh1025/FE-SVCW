@@ -119,11 +119,6 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
       title: `Chỉnh sửa thông tin thành công`,
     });
 
-    // const action2 = GetProfileByIdAction(userDetails?.userId);
-    // const action2 = GetProfileByIdAction(localStorage.getItem('userID'));
-    // await dispatch(action2);
-
-    // setUserDetails(JSON.parse(localStorage.getItem('getuserid')));
     setIsEditing(false);
     setReloadData(!reloadData);
     setReloadPage(!reloadPage);
