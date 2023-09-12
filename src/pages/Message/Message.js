@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { addDoc, collection, onSnapshot, query } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, doc, getDoc, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore';
 import { firestore } from '../../firebase';
 import { useSelector } from 'react-redux';
 
@@ -7,20 +7,41 @@ export default function Message() {
     const { getUserId, arrActivityUser } = useSelector(
         (root) => root.ProfileReducer
     );
-    const [formData, setFormData] = useState({
-        message: '' // Initialize message as an empty string
-    });
+
     // const userGroups
     const [userMsgs, setUserMsgs] = useState([]);
     // const userMsgQuery = query(collection(firestore, 'messages'));
-
+    const [formData, setFormData] = useState({
+        message: userMsgs.length === 0 ? 'Hi! ✌️' : ''
+    })
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-    console.log('mounted!!!')
+    const getChatter = async () => {
+        const userRef = doc(firestore, "users", getUserId.userId);
+        const user = await getDoc(userRef);
+        if (user.exists()) {
+            return user.data;
+        }
+        await setDoc(doc(firestore, "users", getUserId.userId), {
+            coverImage: getUserId.coverImage,
+            email: getUserId.email,
+            userId: getUserId?.userId,
+            gender: getUserId.gender,
+            dateOfBirth: getUserId.dateOfBirth,
+            phone: getUserId.phone,
+            roleId: getUserId.roleId,
+            friendIds: [],
+            groupIds: [],
+            username: getUserId.username,
+            createOnFirebaseAt: Timestamp.fromDate(new Date()),
+        });
+        return await getDoc(userRef);
+    }
     useEffect(() => {
-        const unsub = onSnapshot(query(collection(firestore, 'messages')), (snapshot) => {
+        const chatter = getChatter(); // Duma ??
+        const unTrackRoom = onSnapshot(query(collection(firestore, 'messages'), orderBy('timestamp', 'asc')), (snapshot) => {
             // snapshot.docChanges().forEach((change) => {
             //     if (change.type === "added") {
             //         console.log("New message: ", change.doc.data());
@@ -51,8 +72,9 @@ export default function Message() {
                 type: "pm",
                 content: formData.message,
                 userId: getUserId?.userId,
-                timestamp: Date()
+                timestamp: Timestamp.fromDate(new Date()),
             });
+            setFormData({ message: '' })
             console.log("Document written with ID: ", docRef.id);
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -183,14 +205,16 @@ export default function Message() {
                                                                 <div className="date">Wednesday 25, March</div>
                                                                 <ul className="chatting-area">
                                                                     {
-                                                                        userMsgs.map(msg => {
+                                                                        userMsgs.length === 0 ? (
+                                                                            <p style={{ textAlign: 'center' }}>Let's say Hi!</p>
+                                                                        ) : (userMsgs.map(msg => {
                                                                             return (
                                                                                 <li className={getUserId?.userId === msg?.userId ? 'me' : 'you'}>
                                                                                     <figure><img src={(getUserId?.userId === msg?.userId && getUserId?.userId == ! 'none') ? getUserId?.image : "images/default-avt.png"} alt /></figure>
                                                                                     <p>{msg.content}</p>
                                                                                 </li>
                                                                             )
-                                                                        })
+                                                                        }))
                                                                     }
                                                                     {/* <li className="you">
                                                                         <figure><img src="images/resources/userlist-2.jpg" alt /></figure>
@@ -232,7 +256,7 @@ export default function Message() {
                                                                         <a href="#" title><i className="icofont-location-pin" /> Share Location</a>
                                                                         <a href="#" title><i className="icofont-contact-add" /> Share Contact</a>
                                                                     </div>
-                                                                    <form onSubmit={ handleSend} >
+                                                                    <form onSubmit={handleSend} >
                                                                         <span className="emojie"><img src="images/smiles/happy.png" alt /></span>
                                                                         <textarea
                                                                             rows={1}
@@ -241,8 +265,14 @@ export default function Message() {
                                                                             value={formData.message}
                                                                             onChange={handleChange}
                                                                         />
-                                                                        <button title="send"  type='submit'><i className="icofont-paper-plane" /></button>
-                                                                       
+                                                                        {userMsgs.length === 0 ? (
+                                                                            <div style={{ display: 'flex', justifyContent: 'center', alignSelf: 'center' }}>
+                                                                                <button type='submit' className="button primary circle" style={{ backgroundColor: '#8ab332', width: 120 }} href="#" title>Say hi! 🖐️</button>
+                                                                            </div>
+                                                                        ) : (
+                                                                            <button title="send" type='submit'><i className="icofont-paper-plane" /></button>
+                                                                        )}
+
                                                                     </form>
                                                                 </div>
                                                             </div>
