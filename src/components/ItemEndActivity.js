@@ -126,16 +126,14 @@ export default function ItemEndActivity(props) {
                 alt
                 src={
                   item.user?.image === "none"
-                    ? "./images/avatar.jpg"
+                    ? "../images/avatar.jpg"
                     : item.user?.image
                 }
               />
             </figure>
             <div className="commenter">
-              <h5 style={{color:'rgb(8, 141, 205)'}}>
-               
-                  {item.user?.username}
-               
+              <h5 style={{ color: "rgb(8, 141, 205)" }}>
+                {item.user?.username}
               </h5>
               <span>{DateTime(item.datetime)}</span>
               <p>{item.commentContent}</p>
@@ -162,15 +160,15 @@ export default function ItemEndActivity(props) {
                       alt
                       src={
                         reply.user?.image === "none"
-                          ? "./images/avatar.jpg"
+                          ? "../images/avatar.jpg"
                           : reply.user?.image
                       }
                     />
                   </figure>
-  
+
                   <div className="commenter">
-                    <h5 style={{color:'rgb(8, 141, 205)'}}>                     
-                        {reply.user?.username}{" "}
+                    <h5 style={{ color: "rgb(8, 141, 205)" }}>
+                      {reply.user?.username}{" "}
                     </h5>
                     <span>{DateTime(reply.datetime)}</span>
                     <p>{reply.commentContent}</p>
@@ -183,7 +181,6 @@ export default function ItemEndActivity(props) {
       </div>
     );
   };
-  
 
   const visibleComments = showAllComments
     ? ItemActivity.comment
@@ -364,7 +361,7 @@ export default function ItemEndActivity(props) {
                 alt
                 src={
                   ItemActivity.user?.image === "none"
-                    ? "./images/avatar.jpg"
+                    ? "../images/avatar.jpg"
                     : ItemActivity.user?.image
                 }
               />
@@ -568,7 +565,7 @@ export default function ItemEndActivity(props) {
                 </div>
               </div>
               <ins>
-                <NavLink to={`/profile/${ItemActivity?.user?.userId}`} title>
+                <NavLink to={`/profile/${ItemActivity?.user?.userId}`}>
                   <h5 className="name-user">{ItemActivity?.user?.username}</h5>
                 </NavLink>
               </ins>
@@ -743,7 +740,7 @@ export default function ItemEndActivity(props) {
                 ) {
                   if (pro.isDonateProcess === true) {
                     return (
-                      <div>
+                      <div style={{ position: "relative" }}>
                         {pro.isDonateProcess === true ? (
                           <div className="mb-4 mt-4 name-user">
                             <p
@@ -788,94 +785,43 @@ export default function ItemEndActivity(props) {
                                 width: "92%",
                               }}
                             />
-                            {/* <div className="range-value" style={{ position: 'absolute', left: `${((pro.realDonation - 5) * 100) / (100 - 0)}%` }}>{pro.realDonation}%</div> */}
-                            {pro.realDonation !== 0 ? (
-                              <div></div>
-                            ) : (
-                              <div
-                                className="range-value"
-                                style={{ position: "absolute" }}
-                              >
-                                0
-                              </div>
-                            )}
-                            <div
-                              className="range-value"
-                              style={{ position: "absolute" }}
-                            ></div>
-                            {pro.realDonation !== 0 ? (
-                              <div
-                                className="range-value"
-                                style={{
-                                  position: "absolute",
-                                  left: `${
-                                    ((pro.realDonation - 5) * 100) / (100 - 0)
-                                  }%`,
-                                }}
-                              >
-                                {
-                                  (
-                                    (pro.realDonation / pro.targetDonation) *
-                                    100
-                                  )
-                                    .toString()
-                                    .split(".")[0]
-                                }
-                                %
-                              </div>
-                            ) : (
-                              <div
-                                className="range-value"
-                                style={{
-                                  position: "absolute",
-                                  left: `${
-                                    ((pro.realDonation - 0) * 100) / (100 - 0)
-                                  }%`,
-                                }}
-                              >
-                                {
-                                  (
-                                    (pro.realDonation / pro.targetDonation) *
-                                    100
-                                  )
-                                    .toString()
-                                    .split(".")[0]
-                                }
-                                %
-                              </div>
-                            )}
+
+                           
                             {pro.realDonation === 0 ? (
-                              <div></div>
+                              <div
+                              className="range-value"
+                              style={{
+                                position: "absolute",
+                                top: "55px",
+                                right: "-2px",
+                              }}
+                            >
+                              {
+                                (
+                                  (pro.realDonation / pro.targetDonation) *
+                                  100
+                                )
+                                  .toString()
+                                  .split(".")[0]
+                              }
+                              %
+                            </div>
                             ) : (
                               <div style={{ position: "relative" }}>
                                 <div
                                   className="range-value"
                                   style={{
                                     position: "absolute",
-                                    // left: `${(pro.realDonation / pro.targetDonation) *
-                                    //   96
-                                    //   }%`,
                                     top: "-30px",
                                     right: "-2px",
                                   }}
                                 >
-                                  {" "}
-                                  {(pro.realDonation / pro.targetDonation) *
-                                    100}
+                                  {((pro.realDonation / pro.targetDonation) *
+                                    100).toFixed(1)}
                                   %
                                 </div>
                               </div>
                             )}
-                            {/* <div
-                              className="range-value"
-                              style={{
-                                color: "blue",
-                                position: "absolute",
-                                right: "10px",
-                              }}
-                            >
-                              {pro.targetDonation.toLocaleString()} vnđ
-                            </div> */}
                           </div>
                         ) : (
                           <div></div>
@@ -1279,7 +1225,13 @@ export default function ItemEndActivity(props) {
                     <CommentComponent key={index} item={item} />
                   ))}
                   {ItemActivity.comment.length > 2 && !showAllComments && (
-                    <div onClick={handleShowAll} className="" style={{color:"rgb(8, 141, 205)", cursor:'pointer'}}>Xem thêm...</div>
+                    <div
+                      onClick={handleShowAll}
+                      className=""
+                      style={{ color: "rgb(8, 141, 205)", cursor: "pointer" }}
+                    >
+                      Xem thêm...
+                    </div>
                   )}
                 </form>
               </div>

@@ -46,15 +46,7 @@ export const AdminTemplate = (props) => {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="app-header__mobile-menu">
-                    <div>
-                        <button type="button" className="hamburger hamburger--elastic mobile-toggle-nav">
-                            <span className="hamburger-box">
-                                <span className="hamburger-inner" />
-                            </span>
-                        </button>
-                    </div>
-                </div> */}
+                        
                         <div className="app-header__menu" >
                             <span>
                                 <button type="button" className="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
@@ -73,26 +65,6 @@ export const AdminTemplate = (props) => {
                                     </div>
                                     <button className="close" />
                                 </div>
-                                {/* <ul className="header-menu nav">
-                                <li className="nav-item">
-                                    <a href="javascript:void(0);" className="nav-link">
-                                        <i className="nav-link-icon fa fa-database"> </i>
-                                        Statistics
-                                    </a>
-                                </li>
-                                <li className="btn-group nav-item">
-                                    <a href="javascript:void(0);" className="nav-link">
-                                        <i className="nav-link-icon fa fa-edit" />
-                                        Projects
-                                    </a>
-                                </li>
-                                <li className="dropdown nav-item">
-                                    <a href="javascript:void(0);" className="nav-link">
-                                        <i className="nav-link-icon fa fa-cog" />
-                                        Settings
-                                    </a>
-                                </li>
-                            </ul> */}
                             </div>
                             <div className="app-header-right">
                                 <div className="header-btn-lg pr-0">
@@ -102,7 +74,8 @@ export const AdminTemplate = (props) => {
 
                                             </div>
                                           
-                                            <div className="widget-content-right header-user-info ml-3">
+                                            <div className="widget-content-right header-user-info ml-3" style={{display:'flex'}}>
+                                             <h6 style={{marginRight:'30px', marginTop:'9px'}}>Xin chào! {localStorage.getItem('admin')} </h6>
                                                 <div  className="btn-shadow p-1 btn btn-primary btn-sm  btn btn-secondary dropdown-toggle" onClick= {() =>{handleDropdownClick()}}>
                                                     <i className="fa text-white fa-calendar pr-1 pl-1" />
                                                 </div>
@@ -119,7 +92,7 @@ export const AdminTemplate = (props) => {
                                                           {localStorage.getItem('admin') ==='moderator' ?
                                                           
                                                           <div style={{marginBottom:'20px' , paddingLeft:'10px', fontSize:'15px'}}>
-                                                          <NavLink style={{color:'#3f6ad8'}} type="button" to={`/profilemoderator/${moderator.userId}`} tabIndex={0} className="" >
+                                                          <NavLink style={{color:'#3f6ad8'}} type="button" to={`/profilemoderator/${moderator.userId}`} tabIndex={0} className="" onClick= {() =>{handleDropdownClick()}}>
                                                              Trang cá nhân
                                                            </NavLink>
                                                           </div> : <div></div>}
