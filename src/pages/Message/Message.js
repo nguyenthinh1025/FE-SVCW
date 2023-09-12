@@ -7,6 +7,7 @@ export default function Message() {
     const { getUserId, arrActivityUser } = useSelector(
         (root) => root.ProfileReducer
     );
+    const [chatter, setChatter] = useState();
 
     // const userGroups
     const [userMsgs, setUserMsgs] = useState([]);
@@ -14,6 +15,9 @@ export default function Message() {
     const [formData, setFormData] = useState({
         message: userMsgs.length === 0 ? 'Hi! ✌️' : ''
     })
+
+    const [chatRoom, setChatRoom] = useState();
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -40,7 +44,7 @@ export default function Message() {
         return await getDoc(userRef);
     }
     useEffect(() => {
-        const chatter = getChatter(); // Duma ??
+        setChatter(getChatter());
         const unTrackRoom = onSnapshot(query(collection(firestore, 'messages'), orderBy('timestamp', 'asc')), (snapshot) => {
             // snapshot.docChanges().forEach((change) => {
             //     if (change.type === "added") {
