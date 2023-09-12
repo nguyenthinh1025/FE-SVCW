@@ -6,6 +6,8 @@ import {
   GetActivityByIDAction,
   GetActivityIDAction,
   GetListActivityAction,
+  GetListEndActivityIDAction,
+  GetQRActivityAction,
   PostLikeAction,
 } from "../../redux/actions/ActivityAction";
 import Swal from "sweetalert2";
@@ -32,6 +34,7 @@ import ReportActivity from "../../components/ReportActivity";
 import ShareActivity from "../../components/ShareActivity";
 import Game from "../../components/Game";
 import Donate from "../../components/Donate";
+import { SendEmail } from "../../utils/emailService";
 
 export default function ItemActivityFanpage(props) {
   const [share, setShare] = useState(false);
@@ -80,6 +83,16 @@ export default function ItemActivityFanpage(props) {
     };
     dispatch(action2);
   };
+  const [isOpen, setIsOpen] = useState(false);
+  const popupStyleCreate = {
+    opacity: isOpen ? 1 : 0,
+    visibility: isOpen ? "visible" : "hidden",
+    overflow: isOpen ? "auto" : "hidden",
+  };
+  const [idActivity, setIDActivity] = useState("");
+  const handleClickCreate = () => {
+    setIsOpen((prevIsOpen) => !prevIsOpen);
+  };
   const handleClick = () => {
     setReport((prevIsOpen) => !prevIsOpen);
   };
@@ -88,18 +101,37 @@ export default function ItemActivityFanpage(props) {
     visibility: report ? "visible" : "hidden",
     overflow: report ? "auto" : "hidden",
   };
+  const [isDonate, setIsDonate] = useState(false);
+  const [listDonate, setIsListDonate] = useState([]);
+  const [isFolowJoin, setIsFolowJoin] = useState(false);
+  const [listFolowJoin, setFolowJoin] = useState([]);
+  const [listJoinFollow, setJoinFollow] = useState([]);
+  const handleClickFolowJoin = () => {
+    setIsFolowJoin((prevIsOpen) => !prevIsOpen);
+  };
   useEffect(() => {
     const action4 = GetListReportTypeAction();
     dispatch(action4);
   }, []);
+  const [isOpen1, setIsOpen1] = useState(false);
+  const popupStyle1 = {
+    opacity: isOpen1 ? 1 : 0,
+    visibility: isOpen1 ? "visible" : "hidden",
+    overflow: isOpen1 ? "auto" : "hidden",
+  };
 
+  const handleClick1 = () => {
+    setIsOpen1((prevIsOpen) => !prevIsOpen);
+  };
   const arrReportType = reportType?.map((item, index) => {
     return {
       label: item.reportTypeName,
       value: item.reportTypeId,
     };
   });
-
+  const handleClickDonate = () => {
+    setIsDonate((prevIsOpen) => !prevIsOpen);
+  };
   const formik1 = useFormik({
     initialValues: {
       title: "",
@@ -176,6 +208,79 @@ export default function ItemActivityFanpage(props) {
       setReport((prevIsOpen) => !prevIsOpen);
     },
   });
+  const [showAllComments, setShowAllComments] = useState(false);
+
+  const handleShowAll = () => {
+    setShowAllComments(true);
+  };
+  const visibleComments = showAllComments
+    ? ItemActivity.comment
+    : ItemActivity.comment.slice(0, 2);
+    const CommentComponent = ({ item }) => {
+      return (
+        <div className="comments-area">
+          <ul>
+            <li>
+              <figure>
+                <img
+                  alt
+                  src={
+                    item.user?.image === "none"
+                      ? "../images/avatar.jpg"
+                      : item.user?.image
+                  }
+                />
+              </figure>
+              <div className="commenter">
+                <h5 style={{ color: "rgb(8, 141, 205)" }}>
+                  {item.user?.username}
+                </h5>
+                <span>{DateTime(item.datetime)}</span>
+                <p>{item.commentContent}</p>
+              </div>
+              <a
+                title="Reply"
+                onClick={() => {
+                  formik2.setFieldValue("commentIdReply", item.commentId);
+                  setContent(item.user?.username);
+                  setOnID(item.activityId);
+                }}
+                className="reply-coment"
+              >
+                <i className="icofont-reply" />
+              </a>
+            </li>
+            <li>
+              {item.inverseReply?.map((reply, index) => {
+                return (
+                  <div key={index} className="ml-5">
+                    <figure>
+                      {" "}
+                      <img
+                        alt
+                        src={
+                          reply.user?.image === "none"
+                            ? "../images/avatar.jpg"
+                            : reply.user?.image
+                        }
+                      />
+                    </figure>
+  
+                    <div className="commenter">
+                      <h5 style={{ color: "rgb(8, 141, 205)" }}>
+                        {reply.user?.username}{" "}
+                      </h5>
+                      <span>{DateTime(reply.datetime)}</span>
+                      <p>{reply.commentContent}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </li>
+          </ul>
+        </div>
+      );
+    };
   const DateTime = (item) => {
     const currentTime = moment();
     const inputTime = moment(item);
@@ -194,8 +299,8 @@ export default function ItemActivityFanpage(props) {
     }
     return timeAgoString;
   };
-  const handleJoinClick = async (index, activity, isJoin, title) => {
-    if (isJoin) {
+  const handleJoinClick = async (index, activity, isJoin, title,process) => {
+    if (isJoin === "Join") {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
@@ -204,25 +309,23 @@ export default function ItemActivityFanpage(props) {
       setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
-      
+      SendEmail(
+        localStorage.getItem("emailuser"),
+        "Thông báo thời gian diễn ra chiến dịch",
+        `Bạn đã tham gia thành công chiến dịch ${title} . Vui lòng đến địa chỉ ${
+          process[0]?.location
+        } từ ngày ${moment(process[0]?.startDate).format(
+          "DD/MM/YYYY hh:mm A"
+        )} đến ngày ${moment(process[0]?.endDate).format(
+          "DD/MM/YYYY hh:mm A"
+        )} để tham gia chiến dịch`
+      );
     }
     const action = GetListActivityAction();
     await dispatch(action);
-    // setCmt((prevArray) => {
-    //     const newArray = JSON.parse(JSON.stringify(prevArray));
-    //     localStorage.getItem(`activity`, JSON.stringify(newArray));
 
-    //     return newArray;
-    // });
   };
   const handleFollowClick = (index, activity, isFollow, title) => {
-    // setCmt((prevArray) => {
-    //     const newArray = JSON.parse(JSON.stringify(prevArray));
-    //     newArray[index].isFollow = !newArray[index].isFollow;
-    //     localStorage.setItem(`activity`, JSON.stringify(newArray));
-
-    //     return newArray;
-    // });
     if (isFollow) {
       setFollowIndex(null);
       const action = UnFollowAction(activity, userID);
@@ -375,6 +478,105 @@ export default function ItemActivityFanpage(props) {
                       ) : (
                         <div></div>
                       )}
+                       {endDate.isBefore(currentDate) === true &&
+                    userID === ItemActivity.userId ? (
+                      <li
+                        onClick={() => {
+                          handleClickCreate();
+                          setIDActivity(ItemActivity.activityId);
+                        }}
+                      >
+                        <i className="icofont-pen-alt-1" />
+                        Kết quả chiến dịch
+                        <span>Thêm kết quả của chiến dịch</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
+                    {endDate.isAfter(currentDate) === true &&
+                    ItemActivity?.process?.filter(
+                      (item) => item.processTypeId === "pt003"
+                    ).length > 0 ? (
+                      <li
+                        onClick={() => {
+                          // handleClickCreate();
+                          // setIDActivity(ItemActivity.activityId);
+                          const action = GetQRActivityAction(
+                            ItemActivity.activityId
+                          );
+                          dispatch(action);
+                        }}
+                      >
+                        <i className="icofont-pen-alt-1" />
+                        Mã QR
+                        <span>Lấy mã QR của sự kiện</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
+                    {endDate.isAfter(currentDate) === true &&
+                    userID === ItemActivity?.userId &&
+                    ItemActivity?.donation?.length > 0 ? (
+                      <li
+                        onClick={() => {
+                          handleClickDonate();
+                          setIsListDonate(ItemActivity?.donation);
+                        }}
+                      >
+                        <i className="icofont-pen-alt-1" />
+                        Danh sách donate
+                        <span>Danh sách đã donate cho sự kiện</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
+                    {endDate.isAfter(currentDate) === true &&
+                    userID === ItemActivity.userId &&
+                    ItemActivity?.followJoinAvtivity?.length > 0 ? (
+                      <li
+                        onClick={() => {
+                          handleClickFolowJoin();
+                          setFolowJoin(
+                            ItemActivity?.followJoinAvtivity?.filter(
+                              (item) => item.isFollow === true
+                            )
+                          );
+                          setJoinFollow(
+                            ItemActivity?.followJoinAvtivity?.filter(
+                              (item) => item.isJoin === "Join"
+                            )
+                          );
+                        }}
+                      >
+                        <i className="icofont-pen-alt-1" />
+                        Danh sách theo dõi, tham gia
+                        <span> Danh sách theo dõi tham gia chiến dịch</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
+                    {endDate.isBefore(currentDate) === true ? (
+                      <li
+                        onClick={() => {
+                          handleClick1();
+                          setIDActivity(ItemActivity.activityId);
+                          const action1 = GetListEndActivityIDAction(
+                            ItemActivity.activityId
+                          );
+                          dispatch(action1);
+                          const action = GetActivityByIDAction(
+                            ItemActivity.activityId
+                          );
+                          dispatch(action);
+                        }}
+                      >
+                        <i className="icofont-flag" />
+                        Xem kết quả chiến dịch
+                        <span>Xem kết quả diễn ra trong chiến dịch</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
                     </ul>
                   </div>
                 </div>
@@ -405,27 +607,7 @@ export default function ItemActivityFanpage(props) {
                 </span>
               </div>
               <div className="post-meta">
-                {ItemActivity.process.length !== 0 ? (
-                  <NavLink
-                    to={`/detailprocess/${ItemActivity.activityId}`}
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                      color: "#3f6ad8",
-                      marginBottom: "20px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => {
-                      // handleClick2()
-                      // const action = GetProcessByActivityAction(item.activityId);
-                      // dispatch(action)
-                    }}
-                  >
-                    Xem hoạt động
-                  </NavLink>
-                ) : (
-                  <div></div>
-                )}
+               
                 <div className="row">
                   <div
                     style={{
@@ -441,7 +623,7 @@ export default function ItemActivityFanpage(props) {
                         fontWeight: "bold",
                         width: "450px",
                         wordWrap: "break-word",
-                        color: "#2d3436",
+                        color: "#088dcd",
                       }}
                       className="col-lg-12"
                     >
@@ -590,30 +772,28 @@ export default function ItemActivityFanpage(props) {
                   moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
                 ) {
                   if (pro.isDonateProcess === true) {
-                    return <div>
+                    return <div style={{ position: "relative" }} >
                       {pro.isDonateProcess === true ? (
-                      <div className="mb-4 mt-4">
+                      <div className="mb-4 mt-4 name-user">
                         <p
                           style={{
-                            color: "blue",
                             fontWeight: "400",
                             fontSize: "15px",
                           }}
                         >
                           Đã quyên góp được <br />
                           <span
-                            style={{
-                              color: "blue",
+                            style={{                            
                               fontSize: "15px",
                             }}
                           >
-                            <span style={{ color: "blue", fontSize: "15px" }}>
+                            <span style={{ fontSize: "15px" }}>
                               {pro.realDonation.toLocaleString()}
                             </span>{" "}
                             đ /
                             <span
                               style={{
-                                color: "blue",
+                               
                                 fontSize: "15px",
                               }}
                             >
@@ -639,102 +819,45 @@ export default function ItemActivityFanpage(props) {
                                 pro.targetDonation) *
                               100
                             }%, #ddd 100%)`,
+                            width: "92%",
                           }}
                         />
-                        {/* <div className="range-value" style={{ position: 'absolute', left: `${((pro.realDonation - 5) * 100) / (100 - 0)}%` }}>{pro.realDonation}%</div> */}
-                        {pro.realDonation !== 0 ? (
-                          <div></div>
-                        ) : (
-                          <div
-                            className="range-value"
-                            style={{ position: "absolute" }}
-                          >
-                            0
-                          </div>
-                        )}
-                        <div
-                          className="range-value"
-                          style={{ position: "absolute" }}
-                        >
-                          
-                        </div>
-                        {pro.realDonation !== 0 ? (
-                          <div
-                            className="range-value"
-                            style={{
-                              position: "absolute",
-                              left: `${
-                                ((pro.realDonation - 5) * 100) /
-                                (100 - 0)
-                              }%`,
-                            }}
-                          >
-                            {
-                              (
-                                (pro.realDonation /
-                                  pro.targetDonation) *
-                                100
-                              )
-                                .toString()
-                                .split(".")[0]
-                            }
-                            %
-                          </div>
-                        ) : (
-                          <div
-                            className="range-value"
-                            style={{
-                              position: "absolute",
-                              left: `${
-                                ((pro.realDonation - 0) * 100) /
-                                (100 - 0)
-                              }%`,
-                            }}
-                          >
-                            {
-                              (
-                                (pro.realDonation /
-                                  pro.targetDonation) *
-                                100
-                              )
-                                .toString()
-                                .split(".")[0]
-                            }
-                            %
-                          </div>
-                        )}
                         {pro.realDonation === 0 ? (
-                          <div></div>
-                        ) : (
-                          <div
-                            className="range-value"
-                            style={{
-                              position: "absolute",
-                              left: `${
-                                (pro.realDonation /
-                                  pro.targetDonation) *
-                                100
-                              }%`,
-                            }}
-                          >
-                            {" "}
-                            {(pro.realDonation /
-                              pro.targetDonation) *
-                              100}
-                            %
+                              <div
+                              className="range-value"
+                              style={{
+                                position: "absolute",
+                                top: "55px",
+                                right: "-2px",
+                              }}
+                            >
+                              {
+                                (
+                                  (pro.realDonation / pro.targetDonation) *
+                                  100
+                                )
+                                  .toString()
+                                  .split(".")[0]
+                              }
+                              %
+                            </div>
+                            ) : (
+                              <div style={{ position: "relative" }}>
+                                <div
+                                  className="range-value"
+                                  style={{
+                                    position: "absolute",
+                                    top: "-30px",
+                                    right: "-2px",
+                                  }}
+                                >
+                                  {((pro.realDonation / pro.targetDonation) *
+                                    100).toFixed(1)}
+                                  %
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        )}
-                        <div
-                          className="range-value"
-                          style={{
-                            color: "blue",
-                            position: "absolute",
-                            right: "10px",
-                          }}
-                        >
-                          {pro.targetDonation.toLocaleString()} vnđ
-                        </div>
-                      </div>
                   )
                    : (
                       <div></div>
@@ -798,7 +921,7 @@ export default function ItemActivityFanpage(props) {
                           return (
                             <button
                               className={` ${
-                                isAlreadyJoined ? "btn-change" : "btn-color"
+                                isAlreadyJoined === "Join" ? "btn-change" : "btn-color"
                               } mb-4 mt-4 btn-add ${
                                 ItemActivity.targetDonation !== 0
                                   ? "marginfollow"
@@ -809,11 +932,14 @@ export default function ItemActivityFanpage(props) {
                                   index,
                                   ItemActivity.activityId,
                                   isAlreadyJoined,
-                                  ItemActivity.title
+                                  ItemActivity.title,
+                                  ItemActivity?.process?.filter(
+                                    (item) => item.processTypeId === "pt003"
+                                  )
                                 );
                               }}
                             >
-                              {isAlreadyJoined ? "Hủy Tham gia" : "Tham gia"}
+                              {isAlreadyJoined === "Join" ? "Hủy Tham gia" : "Tham gia"}
                             </button>
                           );
                         }
@@ -966,7 +1092,7 @@ export default function ItemActivityFanpage(props) {
                         isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
                       }`,
                       borderRadius: "4px",
-                      color: "#82828e",
+                      color: `${isAlreadyLiked ? "white" : "#82828e"}`,
                       display: "inline-block",
                       fontSize: "13px",
                       padding: "5px 20px",
@@ -1106,132 +1232,18 @@ export default function ItemActivityFanpage(props) {
                         <i className="icofont-paper-plane" />
                       </button>
                     )}
-                    {ItemActivity.comment.map((item, index) => {
-                      return (
-                        <div className="comments-area">
-                          <ul>
-                            <li>
-                              <figure>
-                                <img
-                                  alt
-                                  src={
-                                    item?.user?.userId === fanpageId.fanpageId
-                                      ? fanpageId?.avatar
-                                      : item.user?.image === "none"
-                                      ? "./../images/avatar.jpg"
-                                      : item.user?.image
-                                  }
-                                />
-                              </figure>
-                              <div className="commenter">
-                                <h5>
-                                  <div style={{ color: "#3f6ad8" }}>
-                                    {item?.user?.userId === fanpageId.fanpageId
-                                      ? fanpageId.fanpageName
-                                      : item.user?.username}
-                                  </div>
-                                </h5>
-                                {item?.user?.userId === fanpageId.fanpageId ? (
-                                  <em style={{ paddingRight: "50px" }}>
-                                    <svg
-                                      style={{ verticalAlign: "middle" }}
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width={15}
-                                      height={15}
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        fill="#7fba00"
-                                        stroke="#7fba00"
-                                        d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
-                                      ></path>
-                                    </svg>
-                                  </em>
-                                ) : (
-                                  <div style={{ paddingRight: "50px" }}></div>
-                                )}
-                                <span>{DateTime(item.datetime)}</span>
-                                <p>{item.commentContent}</p>
-                              </div>
-                              <a
-                                title="Reply"
-                                onClick={() => {
-                                  formik2.setFieldValue(
-                                    "commentIdReply",
-                                    item.commentId
-                                  );
-                                  // setCommentI('commentIdReply')
-                                  setContent(
-                                    item?.user?.userId === fanpageId.fanpageId
-                                      ? fanpageId.fanpageName
-                                      : item.user?.username
-                                  );
-                                  setOnID(item.activityId);
-                                }}
-                                className="reply-coment"
-                              >
-                                <i className="icofont-reply" />
-                              </a>
-                            </li>
-                            <li>
-                              {item.inverseReply?.map((item, index) => {
-                                return (
-                                  <div key={index} className="ml-5">
-                                    <figure>
-                                      {" "}
-                                      <img
-                                        alt
-                                        src={
-                                          item?.user?.userId ===
-                                          fanpageId.fanpageId
-                                            ? fanpageId?.avatar
-                                            : item.user?.image === "none"
-                                            ? "./../images/avatar.jpg"
-                                            : item.user?.image
-                                        }
-                                      />
-                                    </figure>
-
-                                    <div className="commenter">
-                                      <h5>
-                                        <div style={{ color: "#0056b3" }}>
-                                          {item?.user?.userId ===
-                                          fanpageId.fanpageId
-                                            ? fanpageId.fanpageName
-                                            : item.user?.username}
-                                        </div>
-                                      </h5>
-                                      {item?.user?.userId ===
-                                      fanpageId.fanpageId ? (
-                                        <em style={{ paddingRight: "50px" }}>
-                                          <svg
-                                            style={{ verticalAlign: "middle" }}
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={15}
-                                            height={15}
-                                            viewBox="0 0 24 24"
-                                          >
-                                            <path
-                                              fill="#7fba00"
-                                              stroke="#7fba00"
-                                              d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
-                                            ></path>
-                                          </svg>
-                                        </em>
-                                      ) : (
-                                        <div></div>
-                                      )}
-                                      <span>{DateTime(item.datetime)}</span>
-                                      <p>{item.commentContent}</p>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </li>
-                          </ul>
-                        </div>
-                      );
-                    })}
+                  {visibleComments.map((item, index) => (
+                    <CommentComponent key={index} item={item} />
+                  ))}
+                  {ItemActivity.comment.length > 2 && !showAllComments && (
+                    <div
+                      onClick={handleShowAll}
+                      className=""
+                      style={{ color: "rgb(8, 141, 205)", cursor: "pointer" }}
+                    >
+                      Xem thêm...
+                    </div>
+                  )}
                   </form>
                 </div>
               </div>

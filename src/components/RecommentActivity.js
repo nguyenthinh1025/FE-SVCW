@@ -13,12 +13,24 @@ export default function RecommentActivity () {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
   
   };
+  settings.nextArrow = <style>{`
+  .slick-next {
+    // position: absolute;
+    // right: 2px;
+}
+  
+  .slick-prev{
+    position: absolute;
+   
+    zIndex:999!important
+  }
+`}</style>;
   useEffect(()=>{
     const action9 = GetRecommentActivityAction(userID);
     dispatch(action9);
@@ -26,7 +38,7 @@ export default function RecommentActivity () {
 
   return (
     <div style={{ position: 'relative' }}>
-      <Slider {...settings}>
+      <Slider {...settings} className={styles["slick-slider"]}>
 
         {arrActivityRecomment.map((item, index) => {
 

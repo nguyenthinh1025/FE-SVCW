@@ -30,6 +30,7 @@ export default function CreateResultActivity (props) {
       ]
     },
     onSubmit: async (value) => {
+      console.log(value)
       const action = await ResultActivityAction(value);
       dispatch(action);
       const Toast = Swal.mixin({

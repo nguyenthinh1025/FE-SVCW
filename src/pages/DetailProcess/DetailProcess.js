@@ -299,8 +299,11 @@ export default function DetailProcess (props) {
                   >
                     Trang chủ
                   </h4> */}
-                  <h2 style={{ color: '#00a6d3', textAlign: 'center', fontSize: '40px', fontWeight: 800 }}>{currentObject?.activity?.title}</h2>
-                  <p style={{ fontSize: '25px', marginLeft: '100px', color: 'rgb(0, 166, 211)' }}>Hoạt động : {currentObject?.processNo}</p>
+                  <div style={{display:'flex', }}>
+                  <p style={{ fontSize: '25px', marginLeft: '100px', color: 'rgb(0, 166, 211)' , marginTop:'12px' }}>Hoạt động: {currentObject?.processNo}</p>
+                  <h2 style={{ color: '#00a6d3', textAlign: 'center', fontSize: '40px', fontWeight: 800 , marginLeft:'23%'}}>{currentObject?.activity?.title}</h2>
+                  </div>
+                 
                 </div>
               </div>
               <div className="more">
@@ -376,7 +379,7 @@ export default function DetailProcess (props) {
 
                     </div>
                     <p style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>
-                      - {currentObject?.description}
+                      {currentObject?.description}
                     </p>
                     <div className="blog-details-meta">
                       {currentObject?.media?.length !== 0 ?

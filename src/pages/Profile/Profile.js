@@ -33,6 +33,7 @@ export default function Profile (props) {
     (root) => root.EndActivityReducer
   );
   useEffect(() => {
+   
     const action = GetProfileByIdAction(id);
     dispatch(action);
     const action1 = GetListEndActivityByUserIDAction(id);

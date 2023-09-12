@@ -9,6 +9,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import moment from "moment";
 import { InputText } from "primereact/inputtext";
+import Slider from "react-slick";
 
 export default function ResultActivity(props) {
   const dispatch = useDispatch();
@@ -16,10 +17,6 @@ export default function ResultActivity(props) {
   const { activityId } = useSelector((root) => root.ActivityReducer);
   const { arrEndActivityID } = useSelector((root) => root.EndActivityReducer);
 
-  // useEffect(() => {
-  //   const action = GetActivityByIDAction(idActivity);
-  //   dispatch(action);
-  // }, [idActivity]);
   const [isFolowJoin, setIsFolowJoin] = useState(false);
   const [listFolowJoin, setFolowJoin] = useState([]);
   const [listJoinFollow, setJoinFollow] = useState([]);
@@ -40,19 +37,37 @@ export default function ResultActivity(props) {
   };
 
   const [products, setProducts] = useState([]);
+  const [products1, setProducts1] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState(null);
+  const [selectedProducts1, setSelectedProducts1] = useState(null);
   const [globalFilter, setGlobalFilter] = useState(null);
+  const [globalFilter1, setGlobalFilter1] = useState(null);
   const dt = useRef(null);
   const exportCSV = () => {
     dt.current.exportCSV();
   };
 
+  const dt1 = useRef(null);
+  const exportCSV1 = () => {
+    dt1.current.exportCSV();
+  };
   const rightToolbarTemplate = () => {
     return (
       <Button
         label="Tải xuống"
         icon="pi pi-upload"
-        style={{ marginRight: "50px" ,background:'#088dcd', border:'none'}}
+        style={{ marginRight: "50px", background: "#088dcd", border: "none" }}
+        className="p-button-help"
+        onClick={exportCSV}
+      />
+    );
+  };
+  const rightToolbarTemplate1 = () => {
+    return (
+      <Button
+        label="Tải xuống"
+        icon="pi pi-upload"
+        style={{ marginRight: "50px", background: "#088dcd", border: "none" }}
         className="p-button-help"
         onClick={exportCSV}
       />
@@ -71,17 +86,43 @@ export default function ResultActivity(props) {
       </span>
     </div>
   );
+  const header1 = (
+    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+      {/* <h4 className="m-0 mb-3">Quản lý huy hiệu</h4> */}
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Tìm kiếm..."
+        />
+      </span>
+    </div>
+  );
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   useEffect(() => {
     setProducts(listJoinFollow);
-  }, [listJoinFollow]);
+    setProducts1(listDonate);
+  }, [listJoinFollow, listDonate]);
   return (
     <div>
       {isOpen1 === true ? (
         <div className="post-new-popup" style={popupStyle1}>
           <div
             className="popup"
-            style={{ width: 1000, height: 800, zIndex: 80, marginTop: "-100px" }}
+            style={{
+              width: 1000,
+              height: 800,
+              zIndex: 80,
+              marginTop: "-100px",
+            }}
           >
             <span className="popup-closed" onClick={handleClick1}>
               <i className="icofont-close" />
@@ -146,7 +187,15 @@ export default function ResultActivity(props) {
                         </a>
                       </li>
                       <li className="nav-item" style={{ margin: "0 10px" }}>
-                        <a className href="#pictures" data-toggle="tab">
+                        <a
+                          className
+                          href="#pictures"
+                          data-toggle="tab"
+                          onClick={() => {
+                            handleClickDonate();
+                            setIsDonate(arrEndActivityID?.activity?.donation);
+                          }}
+                        >
                           Người ủng hộ
                         </a>
                       </li>
@@ -180,15 +229,83 @@ export default function ResultActivity(props) {
                       <div className="tab-content">
                         <div className=" tab-pane active fade show " id="posts">
                           <div className="row merged20">
-                            <div className="col-lg-8">
-                              <div className="">post</div>
+                            <div className="col-lg-12">
+                              <div style={{margin:'0 auto'}}>
+                              <Slider {...settings}>
+                                {arrEndActivityID?.activity?.activityResult?.map(
+                                  (item, index) => {
+                                    return (
+                                      <div style={{}}>
+                                        <h1 style={{textAlign:'center'}}>{item.title}</h1>
+                                        <h1>{item.desciption}</h1>
+                                        <div>
+                                          {item?.media?.map((media, index) => {
+                                            return <img
+                                                src={media.linkMedia}
+                                                width={50}
+                                                height={50}
+                                              />
+                                            
+                                          })}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </Slider>
+                              </div>
                             </div>
                           </div>
                         </div>
 
                         <div className="tab-pane fade" id="pictures">
                           <div className="row merged20">
-                            <div className="col-lg-12">picture</div>
+                            <Toolbar
+                              className="mb-4"
+                              right={rightToolbarTemplate1}
+                            ></Toolbar>
+
+                            <DataTable
+                              ref={dt1}
+                              value={products1}
+                              selection={selectedProducts1}
+                              onSelectionChange={(e) =>
+                                setSelectedProducts(e.value)
+                              }
+                              dataKey="id"
+                              paginator
+                              rows={10}
+                              rowsPerPageOptions={[5, 10, 25]}
+                              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                              currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} người tham gia"
+                              globalFilter={globalFilter1}
+                              header={header1}
+                            >
+                              <Column
+                                field="user.email"
+                                header="Email"
+                                sortable
+                                style={{ minWidth: "11rem" }}
+                              ></Column>
+
+                              <Column
+                                field="user.username"
+                                header="Họ tên"
+                                sortable
+                                style={{ minWidth: "12rem" }}
+                              ></Column>
+
+                              <Column
+                                field={(datetime) =>
+                                  moment(datetime?.datetime).format(
+                                    "DD-MM-YYYY hh:mm A"
+                                  )
+                                }
+                                header="Thời gian theo dõi"
+                                sortable
+                                style={{ minWidth: "12rem" }}
+                              ></Column>
+                            </DataTable>
                           </div>
                         </div>
                         <div className="tab-pane fade" id="about">
@@ -218,7 +335,7 @@ export default function ResultActivity(props) {
                                         rows={10}
                                         rowsPerPageOptions={[5, 10, 25]}
                                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                                        currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+                                        currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} người tham gia"
                                         globalFilter={globalFilter}
                                         header={header}
                                       >
@@ -230,7 +347,7 @@ export default function ResultActivity(props) {
                                         ></Column>
 
                                         <Column
-                                          field="user.fullName"
+                                          field="user.username"
                                           header="Họ tên"
                                           sortable
                                           style={{ minWidth: "12rem" }}
