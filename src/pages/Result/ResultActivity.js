@@ -10,7 +10,7 @@ import { Column } from "primereact/column";
 import moment from "moment";
 import { InputText } from "primereact/inputtext";
 import Slider from "react-slick";
-export default function ResultActivity(props) {
+export default function ResultActivity (props) {
   const dispatch = useDispatch();
   const { popupStyle1, handleClick1, isOpen1, idActivity } = props;
   const { activityId } = useSelector((root) => root.ActivityReducer);
@@ -227,7 +227,7 @@ export default function ResultActivity(props) {
                             );
                             setJoinFollow(
                               arrEndActivityID?.activity?.followJoinAvtivity?.filter(
-                                (item) => item.isJoin === "Join"
+                                (item) => item.isJoin === "success"
                               )
                             );
                           }}
@@ -244,7 +244,7 @@ export default function ResultActivity(props) {
                           <div className="row merged20">
                             <div className="col-lg-12">
                               <div
-                                style={{ margin: "0 auto", padding:'50px 50px' }}
+                                style={{ margin: "0 auto", padding: '50px 50px' }}
                               >
                                 <Slider
                                   {...parentSettings}
@@ -264,9 +264,9 @@ export default function ResultActivity(props) {
                                             style={{
                                               display: "grid",
                                               justifyContent: "center",
-                                              gridTemplateColumns:'1fr 1fr 1fr 1fr',
-                                              marginTop:'50px', 
-                                              gap:'10px'
+                                              gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                                              marginTop: '50px',
+                                              gap: '10px'
                                             }}
                                           >
                                             {item.media?.map(
@@ -280,9 +280,9 @@ export default function ResultActivity(props) {
                                                       src={mediaItem.linkMedia}
                                                       alt={`Slide ${index + 1}`}
                                                       className="custom-image"
-                                                       style={{height:'150px', width:'100%', borderRadius:'10px'}}
+                                                      style={{ height: '150px', width: '100%', borderRadius: '10px' }}
                                                     />
-                                                   
+
                                                   </div>
                                                 );
                                               }
