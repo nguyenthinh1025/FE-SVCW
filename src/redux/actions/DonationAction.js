@@ -41,3 +41,17 @@ export const HistoryDonationAction = (value) => {
     }
   };
 };
+export const ListHistoryDonationAction = () => {
+  return async (dispatch) => {
+    try {
+      let result = await http.get("/Donation/get-Donation");
+      const action = {
+        type: "GET_LIST_DONATION_DONE",
+        arrDonationDone: result.data.data,
+      };
+      dispatch(action);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

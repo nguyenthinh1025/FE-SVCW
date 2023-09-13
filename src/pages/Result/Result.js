@@ -98,7 +98,7 @@ export default function Result () {
                                                                 {/* {item.activity?.media?.map((item, index) => {
                                                                     return <figure key={index}><img src={item.linkMedia} alt /></figure>
                                                                 })} */}
-                                                                <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt /></figure>
+                                                                <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt  style={{height:'250px' , width:'300px'}}/></figure>
 
                                                                 <div className="blog-post-meta">
                                                                     <ul>
@@ -160,7 +160,7 @@ export default function Result () {
                                                                     {/* {item.activity?.media?.map((item, index) => {
                                                                         return <figure key={index}><img src={item.linkMedia} alt /></figure>
                                                                     })} */}
-                                                                    <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt /></figure>
+                                                                    <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt style={{height:'250px' , width:'300px'}} /></figure>
                                                                     <div className="blog-post-meta">
                                                                         <ul>
                                                                             <li><i className="icofont-like" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
