@@ -40,7 +40,7 @@ export const GetProcessByActivityAction = (id) => {
         try {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get(`/Process/get-process-activity?activityId=${id}`);
-            console.log(result.data.data);
+           
             const action1 = {
                 type: "GET_PROCESS_ACTIVITY",
                 processactivity: result.data.data
@@ -62,7 +62,7 @@ export const UpdateProcessAction = (value) => {
     return async (dispatch) => {
         try {
             let result = await http.put(`/Process/update-process`, value);
-            console.log(result.data.data);
+           
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -92,7 +92,7 @@ export const DeleteProcessByIdAction = (id) => {
     return async (dispatch) => {
         try {
             let result = await http.delete(`/Process/delete-process?id=${id}`);
-            console.log(result.data.data);
+           
             const action = GetListActivityAction();
             dispatch(action)
         } catch (error) {

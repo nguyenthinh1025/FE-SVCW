@@ -30,7 +30,7 @@ export default function CreateResultActivity (props) {
       ]
     },
     onSubmit: async (value) => {
-      console.log(value);
+      console.log(value)
       const action = await ResultActivityAction(value);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -63,7 +63,6 @@ export default function CreateResultActivity (props) {
     setIsLoading(true);
     const fileList = e.target.files;
 
-    console.log(fileList);
     const newImages = [];
 
     for (let i = 0;i < fileList.length;i++) {

@@ -43,6 +43,7 @@ import { GetProcessByActivityAction } from "../redux/actions/ProcessAction";
 import Donate from "./Donate";
 import ListDonate from "./ListDonate";
 import ListFollowJoin from "./ListFollowJoin";
+import { SendEmail } from "../utils/emailService";
 
 export default function ItemEndActivity(props) {
   const [isReadMore, setReadMore] = useState(false);
@@ -110,7 +111,80 @@ export default function ItemEndActivity(props) {
     detailItem,
     index,
   } = props;
-  console.log(ItemActivity);
+  const [showAllComments, setShowAllComments] = useState(false);
+
+  const handleShowAll = () => {
+    setShowAllComments(true);
+  };
+  const CommentComponent = ({ item }) => {
+    return (
+      <div className="comments-area">
+        <ul>
+          <li>
+            <figure>
+              <img
+                alt
+                src={
+                  item.user?.image === "none"
+                    ? "../images/avatar.jpg"
+                    : item.user?.image
+                }
+              />
+            </figure>
+            <div className="commenter">
+              <h5 style={{ color: "rgb(8, 141, 205)" }}>
+                {item.user?.username}
+              </h5>
+              <span>{DateTime(item.datetime)}</span>
+              <p>{item.commentContent}</p>
+            </div>
+            <a
+              title="Reply"
+              onClick={() => {
+                formik2.setFieldValue("commentIdReply", item.commentId);
+                setContent(item.user?.username);
+                setOnID(item.activityId);
+              }}
+              className="reply-coment"
+            >
+              <i className="icofont-reply" />
+            </a>
+          </li>
+          <li>
+            {item.inverseReply?.map((reply, index) => {
+              return (
+                <div key={index} className="ml-5">
+                  <figure>
+                    {" "}
+                    <img
+                      alt
+                      src={
+                        reply.user?.image === "none"
+                          ? "../images/avatar.jpg"
+                          : reply.user?.image
+                      }
+                    />
+                  </figure>
+
+                  <div className="commenter">
+                    <h5 style={{ color: "rgb(8, 141, 205)" }}>
+                      {reply.user?.username}{" "}
+                    </h5>
+                    <span>{DateTime(reply.datetime)}</span>
+                    <p>{reply.commentContent}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </li>
+        </ul>
+      </div>
+    );
+  };
+
+  const visibleComments = showAllComments
+    ? ItemActivity.comment
+    : ItemActivity.comment.slice(0, 2);
   const [openpro1, setOpenPro1] = useState(false);
   const [detail, setDetail] = useState({});
   const [report, setReport] = useState(false);
@@ -189,47 +263,13 @@ export default function ItemEndActivity(props) {
         const action = CommentRepllyAction(value);
         dispatch(action);
         setOnID("");
-        // formik2.setFieldValue('commentIdReply', '');
-        // setCommentI('commentContent')
-        // setContent(true)
+
         formik2.setFieldValue("commentContent", "");
         formik2.setFieldValue("commentIdReply", "");
       }
     },
   });
-  // const formik6 = useFormik({
-  //   initialValues: {
-  //     reportId: "string",
-  //     title: "string",
-  //     reason: "",
-  //     reportTypeId: "string",
-  //     description: "string",
-  //     status: true,
-  //     userId: userID,
-  //     activityId: reportid,
-  //   },
-  //   onSubmit: async (value) => {
-  //     const action = await CreateReportAction(value);
-  //     await dispatch(action);
-  //     const Toast = Swal.mixin({
-  //       toast: true,
-  //       position: "top-end",
-  //       showConfirmButton: false,
-  //       timer: 3000,
-  //       timerProgressBar: true,
-  //       didOpen: (toast) => {
-  //         toast.addEventListener("mouseenter", Swal.stopTimer);
-  //         toast.addEventListener("mouseleave", Swal.resumeTimer);
-  //       },
-  //     });
 
-  //     Toast.fire({
-  //       icon: "success",
-  //       title: `Báo cáo chiến dịch thành công `,
-  //     });
-  //     setReport((prevIsOpen) => !prevIsOpen);
-  //   },
-  // });
   const DateTime = (item) => {
     const currentTime = moment();
     const inputTime = moment(item);
@@ -248,8 +288,8 @@ export default function ItemEndActivity(props) {
     }
     return timeAgoString;
   };
-  const handleJoinClick = async (index, activity, isJoin, title) => {
-    if (isJoin ==="Join") {
+  const handleJoinClick = async (index, activity, isJoin, title, process) => {
+    if (isJoin === "Join") {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
@@ -257,6 +297,18 @@ export default function ItemEndActivity(props) {
       setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
+      console.log(process);
+      SendEmail(
+        localStorage.getItem("emailuser"),
+        "Thông báo thời gian diễn ra chiến dịch",
+        `Bạn đã tham gia thành công chiến dịch ${title} . Vui lòng đến địa chỉ ${
+          process[0]?.location
+        } từ ngày ${moment(process[0]?.startDate).format(
+          "DD/MM/YYYY hh:mm A"
+        )} đến ngày ${moment(process[0]?.endDate).format(
+          "DD/MM/YYYY hh:mm A"
+        )} để tham gia chiến dịch`
+      );
     }
     const action = GetListActivityAction();
     await dispatch(action);
@@ -296,11 +348,6 @@ export default function ItemEndActivity(props) {
     overflow: openpro1 ? "auto" : "hidden",
   };
 
-  // const endDate = moment(ItemActivity.endDate).format("DD-MM-YYYY HH:mm:ss");
-  // const currentDate = moment()
-  // console.log(currentDate);
-  // console.log(endDate);
-  // console.log(ItemActivity.title,endDate.isAfter(currentDate));
   const endDate = moment(ItemActivity.endDate);
   const currentDate = moment();
   return (
@@ -314,7 +361,7 @@ export default function ItemEndActivity(props) {
                 alt
                 src={
                   ItemActivity.user?.image === "none"
-                    ? "./images/avatar.jpg"
+                    ? "../images/avatar.jpg"
                     : ItemActivity.user?.image
                 }
               />
@@ -421,8 +468,6 @@ export default function ItemEndActivity(props) {
                         onClick={() => {
                           handleClickCreate();
                           setIDActivity(ItemActivity.activityId);
-                          console.log(ItemActivity.activityId);
-                         
                         }}
                       >
                         <i className="icofont-pen-alt-1" />
@@ -440,7 +485,6 @@ export default function ItemEndActivity(props) {
                         onClick={() => {
                           // handleClickCreate();
                           // setIDActivity(ItemActivity.activityId);
-                          console.log(ItemActivity.activityId);
                           const action = GetQRActivityAction(
                             ItemActivity.activityId
                           );
@@ -454,12 +498,13 @@ export default function ItemEndActivity(props) {
                     ) : (
                       <div></div>
                     )}
-                    {endDate.isAfter(currentDate) === true &&  userID === ItemActivity.userId? (
+                    {endDate.isAfter(currentDate) === true &&
+                    userID === ItemActivity?.userId &&
+                    ItemActivity?.donation?.length > 0 ? (
                       <li
                         onClick={() => {
                           handleClickDonate();
                           setIsListDonate(ItemActivity?.donation);
-                          console.log(ItemActivity.activityId);
                         }}
                       >
                         <i className="icofont-pen-alt-1" />
@@ -469,7 +514,9 @@ export default function ItemEndActivity(props) {
                     ) : (
                       <div></div>
                     )}
-                    {endDate.isAfter(currentDate) === true &&  userID === ItemActivity.userId? (
+                    {endDate.isAfter(currentDate) === true &&
+                    userID === ItemActivity.userId &&
+                    ItemActivity?.followJoinAvtivity?.length > 0 ? (
                       <li
                         onClick={() => {
                           handleClickFolowJoin();
@@ -483,12 +530,11 @@ export default function ItemEndActivity(props) {
                               (item) => item.isJoin === "Join"
                             )
                           );
-                          console.log(ItemActivity.activityId);
                         }}
                       >
                         <i className="icofont-pen-alt-1" />
-                        Danh sách theo dõi tham gia
-                        <span> Danh sách theo dõi tham gia sự kiện</span>
+                        Danh sách theo dõi, tham gia
+                        <span> Danh sách theo dõi tham gia chiến dịch</span>
                       </li>
                     ) : (
                       <div></div>
@@ -498,8 +544,10 @@ export default function ItemEndActivity(props) {
                         onClick={() => {
                           handleClick1();
                           setIDActivity(ItemActivity.activityId);
-                          const action1 = GetListEndActivityIDAction(ItemActivity.activityId);
-                          dispatch(action1)
+                          const action1 = GetListEndActivityIDAction(
+                            ItemActivity.activityId
+                          );
+                          dispatch(action1);
                           const action = GetActivityByIDAction(
                             ItemActivity.activityId
                           );
@@ -517,7 +565,7 @@ export default function ItemEndActivity(props) {
                 </div>
               </div>
               <ins>
-                <NavLink to={`/profile/${ItemActivity?.user?.userId}`} title>
+                <NavLink to={`/profile/${ItemActivity?.user?.userId}`}>
                   <h5 className="name-user">{ItemActivity?.user?.username}</h5>
                 </NavLink>
               </ins>
@@ -544,9 +592,9 @@ export default function ItemEndActivity(props) {
                       fontWeight: "bold",
                       width: "450px",
                       wordWrap: "break-word",
-                      color: "#2d3436",
+                      color: "#088dcd",
                     }}
-                    className="col-lg-12"
+                    className="col-lg-12 name-user"
                   >
                     {ItemActivity.title}
                   </NavLink>
@@ -623,7 +671,6 @@ export default function ItemEndActivity(props) {
                             <NavLink
                               to={`/detailactivity/${ItemActivity.activityId}`}
                               onClick={() => {
-                                console.log(ItemActivity.activity);
                                 const action = GetActivityIDAction(
                                   ItemActivity.activityId
                                 );
@@ -644,7 +691,6 @@ export default function ItemEndActivity(props) {
                             <div
                               href="images/resources/album1.jpg"
                               onClick={() => {
-                                console.log(ItemActivity.activity);
                                 const action = GetActivityIDAction(
                                   ItemActivity.activityId
                                 );
@@ -694,12 +740,11 @@ export default function ItemEndActivity(props) {
                 ) {
                   if (pro.isDonateProcess === true) {
                     return (
-                      <div>
+                      <div style={{ position: "relative" }}>
                         {pro.isDonateProcess === true ? (
-                          <div className="mb-4 mt-4">
+                          <div className="mb-4 mt-4 name-user">
                             <p
                               style={{
-                                color: "blue",
                                 fontWeight: "400",
                                 fontSize: "15px",
                               }}
@@ -707,19 +752,15 @@ export default function ItemEndActivity(props) {
                               Đã quyên góp được <br />
                               <span
                                 style={{
-                                  color: "blue",
                                   fontSize: "15px",
                                 }}
                               >
-                                <span
-                                  style={{ color: "blue", fontSize: "15px" }}
-                                >
+                                <span style={{ fontSize: "15px" }}>
                                   {pro.realDonation.toLocaleString()}
                                 </span>{" "}
                                 đ /
                                 <span
                                   style={{
-                                    color: "blue",
                                     fontSize: "15px",
                                   }}
                                 >
@@ -744,94 +785,43 @@ export default function ItemEndActivity(props) {
                                 width: "92%",
                               }}
                             />
-                            {/* <div className="range-value" style={{ position: 'absolute', left: `${((pro.realDonation - 5) * 100) / (100 - 0)}%` }}>{pro.realDonation}%</div> */}
-                            {pro.realDonation !== 0 ? (
-                              <div></div>
-                            ) : (
-                              <div
-                                className="range-value"
-                                style={{ position: "absolute" }}
-                              >
-                                0
-                              </div>
-                            )}
-                            <div
-                              className="range-value"
-                              style={{ position: "absolute" }}
-                            ></div>
-                            {pro.realDonation !== 0 ? (
-                              <div
-                                className="range-value"
-                                style={{
-                                  position: "absolute",
-                                  left: `${
-                                    ((pro.realDonation - 5) * 100) / (100 - 0)
-                                  }%`,
-                                }}
-                              >
-                                {
-                                  (
-                                    (pro.realDonation / pro.targetDonation) *
-                                    100
-                                  )
-                                    .toString()
-                                    .split(".")[0]
-                                }
-                                %
-                              </div>
-                            ) : (
-                              <div
-                                className="range-value"
-                                style={{
-                                  position: "absolute",
-                                  left: `${
-                                    ((pro.realDonation - 0) * 100) / (100 - 0)
-                                  }%`,
-                                }}
-                              >
-                                {
-                                  (
-                                    (pro.realDonation / pro.targetDonation) *
-                                    100
-                                  )
-                                    .toString()
-                                    .split(".")[0]
-                                }
-                                %
-                              </div>
-                            )}
+
+                           
                             {pro.realDonation === 0 ? (
-                              <div></div>
+                              <div
+                              className="range-value"
+                              style={{
+                                position: "absolute",
+                                top: "55px",
+                                right: "-2px",
+                              }}
+                            >
+                              {
+                                (
+                                  (pro.realDonation / pro.targetDonation) *
+                                  100
+                                )
+                                  .toString()
+                                  .split(".")[0]
+                              }
+                              %
+                            </div>
                             ) : (
                               <div style={{ position: "relative" }}>
                                 <div
                                   className="range-value"
                                   style={{
                                     position: "absolute",
-                                    // left: `${(pro.realDonation / pro.targetDonation) *
-                                    //   96
-                                    //   }%`,
                                     top: "-30px",
                                     right: "-2px",
                                   }}
                                 >
-                                  {" "}
-                                  {(pro.realDonation / pro.targetDonation) *
-                                    100}
+                                  {((pro.realDonation / pro.targetDonation) *
+                                    100).toFixed(0)}
                                   %
                                 </div>
                               </div>
                             )}
-                            {/* <div
-                              className="range-value"
-                              style={{
-                                color: "blue",
-                                position: "absolute",
-                                right: "10px",
-                              }}
-                            >
-                              {pro.targetDonation.toLocaleString()} vnđ
-                            </div> */}
                           </div>
                         ) : (
                           <div></div>
@@ -854,7 +844,7 @@ export default function ItemEndActivity(props) {
                     ) {
                       if (pro.isParticipant === true) {
                         return (
-                          <div style={{ padding: "30px 0 0 40px" }}>
+                          <div style={{ padding: "30px 0 0 0" }}>
                             Số người tham gia: {Number(pro?.realParticipant)}/
                             {Number(pro?.targetParticipant)}
                           </div>
@@ -882,45 +872,6 @@ export default function ItemEndActivity(props) {
                 {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
-                  <div>
-                    {ItemActivity.process?.map((pro, index) => {
-                      if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
-                          currentDate
-                        ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
-                      ) {
-                        if (pro.isParticipant === true) {
-                          return (
-                            <button
-                              className={` ${
-                                isAlreadyJoined  ==="Join"? "btn-change" : "btn-color"
-                              } mb-4 mt-4 btn-add ${
-                                ItemActivity.targetDonation !== 0
-                                  ? "marginfollow"
-                                  : "sas"
-                              }`}
-                              onClick={() => {
-                                handleJoinClick(
-                                  index,
-                                  ItemActivity.activityId,
-                                  isAlreadyJoined,
-                                  ItemActivity.title
-                                );
-                              }}
-                            >
-                              {isAlreadyJoined ==="Join"? "Hủy Tham gia" : "Tham gia"}
-                            </button>
-                          );
-                        }
-                      }
-                    })}
-                  </div>
-                )}
-
-                {endDate.isBefore(currentDate) ? (
-                  <div></div>
-                ) : (
                   <button
                     className={` ${
                       isAlreadyFollowed ? "btn-change" : "btn-color"
@@ -940,6 +891,52 @@ export default function ItemEndActivity(props) {
                     {isAlreadyFollowed ? "Hủy theo dõi" : "Theo dõi"}
                   </button>
                 )}
+                {endDate.isBefore(currentDate) ? (
+                  <div></div>
+                ) : (
+                  <div>
+                    {ItemActivity.process?.map((pro, index) => {
+                      if (
+                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                          currentDate
+                        ) &&
+                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      ) {
+                        if (pro.isParticipant === true) {
+                          return (
+                            <button
+                              className={` ${
+                                isAlreadyJoined === "Join"
+                                  ? "btn-change"
+                                  : "btn-color"
+                              } mb-4 mt-4 btn-add ${
+                                ItemActivity.targetDonation !== 0
+                                  ? "marginfollow"
+                                  : "sas"
+                              }`}
+                              onClick={() => {
+                                handleJoinClick(
+                                  index,
+                                  ItemActivity.activityId,
+                                  isAlreadyJoined,
+                                  ItemActivity.title,
+                                  ItemActivity?.process?.filter(
+                                    (item) => item.processTypeId === "pt003"
+                                  )
+                                );
+                              }}
+                            >
+                              {isAlreadyJoined === "Join"
+                                ? "Hủy Tham gia"
+                                : "Tham gia"}
+                            </button>
+                          );
+                        }
+                      }
+                    })}
+                  </div>
+                )}
+
                 {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
@@ -1036,9 +1033,9 @@ export default function ItemEndActivity(props) {
                   <div style={{ marginLeft: "20px" }}>
                     <div
                       style={{
-                        color: "blue",
                         fontSize: "15px",
                       }}
+                      className="name-user"
                     >
                       <span style={{ paddingRight: "2px" }}>
                         {(ItemActivity?.comment?.length !== 0
@@ -1061,9 +1058,7 @@ export default function ItemEndActivity(props) {
                       isAlreadyLiked ? "rgb(117, 189, 240)" : "#eae9ee"
                     }`,
                     borderRadius: "4px",
-                    color: `${
-                      isAlreadyLiked ? "white" : "#82828e"
-                    }`,
+                    color: `${isAlreadyLiked ? "white" : "#82828e"}`,
                     display: "inline-block",
                     fontSize: "13px",
                     padding: "5px 20px",
@@ -1087,7 +1082,6 @@ export default function ItemEndActivity(props) {
                 <div
                   className="share"
                   onClick={() => {
-
                     const textToCopy = `http://localhost:3000/detailactivity/${ItemActivity.activityId}`;
 
                     const copyTextToClipboard = () => {
@@ -1099,23 +1093,23 @@ export default function ItemEndActivity(props) {
                       document.body.removeChild(textArea);
                     };
 
-                    copyTextToClipboard(); 
+                    copyTextToClipboard();
                     const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                              toast.addEventListener("mouseenter", Swal.stopTimer);
-                              toast.addEventListener("mouseleave", Swal.resumeTimer);
-                            },
-                          });
-                    
-                          Toast.fire({
-                            icon: "success",
-                            title: `Sao chép liên kết thành công`,
-                          });
+                      toast: true,
+                      position: "top-end",
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                      },
+                    });
+
+                    Toast.fire({
+                      icon: "success",
+                      title: `Sao chép liên kết thành công`,
+                    });
                   }}
                 >
                   <i className="icofont-share-alt" /> Chia sẻ
@@ -1227,79 +1221,18 @@ export default function ItemEndActivity(props) {
                       <i className="icofont-paper-plane" />
                     </button>
                   )}
-                  {ItemActivity.comment.map((item, index) => {
-                    return (
-                      <div className="comments-area">
-                        <ul>
-                          <li>
-                            <figure>
-                              <img
-                                alt
-                                src={
-                                  item.user?.image === "none"
-                                    ? "./images/avatar.jpg"
-                                    : item.user?.image
-                                }
-                              />
-                            </figure>
-                            <div className="commenter">
-                              <h5>
-                                <a title href="#">
-                                  {item.user?.username}
-                                </a>
-                              </h5>
-                              <span>{DateTime(item.datetime)}</span>
-                              <p>{item.commentContent}</p>
-                            </div>
-                            <a
-                              title="Reply"
-                              onClick={() => {
-                                formik2.setFieldValue(
-                                  "commentIdReply",
-                                  item.commentId
-                                );
-                                // setCommentI('commentIdReply')
-                                setContent(item.user?.username);
-                                setOnID(item.activityId);
-                              }}
-                              className="reply-coment"
-                            >
-                              <i className="icofont-reply" />
-                            </a>
-                          </li>
-                          <li>
-                            {item.inverseReply?.map((item, index) => {
-                              return (
-                                <div key={index} className="ml-5">
-                                  <figure>
-                                    {" "}
-                                    <img
-                                      alt
-                                      src={
-                                        item.user?.image === "none"
-                                          ? "./images/avatar.jpg"
-                                          : item.user?.image
-                                      }
-                                    />
-                                  </figure>
-
-                                  <div className="commenter">
-                                    <h5>
-                                      <a title href="#">
-                                        {item.user?.username}{" "}
-                                      </a>
-                                    </h5>
-                                    <span>{DateTime(item.datetime)}</span>
-                                    <p>{item.commentContent}</p>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </li>
-                        </ul>
-                      </div>
-                    );
-                  })}
+                  {visibleComments.map((item, index) => (
+                    <CommentComponent key={index} item={item} />
+                  ))}
+                  {ItemActivity.comment.length > 2 && !showAllComments && (
+                    <div
+                      onClick={handleShowAll}
+                      className=""
+                      style={{ color: "rgb(8, 141, 205)", cursor: "pointer" }}
+                    >
+                      Xem thêm...
+                    </div>
+                  )}
                 </form>
               </div>
             </div>

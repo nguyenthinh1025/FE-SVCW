@@ -26,7 +26,6 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 export default function Achivement () {
   const dispatch = useDispatch();
   const { arrAchivement } = useSelector((root) => root.AchivementReducer);
-  console.log(arrAchivement);
   const [showInput, setShowInput] = useState(true);
   const [id, setID] = useState("abc");
   let counter = 0;
@@ -49,14 +48,12 @@ export default function Achivement () {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
+
         setShowInput(false);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           setProduct(updatedProduct);
         });
@@ -76,7 +73,6 @@ export default function Achivement () {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-  console.log(product);
   useEffect(() => {
     const action = GetListAchivementAction();
     dispatch(action);
@@ -118,7 +114,6 @@ export default function Achivement () {
       if (product.achivementId !== "0") {
         const index = findIndexById(product.id);
         _products[index] = _product;
-        console.log(product.achivementId);
         const action = await UpdateAchivementAction(product);
         await dispatch(action);
         setProductDialog(false);
@@ -402,7 +397,6 @@ export default function Achivement () {
       />
     </React.Fragment>
   );
-  console.log(product);
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
       <div>

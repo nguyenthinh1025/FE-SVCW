@@ -19,6 +19,7 @@ import RecommentActivity from '../../components/RecommentActivity';
 import { GetListProcessTypeAction } from '../../redux/actions/ProcessTypeAction';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
+import ListDonateDone from '../../components/ListDonateDone';
 export default function Home (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector((root) => root.LoginReducer);
@@ -27,18 +28,9 @@ export default function Home (props) {
     const { arrEndActivity } = useSelector((root) => root.EndActivityReducer);
     const [isMatch, setIsMatch] = useState(false);
     useEffect(() => {
-        // const user = localStorage.getItem('userID');
-        // if (user) {
-        //     console.log('có user');
         const stringToCompare = 'success';
-
-        // Get the current URL
         const currentUrl = window.location.href;
-
-        // Check if the current URL contains the given string
         const match = currentUrl.includes(stringToCompare);
-
-        // Set the state based on the result
         setIsMatch(match);
          if (match) {
             Swal.fire({
@@ -47,8 +39,6 @@ export default function Home (props) {
                 icon: 'success',
             }).then((result) => {
                 props.history.push('/home')
-
-                // Reset isMatch to false
                 setIsMatch(false);
             });
         }
@@ -68,11 +58,6 @@ export default function Home (props) {
         dispatch(action9);
         const action10 = GetListProcessTypeAction();
         dispatch(action10)
-
-        // } else {
-        //     alert('Vui lòng đăng nhập để trải nghiệm tốt hơn');
-        //     props.history.push('/');
-        // }
     }, []);
 
     return (
@@ -86,7 +71,9 @@ export default function Home (props) {
                                     <div className="col-lg-3">
                                         <aside className="sidebar static left">
                                             <Clock />
+                                            <ListDonateDone />
                                             <CompleteInfo />
+                                          
                                         </aside>
                                     </div>
                                     <div className="col-lg-6">
@@ -105,10 +92,7 @@ export default function Home (props) {
                                                    Chiến dịch kết thúc
                                                 </a>
                                             </li>
-                                            {/* <li><NavLink className="active" to="/home" title>Trang chủ</NavLink></li>
-                                            <li><NavLink to="/endactivity" title>Chiến dịch đã kết thúc</NavLink></li> */}
-
-                                        </ul>{/* tab buttons */}
+                                        </ul>
                                         <div className="tab-content">
                                             <div className=" tab-pane active fade show " id="home">
                                                 <CreateActivity />

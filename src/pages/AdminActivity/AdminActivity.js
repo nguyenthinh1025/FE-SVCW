@@ -34,7 +34,6 @@ import Slider from "react-slick";
 export default function AdminActivity() {
   const dispatch = useDispatch();
   const { arrActivity } = useSelector((root) => root.ActivityReducer);
-  console.log(arrActivity);
   const [showInput, setShowInput] = useState(true);
   const [id, setID] = useState("abc");
   let counter = 0;
@@ -58,13 +57,11 @@ export default function AdminActivity() {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
         setShowInput(false);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           setProduct(updatedProduct);
         });
@@ -83,7 +80,7 @@ export default function AdminActivity() {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-  console.log(product);
+
   useEffect(() => {
     const action = GetListActivityAction();
     dispatch(action);
@@ -91,11 +88,11 @@ export default function AdminActivity() {
 
   const [op, setOp] = useState("Active");
   const onInputDropdown = (e, field) => {
-    console.log(e.target.value);
+
     setOp(e.target.value);
     // setProduct(updatedProduct);
   };
-  console.log(op);
+
   const arrReportType = [
     { value: "Active", label: "Hoạt động" },
     { value: "InActive", label: "Không hoạt động" },
@@ -131,9 +128,6 @@ export default function AdminActivity() {
 
   const saveProduct = async () => {
     let productItem = { ...product };
-    console.log(productItem.user?.email);
-    console.log(productItem.user?.fullName);
-    console.log(productItem?.title);
     setSubmitted(true);
 
     SendEmail(
@@ -327,10 +321,7 @@ export default function AdminActivity() {
           outlined
           className="mr-2"
           onClick={() => {
-            console.log(rowData);
-            console.log(rowData.user?.email);
-            console.log(rowData.user?.username);
-            console.log(rowData.title);
+
             setIsOpen(true);
             setActivity(rowData);
           }}

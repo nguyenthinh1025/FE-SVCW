@@ -17,7 +17,7 @@ export default function UpdateFanpage (props) {
   const [isLoading1, setIsLoading1] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadProgress1, setUploadProgress1] = useState(0);
-  console.log(fanpageId);
+
 
   const formik = useFormik({
     initialValues: {
@@ -32,7 +32,7 @@ export default function UpdateFanpage (props) {
     },
     enableReinitialize: true,
     onSubmit: async (value) => {
-      console.log(value);
+
       const action = await UpdateFanpageAction(value, value.fanpageId);
       await dispatch(action);
       handleClickUpdate();
@@ -50,15 +50,14 @@ export default function UpdateFanpage (props) {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
+
         // setShowInput(false);
         setUploadProgress(progress);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
+
           // const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           // setProduct(updatedProduct);
           formik.setFieldValue("avatar", url);
@@ -81,16 +80,12 @@ export default function UpdateFanpage (props) {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        // console.log(snapshot);
-        // setShowInput(false);
+
         setUploadProgress1(progress);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
-          // const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
-          // setProduct(updatedProduct);
           formik.setFieldValue("coverImage", url);
         });
       }

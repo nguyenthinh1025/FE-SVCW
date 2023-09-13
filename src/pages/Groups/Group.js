@@ -15,7 +15,7 @@ export default function Group () {
 
     const handleFollowClick = (index, activity, isFollow, title) => {
         if (isFollow) {
-            console.log("Hủy theo dõi");
+
             const action = UnFollowFanpageAction(userID, activity);
             dispatch(action);
             const Toast = Swal.mixin({
@@ -35,7 +35,7 @@ export default function Group () {
                 title: `Bỏ theo dõi thành công chiến dịch ${title}`,
             });
         } else {
-            console.log("Theo dõi");
+
             const action = FollowFanpageAction(userID, activity);
             dispatch(action);
             const Toast = Swal.mixin({
@@ -78,7 +78,6 @@ export default function Group () {
                                                     item?.followFanpage?.map((user) => {
                                                         if (user.userId === userID) {
                                                             isAlreadyFollowed = user.status;
-                                                            console.log(user.fanpageName, isAlreadyFollowed);
                                                         }
                                                     });
                                                     return <div className="col-lg-3 col-md-4 col-sm-4" >

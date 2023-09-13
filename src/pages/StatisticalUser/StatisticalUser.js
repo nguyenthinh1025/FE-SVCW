@@ -10,28 +10,37 @@ const StatisticalUser = (props) => {
   const handleOptionClick = (value) => {
     setSelectedValue(value);
   };
-  console.log(selectedValue);
+
   const dispatch = useDispatch();
   const { arrStatical } = useSelector((root) => root.StatisticalReducer);
+  console.log(arrStatical);
   useEffect(() => {
-    const action = GetStatisticalAction(localStorage.getItem("userID"));
+    const action = GetStatisticalAction(localStorage.getItem("userID"), year);
     dispatch(action);
   }, []);
-  console.log(arrStatical);
-
+  const [year, setYear] = useState("2023");
+  console.log(year);
   const arr = arrStatical?.map((item, index) => {
     return selectedValue ? item.donated : item.totalDonate;
   });
-
-  console.log(arr);
+  const arr1 = arrStatical?.map((item, index) => {
+    return selectedValue
+      ? item.totalNumberActivityCreate
+      : item.totalNumberActivityCreate;
+  });
 
   const series = [
     {
-      name: "Desktops",
+      name: "Tổng tiền",
       data: arr,
     },
   ];
-
+  const series1 = [
+    {
+      name: "Tổng chiến dịch",
+      data: arr1,
+    },
+  ];
   const options = {
     chart: {
       height: 350,
@@ -145,10 +154,35 @@ const StatisticalUser = (props) => {
                           id="allposts"
                         >
                           <div className="main-wraper">
-                            <div className="main-title">Thống kê số chiến dịch đã tạo </div>
+                            <div style={{ display: "flex" }}>
+                              <div className="main-title">
+                                Thống kê số chiến dịch đã tạo năm {year}
+                              </div>
+                              <select
+                                style={{
+                                  width: "80px",
+                                  height: "20px",
+                                  border: "transparent",
+                                }}
+                                onClick={(e) => {
+                                  setYear(e.target.value);
+                                  const action = GetStatisticalAction(
+                                    localStorage.getItem("userID"),
+                                    e.target.value
+                                  );
+                                  dispatch(action);
+                                }}
+                              >
+                                <option value="2022">2022</option>
+                                <option value="2023" selected>
+                                  2023
+                                </option>
+                                <option value="2024">2024</option>
+                              </select>
+                            </div>
                             <ReactApexChart
                               options={options}
-                              series={series}
+                              series={series1}
                               type="line"
                               height={350}
                             />
@@ -156,7 +190,32 @@ const StatisticalUser = (props) => {
                         </div>
                         <div className="tab-pane fade" id="members">
                           <div className="main-wraper">
-                            <h4 className="main-title">Thống kê số tiền đã ủng hộ </h4>
+                            <div style={{ display: "flex" }}>
+                              <div className="main-title">
+                                Thống kê số tiền đã ủng hộ {year}
+                              </div>
+                              <select
+                                style={{
+                                  width: "80px",
+                                  height: "20px",
+                                  border: "transparent",
+                                }}
+                                onClick={(e) => {
+                                  setYear(e.target.value);
+                                  const action = GetStatisticalAction(
+                                    localStorage.getItem("userID"),
+                                    e.target.value
+                                  );
+                                  dispatch(action);
+                                }}
+                              >
+                                <option value="2022">2022</option>
+                                <option value="2023" selected>
+                                  2023
+                                </option>
+                                <option value="2024">2024</option>
+                              </select>
+                            </div>
                             <ReactApexChart
                               options={options}
                               series={series}

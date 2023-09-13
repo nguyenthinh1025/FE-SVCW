@@ -77,7 +77,7 @@ export default function DetailFanpage(props) {
                         <ul>
                           <li>
                             <span>Ngày tạo: </span>
-                            {moment(fanpageId?.createAt).format("DD-MM-YYYY")}
+                            {moment(fanpageId?.createAt).format("DD/MM/YYYY")}
                           </li>
                           <li>
                             <span>Số điện thoại: </span> {fanpageId?.phone}
@@ -91,6 +91,7 @@ export default function DetailFanpage(props) {
                             {fanpageId?.numberFollow}
                           </li>
                         </ul>
+                        
                         <ul className="more-grp-info">
                           <li>
                             <form className="c-form" method="post">
@@ -135,7 +136,22 @@ export default function DetailFanpage(props) {
                               <div></div>
                             )}
                           </li>
+                          
+                          
+                       
                         </ul>
+                        <div className="main-wraper mt-4">
+                            <div className="grp-about">
+                              <div className="row">
+                                <div className="col-lg-8 col-md-6">
+                                  <h4>Chi tiết</h4>
+                                  <ul className="badges">
+                                  {fanpageId?.description}
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                       </div>
                       <ListActivityFanpage
                         arrActivity={fanpageId?.activity}

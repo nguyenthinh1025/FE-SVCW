@@ -62,7 +62,6 @@ export default function CreateActivity() {
     setIsLoading(true);
     const fileList = e.target.files;
 
-    console.log(fileList);
     const newImages = [];
 
     for (let i = 0; i < fileList.length; i++) {
@@ -120,7 +119,6 @@ export default function CreateActivity() {
     // enableReinitialize: true,
     enableReinitialize: false,
     onSubmit: async (value) => {
-      console.log(value);
       const action = await CreateActivityAction(value, setCreate);
       await dispatch(action);
       formik.setFieldValue("title", "");
@@ -145,7 +143,6 @@ export default function CreateActivity() {
       setIsDisplay(false);
     },
   });
-  console.log(create);
 
   const process = processType?.map((item, index) => {
     return {
@@ -176,8 +173,6 @@ export default function CreateActivity() {
   ]);
   const addInputField = () => {
     if (error === "1") {
-      console.log(inputFields);
-      console.log(localStorage.getItem("startactivity"));
       setInputFields([
         ...inputFields,
         {
@@ -234,7 +229,6 @@ export default function CreateActivity() {
         updatedInputFields[index].startDate
       )
     ) {
-      console.log("trước ngày tạo");
       Swal.fire({
         title: "Cảnh báo",
         text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(
@@ -252,7 +246,6 @@ export default function CreateActivity() {
         updatedInputFields[index].startDate
       )
     ) {
-      console.log("trước ngày tạo");
       Swal.fire({
         title: "Cảnh báo",
         text: `Ngày bắt đầu hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(
@@ -270,7 +263,6 @@ export default function CreateActivity() {
         updatedInputFields[index].endDate
       )
     ) {
-      console.log("sau ngày tạo");
       Swal.fire({
         title: "Cảnh báo",
         text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(
@@ -288,7 +280,6 @@ export default function CreateActivity() {
         updatedInputFields[index].endDate
       )
     ) {
-      console.log("sau ngày tạo 1");
       Swal.fire({
         title: "Cảnh báo",
         text: `Ngày kết thúc hoạt động không bé hơn ngày bắt đầu chiến dịch! ${moment(
@@ -314,7 +305,6 @@ export default function CreateActivity() {
         zIndex: 999,
       });
       setError("2");
-      console.log("1");
     } else {
       setError("1");
     }
@@ -325,7 +315,6 @@ export default function CreateActivity() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (error === "1") {
-      console.log(inputFields);
       const text = inputFields.map((item, index) => {
         return {
           processTitle: item.processTitle,
@@ -347,8 +336,6 @@ export default function CreateActivity() {
           media: item.media,
         };
       });
-      console.log(text);
-      console.log(localStorage.getItem("startactivity"));
       const action1 = await CreateProcessAction(text, handleClick1);
       dispatch(action1);
     } else {
@@ -417,13 +404,11 @@ export default function CreateActivity() {
       newImageUrls[index] = uploadedImageUrls;
       return newImageUrls;
     });
-    console.log(imageUrls1);
   };
 
   useEffect(() => {
     const user = localStorage.getItem("userID");
     if (user) {
-      console.log("có user");
       const action = GetUserByIdAction(user);
       dispatch(action);
     }
@@ -458,7 +443,7 @@ export default function CreateActivity() {
             className="popupPost"
             style={{
               width: 800,
-              height: "100vh",
+              height: "90vh",
               overflowY: "scroll",
               margin: "1rem",
             }}
@@ -547,6 +532,7 @@ export default function CreateActivity() {
                         value={formik.values.startDate}
                         id="name"
                         className="form-control"
+                        // min={new Date().toISOString().split("T")[0]}
                         required
                       />
                     </div>
@@ -563,6 +549,7 @@ export default function CreateActivity() {
                         value={formik.values.endDate}
                         id="name"
                         className="form-control"
+                        // min={new Date().toISOString().split("T")[0]}
                         required
                       />
                     </div>
@@ -589,31 +576,7 @@ export default function CreateActivity() {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6"></div>
 
-                  <div className="col-md-12">
-                    <div style={{ height: "200px", width: "100%" }}>
-                      <GoogleMapReact
-                        bootstrapURLKeys={{
-                          key: "AIzaSyBEg-cDilr_ZSqVWMdXNVm4Wn9mo-KOKOI",
-                        }}
-                        defaultCenter={coords}
-                        center={coords}
-                        defaultZoom={11}
-                      >
-                        <AnyReactComponent
-                          lat={coords.lat}
-                          lng={coords.lng}
-                          text={
-                            <i
-                              class="icofont-location-pin"
-                              style={{ fontSize: "3rem", color: "red" }}
-                            ></i>
-                          }
-                        />
-                      </GoogleMapReact>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="row">
@@ -755,7 +718,6 @@ export default function CreateActivity() {
                       className="btn btn-success btn-block"
                       onClick={async () => {
                         if (formik.values.location !== "") {
-                          console.log(formik.values);
                           const action = await CreateActivityAction(
                             formik.values,
                             setCreate
@@ -920,7 +882,7 @@ export default function CreateActivity() {
                                 Ngày bắt đầu
                               </label>
                               <input
-                                type="date"
+                                type="datetime-local"
                                 name="startDate"
                                 value={data.startDate}
                                 onChange={(event) =>
@@ -942,7 +904,7 @@ export default function CreateActivity() {
                                 Ngày kết thúc
                               </label>
                               <input
-                                type="date"
+                                type="datetime-local"
                                 name="endDate"
                                 value={data.endDate}
                                 onChange={(event) =>

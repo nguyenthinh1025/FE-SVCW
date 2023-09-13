@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { history } from "../../App";
 import { http } from "../../utils/reponse";
 import { ConfigActivityAction } from "./ConfigActivityAction";
@@ -8,7 +9,6 @@ export const LoginUserAction = (value, props) => {
     return async (dispatch) => {
         try {
             let result = await http.post(`/User/validate-login-user`, value);
-            console.log(result.data.data.user?.userId);
             const action = {
                 type: "GET_USER_LOGIN",
                 userLogin: result.data.data,
@@ -36,7 +36,22 @@ export const LoginUserAction = (value, props) => {
                 const action = await ConfigActivityAction(email)
                 dispatch(action)
                 props.history.push("/home");
-
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener("mouseenter", Swal.stopTimer);
+                      toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                  });
+            
+                  Toast.fire({
+                    icon: "success",
+                    title: `Đăng nhập thành công`,
+                  });
 
 
             }
@@ -49,7 +64,6 @@ export const LoginUserMobileAction = (value, props) => {
     return async (dispatch) => {
         try {
             let result = await http.post(`/User/validate-login-user`, value);
-            console.log(result.data.data.user?.userId);
             const action = {
                 type: "GET_USER_LOGIN_MOBILE",
                 userIDMobile: result.data.data.user?.userId
@@ -89,7 +103,7 @@ export const LoginModeratorAction = (value, props) => {
     return async (dispatch) => {
         try {
             let result = await http.post(`/Moderator/login`, value);
-            console.log(result.data.data);
+           
             const action = {
                 type: "GET_MODERATOR_LOGIN",
                 moderator: result.data.data,
@@ -103,7 +117,7 @@ export const LoginModeratorAction = (value, props) => {
             }
             dispatch(action)
             dispatch(action1)
-            localStorage.setItem('moderator', result.data.data)
+            localStorage.setItem('moderator',JSON.stringify(result.data.data))
 
             props.history.push("/achivement");
         } catch (error) {

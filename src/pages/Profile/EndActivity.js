@@ -4,8 +4,7 @@ import Other from "../../components/Other";
 
 export default function EndActivity (props) {
   const { arrEndActivityByUserID, getUserId } = props;
-  console.log(arrEndActivityByUserID);
-  console.log(getUserId);
+
   return (
     <div className=" tab-pane fade show " id="endactivity">
       <div className="row merged20">

@@ -12,7 +12,6 @@ export const GetProfileByIdAction = (id) => {
         getUserId: result.data.data.user,
         arrActivityUser: result.data.data?.user?.activity,
       };
-      console.log(result.data.data.user);
       localStorage.setItem(
         "getuserid",
         JSON.stringify(result.data?.data?.user)

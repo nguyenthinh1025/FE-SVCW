@@ -4,7 +4,7 @@ export const GetListProcessTypeAction = () => {
     return async (dispatch) => {
         try {
             let result = await http.get('/ProcessType/get-all-process-Type');
-            console.log(result.data.data);
+           
             const action = {
                 type: "GET_LIST_PROCESSTYPE",
                 processType: result.data.data

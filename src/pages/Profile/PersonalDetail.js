@@ -27,7 +27,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
 
 
   const dispatch = useDispatch();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
   const [info, setInfo] = useState(arrActivity);
 
   const handleSubmit = async (e) => {
@@ -100,9 +100,6 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
       }
     }
 
-    // console.log(info);
-
-    // const action1 = UpdateProfileById(info);
     const action1 = UpdateProfileById(payload);
     await dispatch(action1);
     const Toast = Swal.mixin({
@@ -122,11 +119,6 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
       title: `Chỉnh sửa thông tin thành công`,
     });
 
-    // const action2 = GetProfileByIdAction(userDetails?.userId);
-    // const action2 = GetProfileByIdAction(localStorage.getItem('userID'));
-    // await dispatch(action2);
-
-    // setUserDetails(JSON.parse(localStorage.getItem('getuserid')));
     setIsEditing(false);
     setReloadData(!reloadData);
     setReloadPage(!reloadPage);
@@ -351,7 +343,8 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
                 type="date"
                 class="form-control-plaintext"
                 id="validationDefault06"
-                value={info?.dateOfBirth}
+                value={moment(info?.dateOfBirth).format('YYYY-MM-DD')}
+                max={new Date().toISOString().split("T")[0]}
                 onChange={(e) => {
 
 

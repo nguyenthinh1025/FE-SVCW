@@ -25,6 +25,7 @@ import AdminActivity from './pages/AdminActivity/AdminActivity';
 import Report from './pages/Report/Report';
 import LoginMobile from './pages/LoginMobile/LoginMobile';
 import HomeMobile from './pages/HomeMobile/HomeMobile';
+import ProfileModerator from './ProfileModerator/ProfileModerator';
 import Message from './pages/Message/Message';
 export const history = createBrowserHistory()
 
@@ -40,6 +41,7 @@ function App() {
         <AdminTemplate exact path="/adminfanpage" Component={AdminFanpage} />
         <AdminTemplate exact path="/adminactivity" Component={AdminActivity} />
         <AdminTemplate exact path="/report" Component={Report} />
+        <AdminTemplate exact path="/profilemoderator/:id" Component={ProfileModerator} />
         <UserTemplate path="/profile/:id" exact Component={Profile} />
         <UserTemplate path="/home" exact Component={Home} />
         <UserTemplate exact path="/fanpage/:id" Component={DetailFanpage} />

@@ -4,7 +4,7 @@ export const GetListReportTypeAction = () => {
     return async (dispatch) => {
         try {
             let result = await http.get('/ReportType/get-all-Report-Type');
-            console.log(result.data.data);
+           
             const action = {
                 type: "GET_LIST_REPORTTYPE",
                 reportType: result.data.data

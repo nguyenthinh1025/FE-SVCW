@@ -6,10 +6,8 @@ export const DonationAction = (value,openPopup) => {
   return async (dispatch) => {
     try {
       let result = await http.post("/Donation/create-Donation-activity", value);
-      console.log(result.data.data?.donationId);
       const action = GetListActivityAction();
       dispatch(action);
-      console.log(result.data.data?.donationId);
       const action1 = VNPayAction(result.data.data?.donationId);
       dispatch(action1);
       const action2 = {
@@ -20,7 +18,6 @@ export const DonationAction = (value,openPopup) => {
       openPopup()
     } catch (error) {
       console.log(error);
-      console.log(error.response?.data?.message);
       const action2 = {
         type: "DONATE",
         message: error.response?.data?.message,
@@ -37,6 +34,20 @@ export const HistoryDonationAction = (value) => {
       const action = {
         type: "GET_LIST_HISTORYDONATION",
         arrDonation: result.data.data,
+      };
+      dispatch(action);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const ListHistoryDonationAction = () => {
+  return async (dispatch) => {
+    try {
+      let result = await http.get("/Donation/get-Donation");
+      const action = {
+        type: "GET_LIST_DONATION_DONE",
+        arrDonationDone: result.data.data,
       };
       dispatch(action);
     } catch (error) {
