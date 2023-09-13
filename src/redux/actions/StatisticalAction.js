@@ -1,22 +1,22 @@
 import { http } from "../../utils/reponse";
 
-export const GetStatisticalAction = (id) => {
+export const GetStatisticalAction = (id, year) => {
     return async (dispatch) => {
 
         try {
             const months = [
-                { name: 'Tháng 1', start: '2023-01-01', end: '2023-01-31' },
-                { name: 'Tháng 2', start: '2023-02-01', end: '2023-02-28' },
-                { name: 'Tháng 3', start: '2023-03-01', end: '2023-03-31' },
-                { name: 'Tháng 4', start: '2023-04-01', end: '2023-04-30' },
-                { name: 'Tháng 5', start: '2023-05-01', end: '2023-05-31' },
-                { name: 'Tháng 6', start: '2023-06-01', end: '2023-06-30' },
-                { name: 'Tháng 7', start: '2023-07-01', end: '2023-07-31' },
-                { name: 'Tháng 8', start: '2023-08-01', end: '2023-08-31' },
-                { name: 'Tháng 9', start: '2023-09-01', end: '2023-09-30' },
-                { name: 'Tháng 10', start: '2023-10-01', end: '2023-10-31' },
-                { name: 'Tháng 11', start: '2023-11-01', end: '2023-11-30' },
-                { name: 'Tháng 12', start: '2023-12-01', end: '2023-12-31' }
+                { name: 'Tháng 1', start: `${year}-01-01`, end: `${year}-01-31` },
+                { name: 'Tháng 2', start: `${year}-02-01`, end: `${year}-02-28` },
+                { name: 'Tháng 3', start: `${year}-03-01`, end: `${year}-03-31` },
+                { name: 'Tháng 4', start: `${year}-04-01`, end: `${year}-04-30` },
+                { name: 'Tháng 5', start: `${year}-05-01`, end: `${year}-05-31` },
+                { name: 'Tháng 6', start: `${year}-06-01`, end: `${year}-06-30` },
+                { name: 'Tháng 7', start: `${year}-07-01`, end: `${year}-07-31` },
+                { name: 'Tháng 8', start: `${year}-08-01`, end: `${year}-08-31` },
+                { name: 'Tháng 9', start: `${year}-09-01`, end: `${year}-09-30` },
+                { name: 'Tháng 10', start: `${year}-10-01`, end: `${year}-10-31` },
+                { name: 'Tháng 11', start: `${year}-11-01`, end: `${year}-11-30` },
+                { name: 'Tháng 12', start: `${year}-12-01`, end: `${year}-12-31` }
             ];
 
             const allMonthsData = [];

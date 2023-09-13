@@ -15,10 +15,11 @@ const StatisticalUser = (props) => {
   const { arrStatical } = useSelector((root) => root.StatisticalReducer);
   console.log(arrStatical);
   useEffect(() => {
-    const action = GetStatisticalAction(localStorage.getItem("userID"));
+    const action = GetStatisticalAction(localStorage.getItem("userID"), year);
     dispatch(action);
   }, []);
-
+  const [year, setYear] = useState("2023");
+  console.log(year);
   const arr = arrStatical?.map((item, index) => {
     return selectedValue ? item.donated : item.totalDonate;
   });
@@ -155,11 +156,28 @@ const StatisticalUser = (props) => {
                           <div className="main-wraper">
                             <div style={{ display: "flex" }}>
                               <div className="main-title">
-                                Thống kê số chiến dịch đã tạo{" "}
+                                Thống kê số chiến dịch đã tạo năm {year}
                               </div>
-                              <select style={{ width: "80px", height: "20px" }}>
-                                <option>2023</option>
-                                <option>2024</option>
+                              <select
+                                style={{
+                                  width: "80px",
+                                  height: "20px",
+                                  border: "transparent",
+                                }}
+                                onClick={(e) => {
+                                  setYear(e.target.value);
+                                  const action = GetStatisticalAction(
+                                    localStorage.getItem("userID"),
+                                    e.target.value
+                                  );
+                                  dispatch(action);
+                                }}
+                              >
+                                <option value="2022">2022</option>
+                                <option value="2023" selected>
+                                  2023
+                                </option>
+                                <option value="2024">2024</option>
                               </select>
                             </div>
                             <ReactApexChart
@@ -172,9 +190,32 @@ const StatisticalUser = (props) => {
                         </div>
                         <div className="tab-pane fade" id="members">
                           <div className="main-wraper">
-                            <h4 className="main-title">
-                              Thống kê số tiền đã ủng hộ{" "}
-                            </h4>
+                            <div style={{ display: "flex" }}>
+                              <div className="main-title">
+                                Thống kê số tiền đã ủng hộ {year}
+                              </div>
+                              <select
+                                style={{
+                                  width: "80px",
+                                  height: "20px",
+                                  border: "transparent",
+                                }}
+                                onClick={(e) => {
+                                  setYear(e.target.value);
+                                  const action = GetStatisticalAction(
+                                    localStorage.getItem("userID"),
+                                    e.target.value
+                                  );
+                                  dispatch(action);
+                                }}
+                              >
+                                <option value="2022">2022</option>
+                                <option value="2023" selected>
+                                  2023
+                                </option>
+                                <option value="2024">2024</option>
+                              </select>
+                            </div>
                             <ReactApexChart
                               options={options}
                               series={series}

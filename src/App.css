@@ -1506,3 +1506,40 @@ i.fa.fa-arrow-up {
   bottom: -438px;
   left: -447px;
 }
+
+.prof-complete-1 {
+  height: 50px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  /* border: 1px solid #ccc; */
+  
+}
+
+.prof-complete-1 li {
+  color: #0077b6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #f9f9f9;
+  animation: moveUp 2s linear infinite; /* Thêm animation vào đây */
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.prof-complete-1 span {
+  flex-grow: 1;
+}
+
+.prof-complete-1 em {
+  margin-left: 10px;
+}

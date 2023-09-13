@@ -15,7 +15,6 @@ export default function ResultActivity (props) {
   const { popupStyle1, handleClick1, isOpen1, idActivity } = props;
   const { activityId } = useSelector((root) => root.ActivityReducer);
   const { arrEndActivityID } = useSelector((root) => root.EndActivityReducer);
-  console.log(arrEndActivityID);
 
   const [isFolowJoin, setIsFolowJoin] = useState(false);
   const [listFolowJoin, setFolowJoin] = useState([]);

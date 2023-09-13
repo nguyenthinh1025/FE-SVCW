@@ -19,6 +19,7 @@ import RecommentActivity from '../../components/RecommentActivity';
 import { GetListProcessTypeAction } from '../../redux/actions/ProcessTypeAction';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
+import ListDonateDone from '../../components/ListDonateDone';
 export default function Home (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector((root) => root.LoginReducer);
@@ -70,7 +71,9 @@ export default function Home (props) {
                                     <div className="col-lg-3">
                                         <aside className="sidebar static left">
                                             <Clock />
+                                            <ListDonateDone />
                                             <CompleteInfo />
+                                          
                                         </aside>
                                     </div>
                                     <div className="col-lg-6">
