@@ -43,7 +43,7 @@ import CreateResultActivity from "../pages/Result/CreateResultActivity";
 import ResultActivity from "../pages/Result/ResultActivity";
 import { SendEmail } from "../utils/emailService";
 
-export default function ItemActivity (props) {
+export default function ItemActivity(props) {
   const [share, setShare] = useState(false);
   const [shareActivityID, setShareActivityID] = useState("");
   const handleClickShare = () => {
@@ -123,10 +123,10 @@ export default function ItemActivity (props) {
               />
             </figure>
             <div className="commenter">
-              <h5 style={{color:'rgb(8, 141, 205)'}}>
-               
-                  {item.user?.username}
-               
+              <h5 style={{ color: 'rgb(8, 141, 205)' }}>
+
+                {item.user?.username}
+
               </h5>
               <span>{DateTime(item.datetime)}</span>
               <p>{item.commentContent}</p>
@@ -158,10 +158,10 @@ export default function ItemActivity (props) {
                       }
                     />
                   </figure>
-  
+
                   <div className="commenter">
-                    <h5 style={{color:'rgb(8, 141, 205)'}}>                     
-                        {reply.user?.username}{" "}
+                    <h5 style={{ color: 'rgb(8, 141, 205)' }}>
+                      {reply.user?.username}{" "}
                     </h5>
                     <span>{DateTime(reply.datetime)}</span>
                     <p>{reply.commentContent}</p>
@@ -175,11 +175,11 @@ export default function ItemActivity (props) {
     );
   };
   const visibleComments = showAllComments
-  ? ItemActivity.comment
-  : ItemActivity.comment.slice(0, 2);
+    ? ItemActivity.comment
+    : ItemActivity.comment.slice(0, 2);
   const handleClickCreate = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
-  };  const handleClick1 = () => {
+  }; const handleClick1 = () => {
     setIsOpen1((prevIsOpen) => !prevIsOpen);
   };
 
@@ -285,7 +285,7 @@ export default function ItemActivity (props) {
     }
     return timeAgoString;
   };
-  const handleJoinClick = async (index, activity, isJoin, title,process) => {
+  const handleJoinClick = async (index, activity, isJoin, title, process) => {
     if (isJoin === "Join") {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
@@ -293,8 +293,7 @@ export default function ItemActivity (props) {
       SendEmail(
         localStorage.getItem("emailuser"),
         "Thông báo thời gian diễn ra chiến dịch",
-        `Bạn đã tham gia thành công chiến dịch ${title} . Vui lòng đến địa chỉ ${
-          process[0]?.location
+        `Bạn đã tham gia thành công chiến dịch ${title} . Vui lòng đến địa chỉ ${process[0]?.location
         } từ ngày ${moment(process[0]?.startDate).format(
           "DD/MM/YYYY hh:mm A"
         )} đến ngày ${moment(process[0]?.endDate).format(
@@ -368,7 +367,7 @@ export default function ItemActivity (props) {
         <div className="user-post">
           <div className="friend-info">
             <figure>
-            
+
               <img
                 style={{ height: "40px", width: "40px" }}
                 alt
@@ -467,15 +466,15 @@ export default function ItemActivity (props) {
                         <i className="icofont-flag" />
                         Báo cáo bài đăng
                         <span>
-                          nhầm báo cáo những vấn đề bất thường đến cho người
+                          Nhằm báo cáo những vấn đề bất thường đến cho người
                           quản lý
                         </span>
                       </li>
                     ) : (
                       <div></div>
                     )}
-                       {endDate.isBefore(currentDate) === true &&
-                    userID === ItemActivity.userId ? (
+                    {endDate.isBefore(currentDate) === true &&
+                      userID === ItemActivity.userId ? (
                       <li
                         onClick={() => {
                           handleClickCreate();
@@ -490,9 +489,9 @@ export default function ItemActivity (props) {
                       <div></div>
                     )}
                     {endDate.isAfter(currentDate) === true &&
-                    ItemActivity?.process?.filter(
-                      (item) => item.processTypeId === "pt003"
-                    ).length > 0 ? (
+                      ItemActivity?.process?.filter(
+                        (item) => item.processTypeId === "pt003"
+                      ).length > 0 ? (
                       <li
                         onClick={() => {
                           // handleClickCreate();
@@ -511,8 +510,8 @@ export default function ItemActivity (props) {
                       <div></div>
                     )}
                     {endDate.isAfter(currentDate) === true &&
-                    userID === ItemActivity?.userId &&
-                    ItemActivity?.donation?.length > 0 ? (
+                      userID === ItemActivity?.userId &&
+                      ItemActivity?.donation?.length > 0 ? (
                       <li
                         onClick={() => {
                           handleClickDonate();
@@ -527,8 +526,8 @@ export default function ItemActivity (props) {
                       <div></div>
                     )}
                     {endDate.isAfter(currentDate) === true &&
-                    userID === ItemActivity.userId &&
-                    ItemActivity?.followJoinAvtivity?.length > 0 ? (
+                      userID === ItemActivity.userId &&
+                      ItemActivity?.followJoinAvtivity?.length > 0 ? (
                       <li
                         onClick={() => {
                           handleClickFolowJoin();
@@ -588,7 +587,7 @@ export default function ItemActivity (props) {
               </span>
             </div>
             <div className="post-meta">
-              
+
               <div className="row">
                 <div
                   style={{
@@ -750,7 +749,7 @@ export default function ItemActivity (props) {
                         <div className="mb-4 mt-4 name-user">
                           <p
                             style={{
-                              
+
                               fontWeight: "400",
                               fontSize: "15px",
                             }}
@@ -758,17 +757,17 @@ export default function ItemActivity (props) {
                             Đã quyên góp được <br />
                             <span
                               style={{
-                                
+
                                 fontSize: "15px",
                               }}
                             >
-                              <span style={{  fontSize: "15px" }}>
+                              <span style={{ fontSize: "15px" }}>
                                 {pro.realDonation.toLocaleString()}
                               </span>{" "}
                               đ /
                               <span
                                 style={{
-                                  
+
                                   fontSize: "15px",
                                 }}
                               >
@@ -778,23 +777,21 @@ export default function ItemActivity (props) {
                           </p>
 
                           <input
-                              type="range"
-                              min="0"
-                              max={pro.targetDonation}
-                              value={pro.realDonation}
-                              // onChange={handleChange}
-                              className="range-slider"
-                              style={{
-                                background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                  (pro.realDonation / pro.targetDonation) * 100
-                                }%, #ddd ${
-                                  (pro.realDonation / pro.targetDonation) * 100
+                            type="range"
+                            min="0"
+                            max={pro.targetDonation}
+                            value={pro.realDonation}
+                            // onChange={handleChange}
+                            className="range-slider"
+                            style={{
+                              background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(pro.realDonation / pro.targetDonation) * 100
+                                }%, #ddd ${(pro.realDonation / pro.targetDonation) * 100
                                 }%, #ddd 100%)`,
-                                width: "92%",
-                              }}
-                            />
-                            {pro.realDonation === 0 ? (
-                              <div
+                              width: "92%",
+                            }}
+                          />
+                          {pro.realDonation === 0 ? (
+                            <div
                               className="range-value"
                               style={{
                                 position: "absolute",
@@ -812,23 +809,23 @@ export default function ItemActivity (props) {
                               }
                               %
                             </div>
-                            ) : (
-                              <div style={{ position: "relative" }}>
-                                <div
-                                  className="range-value"
-                                  style={{
-                                    position: "absolute",
-                                    top: "-30px",
-                                    right: "-2px",
-                                  }}
-                                >
-                                  {((pro.realDonation / pro.targetDonation) *
-                                    100).toFixed(0)}
-                                  %
-                                </div>
+                          ) : (
+                            <div style={{ position: "relative" }}>
+                              <div
+                                className="range-value"
+                                style={{
+                                  position: "absolute",
+                                  top: "-30px",
+                                  right: "-2px",
+                                }}
+                              >
+                                {((pro.realDonation / pro.targetDonation) *
+                                  100).toFixed(0)}
+                                %
                               </div>
-                            )}
-                          </div>
+                            </div>
+                          )}
+                        </div>
                       )
                         : (
                           <div></div>
@@ -876,7 +873,7 @@ export default function ItemActivity (props) {
                     : "noprocessform")
                 }
               >
-                 {endDate.isBefore(currentDate) ? (
+                {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <button
@@ -911,9 +908,9 @@ export default function ItemActivity (props) {
                         if (pro.isParticipant === true) {
                           return (
                             <button
-                              className={` ${ isAlreadyJoined === "Join"
-                              ? "btn-change"
-                              : "btn-color"
+                              className={` ${isAlreadyJoined === "Join"
+                                ? "btn-change"
+                                : "btn-color"
                                 } mb-4 mt-4 btn-add ${ItemActivity.targetDonation !== 0
                                   ? "marginfollow"
                                   : "sas"
@@ -939,7 +936,7 @@ export default function ItemActivity (props) {
                   </div>
                 )}
 
-               
+
                 {endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
@@ -1037,8 +1034,8 @@ export default function ItemActivity (props) {
                     <div
                       style={{
                         fontSize: "15px",
-                      }}  
-                       className="name-user"
+                      }}
+                      className="name-user"
                     >
                       <span>
                         {(ItemActivity.comment
@@ -1227,7 +1224,7 @@ export default function ItemActivity (props) {
                     <CommentComponent key={index} item={item} />
                   ))}
                   {ItemActivity.comment.length > 2 && !showAllComments && (
-                    <div onClick={handleShowAll} className="" style={{color:"rgb(8, 141, 205)", cursor:'pointer'}}>Xem thêm...</div>
+                    <div onClick={handleShowAll} className="" style={{ color: "rgb(8, 141, 205)", cursor: 'pointer' }}>Xem thêm...</div>
                   )}
                 </form>
               </div>
@@ -1260,7 +1257,7 @@ export default function ItemActivity (props) {
         idActivity={idActivity}
         isOpen={isOpen}
       />
-       <ResultActivity
+      <ResultActivity
         popupStyle1={popupStyle1}
         handleClick1={handleClick1}
         isOpen1={isOpen1}

@@ -26,9 +26,10 @@ import Report from './pages/Report/Report';
 import LoginMobile from './pages/LoginMobile/LoginMobile';
 import HomeMobile from './pages/HomeMobile/HomeMobile';
 import ProfileModerator from './ProfileModerator/ProfileModerator';
+import Message from './pages/Message/Message';
 export const history = createBrowserHistory()
 
-function App () {
+function App() {
   return (
     <Router history={history}>
       <Switch>
@@ -44,6 +45,7 @@ function App () {
         <UserTemplate path="/profile/:id" exact Component={Profile} />
         <UserTemplate path="/home" exact Component={Home} />
         <UserTemplate exact path="/fanpage/:id" Component={DetailFanpage} />
+        <UserTemplate exact path="/message" Component={Message} />
         <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
         <UserTemplate exact path="/history" Component={Result} />
         <UserTemplate exact path="/statisticaluser" Component={StatisticalUser} />

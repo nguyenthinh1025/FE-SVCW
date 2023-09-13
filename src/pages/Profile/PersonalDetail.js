@@ -407,7 +407,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
             </div>
             <div style={{ marginTop: 10 }}>
               <button className="btn btn-primary" type="submit">
-                Hoàn thành
+                Xong
               </button>
               <button
                 style={{ marginLeft: 10 }}

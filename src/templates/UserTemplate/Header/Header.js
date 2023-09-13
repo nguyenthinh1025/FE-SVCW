@@ -49,6 +49,7 @@ export default function Header(props) {
           <img src="../images/logo.png" alt />
           <span>SVCW</span>
         </NavLink>
+
         <div className="searches">
           <form method="post" onSubmit={formik.handleSubmit}>
             <input
@@ -81,17 +82,19 @@ export default function Header(props) {
                     <i className="icofont-close-circled" />
                   </span>
                 </li>
-               
               </ul>
             </div>
           </form>
         </div>
-        <ul className="web-elements" style={{}}>
+        {/* Search box left */}
+
+        <ul className="web-elements" style={{ width: 400 }}>
           <li>
             <div className="user-dp">
               <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
                 <img
-                  alt
+                  alt=''
+                  sizes=''
                   src={
                     getUserId?.image === "none"
                       ? "../images/avatar.jpg"
@@ -104,7 +107,7 @@ export default function Header(props) {
               </NavLink>
             </div>
           </li>
-          
+
           <li>
             <a
               href="http://localhost:3000/home"
@@ -130,10 +133,11 @@ export default function Header(props) {
               </i>
             </a>
           </li>
+
           <li>
             <a
               className="mesg-notif"
-              href="#"
+              href="http://localhost:3000/message"
               title="Tin Nhắn"
               data-toggle="tooltip"
             >
@@ -183,15 +187,7 @@ export default function Header(props) {
             </a>
             <span />
           </li>
-          {/* <li>
-                        <a className="create" href="#" title="Add New" data-toggle="tooltip">
-                            <i>
-                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus">
-                                    <line x1={12} y1={5} x2={12} y2={19} />
-                                    <line x1={5} y1={12} x2={19} y2={12} />
-                                </svg></i>
-                        </a>
-                    </li> */}
+
           <li className="test">
             <a href="#" className="create">
               <i>
@@ -275,7 +271,11 @@ export default function Header(props) {
               </li>
             </ul>
           </li>
+          {/* Drop box header */}
+
         </ul>
+        {/* Function buttons right */}
+
       </div>
     </header>
   );
