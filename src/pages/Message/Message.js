@@ -167,7 +167,7 @@ export default function Message() {
             const messages = await addDoc(messagesRef, {
                 type: "pm",
                 content: formData.message,
-                roomId: chatRoom?.roomId,
+                // roomId: chatRoom?.roomId,
                 userId: userMsgs.length === 0 ? 'Hi! ✌️' : getUserId?.userId,
                 timestamp: Timestamp.fromDate(new Date()),
             });
