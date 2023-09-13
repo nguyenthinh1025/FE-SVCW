@@ -3,7 +3,9 @@ import { Timestamp, addDoc, collection, doc, getDoc, onSnapshot, orderBy, query,
 import { firestore } from '../../firebase';
 import { useSelector } from 'react-redux';
 
-export default function Message() {
+export default function Message(props) {
+    const { id } = props.match.params;
+    console.log('test Is get: ', id);
     const { getUserId, arrActivityUser } = useSelector(
         (root) => root.ProfileReducer
     );
@@ -18,6 +20,17 @@ export default function Message() {
     const userRef = doc(firestore, "users", getUserId.userId);
     const messagesRef = collection(firestore, "messages");
 
+    // function insertSpaceAtIndexN(inputString, n) {
+    //     let spaceIndex = inputString.indexOf(' ');
+
+    //     // Nếu không tìm thấy khoảng trắng hoặc vị trí của khoảng trắng đầu tiên lớn hơn n
+    //     if (spaceIndex === -1 || spaceIndex >= n) {
+    //         spaceIndex = n;
+    //         const result = inputString.slice(0, spaceIndex) + ' ' + inputString.slice(spaceIndex + 1);
+    //         return insertSpaceAtIndexN(result, n);
+    //     }
+    //     return inputString;
+    // }
 
     const scrollToBottom = () => {
         if (lastChatRef.current) {
@@ -71,7 +84,7 @@ export default function Message() {
         // Check if the timestamp is from today
 
     }
-
+    //Hàm này là chỉ để lấy user (chatter - me) 
     const getChatter = async () => {
 
         const docRef = doc(firestore, "users", getUserId.userId);
@@ -124,7 +137,17 @@ export default function Message() {
         }
         return setChatter(newUser.data());
     }
-        ;
+
+    // Hàm get Chat Room (tạo mới nếu chưa có @@)
+    const getChatRoom = async () => {
+        const docRef = doc(firestore, "users", getUserId.userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+        }
+    }
+
     useEffect(() => {
         const ct = getChatter()
         setChatter(ct);
@@ -168,6 +191,7 @@ export default function Message() {
                 type: "pm",
                 content: formData.message,
                 // roomId: chatRoom?.roomId,
+                username: chatter?.username,
                 userId: userMsgs.length === 0 ? 'Hi! ✌️' : getUserId?.userId,
                 timestamp: Timestamp.fromDate(new Date()),
             });
@@ -194,22 +218,22 @@ export default function Message() {
                                                 <h3 className="main-title">Groups</h3>
                                                 <div className="message-header">
                                                     <div className="useravatar">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Laila</span>
                                                         <div className="status offline" />
                                                     </div>
                                                     <div className="useravatar">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Noah</span>
                                                         <div className="status offline" />
                                                     </div>
                                                     <div className="useravatar">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Maria</span>
                                                         <div className="status offline" />
                                                     </div>
                                                     <div className="useravatar">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Ellie</span>
                                                         <div className="status offline" />
                                                     </div>
@@ -218,27 +242,27 @@ export default function Message() {
                                                 <h3 className="main-title">Friends</h3>
                                                 <div className="message-header">
                                                     <div className="useravatar active">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Oliver</span>
                                                         <div className="status away" />
                                                     </div>
                                                     <div className="useravatar">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Sarah</span>
                                                         <div className="status online" />
                                                     </div>
                                                     <div className="useravatar">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Andrew</span>
                                                         <div className="status offline" />
                                                     </div>
                                                     <div className="useravatar">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Mikaly</span>
                                                         <div className="status online" />
                                                     </div>
                                                     <div className="useravatar">
-                                                        <img src="images/default-avt.png" alt />
+                                                        <img src="../images/default-avt.png" alt />
                                                         <span>Bumsy</span>
                                                         <div className="status away" />
                                                     </div>
@@ -266,40 +290,49 @@ export default function Message() {
                                                                         <li
                                                                             key={index}
                                                                             ref={isLastMessage ? lastChatRef : null}
+                                                                            style={{
+                                                                                display: 'inline-flex',
+                                                                                flexDirection: getUserId?.userId === msg?.userId ? 'row-reverse' : '',
+                                                                                marginBottom: 0
+                                                                            }}
                                                                             className={getUserId?.userId === msg?.userId ? 'me' : 'you'}>
-                                                                            {/* <figure><img alt={'Avatar'} src={chatter.image !== 'none' ? chatter.image : "images/default-avt.png"} /></figure> */}
-                                                                            <figure><img style={{ backgroundColor: 'white', width: 30, height: 30, objectFit: 'hidden', borderRadius: '100%' }} alt={'Avatar'} src={chatter?.image === 'none' ? "images/default-avt.png" : chatter?.image} /></figure>
-                                                                            <p>{msg.content}</p>
+                                                                            {/* <figure><img alt={'Avatar'} src={chatter.image !== 'none' ? chatter.image : "../images/default-avt.png"} /></figure> */}
+                                                                            <figure style={{ display: 'flex', flexDirection: 'column-reverse' }}><img style={{ backgroundColor: 'white', width: 30, height: 30, objectFit: 'hidden', borderRadius: '100%' }} alt={'Avatar'} src={chatter?.image === 'none' ? "../images/default-avt.png" : chatter?.image} /></figure>
+
+                                                                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: getUserId?.userId === msg?.userId ? 'flex-end' : 'flex-start' }}>
+                                                                                <h5 style={{ fontSize: 11, marginBottom: '2px', marginLeft: '19px', marginRight: '19px' }} href='#' alt=''>{getUserId?.userId === msg?.userId ? '' : msg?.username}</h5>
+                                                                                <p style={{ display: 'inline-flex', marginBottom: '1', wordWrap: 'break-word', overflow: 'hidden' }}>{msg.content}</p>
+                                                                            </div>
                                                                         </li>
                                                                     )
                                                                 }))
                                                             }
                                                             {/* <li className="you">
-                                                                        <figure><img src="images/resources/userlist-2.jpg" alt /></figure>
+                                                                        <figure><img src="../images/resources/userlist-2.jpg" alt /></figure>
                                                                         <p>what's liz short for? :)</p>
                                                                     </li>
                                                                     <li className="me">
-                                                                        <figure><img src="images/smiles/angry-1.png" alt /></figure>
-                                                                        <p><img src="images/smiles/angry-1.png" alt /></p>
+                                                                        <figure><img src="../images/smiles/angry-1.png" alt /></figure>
+                                                                        <p><img src="../images/smiles/angry-1.png" alt /></p>
                                                                     </li>
                                                                     <li className="me">
-                                                                        <figure><img src="images/resources/userlist-1.jpg" alt /></figure>
+                                                                        <figure><img src="../images/resources/userlist-1.jpg" alt /></figure>
                                                                         <p>wanna know whats my second guess was?</p>
                                                                     </li>
                                                                     <li className="you">
-                                                                        <figure><img src="images/resources/userlist-2.jpg" alt /></figure>
+                                                                        <figure><img src="../images/resources/userlist-2.jpg" alt /></figure>
                                                                         <p>yes</p>
                                                                     </li>
                                                                     <li className="me">
-                                                                        <figure><img src="images/resources/userlist-1.jpg" alt /></figure>
+                                                                        <figure><img src="../images/resources/userlist-1.jpg" alt /></figure>
                                                                         <p>Disney's the lizard king</p>
                                                                     </li>
                                                                     <li className="me">
-                                                                        <figure><img src="images/resources/userlist-1.jpg" alt /></figure>
+                                                                        <figure><img src="../images/resources/userlist-1.jpg" alt /></figure>
                                                                         <p>i know him 5 years ago</p>
                                                                     </li>
                                                                     <li className="you">
-                                                                        <figure><img src="images/resources/userlist-2.jpg" alt /></figure>
+                                                                        <figure><img src="../images/resources/userlist-2.jpg" alt /></figure>
                                                                         <p>coooooooooool dude ;)</p>
                                                                     </li> */}
                                                         </ul>
@@ -315,7 +348,7 @@ export default function Message() {
                                                                 <a href="#" title><i className="icofont-contact-add" /> Share Contact</a>
                                                             </div>
                                                             <form onSubmit={handleSend} >
-                                                                <span className="emojie"><img src="images/smiles/happy.png" alt /></span>
+                                                                <span className="emojie"><img src="../images/smiles/happy.png" alt /></span>
                                                                 <textarea
                                                                     rows={1}
                                                                     placeholder="Nhắn tin"
@@ -348,7 +381,7 @@ export default function Message() {
                                                 </div>
                                             </div>
                                             <div className="short-intro">
-                                                <figure><img style={{ backgroundColor: 'white', width: 300, height: 300, objectFit: 'hidden', borderRadius: '100%' }} src={chatter?.image === 'none' ? "images/default-avt.png" : chatter?.image} alt='' sizes='' /></figure>
+                                                <figure><img style={{ backgroundColor: 'white', width: 300, height: 300, objectFit: 'hidden', borderRadius: '100%' }} src={chatter?.image === 'none' ? "../images/default-avt.png" : chatter?.image} alt='' sizes='' /></figure>
                                                 <ul>
                                                     <li>
                                                         <span>Tên</span>
@@ -382,7 +415,7 @@ export default function Message() {
                     </div>
                 </div>
             </section>
-            <figure className="bottom-mockup"><img src="images/footer.png" alt /></figure>
+            <figure className="bottom-mockup"><img src="../images/footer.png" alt /></figure>
 
             <div className="bottombar">
                 <div className="container">
