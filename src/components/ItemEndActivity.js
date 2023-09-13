@@ -786,26 +786,25 @@ export default function ItemEndActivity(props) {
                               }}
                             />
 
-                           
                             {pro.realDonation === 0 ? (
                               <div
-                              className="range-value"
-                              style={{
-                                position: "absolute",
-                                top: "55px",
-                                right: "-2px",
-                              }}
-                            >
-                              {
-                                (
-                                  (pro.realDonation / pro.targetDonation) *
-                                  100
-                                )
-                                  .toString()
-                                  .split(".")[0]
-                              }
-                              %
-                            </div>
+                                className="range-value"
+                                style={{
+                                  position: "absolute",
+                                  top: "55px",
+                                  right: "-2px",
+                                }}
+                              >
+                                {
+                                  (
+                                    (pro.realDonation / pro.targetDonation) *
+                                    100
+                                  )
+                                    .toString()
+                                    .split(".")[0]
+                                }
+                                %
+                              </div>
                             ) : (
                               <div style={{ position: "relative" }}>
                                 <div
@@ -816,8 +815,10 @@ export default function ItemEndActivity(props) {
                                     right: "-2px",
                                   }}
                                 >
-                                  {((pro.realDonation / pro.targetDonation) *
-                                    100).toFixed(0)}
+                                  {(
+                                    (pro.realDonation / pro.targetDonation) *
+                                    100
+                                  ).toFixed(0)}
                                   %
                                 </div>
                               </div>
@@ -906,9 +907,14 @@ export default function ItemEndActivity(props) {
                           return (
                             <button
                               className={` ${
-                                isAlreadyJoined === "Join"
-                                  ? "btn-change"
-                                  : "btn-color"
+                            
+                                  isAlreadyJoined === "Join"
+                                ? "btn-change"
+                                : isAlreadyJoined === "unJoin"
+                                ? "btn-color"
+                                : isAlreadyJoined === "success"
+                                ? "btn-color-1"
+                                : "btn-change"
                               } mb-4 mt-4 btn-add ${
                                 ItemActivity.targetDonation !== 0
                                   ? "marginfollow"
@@ -927,7 +933,11 @@ export default function ItemEndActivity(props) {
                               }}
                             >
                               {isAlreadyJoined === "Join"
-                                ? "Hủy Tham gia"
+                                ? "Hủy tham gia"
+                                : isAlreadyJoined === "unJoin"
+                                ? "Tham gia"
+                                : isAlreadyJoined === "success"
+                                ? "Đã tham gia"
                                 : "Tham gia"}
                             </button>
                           );
