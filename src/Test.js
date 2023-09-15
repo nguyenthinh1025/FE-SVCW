@@ -1,212 +1,60 @@
-import React, { useState } from "react";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage_bucket } from "./firebase";
+import React, { useState } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'moment/locale/vi'; // Import ngôn ngữ tiếng Việt
 
-// ... Firebase configuration and initialization ...
+moment.locale('vi'); // Đặt ngôn ngữ mặc định cho moment
 
-const process = [
-  { id: "1", value: "phu" },
-  { id: "2", value: "thinh" },
-  { id: "3", value: "dung" },
-  { id: "4", value: "teo" },
-  { id: "5", value: "mbs" },
+const localizer = momentLocalizer(moment);
+const [selectedEvent, setSelectedEvent] = useState(null);
+const events = [
+  {
+    title: 'Họp công ty',
+    start: new Date(2023, 8, 20, 10, 0),
+    end: new Date(2023, 8, 20, 11, 0),
+    color: '#FF5733' // Chọn một màu để đại diện cho sự kiện
+  },
+  {
+    title: 'Hội thảo',
+    start: new Date(2023, 8, 21, 14, 0),
+    end: new Date(2023, 8, 21, 16, 0),
+    color: '#33FF57'
+  },
+  {
+    title: 'Cuộc gặp khẩn cấp',
+    start: new Date(2023, 8, 22, 9, 30),
+    end: new Date(2023, 8, 22, 10, 0),
+    color: '#5733FF'
+  },
+  // Thêm các sự kiện khác tại đây...
 ];
-function DynamicForm () {
-  const [inputFields, setInputFields] = useState([
-    {
-      processTitle: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      activityId: "activityProcess",
-      processTypeId: "",
-      isKeyProcess: true,
-      processNo: 0,
-      images: [],
-      meida: [],
-    },
-  ]);
-  const addInputField = () => {
-    setInputFields([
-      ...inputFields,
-      {
-        processTitle: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        activityId: "activityProcess",
-        processTypeId: "",
-        isKeyProcess: true,
-        processNo: 0,
-        images: [],
-        meida: [],
-      },
-    ]);
-  };
 
-  const [imageUrls1, setImageUrls1] = useState([]);
-  const handleImageChange = async (index, event) => {
-    const updatedInputFields = [...inputFields];
-    updatedInputFields[index].images = event.target.files;
-    setInputFields(updatedInputFields); // Update the inputFields with selected images
-
-    const uploadedImageUrls = [];
-
-    for (const image of updatedInputFields[index].images) {
-      const fileRef = ref(storage_bucket, image.name);
-      const uploadTask = uploadBytesResumable(fileRef, image);
-
-      await uploadTask;
-
-      const downloadURL = await getDownloadURL(fileRef);
-      uploadedImageUrls.push(downloadURL);
-    }
-
-    updatedInputFields[index].meida = uploadedImageUrls;
-    setInputFields(updatedInputFields); // Update the inputFields with image URLs
-    await setImageUrls1((prevImageUrls) => {
-      const newImageUrls = [...prevImageUrls];
-      newImageUrls[index] = uploadedImageUrls;
-      return newImageUrls;
-    });
-  };
-  const removeInputField = (index) => {
-    const updatedInputFields = [...inputFields];
-    updatedInputFields.splice(index, 1);
-    setInputFields(updatedInputFields);
-  };
-
-  const handleInputChange = (index, field, value) => {
-    const updatedInputFields = [...inputFields];
-    updatedInputFields[index][field] = value;
-    setInputFields(updatedInputFields);
-  };
-
-
-
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
-
+const CalendarComponent = () => {
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit}>
-        {inputFields.map((data, index) => (
-          <div className="row my-3" key={index}>
-            <div className="col">
-              <div className="form-group">
-                <input
-                  type="text"
-                  value={data.processTitle}
-                  onChange={(event) =>
-                    handleInputChange(index, "processTitle", event.target.value)
-                  }
-                  className="form-control"
-                  placeholder="Process Title"
-                />
-              </div>
-            </div>
-            <div className="col">
-              <div className="form-group">
-                <input
-                  type="text"
-                  value={data.description}
-                  onChange={(event) =>
-                    handleInputChange(index, "description", event.target.value)
-                  }
-                  className="form-control"
-                  placeholder="Description"
-                />
-              </div>
-            </div>
-            {/* ... Other input fields ... */}
-            <div className="col">
-              <div className="form-group">
-                <input
-                  type="file"
-                  onChange={(event) => handleImageChange(index, event)}
-                  multiple
-                />
-                <div>
-                  {data.meida.map((imageUrl, imgIndex) => (
-                    <div key={imgIndex} className="image-preview">
-                      <img
-                        src={imageUrl}
-                        alt={`Image ${imgIndex}`}
-                        className="image"
-                        style={{ display: "none" }}
-                        onLoad={(e) => (e.target.style.display = "block")} // Show the image when it's loaded
-                      />
-                      <div className="spinner" style={{ display: "block" }}>
-                        Loading...
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="col">
-              <select
-                onChange={(e) =>
-                  handleInputChange(index, "processTypeId", e.target.value)
-                }
-                onClick={(e) => {
-                }}
-              >
-                <option value="">Chọn loại</option>
-                {process.map((item) => (
-
-                  <option key={item.id} value={item.id}>
-                    {item.value}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col">
-              {data.processTypeId === "1" ? (
-                <div>
-                  Chon so nguoi:
-                  <input type="text" />
-                </div>
-              ) : data.processTypeId === "2" ? (
-                <div>
-                  Chon so tiền:
-                  <input type="text" />
-                </div>
-              ) : null}
-            </div>
-            <div className="col">
-              {inputFields.length !== 1 && (
-                <button
-                  type="button"
-                  className="btn btn-outline-danger"
-                  onClick={() => removeInputField(index)}
-                >
-                  x
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-
-        <div className="row">
-          <div className="col-sm-12">
-            <button
-              type="button"
-              className="btn btn-outline-success"
-              onClick={addInputField}
-            >
-              Add New
-            </button>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-        </div>
-      </form>
+    <div>
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 500 }}
+        eventPropGetter={(event, start, end, isSelected) => {
+          return { style: { backgroundColor: event.color } };
+        }}
+        views={['month', 'week', 'day', 'agenda']}
+        formats={{
+          eventTimeRangeFormat: ({ start, end }, culture, local) =>
+            local.format(start, 'h:mm A', culture) +
+            ' - ' +
+            local.format(end, 'h:mm A', culture),
+        }}
+        onSelectEvent={event => console.log('Chi tiết sự kiện:', event)}
+        scrollToTime={new Date(1970, 1, 1, 6)}
+        defaultView="week" // Thay đổi chế độ hiển thị mặc định thành "month"
+      />
     </div>
   );
 }
 
-export default DynamicForm;
+export default CalendarComponent;
