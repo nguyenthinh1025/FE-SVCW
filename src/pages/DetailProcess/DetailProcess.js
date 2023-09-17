@@ -299,14 +299,14 @@ export default function DetailProcess (props) {
                   >
                     Trang chủ
                   </h4> */}
-                  <div style={{display:'flex', }}>
-                  <p style={{ fontSize: '25px', marginLeft: '100px', color: 'rgb(0, 166, 211)' , marginTop:'12px' }}>Hoạt động: {currentObject?.processNo + 1}</p>
-                  <h2 style={{ color: '#00a6d3', textAlign: 'center', fontSize: '40px', fontWeight: 800 , marginLeft:'23%'}}>{currentObject?.activity?.title}</h2>
+                  <div style={{display:'flex', justifyContent:'center', width:"100%"}}>
+                  {/* <p style={{ fontSize: '25px', marginLeft: '100px', color: 'rgb(0, 166, 211)' , marginTop:'12px' }}>Hoạt động: {currentObject?.processNo + 1}</p> */}
+                  <h2 style={{ color: '#00a6d3', textAlign: 'center', fontSize: '40px', fontWeight: 800 ,width:'50%' }}>{currentObject?.activity?.title}</h2>
                   </div>
                  
                 </div>
               </div>
-              <div className="more">
+              {/* <div className="more">
                 <div className="more-post-optns">
                   <i className>
                     <svg
@@ -348,7 +348,7 @@ export default function DetailProcess (props) {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
             {processactivity.length === 0 ? (
               <h2

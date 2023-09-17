@@ -135,7 +135,7 @@ export default function ABC () {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12">
-                            <span className>© copyright All rights reserved by Socimo 2020</span>
+                            <span className>© SVCW</span>
                         </div>
                     </div>
                 </div>

@@ -477,7 +477,7 @@ export default function ItemEndActivity(props) {
                     ) : (
                       <div></div>
                     )}
-                    {endDate.isAfter(currentDate) === true &&
+                    {endDate.isAfter(currentDate) === true &&userID === ItemActivity.userId &&
                     ItemActivity?.process?.filter(
                       (item) => item.processTypeId === "pt003"
                     ).length > 0 ? (

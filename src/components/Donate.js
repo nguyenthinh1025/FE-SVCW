@@ -3,11 +3,20 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DonationAction } from "../redux/actions/DonationAction";
 import { NumericFormat } from "react-number-format";
+import * as Yup from 'yup';
 export default function Donate(props) {
   const { isPopupOpen, openPopup, donate } = props;
   const [error, setError] = useState("1");
   const { message } = useSelector((root) => root.DonationReducer);
   const dispatch = useDispatch();
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required('Vui lòng nhập tiêu đề'),
+    amount: Yup.number().positive('Số tiền phải là số dương').required('Vui lòng nhập số tiền'),
+    email: Yup.string().email('Địa chỉ email không hợp lệ').required('Vui lòng nhập email'),
+    phone: Yup.string().matches(/^[0-9]{10}$/, 'Số điện thoại không hợp lệ').required('Vui lòng nhập số điện thoại'),
+    name: Yup.string().required('Vui lòng nhập tên'),
+  });
+  
   const formik1 = useFormik({
     initialValues: {
       title: "",
@@ -19,6 +28,7 @@ export default function Donate(props) {
       activityId: donate,
     },
     enableReinitialize: true,
+  validationSchema, // Sử dụng schema validation ở đây
     onSubmit: async (value) => {
       const action = await DonationAction(value, openPopup);
       await dispatch(action);
@@ -46,9 +56,9 @@ export default function Donate(props) {
                 onSubmit={formik1.handleSubmit}
                 method="post"
               >
-                <h1 id="title" className="text-center">
+                <h3 id="title" className="text-center">
                   Vui lòng điền thông tin của bạn
-                </h1>
+                </h3>
                 <button className="close-button" onClick={openPopup}>
                   &times;
                 </button>
@@ -67,6 +77,7 @@ export default function Donate(props) {
                         className="form-control"
                         required
                       />
+                      <div className="error">{formik1.errors.title}</div>
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -85,6 +96,7 @@ export default function Donate(props) {
                         thousandSeparator=","
                       />
                       <div style={{ color: "red" }}>{message}</div>
+                      <div className="error">{formik1.errors.amount}</div>
                     </div>
                   </div>
                 </div>
@@ -105,6 +117,7 @@ export default function Donate(props) {
                         className="form-control"
                         required
                       />
+                      <div className="error">{formik1.errors.email}</div>
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -121,6 +134,7 @@ export default function Donate(props) {
                         className="form-control"
                         required
                       />
+                      <div className="error">{formik1.errors.phone}</div>
                     </div>
                   </div>
                 </div>

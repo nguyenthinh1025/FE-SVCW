@@ -1563,16 +1563,14 @@ i.fa.fa-arrow-up {
 
 
 .highlighted {
-  background-color: #cce5ff;
-  color: #0576bd!important; /* Màu xanh nhạt */
+  /* background-color: #cce5ff; */
+  color: #0576bd; /* Màu xanh nhạt */
 }
 
-.react-calendar__tile--active{
-  color: white!important;
-}
+
 .calendar-header {
   background-color: blue;
-  color: white;
+  color: white!important;
   padding: 10px;
   text-align: center;
 }
