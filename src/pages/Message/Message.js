@@ -51,11 +51,13 @@ export default function Message(props) {
     };
 
     function isActive(timestampToCheck) {
-        const currentTimestamp = Math.floor(Date.now() / 1000);
+        if (timestampToCheck instanceof Timestamp) {
+            const currentTimestamp = Date.now();
 
-        const fifteenMinutesInSeconds = 15 * 60;
-
-        return currentTimestamp - timestampToCheck <= fifteenMinutesInSeconds;
+            const fifteenMinutesInSeconds = 15 * 60 * 1000;
+            console.log(timestampToCheck.toMillis(), '    ', currentTimestamp)
+            return currentTimestamp - timestampToCheck.toMillis() <= fifteenMinutesInSeconds;
+        }
     }
 
     function formatLastSeen(timestamp) {
@@ -194,7 +196,7 @@ export default function Message(props) {
             const userRef = doc(firestore, "users", userId);
             const user = await getDoc(userRef);
             if (user.exists()) {
-                if (user.id === getUserId?.userId) {
+                if (userId === getUserId?.userId) {
                     console.log('User before update: ', user.data())
                     // update newest data for user
                     await updateDoc(userRef, {
@@ -319,7 +321,7 @@ export default function Message(props) {
                 orderBy('timestamp', 'asc')), (snapshot) => {
                     snapshot.docChanges().forEach((change) => {
                         if (change.type === "added") {
-                            playNotificationSound();
+                            // playNotificationSound();
                             console.log("New message: ", change.doc.data());
                         }
                         if (change.type === "modified") {
@@ -377,8 +379,7 @@ export default function Message(props) {
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            // playNotificationSound();
-            // Call the handleSend function to submit the form
+            playNotificationSound();
             handleSend(e);
         }
     };
@@ -397,7 +398,7 @@ export default function Message(props) {
                 userId: getUserId?.userId,
                 timestamp: Timestamp.fromDate(new Date()),
             });
-            // playNotificationSound();
+            playNotificationSound();
             setFormData({ message: '' })
             console.log("Document written with ID: ", message.id);
         } catch (e) {
@@ -472,13 +473,13 @@ export default function Message(props) {
                                                             // const isLastMessage = index === userMsgs.length - 1;
                                                             return (
                                                                 <div className="useravatar">
-                                                                    <a href={'/message/' + fr?.pmUserId}>
-                                                                        <img
-                                                                            style={{ backgroundColor: 'white', width: 35, height: 35, objectFit: 'hidden', borderRadius: '100%' }}
-                                                                            src={fr?.image === 'none' ? "../images/default-avt.png" : fr.image} alt />
-                                                                    </a>
+                                                                    {/* <a href={'/message/' + fr?.pmUserId}> */}
+                                                                    <img
+                                                                        style={{ backgroundColor: 'white', width: 35, height: 35, objectFit: 'hidden', borderRadius: '100%' }}
+                                                                        src={fr?.image === 'none' ? "../images/default-avt.png" : fr.image} alt />
+                                                                    {/* </a> */}
                                                                     <span>{fr?.roomName}</span>
-                                                                    <div className={"status " + isActive(fr?.lastSeen) ? 'online' : 'offline'} />
+                                                                    <div className={isActive(fr?.lastSeen) ? 'status online' : 'status offline'} />
                                                                 </div>
                                                             )
                                                         }))
@@ -538,7 +539,7 @@ export default function Message(props) {
                                                 <div className="message-content">
                                                     <div className="chat-header">
                                                         <div className="status online" />
-                                                        <h6>{formatLastSeen(chatter?.lastSeen)}</h6>
+                                                        <h6>{formatLastSeen(chatToUser?.lastSeen)}</h6>
                                                         <div className="corss">
                                                             <span className="report"><i className="icofont-flag" /></span>
                                                             <span className="options"><i className="icofont-brand-flikr" /></span>
