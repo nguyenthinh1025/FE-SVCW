@@ -131,7 +131,7 @@ export default function ResultActivity (props) {
             className="popup"
             style={{
               width: 1000,
-              height: 800,
+              height: "500px",
               zIndex: 80,
               marginTop: "-100px",
             }}

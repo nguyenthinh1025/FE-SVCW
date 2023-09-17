@@ -828,6 +828,21 @@ background-color: #e74c3c;
   padding: 5px 10px;
   cursor: pointer;
 }
+.btn-color-1{
+  height: 28px;
+  border: transparent;
+  width: 110px;
+  background: none 0px 0px repeat scroll rgb(8, 141, 205);
+  border-radius: 16px;
+  color: rgb(255, 255, 255);
+  display: block;
+  font-size: 12px;
+  margin-top: 10px;
+  padding: 5px 10px;
+  pointer-events: none;
+  cursor: default;
+  
+}
 
 .btn-change {
   background: rgb(255, 255, 255);
@@ -1542,4 +1557,26 @@ i.fa.fa-arrow-up {
 
 .prof-complete-1 em {
   margin-left: 10px;
+}
+
+
+
+
+.highlighted {
+  /* background-color: #cce5ff; */
+  color: #0576bd; /* Màu xanh nhạt */
+}
+
+
+.calendar-header {
+  background-color: blue;
+  color: white!important;
+  padding: 10px;
+  text-align: center;
+}
+
+
+.react-calendar{
+ border-radius: 10px;
+ background-color: #fafafa none repeat scroll 0 0!important;
 }

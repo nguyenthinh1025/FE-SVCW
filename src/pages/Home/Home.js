@@ -20,6 +20,7 @@ import { GetListProcessTypeAction } from '../../redux/actions/ProcessTypeAction'
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import ListDonateDone from '../../components/ListDonateDone';
+import Calender from '../../components/Calender';
 export default function Home (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector((root) => root.LoginReducer);
@@ -98,10 +99,10 @@ export default function Home (props) {
                                                 <CreateActivity />
                                                 <SuggestedFanpage arrFanpage={arrFanpage} />
                                                 <ListEndActivity arrActivity={arrActivity} />
-                                                <div className="loadmore">
+                                                {/* <div className="loadmore">
                                                     <div className="sp sp-bars" />
                                                     <a href="#" title data-ripple>Load More..</a>
-                                                </div>
+                                                </div> */}
                                             </div>
                                             <div className=" tab-pane fade" id="endactivity">
                                                 <SuggestedFanpage arrFanpage={arrFanpage} />
@@ -111,6 +112,7 @@ export default function Home (props) {
                                     </div>
                                     <div className='col-lg-3'>
                                         <YourFanpage />
+                                       
                                     </div>
                                 </div>
                             </div>

@@ -46,7 +46,7 @@ export default function DetailActivity(props) {
   const dispatch = useDispatch();
 
   const { activityById } = useSelector((root) => root.ActivityReducer);
-  const endDate = moment(activityById.endDate);
+  const endDate = moment(activityById?.endDate);
   const currentDate = moment();
 
   const settings = {
@@ -66,7 +66,7 @@ export default function DetailActivity(props) {
   settings.nextArrow = <style>{`
   .slick-next {
     position: absolute;
-    right: -300px;
+    right: 0px;
 }
   }
   .slick-prev{
@@ -98,6 +98,7 @@ export default function DetailActivity(props) {
   }, []);
   const [joinedIndex, setJoinedIndex] = useState(null);
   const [followIndex, setFollowIndex] = useState(null);
+  const [isReadMore, setReadMore] = useState(false);
   const handleJoinClick = async (index, activity, isJoin, title,process) => {
     if (isJoin ==="Join") {
       setJoinedIndex(null);
@@ -133,7 +134,7 @@ export default function DetailActivity(props) {
     
     return (
       <div  style={settings.customStyle} key={index}>
-        <img src={item?.linkMedia} alt="Slide 1" style={{width:'1300px', height:'800px'}} />
+        <img src={item?.linkMedia} alt="Slide 1" style={{width:'900px', height:'500px', marginLeft:'60px'}} />
       </div>
     );
   });
@@ -387,13 +388,24 @@ export default function DetailActivity(props) {
                   </div>
                   <div style={{ paddingLeft: "20px" }}>
                     <h3> {activityById?.title}</h3>
-                    <p>{activityById?.description}</p>
+                    <p>
+                    {isReadMore ? (
+        activityById?.description?.length > 100 ? <>{activityById?.description} <span style={{ fontWeight: 'bold', color: "#2f3640" ,cursor:'pointer'}} onClick={() => setReadMore(false)}>...Thu gọn</span></> : <>{activityById?.description}</>
+      ) : activityById?.description?.length > 100 ? (
+        <>
+          {activityById?.description.substring(0, 100)}
+          <span style={{ fontWeight: 'bold', color: "#2f3640",cursor:'pointer' }} onClick={() => setReadMore(true)}>...Xem thêm</span>
+        </>
+      ) : (
+        <>{activityById?.description}</>
+      )}
+                      </p>
                   </div>
                   {endDate.isBefore(currentDate) ? (
                 <div></div>
               ) : (
                 <div>
-                  {activityById.process?.map((pro, index) => {
+                  {activityById?.process?.map((pro, index) => {
                     if (
                       moment(pro.startDate, "YYYY-MM-DD").isBefore(
                         currentDate
@@ -427,18 +439,18 @@ export default function DetailActivity(props) {
                     : "noprocessform")
                 }
               >
-                {endDate.isBefore(currentDate) ? (
+                {endDate?.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <div>
                     {activityById?.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro?.startDate, "YYYY-MM-DD").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro?.endDate, "YYYY-MM-DD").isAfter(currentDate)
                       ) {
-                        if (pro.isParticipant === true) {
+                        if (pro?.isParticipant === true) {
                           return (
                             <button
                               className={` ${
@@ -504,7 +516,7 @@ export default function DetailActivity(props) {
                 )}
                 {activityById?.process?.length !== 0 ? (
                   <NavLink
-                    to={`/detailprocess/${activityById.activityId}`}
+                    to={`/detailprocess/${activityById?.activityId}`}
                     style={{
                       marginTop: "10x",
                     }}
@@ -521,7 +533,7 @@ export default function DetailActivity(props) {
                   <div></div>
                 )}
               </div>
-                  <div className="stat-tools" style={{ paddingLeft: "20px" }}>
+                  <div className="stat-tools" style={{  }}>
                     <div
                       className=""
                       style={{

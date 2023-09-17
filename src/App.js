@@ -27,9 +27,10 @@ import LoginMobile from './pages/LoginMobile/LoginMobile';
 import HomeMobile from './pages/HomeMobile/HomeMobile';
 import ProfileModerator from './ProfileModerator/ProfileModerator';
 import Message from './pages/Message/Message';
+import CalendarComponent from './Test';
 export const history = createBrowserHistory()
 
-function App() {
+function App () {
   return (
     <Router history={history}>
       <Switch>
@@ -51,7 +52,7 @@ function App() {
         <UserTemplate exact path="/history" Component={Result} />
         <UserTemplate exact path="/statisticaluser" Component={StatisticalUser} />
         <UserTemplate exact path="/groups" Component={Group} />
-        <UserTemplate exact path="/test" Component={DynamicForm} />
+        <Route exact path="/test" component={CalendarComponent} />
         <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
         <Route path="/detailactivity/:id" exact component={DetailActivity} />
         <Route exact path="/loginmobile" component={LoginMobile} />

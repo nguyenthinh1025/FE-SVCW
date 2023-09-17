@@ -15,29 +15,76 @@ export default function ListDonateDone() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex(prevIndex => (prevIndex + 1) % arrDonationDone.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % arrDonationDone.length);
     }, 2000);
 
     return () => clearInterval(interval);
   }, [arrDonationDone.length]);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 4;
+  const maxPage = Math.ceil(arrDonationDone.length / itemsPerPage);
+
+  const startIndex = (page - 1) * itemsPerPage;
+  const visibleItems = arrDonationDone.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const handlePrevPage = () => {
+    setPage(Math.max(page - 1, 1)); // Đảm bảo không điều hướng vượt ra ngoài phạm vi
+  };
+
+  const handleNextPage = () => {
+    setPage(Math.min(page + 1, maxPage)); // Đảm bảo không điều hướng vượt ra ngoài phạm vi
+  };
   return (
     <div>
       <div className="widget">
         <h4 className="widget-title">Danh sách ủng hộ</h4>
         <span>Dánh sách ủng hộ trên WSCV</span>
-        <ul className="prof-complete prof-complete-1">
-      {arrDonationDone.map((item, index) => {
-        return (
-          <li
-            key={index}
-            style={{ display: index === currentIndex ? 'block' : 'none' }}
+        <ul className="prof-complete ">
+          {visibleItems.map((item, index) => (
+            <li key={index}>
+              <span style={{color:'#088dcd'}}>{item.name}</span>
+              <em style={{color:'#088dcd'}}>{item.amount.toLocaleString()} vnđ</em>
+            </li>
+          ))}
+        </ul>
+        <div
+          style={{
+            display: "flex",
+            marginTop: "30px",
+            justifyContent: "space-between",
+          }}
+        >
+          <button
+            style={{
+              border: "transparent",
+              fontSize: "12px",
+              color: page === 1 ? "rgba(0,0,0,0.2)" : "#088dcd",
+              background: "none",
+            }}
+            onClick={handlePrevPage}
+            disabled={page === 1}
           >
-            <span>{item.name}</span>
-            <em>{(item.amount).toLocaleString()} vnđ</em>
-          </li>
-        );
-      })}
-    </ul>
+            Trang trước
+          </button>
+          <span style={{ fontSize: "12px", paddingTop: "2px" }}>
+            Trang {page} / {maxPage}
+          </span>
+          <button
+            style={{
+              border: "transparent",
+              fontSize: "12px",
+              color: page === maxPage ?  "rgba(0,0,0,0.2)" : "#088dcd",
+              background: "none",
+            }}
+            onClick={handleNextPage}
+            disabled={page === maxPage}
+          >
+            Trang sau
+          </button>
+        </div>
       </div>
     </div>
   );

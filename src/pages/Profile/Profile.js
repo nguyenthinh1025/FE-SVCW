@@ -29,6 +29,7 @@ export default function Profile (props) {
   const [reloadPage, setReloadPage] = useState(false);
   const { userID } = useSelector((root) => root.LoginReducer);
   const { getUserId } = useSelector((root) => root.ProfileReducer);
+  console.log(getUserId)
   const { arrEndActivityByUserID } = useSelector(
     (root) => root.EndActivityReducer
   );
@@ -39,7 +40,7 @@ export default function Profile (props) {
     dispatch(action1);
     const action4 = GetListReportTypeAction();
     dispatch(action4);
-  }, [id]);
+  }, []);
   return (
     <div>
       <div className="theme-layout">
@@ -158,9 +159,10 @@ export default function Profile (props) {
                                         return (
                                           <li key={index}>
                                             <img
-                                              src="../images/badges/badge2.png"
+                                              src={item?.achivement?.achivementLogo}
                                               alt={`${item?.achivement?.description}`}
                                               title={`${item?.achivement?.description}`}
+                                              style={{width:'50px', height:'50px'}}
                                             />
                                           </li>
                                         );
@@ -235,7 +237,7 @@ export default function Profile (props) {
             <div className="row">
               <div className="col-lg-12">
                 <span className>
-                  © copyright All rights reserved by socimo 2020
+                  © SVCW
                 </span>
               </div>
             </div>

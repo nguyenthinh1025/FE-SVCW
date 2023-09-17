@@ -35,3 +35,22 @@ export const GetUserBystatisticAction = (id) => {
         }
     }
 }
+
+export const ScheduleUserAction = (id) => {
+    return async (dispatch) => {
+
+        try {
+            let result = await http.get(`/User/get-personal-schedule?userId=${id}`);
+            console.log(result)
+            const action = {
+                type: "GET_USER_SCHEDULE",
+                userSchedule: result.data.data,
+
+            }
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
