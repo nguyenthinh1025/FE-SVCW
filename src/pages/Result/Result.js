@@ -11,6 +11,7 @@ export default function Result () {
     const [detail, setDetail] = useState({})
     const { arrFollowJoin } = useSelector(root => root.HistoryReducer)
     const { arrDonation } = useSelector(root => root.DonationReducer)
+    console.log(arrDonation)
     const { userID } = useSelector(root => root.LoginReducer)
     const dispatch = useDispatch()
     const DateTime = (item) => {
@@ -101,15 +102,17 @@ export default function Result () {
                                                                 <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt  style={{height:'250px' , width:'300px'}}/></figure>
 
                                                                 <div className="blog-post-meta">
-                                                                    <ul>
-                                                                        <li><i className="icofont-like" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
-
-                                                                    </ul>
+                                                                   
                                                                     <h4>{item.activity?.title}</h4>
                                                                     <p>
                                                                         {item.activity?.description}
                                                                     </p>
+                                                                    <div style={{display:'flex'}}>
+                                                                    <div style={{marginLeft:'30px'}}><i className="icofont-like" /><a title="Reads" href="#">{item.activity?.numberLike}</a></div>
                                                                     <span><i className="icofont-clock-time" />{(DateTime(item.activity?.createAt)).toLowerCase()}</span>
+                                                                   
+
+                                                                    </div>
                                                                     <NavLink className="button primary circle" to={`/detailactivity/${item.activity.activityId}`}
                                                                         onClick={() => {
                                                                             const action = GetActivityIDAction(item.activity.activityId);
@@ -138,6 +141,8 @@ export default function Result () {
                                                                             <h6>Hoạt động : <span style={{ fontWeight: 'bold' }}>{item.activity.title}</span></h6>
                                                                             <div>Thời gian thanh toán : {DateTime(item.datetime)}</div>
                                                                             <div>Số tiền : <span> <i>{(item.amount.toLocaleString())} vnđ</i></span></div>
+                                                                            <div>Trạng thái : <span> <i>{(item.status)}</i></span></div>
+                                                                        
                                                                         </li>
                                                                     })}
                                                                 </Fragment>
@@ -162,15 +167,18 @@ export default function Result () {
                                                                     })} */}
                                                                     <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt style={{height:'250px' , width:'300px'}} /></figure>
                                                                     <div className="blog-post-meta">
-                                                                        <ul>
-                                                                            <li><i className="icofont-like" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
-
-                                                                        </ul>
+                                                                       
                                                                         <h4>{item.activity?.title}</h4>
                                                                         <p>
                                                                             {item.activity?.description}
                                                                         </p>
-                                                                        <span><i className="icofont-clock-time" />{DateTime(item.activity?.createAt)}</span>
+                                                                       <div style={{display:'flex'}}>
+                                                                       <div style={{marginRight:'30px'}}><i className="icofont-like" /><a title="Reads" href="#">{item.activity?.numberLike}</a></div>
+                                                                       <span><i className="icofont-clock-time" />{DateTime(item.activity?.createAt)}</span>
+                                                                        
+
+                                                                       
+                                                                        </div>
                                                                         {/* <a data-toggle="modal" data-target="#img-comt" title className="button primary circle" onClick={() => {
                                                                             setDetail(detailItem)
                                                                         }}>Chi tiết</a> */}

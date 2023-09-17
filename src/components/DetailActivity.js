@@ -390,8 +390,8 @@ export default function DetailActivity(props) {
                     <h3> {activityById?.title}</h3>
                     <p>
                     {isReadMore ? (
-        activityById?.description.length > 100 ? <>{activityById?.description} <span style={{ fontWeight: 'bold', color: "#2f3640" ,cursor:'pointer'}} onClick={() => setReadMore(false)}>...Thu gọn</span></> : <>{activityById?.description}</>
-      ) : activityById?.description.length > 100 ? (
+        activityById?.description?.length > 100 ? <>{activityById?.description} <span style={{ fontWeight: 'bold', color: "#2f3640" ,cursor:'pointer'}} onClick={() => setReadMore(false)}>...Thu gọn</span></> : <>{activityById?.description}</>
+      ) : activityById?.description?.length > 100 ? (
         <>
           {activityById?.description.substring(0, 100)}
           <span style={{ fontWeight: 'bold', color: "#2f3640",cursor:'pointer' }} onClick={() => setReadMore(true)}>...Xem thêm</span>
@@ -533,7 +533,7 @@ export default function DetailActivity(props) {
                   <div></div>
                 )}
               </div>
-                  <div className="stat-tools" style={{ paddingLeft: "20px" }}>
+                  <div className="stat-tools" style={{  }}>
                     <div
                       className=""
                       style={{

@@ -99,10 +99,10 @@ export default function Home (props) {
                                                 <CreateActivity />
                                                 <SuggestedFanpage arrFanpage={arrFanpage} />
                                                 <ListEndActivity arrActivity={arrActivity} />
-                                                <div className="loadmore">
+                                                {/* <div className="loadmore">
                                                     <div className="sp sp-bars" />
                                                     <a href="#" title data-ripple>Load More..</a>
-                                                </div>
+                                                </div> */}
                                             </div>
                                             <div className=" tab-pane fade" id="endactivity">
                                                 <SuggestedFanpage arrFanpage={arrFanpage} />

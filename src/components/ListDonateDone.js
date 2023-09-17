@@ -45,8 +45,8 @@ export default function ListDonateDone() {
         <ul className="prof-complete ">
           {visibleItems.map((item, index) => (
             <li key={index}>
-              <span>{item.name}</span>
-              <em>{item.amount.toLocaleString()} vnđ</em>
+              <span style={{color:'#088dcd'}}>{item.name}</span>
+              <em style={{color:'#088dcd'}}>{item.amount.toLocaleString()} vnđ</em>
             </li>
           ))}
         </ul>
@@ -61,7 +61,7 @@ export default function ListDonateDone() {
             style={{
               border: "transparent",
               fontSize: "12px",
-              color: page === 1 ? "black" : "#088dcd",
+              color: page === 1 ? "rgba(0,0,0,0.2)" : "#088dcd",
               background: "none",
             }}
             onClick={handlePrevPage}
@@ -76,7 +76,7 @@ export default function ListDonateDone() {
             style={{
               border: "transparent",
               fontSize: "12px",
-              color: page === maxPage ? "black" : "#088dcd",
+              color: page === maxPage ?  "rgba(0,0,0,0.2)" : "#088dcd",
               background: "none",
             }}
             onClick={handleNextPage}
