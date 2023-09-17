@@ -1,60 +1,56 @@
 import React, { useState } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'moment/locale/vi'; // Import ngôn ngữ tiếng Việt
 
-moment.locale('vi'); // Đặt ngôn ngữ mặc định cho moment
+const DonationList = () => {
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 4; // Số lượng phần tử hiển thị mỗi trang
 
-const localizer = momentLocalizer(moment);
-const [selectedEvent, setSelectedEvent] = useState(null);
-const events = [
-  {
-    title: 'Họp công ty',
-    start: new Date(2023, 8, 20, 10, 0),
-    end: new Date(2023, 8, 20, 11, 0),
-    color: '#FF5733' // Chọn một màu để đại diện cho sự kiện
-  },
-  {
-    title: 'Hội thảo',
-    start: new Date(2023, 8, 21, 14, 0),
-    end: new Date(2023, 8, 21, 16, 0),
-    color: '#33FF57'
-  },
-  {
-    title: 'Cuộc gặp khẩn cấp',
-    start: new Date(2023, 8, 22, 9, 30),
-    end: new Date(2023, 8, 22, 10, 0),
-    color: '#5733FF'
-  },
-  // Thêm các sự kiện khác tại đây...
-];
+  const arrDonationDone = [
+    { name: 'Item 1', amount: 10000 },
+    { name: 'Item 2', amount: 20000 },
+    { name: 'Item 3', amount: 30000 },
+    { name: 'Item 4', amount: 40000 },
+    { name: 'Item 5', amount: 50000 },
+    { name: 'Item 6', amount: 60000 },
+    { name: 'Item 7', amount: 70000 },
+    { name: 'Item 8', amount: 80000 },
+  ];
 
-const CalendarComponent = () => {
+  const maxPage = Math.ceil(arrDonationDone.length / itemsPerPage);
+
+  const startIndex = (page - 1) * itemsPerPage;
+  const visibleItems = arrDonationDone.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePrevPage = () => {
+    setPage(Math.max(page - 1, 1)); // Đảm bảo không điều hướng vượt ra ngoài phạm vi
+  };
+
+  const handleNextPage = () => {
+    setPage(Math.min(page + 1, maxPage)); // Đảm bảo không điều hướng vượt ra ngoài phạm vi
+  };
+
   return (
     <div>
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-        eventPropGetter={(event, start, end, isSelected) => {
-          return { style: { backgroundColor: event.color } };
-        }}
-        views={['month', 'week', 'day', 'agenda']}
-        formats={{
-          eventTimeRangeFormat: ({ start, end }, culture, local) =>
-            local.format(start, 'h:mm A', culture) +
-            ' - ' +
-            local.format(end, 'h:mm A', culture),
-        }}
-        onSelectEvent={event => console.log('Chi tiết sự kiện:', event)}
-        scrollToTime={new Date(1970, 1, 1, 6)}
-        defaultView="week" // Thay đổi chế độ hiển thị mặc định thành "month"
-      />
+      <ul>
+        {visibleItems.map((item, index) => (
+          <li key={index}>
+            <span>{item.name}</span>
+            <em>{(item.amount).toLocaleString()} vnđ</em>
+          </li>
+        ))}
+      </ul>
+      <div>
+        <button  style={{    border: "transparent",
+    fontSize: "12px",
+    color:page ===1 ?'black' :'blue',
+    background: "none"}} onClick={handlePrevPage} disabled={page === 1}>Trang trước</button>
+        <span>Trang {page} / {maxPage}</span>
+        <button style={{border: "transparent",
+    fontSize: "12px",
+    color:page ===maxPage ?'black' :'#088dcd',
+    background: "none"}} onClick={handleNextPage} disabled={page === maxPage}>Trang sau</button>
+      </div>
     </div>
   );
-}
+};
 
-export default CalendarComponent;
+export default DonationList;

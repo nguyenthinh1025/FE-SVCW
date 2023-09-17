@@ -7,7 +7,8 @@ const stateDefault = {
     userByID: {},
     userByStatis: {},
     admin: ad,
-    usertotal: ""
+    usertotal: "",
+    userSchedule:[]
 }
 
 
@@ -21,9 +22,14 @@ export const UserReducer = (state = stateDefault, action) => {
             return { ...state }
         }
         case 'LOGOUT_ADMIN': {
-            state.admin = action.admin
+            state.admin = action.admin;
+            return { ...state }
         }
 
+        case 'GET_USER_SCHEDULE': {
+            state.userSchedule = action.userSchedule;
+            return { ...state }
+        }
         default: return state;
     }
 }

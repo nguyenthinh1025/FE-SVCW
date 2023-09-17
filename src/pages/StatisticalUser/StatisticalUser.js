@@ -120,7 +120,7 @@ const StatisticalUser = (props) => {
                           href="#allposts"
                           data-toggle="tab"
                         >
-                          Thống kê chiến dịch đã tạo
+                          Chiến dịch đã tạo
                         </a>
                       </li>
                       <li
@@ -128,7 +128,7 @@ const StatisticalUser = (props) => {
                         onClick={() => handleOptionClick(false)}
                       >
                         <a className href="#members" data-toggle="tab">
-                          Thống kê số tiền đã ủng hộ
+                          Số tiền đã ủng hộ
                         </a>
                       </li>
                       {/* <li className="nav-item"><a className href="#photos" data-toggle="tab">Photos</a></li>
