@@ -1558,3 +1558,27 @@ i.fa.fa-arrow-up {
 .prof-complete-1 em {
   margin-left: 10px;
 }
+
+
+
+
+.highlighted {
+  background-color: #cce5ff;
+  color: #0576bd!important; /* Màu xanh nhạt */
+}
+
+.react-calendar__tile--active{
+  color: white!important;
+}
+.calendar-header {
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+
+.react-calendar{
+ border-radius: 10px;
+ background-color: #fafafa none repeat scroll 0 0!important;
+}
