@@ -45,6 +45,7 @@ function App() {
         <UserTemplate path="/profile/:id" exact Component={Profile} />
         <UserTemplate path="/home" exact Component={Home} />
         <UserTemplate exact path="/fanpage/:id" Component={DetailFanpage} />
+        <UserTemplate exact path="/message/:id" Component={Message} />
         <UserTemplate exact path="/message" Component={Message} />
         <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
         <UserTemplate exact path="/history" Component={Result} />
