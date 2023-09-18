@@ -103,6 +103,22 @@ export const UpdateStatusFanpageAction = (id) => {
         }
     }
 }
+export const DeleteFanpageAction = (id) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.delete(`/Fanpage/delete-fanpage?id=${id}`);
+           
+            // const action = GetListFanpageAction()
+            // dispatch(action)
+            // localStorage.setItem('isFanpage', true)
+            // props.history.push('/home')
+            const action = GetListFanpageAction();
+            dispatch(action)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 export const UpdateFanpageAction = (value,id) => {
     return async (dispatch) => {
         try {

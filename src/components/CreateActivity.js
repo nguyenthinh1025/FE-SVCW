@@ -305,7 +305,30 @@ export default function CreateActivity() {
         zIndex: 999,
       });
       setError("2");
-    } else {
+    }
+    else if ( moment((updatedInputFields[index].endDate)).isBefore(updatedInputFields[index].startDate)) {
+      Swal.fire({
+        title: "Cảnh báo",
+        text: `Ngày kết thúc không trước ngày bắt đầu hoạt động`,
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
+     } else if ( moment((updatedInputFields[index].startDate)).isAfter(updatedInputFields[index].endDate)) {
+      Swal.fire({
+        title: "Cảnh báo",
+        text: `Ngày bắt đầu không sau ngày kết thúc hoạt động`,
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
+     } else {
       setError("1");
     }
 

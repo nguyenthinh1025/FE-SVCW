@@ -18,11 +18,11 @@ function isSameDay(date1, date2) {
 
 const Calender = (props) => {
   const {arr} = props;
-  console.log(arr)
+
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
   const { userSchedule } = useSelector((root) => root.UserReducer);
-  console.log(userSchedule)
+
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -30,13 +30,13 @@ const Calender = (props) => {
   useEffect(() => {
     setEvents(arr)
   }, [arr]);
-console.log(events)
+
   const eventsForSelectedDate = events.filter((event) =>
     isSameDay(selectedDate, event.date)
   );
 
   const handleEventClick = (title) => {
-    console.log(`Clicked event: ${title}`);
+
   };
 
   return (

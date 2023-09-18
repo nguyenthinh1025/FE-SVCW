@@ -17,7 +17,7 @@ import { CreateAchivementAction, DeleteAchivementAction, GetListAchivementAction
 import { useDispatch, useSelector } from 'react-redux';
 import { storage_bucket } from './../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { GetListFanpageAction, UpdateStatusFanpageAction } from '../../redux/actions/FanpageAction';
+import { DeleteFanpageAction, GetListFanpageAction, UpdateStatusFanpageAction } from '../../redux/actions/FanpageAction';
 import { useFormik } from "formik";
 import { SendEmail } from '../../utils/emailService';
 export default function AdminFanpage () {
@@ -62,9 +62,12 @@ export default function AdminFanpage () {
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
+  const [deleteProductDialog1, setDeleteProductDialog1] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [product, setProduct] = useState(emptyProduct);
   const [selectedProducts, setSelectedProducts] = useState(null);
+  const [product1, setProduct1] = useState(emptyProduct);
+  const [selectedProducts1, setSelectedProducts1] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
@@ -86,7 +89,7 @@ export default function AdminFanpage () {
   const arrReportType = [
     { value: 'Pending', label: "Chờ duyệt" },
     { value: 'Active', label: "Hoạt động" },
-    { value: 'Inactive', label: "Chưa hoạt động" },
+    { value: 'InActive', label: "Đã Xóa" },
   ]
   useEffect(() => {
     const arr = arrFanpage.filter(item => item.status === op)
@@ -119,7 +122,9 @@ export default function AdminFanpage () {
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);
   };
-
+  const hideDeleteProductDialog1 = () => {
+    setDeleteProductDialog1(false);
+  };
   const hideDeleteProductsDialog = () => {
     setDeleteProductsDialog(false);
   };
@@ -142,7 +147,10 @@ export default function AdminFanpage () {
     setProduct(product);
     setDeleteProductDialog(true);
   };
-
+  const confirmDeleteProduct1 = (product) => {
+    setProduct1(product);
+    setDeleteProductDialog1(true);
+  };
   const deleteProduct = async () => {
 
     const action = await UpdateStatusFanpageAction(product.fanpageId)
@@ -150,6 +158,23 @@ export default function AdminFanpage () {
     let productItem = { ...product };
 
     SendEmail(productItem.email, "Tạo mới tổ chức thành công", `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
+    setDeleteProductDialog(false);
+    setProduct(emptyProduct);
+    toast.current.show({
+      severity: 'success', summary: 'Thành công', detail: `Cập nhật trạng thái ${product.fanpageName} Thành công`, life: 3000, options: {
+        style: {
+          zIndex: 100
+        }
+      }
+    });
+  };
+  const deleteProduct1 = async () => {
+console.log(product1.fanpageId)
+    const action = await DeleteFanpageAction(product1.fanpageId)
+    await dispatch(action)
+    let productItem = { ...product1 };
+
+    SendEmail(productItem.email, "Nhóm của bạn đã bị xóa", `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
     toast.current.show({
@@ -268,8 +293,15 @@ export default function AdminFanpage () {
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        {/* <Button icon="pi pi-pencil" rounded outlined className="mr-2" onClick={() => editProduct(rowData)} /> */}
-        <Button icon="pi pi-pencil" rounded outlined onClick={() => confirmDeleteProduct(rowData)} />
+
+     {op !== 'Active' ?   <Button className='mr-2' icon="pi pi-pencil" rounded outlined onClick={() => confirmDeleteProduct(rowData)} /> : <div></div>}
+        <Button
+          icon="pi pi-trash"
+          rounded
+          outlined
+          severity="danger"
+          onClick={() => confirmDeleteProduct1(rowData)}
+        />
       </React.Fragment>
     );
   };
@@ -309,6 +341,12 @@ export default function AdminFanpage () {
     <React.Fragment>
       <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
       <Button label="Đồng ý" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
+    </React.Fragment>
+  );
+  const deleteProductDialogFooter1 = (
+    <React.Fragment>
+      <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog1} />
+      <Button label="Đồng ý" icon="pi pi-check" severity="danger" onClick={deleteProduct1} />
     </React.Fragment>
   );
   const deleteProductsDialogFooter = (
@@ -396,10 +434,6 @@ export default function AdminFanpage () {
               sortable
               style={{ minWidth: "12rem" }}
             ></Column>
-            {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
-                        <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
-                        <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                        <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column> */}
             <Column
               body={actionBodyTemplate}
               exportable={false}
@@ -502,7 +536,28 @@ export default function AdminFanpage () {
             )}
           </div>
         </Dialog>
-
+        <Dialog
+          visible={deleteProductDialog1}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Thông Báo"
+          modal
+          footer={deleteProductDialogFooter1}
+          onHide={hideDeleteProductDialog1}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {product1 && (
+              <span style={{ fontSize: "18px" }}>
+                Bạn muốn xóa tổ chức{" "}
+                <b>{product1.fanpageName}</b>?
+              </span>
+            )}
+          </div>
+        </Dialog>
         <Dialog
           visible={deleteProductsDialog}
           style={{ width: "32rem" }}
