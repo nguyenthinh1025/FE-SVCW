@@ -162,7 +162,7 @@ export default function Login (props) {
                                 onClick={signInWithGoogle}
                             >
                                 <i class="fa-brands fa-google google-icon-g" />
-                                Đăng nhập với google
+                                Đăng nhập với Google
                             </p>
                         </form>
                     </div>

@@ -78,7 +78,7 @@ export default function Moderator () {
     );
   };
 
-  const [text, setText] = useState("Thêm mới người quản lý");
+  const [text, setText] = useState("Thêm mới người kiểm duyệt");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -134,7 +134,7 @@ export default function Moderator () {
       toast.current.show({
         severity: "success",
         summary: "Thành công",
-        detail: "Tạo mới người quản lý thành công",
+        detail: "Tạo mới người kiểm duyệt thành công",
         life: 3000,
       });
       setProductDialog(false);
@@ -146,7 +146,7 @@ export default function Moderator () {
   };
 
   const editProduct = (product) => {
-    setText("Chỉnh sửa thông tin người quản lý");
+    setText("Chỉnh sửa thông tin người kiểm duyệt");
     setProduct({ ...product });
     setProductDialog(true);
   };
@@ -164,7 +164,7 @@ export default function Moderator () {
     toast.current.show({
       severity: "error",
       summary: "Thành công",
-      detail: `Xóa người quản lý ${product.fullName} Thành công`,
+      detail: `Xóa người kiểm duyệt ${product.fullName} Thành công`,
       life: 3000,
       options: {
         style: {
@@ -343,7 +343,7 @@ export default function Moderator () {
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0 mb-3">Người Quản Lý</h4>
+      <h4 className="m-0 mb-3">Người kiểm duyệt</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -631,7 +631,7 @@ export default function Moderator () {
             />
             {product && (
               <span>
-                Bạn có chắc chắn muốn xóa người quản lý{" "}
+                Bạn có chắc chắn muốn xóa người kiểm duyệt{" "}
                 <b>{product.fullName}</b>?
               </span>
             )}

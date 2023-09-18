@@ -1343,7 +1343,8 @@ a.date {
   color: #fff;
   display: inline-block;
   font-weight: 500;
-  padding: 10px 26px;
+  margin-top: 6px;
+  padding: 7px 26px;
   transition: all 0.2s linear 0s;
 }
 
@@ -16424,7 +16425,7 @@ a.classic-btn:hover {
   display: flex;
   justify-content: center;
   align-items: baseline;
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 15px;
   border-bottom: 2px solid #17a2b8;
   padding-bottom: 4px;

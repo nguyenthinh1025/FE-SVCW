@@ -1,23 +1,31 @@
 import { useFormik } from 'formik';
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { CreateReportAction } from '../redux/actions/ReportAction';
 import Swal from 'sweetalert2';
-
+import * as Yup from 'yup';
 export default function ReportActivity (props) {
     const { report, handleClick, popupStyle3, reportid, arrReportType } = props;
     const dispatch = useDispatch()
+    const SignupSchema = Yup.object().shape({
+        reportTypeId: Yup.string()
+          .required('Vui phòng chọn loại cần báo cáo'),
+          reason: Yup.string()
+          .required('Vui lòng điền lý do báo cáo'),
+      });
     const formik6 = useFormik({
         initialValues: {
             reportId: 'string',
             title: 'string',
             reason: '',
-            reportTypeId: 'string',
+            reportTypeId: '',
             description: 'string',
             status: true,
             userId: localStorage.getItem('userID'),
             activityId: reportid,
         },
+        enableReinitialize: true,
+        validationSchema:SignupSchema,
         onSubmit: async (value) => {
             const value1 = {...value,activityId: reportid}
             const action = await CreateReportAction(value1);
@@ -41,9 +49,12 @@ export default function ReportActivity (props) {
             handleClick()
         },
     });
-    const onInputDropdown = (e, field) => {
+
+    const [option,setOption] = useState('')
+    const onInputDropdown = (e) => {
 
         formik6.setFieldValue('reportTypeId', e.target.value);
+        setOption(e.target.value)
     };
     return (
         <div>
@@ -54,9 +65,9 @@ export default function ReportActivity (props) {
                         style={{
                             width: 600,
                             zIndex: 80,
-                            height: 450,
+
                             // overflowY: "scroll",
-                            padding: '10px',
+                            padding: '40px 30px',
                             marginTop: '-100px',
                         }}
                     >
@@ -97,6 +108,9 @@ export default function ReportActivity (props) {
                                             onChange={(e) => onInputDropdown(e)} // Pass the formIndex to handleSelectChange
                                             className="form-control"
                                             placeholder="Chọn loại báo cáo"
+                                            value={option}
+                                            required
+                                           
                                         >
                                             <option value="">Chọn loại báo cáo</option>
                                             {arrReportType.map((item, index) => {
@@ -107,6 +121,7 @@ export default function ReportActivity (props) {
                                                 );
                                             })}
                                         </select>
+                                        <div className='error'>{formik6.errors.reportTypeId}</div>
                                     </div>
                                     <div className="form-group">
                                         <label>Lý do</label>
@@ -117,7 +132,9 @@ export default function ReportActivity (props) {
                                             cols="50"
                                             name="reason"
                                             onChange={formik6.handleChange}
+                                            required
                                         ></textarea>
+                                         <div className='error'>{formik6.errors.reason}</div>
                                     </div>
                                     <div className="row">
                                         <div className="col-md-4">
