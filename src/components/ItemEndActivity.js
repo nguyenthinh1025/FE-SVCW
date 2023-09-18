@@ -914,7 +914,7 @@ export default function ItemEndActivity(props) {
                                 ? "btn-color"
                                 : isAlreadyJoined === "success"
                                 ? "btn-color-1"
-                                : "btn-change"
+                                : "btn-color"
                               } mb-4 mt-4 btn-add ${
                                 ItemActivity.targetDonation !== 0
                                   ? "marginfollow"

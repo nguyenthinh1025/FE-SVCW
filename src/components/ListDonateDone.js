@@ -6,7 +6,6 @@ import { NavLink } from "react-router-dom/cjs/react-router-dom";
 export default function ListDonateDone() {
   const dispatch = useDispatch();
   const { arrDonationDone } = useSelector((root) => root.DonationReducer);
-  console.log(arrDonationDone);
   useEffect(() => {
     const action = ListHistoryDonationAction();
     dispatch(action);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Clock from "../../components/Clock";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,7 @@ import {
 } from "../../redux/actions/ReportAction";
 import { GetListReportTypeAction } from "../../redux/actions/ReportTypeAction";
 import YourFanpage from "../../components/YourFanpage";
+import Loading from "../../components/Loading";
 
 export default function Profile (props) {
   const { id } = props.match.params;
@@ -33,16 +34,28 @@ export default function Profile (props) {
   const { arrEndActivityByUserID } = useSelector(
     (root) => root.EndActivityReducer
   );
+  const {isLoadingM} = useSelector(root =>root.LoadingReducer)
+  const [loading,setLoading] = useState(isLoadingM)
   useEffect(() => {  
+    const loading = {
+      type :"DISPLAY_LOADING"
+    }
+    dispatch(loading)
     const action = GetProfileByIdAction(id);
     dispatch(action);
     const action1 = GetListEndActivityByUserIDAction(id);
     dispatch(action1);
     const action4 = GetListReportTypeAction();
     dispatch(action4);
+    const loading1 = {
+      type :"HIDE_LOADING"
+    }
+    dispatch(loading1)
+
   }, []);
   return (
-    <div>
+    <div> 
+      {loading ? <Loading /> : <Fragment></Fragment>}
       <div className="theme-layout">
         <section>
           <div className="gap">
