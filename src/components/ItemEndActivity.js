@@ -44,6 +44,7 @@ import Donate from "./Donate";
 import ListDonate from "./ListDonate";
 import ListFollowJoin from "./ListFollowJoin";
 import { SendEmail } from "../utils/emailService";
+import RejectActivi from "./RejectActivi";
 
 export default function ItemEndActivity(props) {
 
@@ -202,6 +203,18 @@ export default function ItemEndActivity(props) {
   const [reportid, setReportID] = useState("");
   const handleClick6 = () => {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
+  };
+
+
+  const [actireject, setActiReject] = useState(false);
+  const [actirejectid, setActiRejectid] = useState("");
+  const popupStyleActiReject = {
+    opacity: actireject ? 1 : 0,
+    visibility: actireject ? "visible" : "hidden",
+    overflow: actireject ? "auto" : "hidden",
+  };
+  const handleClickActiReject = () => {
+    setActiReject((prevIsOpen) => !prevIsOpen);
   };
   const openPopup = () => {
     setPopupOpen((prevIsOpen) => !prevIsOpen);
@@ -414,6 +427,21 @@ export default function ItemEndActivity(props) {
                         <i className="icofont-pen-alt-1" />
                         Sửa bài đăng
                         <span>Chỉnh sửa và cập nhật chi tiết bài đăng</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
+                     {userID === ItemActivity.userId &&
+                    endDate.isBefore(currentDate) === false ? (
+                      <li
+                        onClick={() => {
+                          handleClickActiReject();
+                  setActiRejectid( ItemActivity.activityId)
+                        }}
+                      >
+                        <i className="icofont-sign-out" />
+                       Tắt chiến dịch
+                        <span>Ngừng chiến ngay lập tức</span>
                       </li>
                     ) : (
                       <div></div>
@@ -1305,6 +1333,7 @@ export default function ItemEndActivity(props) {
         listJoinFollow={listJoinFollow}
         popupStyleFolowJoin={popupStyleFolowJoin}
       />
+       <RejectActivi actireject={actireject} popupStyleActiReject={popupStyleActiReject} handleClickActiReject={handleClickActiReject} actirejectid={actirejectid}/>
     </div>
   );
 }

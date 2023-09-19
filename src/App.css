@@ -1591,3 +1591,8 @@ i.fa.fa-arrow-up {
   fill: none;
   stroke:#72767a!important;
 }
+
+.roll-header{
+  height: 670px;
+  overflow-y: scroll; 
+}

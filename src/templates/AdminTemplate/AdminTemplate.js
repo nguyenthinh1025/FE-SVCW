@@ -29,7 +29,7 @@ export const AdminTemplate = (props) => {
         if (localStorage.getItem('admin') !== 'no') {
             return <Fragment>
                 <div className="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
-                    <div className="app-header header-shadow" >
+                    <div className="app-header header-shadow  " >
                         <div className="app-header__logo">
                         <div class="logo">
                             <img src="/images/logo.png"/>
@@ -121,7 +121,7 @@ export const AdminTemplate = (props) => {
                     <div className="app-main">
                         <div className="app-sidebar sidebar-shadow">
                            
-                            <div className="scrollbar-sidebar">
+                            <div className="scrollbar-sidebar roll-header">
                                 <div className="app-sidebar__inner">
                                     <ul className="vertical-nav-menu">
                                     <li className="app-sidebar__heading">Thống kê</li>
@@ -190,6 +190,13 @@ export const AdminTemplate = (props) => {
                                             <NavLink to='/adminactivity'>
                                                 <i className="metismenu-icon pe-7s-graph2">
                                                 </i>Chiến dịch
+                                            </NavLink>
+                                        </li>
+                                        <li className="app-sidebar__heading">Tình nguyện viên</li>
+                                        <li>
+                                            <NavLink to='/volunteer'>
+                                                <i className="metismenu-icon pe-7s-graph2">
+                                                </i>Tình nguyện viên
                                             </NavLink>
                                         </li>
                                     </ul>

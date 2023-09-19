@@ -26,10 +26,12 @@ import {
   ActiveActivityAction,
   DeleteActivityAction,
   GetListActivityAction,
+  RejectActivityAction,
 } from "../../redux/actions/ActivityAction";
 import Swal from "sweetalert2";
 import { SendEmail } from "../../utils/emailService";
 import Slider from "react-slick";
+import { useFormik } from "formik";
 
 export default function AdminActivity() {
   const dispatch = useDispatch();
@@ -44,6 +46,29 @@ export default function AdminActivity() {
     createAt: moment().format("YYYY-MM-DD"),
     status: true,
   };
+  const [isOpenReject, setIsOpenReject] = useState(false);
+  const popupStyleCreate = {
+    opacity: isOpenReject ? 1 : 0,
+    visibility: isOpenReject ? "visible" : "hidden",
+    overflow: isOpenReject ? "auto" : "hidden",
+  };
+  const handleClickCreate = () => {
+    setIsOpenReject((prevIsOpen) => !prevIsOpen);
+  };
+  const formik = useFormik({
+    initialValues:{
+      activityId: "",
+      reasonReject: "",
+      username:'',
+      email:"",
+      title:''
+    }, onSubmit: async(value)=>{
+      console.log(value)
+const action =await RejectActivityAction( value);
+dispatch(action)
+      handleClickCreate()
+    }
+  })
 
   const uploadFile = (e) => {
     let file = e.target.files[0];
@@ -97,6 +122,7 @@ export default function AdminActivity() {
     { value: "Active", label: "Hoạt động" },
     { value: "InActive", label: "Cấm hoạt động" },
     { value: "Pending", label: "Chờ duyệt" },
+    { value: "Reject", label: "Từ chối" },
   ];
   useEffect(() => {
     const arr = arrActivity.filter((item) => item.status === op);
@@ -650,8 +676,10 @@ export default function AdminActivity() {
                       position: "absolute",
                       right: "20px",
                       marginBottom: "20px",
+                      display:'flex'
                     }}
                   >
+                   <div style={{marginRight:'20px'}}>
                    {op === "Active" ? <div></div>
                    :
                    <div
@@ -677,6 +705,31 @@ export default function AdminActivity() {
                  >
                    Hoạt động 
                  </div>}
+                   </div>
+                 <div>
+                 {op === "Active" || op ==="Reject" ? <div></div>
+                   :
+                   <div
+                   style={{
+                     cursor: "pointer",
+                     border: "none",
+                     padding: "8px 20px",
+                     background: "red",
+                     color: "white",
+                     borderRadius: "5px",
+                   }}
+                   onClick={async () => {
+                    
+              formik.setFieldValue('activityId',  activity?.activityId)
+              formik.setFieldValue('email',  activity?.user?.email)
+              formik.setFieldValue('username',  activity?.user?.username)
+              formik.setFieldValue('title',   activity?.title)
+                       handleClickCreate()               
+                   }}
+                 >
+                  Loại bỏ
+                 </div>}
+                 </div>
                   </div>
                   <h2
                     style={{
@@ -839,6 +892,72 @@ export default function AdminActivity() {
                           );
                         })}
                       </Slider>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+       {isOpenReject === true ? (
+        <div className="post-new-popup" style={popupStyleCreate}>
+          <div className="popup" style={{ width: 800, zIndex: 80, marginTop: '-50px' }}>
+            <span className="popup-closed" onClick={handleClickCreate}>
+              <i className="icofont-close" />
+            </span>
+            <div className="popup-meta">
+              <div className="popup-head">
+                <h5>
+                  <i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-plus"
+                    >
+                      <line x1={12} y1={5} x2={12} y2={19} />
+                      <line x1={5} y1={12} x2={19} y2={12} />
+                    </svg>
+                  </i>
+                Từ chối chiến dịch
+                </h5>
+              </div>
+            </div>
+
+            <div style={{ padding: '40px 0' }}>
+              <form onSubmit={formik.handleSubmit}>
+                <div className="form row mt-3">
+
+                 
+                  <div className="form-group">
+                    <label>Lý do</label>
+                    <textarea
+                      id="message"
+                      className="form-control"
+                      rows="2"
+                      cols="50"
+                      name="reasonReject"
+                      onChange={formik.handleChange}
+                    ></textarea>
+                  </div>
+                 
+                  <div className="row" style={{}}>
+                    <div className="col-md-4">
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-block"
+                      >
+                        Gửi lý do
+                      </button>
                     </div>
                   </div>
                 </div>

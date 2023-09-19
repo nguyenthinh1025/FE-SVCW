@@ -143,7 +143,7 @@ const AdminStatistical = (props) => {
   };
 
   return (
-    <div className="" style={{position:'absolute', left:'200px', marginTop:'50px',     width: "1700px"}}>
+    <div className="" style={{position:'absolute', marginTop:'10px',  width: "1800px"}}>
       <div className="">
         <section>
           <div className="top-area bluesh high-opacity">

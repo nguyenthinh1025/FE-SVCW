@@ -16,7 +16,22 @@ export const GetUserByIdAction = (id) => {
         }
     }
 }
+export const GetListUserAction = () => {
+    return async (dispatch) => {
 
+        try {
+            let result = await http.get(`/User/get-all-user`);
+            const action = {
+                type: "GET_LIST_USER",
+                arrListUser: result.data.data
+            }
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 export const GetUserBystatisticAction = (id) => {
     return async (dispatch) => {
 
