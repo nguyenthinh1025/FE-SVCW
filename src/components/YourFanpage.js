@@ -109,8 +109,9 @@ useEffect(()=>{
           <div></div>
         )}
         <RecommentActivity />
-        <Game />
         <Calender arr ={arr}/>
+        {/* <Game /> */}
+        
       </aside>
     </div>
   );

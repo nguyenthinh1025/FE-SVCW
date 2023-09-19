@@ -29,14 +29,16 @@ export default function Header(props) {
   }, []);
   const formik = useFormik({
     initialValues: {
-      search: title,
+      search: "",
     },
+
     onSubmit: async (value) => {
-      if (formik.values.title !== "") {
+      console.log(formik.values.search)
+      if (formik.values.search) {
         const action = await GetActivityTitleAction(value);
         dispatch(action);
       } else {
-        const action = GetListActivityAction();
+        const action =await GetListActivityAction();
         dispatch(action);
       }
     },

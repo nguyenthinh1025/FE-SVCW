@@ -61,7 +61,7 @@ export default function RecommentActivity () {
                     alt
                     src={item.media[0]?.linkMedia}
                   />
-                  <span>Lượt thích: {item.numberJoin}</span>
+                  <span>Lượt thích: {item.like?.length}</span>
                 </figure>
                 <div className="frnd-meta">
                   <img
