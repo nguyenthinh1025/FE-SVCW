@@ -47,7 +47,7 @@ export default function Moderator () {
     fullName: "",
     email: "",
     coverImage: "string",
-    dateOfBirth: moment().format("DD-MM-YYYY"),
+    dateOfBirth: moment().format("DD/MM/YYYY"),
   };
   const options1 = [
     { label: "Nam", value: 1 },
@@ -414,7 +414,7 @@ export default function Moderator () {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} người kiểm duyệt"
             globalFilter={globalFilter}
             header={header}
           >
@@ -460,7 +460,7 @@ export default function Moderator () {
 
             <Column
               field={(createAt) =>
-                moment(createAt.createAt).format("DD-MM-YYYY")
+                moment(createAt.createAt).format("DD/MM/YYYY")
               }
               header="Ngày tạo"
               sortable

@@ -418,7 +418,7 @@ export default function Achivement () {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} huy hiệu"
             globalFilter={globalFilter}
             header={header}
           >
@@ -454,7 +454,7 @@ export default function Achivement () {
             ></Column>
             <Column
               field={(createAt) =>
-                moment(createAt.createAt).format("DD-MM-YYYY")
+                moment(createAt.createAt).format("DD/MM/YYYY")
               }
               header="Ngày tạo"
               sortable

@@ -217,7 +217,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
                 type="text"
                 class="form-control-plaintext"
                 id="validationDefault02"
-                value={moment(info?.dateOfBirth).format('DD-MM-YYYY')}
+                value={moment(info?.dateOfBirth).format('DD/MM/YYYY')}
                 readOnly
               />
             </div>
@@ -407,7 +407,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
             </div>
             <div style={{ marginTop: 10 }}>
               <button className="btn btn-primary" type="submit">
-                Xong
+                Chỉnh sửa
               </button>
               <button
                 style={{ marginLeft: 10 }}

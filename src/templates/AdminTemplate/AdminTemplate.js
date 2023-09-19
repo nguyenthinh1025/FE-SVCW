@@ -124,7 +124,13 @@ export const AdminTemplate = (props) => {
                             <div className="scrollbar-sidebar">
                                 <div className="app-sidebar__inner">
                                     <ul className="vertical-nav-menu">
-        
+                                    <li className="app-sidebar__heading">Thống kê</li>
+                                        <li>
+                                            <NavLink to='/adminstatistical'>
+                                                <i className="metismenu-icon pe-7s-graph2">
+                                                </i>Thống kê
+                                            </NavLink>
+                                        </li>
                                         <li className="app-sidebar__heading">Huy hiệu</li>
                                         <li>
                                             <NavLink to='/achivement'>

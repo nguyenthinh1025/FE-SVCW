@@ -34,6 +34,7 @@ export default function Profile (props) {
   const { arrEndActivityByUserID } = useSelector(
     (root) => root.EndActivityReducer
   );
+  console.log(getUserId)
   const {isLoadingM} = useSelector(root =>root.LoadingReducer)
   const [loading,setLoading] = useState(isLoadingM)
   useEffect(() => {  
@@ -108,14 +109,18 @@ export default function Profile (props) {
                             </span>
                           </h4>
                           <ul className="joined-info">
+                          {id  === userID ? 
                             <li>
                               <span>Ngày tạo tài khoản:</span>{" "}
                               {moment(getUserId?.createAt).format("DD/MM/YYYY")}
                             </li>
+                          : <li></li>}
+                           {id  === userID ? 
                             <li>
-                              <span>Số tổ chức đang theo dõi:</span>{" "}
-                              {getUserId?.followFanpage?.length}
-                            </li>
+                            <span>Số tổ chức đang theo dõi:</span>{" "}
+                            {getUserId?.followFanpage?.length}
+                          </li>
+                          : <li></li>}
                             <li>
                               <span>Số bài viết:</span>{" "}
                               {getUserId?.activity?.length}
@@ -170,12 +175,12 @@ export default function Profile (props) {
                                     {getUserId?.achivementUser?.map(
                                       (item, index) => {
                                         return (
-                                          <li key={index}>
+                                          <li key={index} style={{marginRight:'5px'}}>
                                             <img
                                               src={item?.achivement?.achivementLogo}
                                               alt={`${item?.achivement?.description}`}
                                               title={`${item?.achivement?.description}`}
-                                              style={{width:'50px', height:'50px'}}
+                                              style={{width:'50px', height:'40px'}}
                                             />
                                           </li>
                                         );
@@ -208,7 +213,7 @@ export default function Profile (props) {
                                       />
                                     </div>
 
-                                    <div className="sp sp-bars" />
+                                  
                                   </div>
                                   <Other />
                                 </div>

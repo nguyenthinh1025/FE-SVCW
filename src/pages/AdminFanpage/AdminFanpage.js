@@ -89,10 +89,10 @@ export default function AdminFanpage () {
   const arrReportType = [
     { value: 'Pending', label: "Chờ duyệt" },
     { value: 'Active', label: "Hoạt động" },
-    { value: 'InActive', label: "Đã Xóa" },
+    { value: 'InActive', label: "Cấm hoạt động" },
   ]
   useEffect(() => {
-    const arr = arrFanpage.filter(item => item.status === op)
+    const arr = arrFanpage?.filter(item => item.status === op)
     setProducts(arr)
   }, [arrFanpage, op]);
 
@@ -377,7 +377,7 @@ console.log(product1.fanpageId)
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} tổ chức"
             globalFilter={globalFilter}
             header={header}
           >
@@ -428,7 +428,7 @@ console.log(product1.fanpageId)
             ></Column>
             <Column
               field={(createAt) =>
-                moment(createAt.createAt).format("DD-MM-YYYY")
+                moment(createAt.createAt).format("DD/MM/YYYY")
               }
               header="Ngày tạo"
               sortable

@@ -15,7 +15,7 @@ export default function EndActivity (props) {
             />
           </div>
 
-          <div className="sp sp-bars" />
+          
         </div>
         <Other />
       </div>

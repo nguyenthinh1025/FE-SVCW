@@ -67,7 +67,7 @@ const Calender = (props) => {
               {eventsForSelectedDate.map((event, index) => (
                 <li key={index} style={{fontWeight:'bold'}} onClick={() => handleEventClick(event.title)}>
                   <NavLink to={`/detailactivity/${event.actiID}`} style={{display:'flex', flexDirection:'column'}}>
-                  {event.title} - {event.hour}:{event.min} {event.hour >12 ?"tối":'sáng'}
+                  {event.title} - ({event.hour} giờ : {event.min} phút )
                   </NavLink>
                 </li>
               ))}

@@ -94,7 +94,7 @@ export default function ListDonate(props) {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} danh sách ủng hộ"
             globalFilter={globalFilter}
             header={header}
           >
@@ -136,7 +136,7 @@ export default function ListDonate(props) {
             ></Column>
             <Column
               field={(payDate) =>
-                moment(payDate.payDate).format("DD-MM-YYYY hh:mm A")
+                moment(payDate.payDate).format("DD/MM/YYYY hh:mm A")
               }
               header="Ngày ủng hộ"
               sortable

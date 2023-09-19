@@ -95,7 +95,7 @@ export default function AdminActivity() {
 
   const arrReportType = [
     { value: "Active", label: "Hoạt động" },
-    { value: "InActive", label: "Không hoạt động" },
+    { value: "InActive", label: "Cấm hoạt động" },
     { value: "Pending", label: "Chờ duyệt" },
   ];
   useEffect(() => {
@@ -326,7 +326,7 @@ export default function AdminActivity() {
             setActivity(rowData);
           }}
         />
-        <Button
+        {/* <Button
           icon="pi pi-pencil"
           rounded
           outlined
@@ -334,7 +334,7 @@ export default function AdminActivity() {
           onClick={() => {
             editProduct(rowData);
           }}
-        />
+        /> */}
         <Button
           icon="pi pi-trash"
           rounded
@@ -441,7 +441,7 @@ export default function AdminActivity() {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} chiến dịch"
             globalFilter={globalFilter}
             header={header}
           >
@@ -497,7 +497,7 @@ export default function AdminActivity() {
             ></Column>
             <Column
               field={(createAt) =>
-                moment(createAt.createAt).format("DD-MM-YYYY")
+                moment(createAt.createAt).format("DD/MM/YYYY")
               }
               header="Bắt đầu"
               sortable
@@ -505,7 +505,7 @@ export default function AdminActivity() {
             ></Column>
             <Column
               field={(createAt) =>
-                moment(createAt.endDate).format("DD-MM-YYYY")
+                moment(createAt.endDate).format("DD/MM/YYYY")
               }
               header="Kết thúc"
               sortable
@@ -652,29 +652,31 @@ export default function AdminActivity() {
                       marginBottom: "20px",
                     }}
                   >
-                    <div
-                      style={{
-                        cursor: "pointer",
-                        border: "none",
-                        padding: "8px 20px",
-                        background: "#3f6ad8",
-                        color: "white",
-                        borderRadius: "5px",
-                      }}
-                      onClick={async () => {
-                        const action = await ActiveActivityAction(
-                          activity?.activityId,
-                          activity?.user?.email,
-                          activity?.user?.username,
-                          activity?.title
-                        );
-                        dispatch(action);
+                   {op === "Active" ? <div></div>
+                   :
+                   <div
+                   style={{
+                     cursor: "pointer",
+                     border: "none",
+                     padding: "8px 20px",
+                     background: "#3f6ad8",
+                     color: "white",
+                     borderRadius: "5px",
+                   }}
+                   onClick={async () => {
+                     const action = await ActiveActivityAction(
+                       activity?.activityId,
+                       activity?.user?.email,
+                       activity?.user?.username,
+                       activity?.title
+                     );
+                     dispatch(action);
 
-                        setIsOpen(false);
-                      }}
-                    >
-                      Hoạt động
-                    </div>
+                     setIsOpen(false);
+                   }}
+                 >
+                   Hoạt động 
+                 </div>}
                   </div>
                   <h2
                     style={{
@@ -725,11 +727,11 @@ export default function AdminActivity() {
                   >
                     <p style={{ fontWeight: 800 }}>
                       Bắt đầu :{" "}
-                      {moment(activity?.startDate).format("DD-MM-YYYY")}
+                      {moment(activity?.startDate).format("DD/MM/YYYY")}
                     </p>
                     <p style={{ fontWeight: 800 }}>
                       Kết thúc :{" "}
-                      {moment(activity?.endDate).format("DD-MM-YYYY")}
+                      {moment(activity?.endDate).format("DD/MM/YYYY")}
                     </p>
                     {/* <p style={{ fontWeight: 800 }}>Hoạt động :</p> */}
                     <div style={{ width: "800px" }}>

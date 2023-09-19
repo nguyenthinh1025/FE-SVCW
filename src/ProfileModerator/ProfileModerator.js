@@ -70,7 +70,7 @@ const formik6 = useFormik({
                           <ul className="joined-info">
                             <li>
                               <span>Ngày tạo tài khoản:</span>{" "}
-                              {moment(ModeratorId?.createAt).format("DD-MM-YYYY")}
+                              {moment(ModeratorId?.createAt).format("DD/MM/YYYY")}
                         
                             </li>
                            
@@ -140,7 +140,7 @@ const formik6 = useFormik({
                               class="form-control-plaintext"
                               id="validationDefault02"
                               value={moment(ModeratorId?.dateOfBirth).format(
-                                "DD-MM-YYYY"
+                                "DD/MM/YYYY"
                               )}
                               readOnly
                             />

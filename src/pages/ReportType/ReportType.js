@@ -303,7 +303,7 @@ export default function ReportType () {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} loại báo cáo"
             globalFilter={globalFilter}
             header={header}
           >

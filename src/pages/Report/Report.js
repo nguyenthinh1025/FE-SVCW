@@ -460,7 +460,7 @@ export default function Report () {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} báo cáo"
             globalFilter={globalFilter}
             header={header}
           >
@@ -505,7 +505,7 @@ export default function Report () {
             ></Column>
             <Column
               field={(datetime) =>
-                moment(datetime.datetime).format("DD-MM-YYYY HH:mm")
+                moment(datetime.datetime).format("DD/MM/YYYY HH:mm")
               }
               header="Ngày báo cáo"
               sortable

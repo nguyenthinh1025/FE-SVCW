@@ -46,6 +46,9 @@ import ListFollowJoin from "./ListFollowJoin";
 import { SendEmail } from "../utils/emailService";
 
 export default function ItemEndActivity(props) {
+
+
+
   const [isReadMore, setReadMore] = useState(false);
   const [share, setShare] = useState(false);
   const [shareActivityID, setShareActivityID] = useState("");
@@ -111,6 +114,7 @@ export default function ItemEndActivity(props) {
     detailItem,
     index,
   } = props;
+
   const [showAllComments, setShowAllComments] = useState(false);
 
   const handleShowAll = () => {
@@ -288,7 +292,11 @@ export default function ItemEndActivity(props) {
     }
     return timeAgoString;
   };
+  const [clickCounts, setClickCounts] = useState(0);
+  const [disabledButtons, setDisabledButtons] = useState(false);
   const handleJoinClick = async (index, activity, isJoin, title, process) => {
+    if (clickCounts < 6) {
+      setClickCounts(prevCount => prevCount + 1);
     if (isJoin === "Join") {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
@@ -312,6 +320,9 @@ export default function ItemEndActivity(props) {
     }
     const action = GetListActivityAction();
     await dispatch(action);
+  } else {
+    setDisabledButtons(true);
+  }
   };
   const handleFollowClick = (index, activity, isFollow, title) => {
     if (isFollow) {
@@ -735,8 +746,8 @@ export default function ItemEndActivity(props) {
 
               {ItemActivity.process?.map((pro, index) => {
                 if (
-                  moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
-                  moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                  moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(currentDate) &&
+                  moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                 ) {
                   if (pro.isDonateProcess === true) {
                     return (
@@ -838,10 +849,10 @@ export default function ItemEndActivity(props) {
                 <div>
                   {ItemActivity.process?.map((pro, index) => {
                     if (
-                      moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                      moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                         currentDate
                       ) &&
-                      moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                     ) {
                       if (pro.isParticipant === true) {
                         return (
@@ -898,10 +909,10 @@ export default function ItemEndActivity(props) {
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isParticipant === true) {
                           return (
@@ -920,6 +931,7 @@ export default function ItemEndActivity(props) {
                                   ? "marginfollow"
                                   : "sas"
                               }`}
+                              disabled={disabledButtons}
                               onClick={() => {
                                 handleJoinClick(
                                   index,
@@ -953,10 +965,10 @@ export default function ItemEndActivity(props) {
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isDonateProcess === true) {
                           return (

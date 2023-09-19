@@ -27,7 +27,7 @@ export default function Result() {
       const daysAgo = Math.floor(duration.asDays());
       timeAgoString = `${daysAgo} ngày trước`;
     } else if (hoursAgo > 48) {
-      const formattedDate = inputTime.format("DD-MM-YYYY HH:mm:ss");
+      const formattedDate = inputTime.format("DD/MM/YYYY HH:mm:ss");
       timeAgoString = formattedDate;
     } else {
       const hoursAgo = Math.floor(duration.asHours());
