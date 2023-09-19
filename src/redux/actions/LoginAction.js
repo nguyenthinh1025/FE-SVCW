@@ -119,7 +119,7 @@ export const LoginModeratorAction = (value, props) => {
             dispatch(action1)
             localStorage.setItem('moderator',JSON.stringify(result.data.data))
 
-            props.history.push("/achivement");
+            props.history.push("/adminstatistical");
         } catch (error) {
             const action = {
                 type: "CHECK_MODERATOR",

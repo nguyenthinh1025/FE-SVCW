@@ -69,7 +69,7 @@ export default function Login (props) {
                     admin: localStorage.setItem('admin', 'admin')
                 }
                 await dispatch(action1)
-                props.history.push('/achivement')
+                props.history.push('/adminstatistical')
             }
             else {
                 const action = LoginModeratorAction(value, props);

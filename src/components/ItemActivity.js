@@ -597,7 +597,7 @@ export default function ItemActivity(props) {
                   }}
                   className="col-lg-12"
                 >
-                  <h3
+                  <NavLink   to={`/detailactivity/${ItemActivity.activityId}`}
                     style={{
                       fontSize: "25px",
                       fontWeight: "bold",
@@ -608,7 +608,7 @@ export default function ItemActivity(props) {
                     className="col-lg-12"
                   >
                     {ItemActivity.title}
-                  </h3>
+                  </NavLink>
                 </div>
               </div>
               <div style={{ display: "flex" }}>
@@ -675,7 +675,7 @@ export default function ItemActivity(props) {
               </p>
               <figure style={{}}>
                 <div className="image-gallery-flex">
-                  {ItemActivity?.media?.length <= 3
+                  {ItemActivity?.media?.length <= 4
                     ? ItemActivity.media.map((image, index) => {
                       return (
                         <div key={index} className={`image-container-post`}>
@@ -740,8 +740,8 @@ export default function ItemActivity(props) {
 
               {ItemActivity.process?.map((pro, index) => {
                 if (
-                  moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
-                  moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                  moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(currentDate) &&
+                  moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                 ) {
                   if (pro.isDonateProcess === true) {
                     return <div style={{ position: "relative" }}>
@@ -840,10 +840,10 @@ export default function ItemActivity(props) {
                 <div>
                   {ItemActivity.process?.map((pro, index) => {
                     if (
-                      moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                      moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                         currentDate
                       ) &&
-                      moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                     ) {
                       if (pro.isParticipant === true) {
                         return (
@@ -900,10 +900,10 @@ export default function ItemActivity(props) {
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isParticipant === true) {
                           return (
@@ -943,10 +943,10 @@ export default function ItemActivity(props) {
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isDonateProcess === true) {
                           return (

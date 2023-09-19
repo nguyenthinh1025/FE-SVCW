@@ -51,7 +51,7 @@ export default function DetailProcess (props) {
   }, []);
 
   const DateTime = (value) => {
-    const currentTime = moment(value).format("DD-MM-YYYY");
+    const currentTime = moment(value).format("DD/MM/YYYY hh:mm A");
     return currentTime;
   };
 
@@ -151,7 +151,7 @@ export default function DetailProcess (props) {
       if (moment(value.startDate).isBefore(currentObject.activity?.startDate)) {
         Swal.fire({
           title: 'Cảnh báo',
-          text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(currentObject.activity?.startDate).format('DD-MM-YYYY')}`,
+          text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(currentObject.activity?.startDate).format('DD/MM/YYYY')}`,
           icon: 'warning',
           showCancelButton: false,
           confirmButtonColor: '#3085d6',
@@ -161,7 +161,7 @@ export default function DetailProcess (props) {
       } else if (moment(value.endDate).isAfter(currentObject.activity?.endDate)) {
         Swal.fire({
           title: 'Cảnh báo',
-          text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(currentObject.activity?.endDate).format('DD-MM-YYYY')}`,
+          text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(currentObject.activity?.endDate).format('DD/MM/YYYY')}`,
           icon: 'warning',
           showCancelButton: false,
           confirmButtonColor: '#3085d6',

@@ -337,7 +337,7 @@ export default function ResultActivity (props) {
                               <Column
                                 field={(datetime) =>
                                   moment(datetime?.datetime).format(
-                                    "DD-MM-YYYY hh:mm A"
+                                    "DD/MM/YYYY hh:mm A"
                                   )
                                 }
                                 header="Thời gian theo dõi"
@@ -395,7 +395,7 @@ export default function ResultActivity (props) {
                                         <Column
                                           field={(datetime) =>
                                             moment(datetime.datetime).format(
-                                              "DD-MM-YYYY hh:mm A"
+                                              "DD/MM/YYYY hh:mm A"
                                             )
                                           }
                                           header="Thời gian theo dõi"

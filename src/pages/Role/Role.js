@@ -434,7 +434,7 @@ export default function Role () {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} chức vụ"
             globalFilter={globalFilter}
             header={header}
           >
