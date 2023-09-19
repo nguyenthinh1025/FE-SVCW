@@ -249,7 +249,7 @@ export default function Result() {
                                           Trạng thái :{" "}
                                           <span>
                                             {" "}
-                                            <i>{item.status}</i>
+                                            <i>{item.status ==="success" ? "ủng hộ thành công" : item.status}</i>
                                           </span>
                                         </div>
                                       </li>

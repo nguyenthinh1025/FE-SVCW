@@ -11,7 +11,14 @@ export default function Donate(props) {
   const dispatch = useDispatch();
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Vui lòng nhập tiêu đề'),
-    amount: Yup.number().positive('Số tiền phải là số dương').required('Vui lòng nhập số tiền'),
+    amount: Yup.string()
+    .matches(/^[0-9,]+$/, 'Số tiền phải là số dương')
+    .test('is-number', 'Số tiền phải là số dương', value => {
+      if (!value) return true; // Allow empty value
+      const numberValue = Number(value.replace(/,/g, ''));
+      return !isNaN(numberValue);
+    })
+    .required('Vui lòng nhập số tiền'),
     email: Yup.string().email('Địa chỉ email không hợp lệ').required('Vui lòng nhập email'),
     phone: Yup.string().matches(/^[0-9]{10}$/, 'Số điện thoại không hợp lệ').required('Vui lòng nhập số điện thoại'),
     name: Yup.string().required('Vui lòng nhập tên'),

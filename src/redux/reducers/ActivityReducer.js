@@ -4,7 +4,7 @@ if (JSON.parse(localStorage.getItem('activity'))) {
 }
 
 const stateDefault = {
-    arrActivity: arrActivity1,
+    arrActivity: [],
     activityId: {},
     activityById: localStorage.getItem('activityID'),
     arrListActivity: [],

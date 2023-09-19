@@ -131,6 +131,7 @@ export const GetActivityTitleAction = (value) => {
                 type: "GET_LIST_ACTIVITY_TITLE",
                 arrActivity: result.data.data
             }
+            console.log(result.data.data)
             dispatch(action)
             localStorage.setItem('activity', JSON.stringify(result.data.data))
             const search = {
