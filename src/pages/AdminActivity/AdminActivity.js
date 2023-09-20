@@ -732,7 +732,7 @@ dispatch(action)
                        handleClickCreate()               
                    }}
                  >
-                  Loại bỏ
+                  Từ chối
                  </div>}
                  </div>
                   </div>
