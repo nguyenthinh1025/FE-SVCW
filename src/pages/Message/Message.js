@@ -14,6 +14,8 @@ export default function Message(props) {
     const [chatter, setChatter] = useState();
     const [chatToUser, setChatToUser] = useState();
     const [currentRoom, setCurrentRoom] = useState();
+    const [showIcon, setShowIcon] = useState(false);
+    const [iconToSend, setIconToSend] = useState('');
     // const [chatRoomId, setChatRoomId] = useState();
     const [chatRooms, setChatRooms] = useState([]);
     const [userGroups, setUserGroups] = useState([]);
@@ -385,12 +387,34 @@ export default function Message(props) {
     }, [])
 
     const handleKeyPress = (e) => {
+        e.preventDefault()
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             playNotificationSound();
             handleSend(e);
         }
     };
+
+    async function sendIcon(iconId) {
+        if (iconId !== '') {
+            try {
+                const message = await addDoc(messagesRef, {
+                    type: "pmi",
+                    content: iconToSend,
+                    roomId: currentRoom?.id,
+                    username: chatter?.username,
+                    userId: getUserId?.userId,
+                    timestamp: Timestamp.fromDate(new Date()),
+                });
+                playNotificationSound();
+                setFormData({ message: '' })
+                console.log("Document Icon written with ID: ", message.id);
+            } catch (e) {
+                alert('It seem like you have no any chat room.\nLet add new friend and staring a chat!')
+                console.error("Error adding document: ", e);
+            }
+        }
+    }
 
     const handleSend = async (e) => {
         e.preventDefault()
@@ -412,6 +436,36 @@ export default function Message(props) {
         } catch (e) {
             alert('It seem like you have no any chat room.\nLet add new friend and staring a chat!')
             console.error("Error adding document: ", e);
+        }
+    }
+    function getIconSource(id) {
+        switch (id) {
+            case '1':
+                return "../images/smiles/angry-1.png";
+            case '2':
+                return "../images/smiles/angry.png";
+            case '3':
+                return "../images/smiles/bored-1.png";
+            case '4':
+                return "../images/smiles/bored-2.png";
+            case '5':
+                return "../images/smiles/bored.png";
+            case '6':
+                return "../images/smiles/confused-1.png";
+            case '7':
+                return "../images/smiles/confused.png";
+            case '8':
+                return "../images/smiles/crying-1.png";
+            case '9':
+                return "../images/smiles/crying.png";
+            case '10':
+                return "../images/smiles/tongue-out.png";
+            case '11':
+                return "../images/smiles/wink.png";
+            case 12:
+                return "../images/smiles/suspicious.png";
+            default:
+                return ""; // Return an empty string if the ID is not found
         }
     }
     // play noti sound
@@ -590,7 +644,13 @@ export default function Message(props) {
                                                                             }
                                                                             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: getUserId?.userId === msg?.userId ? 'flex-end' : 'flex-start' }}>
                                                                                 <h5 style={{ fontSize: 11, marginBottom: '1px', marginLeft: '19px', marginRight: '19px' }} href='#' alt=''>{getUserId?.userId === msg?.userId ? '' : msg?.username}</h5>
-                                                                                <p style={{ display: 'inline-flex', marginBottom: '1', wordWrap: 'break-word', overflow: 'hidden' }}>{msg.content}</p>
+                                                                                {msg.type === 'pmi' ? (
+                                                                                    <p style={{ display: 'inline-flex', marginBottom: '1', wordWrap: 'break-word', overflow: 'hidden' }}>
+                                                                                        <img src={getIconSource(msg.content)}></img>
+                                                                                    </p>
+                                                                                ) : (
+                                                                                    <p style={{ display: 'inline-flex', marginBottom: '1', wordWrap: 'break-word', overflow: 'hidden' }}>{msg.content}</p>
+                                                                                )}
                                                                             </div>
                                                                         </li>
                                                                     )
@@ -598,34 +658,48 @@ export default function Message(props) {
                                                             }
                                                         </ul>
                                                         <div className="message-text-container">
-                                                            <div className="more-attachments">
+                                                            {/* <div className="more-attachments">
                                                                 <i className="icofont-plus" />
-                                                            </div>
-                                                            <div className="attach-options">
+                                                            </div> */}
+                                                            {/* <div className="attach-options">
                                                                 <a href="#" title><i className="icofont-camera" /> Open Camera</a>
                                                                 <a href="#" title><i className="icofont-video-cam" /> Photo &amp; video Library</a>
                                                                 <a href="#" title><i className="icofont-paper-clip" /> Attach Document</a>
                                                                 <a href="#" title><i className="icofont-location-pin" /> Share Location</a>
                                                                 <a href="#" title><i className="icofont-contact-add" /> Share Contact</a>
-                                                            </div>
+                                                            </div> */}
                                                             <form onSubmit={handleSend} >
-                                                                <span className="emojie"><img src="../images/smiles/happy.png" alt /></span>
+                                                                <span className="emojie" onClick={() => setShowIcon(!showIcon)} ><img src="../images/smiles/happy.png" alt /></span>
                                                                 <textarea
                                                                     rows={1}
                                                                     placeholder="Nhắn tin"
                                                                     name="message"
+                                                                    style={{ width: '91%' }}
                                                                     value={formData.message}
                                                                     onChange={handleChange}
                                                                     onKeyPress={handleKeyPress}
                                                                 />
                                                                 {userMsgs.length === 0 ? (
                                                                     <div style={{ display: 'flex', justifyContent: 'center', alignSelf: 'center' }}>
-                                                                        <button type='submit' className="button primary circle" style={{ backgroundColor: '#8ab332', width: 120 }} href="#" title>Say hi! 🖐️</button>
+                                                                        <button type='submit' className="button primary circle" style={{ backgroundColor: '#8ab332', width: 120, right: '-28px' }} href="#" title>Say hi! 🖐️</button>
                                                                     </div>
                                                                 ) : (
-                                                                    <button title="send" type='submit'><i className="icofont-paper-plane" /></button>
+                                                                    <button style={{ right: '-28px' }} title="send" type='submit'><i className="icofont-paper-plane" /></button>
                                                                 )}
-
+                                                                <div className={showIcon ? "smiles-bunch active" : "smiles-bunch"}>
+                                                                    <i><img id='1' onClick={() => sendIcon('1')} src="../images/smiles/angry-1.png" alt /></i>
+                                                                    <i><img id='2' onClick={() => sendIcon('2')} src="../images/smiles/angry.png" alt /></i>
+                                                                    <i><img id='3' onClick={() => sendIcon('3')} src="../images/smiles/bored-1.png" alt /></i>
+                                                                    <i><img id='4' onClick={() => sendIcon('4')} src="../images/smiles/bored-2.png" alt /></i>
+                                                                    <i><img id='5' onClick={() => sendIcon('5')} src="../images/smiles/bored.png" alt /></i>
+                                                                    <i><img id='6' onClick={() => sendIcon('6')} src="../images/smiles/confused-1.png" alt /></i>
+                                                                    <i><img id='7' onClick={() => sendIcon('7')} src="../images/smiles/confused.png" alt /></i>
+                                                                    <i><img id='8' onClick={() => sendIcon('8')} src="../images/smiles/crying-1.png" alt /></i>
+                                                                    <i><img id='9' onClick={() => sendIcon('9')} src="../images/smiles/crying.png" alt /></i>
+                                                                    <i><img id='10' onClick={() => sendIcon('10')} src="../images/smiles/tongue-out.png" alt /></i>
+                                                                    <i><img id='11' onClick={() => sendIcon('11')} src="../images/smiles/wink.png" alt /></i>
+                                                                    <i><img id='12' onClick={() => sendIcon('12')} src="../images/smiles/suspicious.png" alt /></i>
+                                                                </div>
                                                             </form>
                                                         </div>
                                                     </div>
