@@ -36,6 +36,7 @@ import Game from "../../components/Game";
 import Donate from "../../components/Donate";
 import { SendEmail } from "../../utils/emailService";
 import RejectActivi from "../../components/RejectActivi";
+import ResultActivity from "../Result/ResultActivity";
 
 export default function ItemActivityFanpage(props) {
   const [share, setShare] = useState(false);
@@ -415,6 +416,21 @@ export default function ItemActivityFanpage(props) {
                       </svg>
                     </i>
                     <ul>
+                    {userID === ItemActivity.userId &&
+                    endDate.isBefore(currentDate) === false ? (
+                      <li
+                        onClick={() => {
+                          handleClickActiReject();
+                  setActiRejectid( ItemActivity.activityId)
+                        }}
+                      >
+                        <i className="icofont-sign-out" />
+                       Tắt chiến dịch
+                        <span>Ngừng chiến ngay lập tức</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
                       {/* {userID === ItemActivity.userId &&
                       endDate.isBefore(currentDate) === false &&
                       ItemActivity.targetDonation === 0 ? (
@@ -519,7 +535,7 @@ export default function ItemActivityFanpage(props) {
                     ) : (
                       <div></div>
                     )}
-                    {endDate.isAfter(currentDate) === true &&
+                    {endDate.isAfter(currentDate) === true &&userID === ItemActivity.userId &&
                     ItemActivity?.process?.filter(
                       (item) => item.processTypeId === "pt003"
                     ).length > 0 ? (
@@ -596,7 +612,7 @@ export default function ItemActivityFanpage(props) {
                           dispatch(action);
                         }}
                       >
-                        <i className="icofont-flag" />
+                        <i className="icofont-eye-open" />
                         Xem kết quả chiến dịch
                         <span>Xem kết quả diễn ra trong chiến dịch</span>
                       </li>
@@ -974,7 +990,7 @@ export default function ItemActivityFanpage(props) {
                   </div>
                 )}
 
-                {endDate.isBefore(currentDate) ? (
+                {(ItemActivity?.process?.length === 0) || endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <button
@@ -1314,6 +1330,12 @@ export default function ItemActivityFanpage(props) {
           handleClick={handleClick}
           arrReportType={arrReportType}
         />
+         <ResultActivity
+        popupStyle1={popupStyle1}
+        handleClick1={handleClick1}
+        isOpen1={isOpen1}
+        idActivity={idActivity}
+      />
         <ShareActivity
           share={share}
           handleClickShare={handleClickShare}

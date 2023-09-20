@@ -246,7 +246,7 @@ export default function Profile (props) {
                                 getUserId={getUserId}
                               />
                                 <StopActivity
-                                arrEndActivityByUserID={arrEndActivityByUserID}
+                                arrEndActivityByUserID={getUserId?.activity}
                                 getUserId={getUserId}
                               />
                             </div>

@@ -366,13 +366,14 @@ dispatch(action)
             editProduct(rowData);
           }}
         /> */}
-        <Button
+    {op === 'InActive' ? <div></div> :  <Button
           icon="pi pi-trash"
           rounded
           outlined
           severity="danger"
           onClick={() => confirmDeleteProduct(rowData)}
         />
+      }
       </React.Fragment>
     );
   };

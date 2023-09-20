@@ -118,6 +118,8 @@ export const CreateActivityAction = (value, setCreate) => {
       dispatch(action);
       const action5 = GetListEndActivityAction();
       dispatch(action5);
+      const action3 = GetProfileByIdAction(localStorage.getItem('userID'));
+      dispatch(action3)
       localStorage.setItem("activityprocess", result.data.data.activityId);
       localStorage.setItem("activityprocessid", result.data.data.activityId);
       localStorage.setItem("startactivity", value.startDate);
@@ -656,6 +658,8 @@ export const QuitActivityAction = (value) => {
       dispatch(action1);
       const action2 = GetFanpageByIDAction(localStorage.getItem('userID'));
       dispatch(action2)
+      const action3 = GetProfileByIdAction(localStorage.getItem('userID'));
+      dispatch(action3)
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",

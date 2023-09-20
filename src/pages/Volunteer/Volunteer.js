@@ -426,7 +426,7 @@ export default function Volunteer() {
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0 mb-3">Quản lý tổ tình nguyện viên</h4>
+      <h4 className="m-0 mb-3">Quản lý tình nguyện viên</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -513,7 +513,7 @@ export default function Volunteer() {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} tổ chức"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} tình nguyện viên"
             globalFilter={globalFilter}
             header={header}
           >
