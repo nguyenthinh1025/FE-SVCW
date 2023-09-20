@@ -331,7 +331,7 @@ export default function Message(props) {
                 orderBy('timestamp', 'asc')), (snapshot) => {
                     snapshot.docChanges().forEach((change) => {
                         if (change.type === "added") {
-                            // playNotificationSound();
+                            playNotificationSound();
                             console.log("New message: ", change.doc.data());
                         }
                         if (change.type === "modified") {
@@ -387,7 +387,6 @@ export default function Message(props) {
     }, [])
 
     const handleKeyPress = (e) => {
-        e.preventDefault()
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             playNotificationSound();
@@ -401,6 +400,27 @@ export default function Message(props) {
                 const message = await addDoc(messagesRef, {
                     type: "pmi",
                     content: iconToSend,
+                    roomId: currentRoom?.id,
+                    username: chatter?.username,
+                    userId: getUserId?.userId,
+                    timestamp: Timestamp.fromDate(new Date()),
+                });
+                playNotificationSound();
+                setFormData({ message: '' })
+                console.log("Document Icon written with ID: ", message.id);
+            } catch (e) {
+                alert('It seem like you have no any chat room.\nLet add new friend and staring a chat!')
+                console.error("Error adding document: ", e);
+            }
+        }
+    }
+
+    async function sendIcon(iconId) {
+        if (iconId !== '') {
+            try {
+                const message = await addDoc(messagesRef, {
+                    type: "pmi",
+                    content: iconId,
                     roomId: currentRoom?.id,
                     username: chatter?.username,
                     userId: getUserId?.userId,
@@ -469,8 +489,9 @@ export default function Message(props) {
         }
     }
     // play noti sound
+    const notificationSound = document.getElementById('newMessageSound');
     function playNotificationSound() {
-        const notificationSound = document.getElementById('newMessageSound');
+        // const notificationSound = document.getElementById('newMessageSound');
         if (notificationSound) {
             notificationSound.play();
         }
@@ -675,6 +696,7 @@ export default function Message(props) {
                                                                     placeholder="Nhắn tin"
                                                                     name="message"
                                                                     style={{ width: '91%' }}
+                                                                    // style={{ width: '91%' }}
                                                                     value={formData.message}
                                                                     onChange={handleChange}
                                                                     onKeyPress={handleKeyPress}
@@ -687,18 +709,18 @@ export default function Message(props) {
                                                                     <button style={{ right: '-28px' }} title="send" type='submit'><i className="icofont-paper-plane" /></button>
                                                                 )}
                                                                 <div className={showIcon ? "smiles-bunch active" : "smiles-bunch"}>
-                                                                    <i><img id='1' onClick={() => sendIcon('1')} src="../images/smiles/angry-1.png" alt /></i>
-                                                                    <i><img id='2' onClick={() => sendIcon('2')} src="../images/smiles/angry.png" alt /></i>
-                                                                    <i><img id='3' onClick={() => sendIcon('3')} src="../images/smiles/bored-1.png" alt /></i>
-                                                                    <i><img id='4' onClick={() => sendIcon('4')} src="../images/smiles/bored-2.png" alt /></i>
-                                                                    <i><img id='5' onClick={() => sendIcon('5')} src="../images/smiles/bored.png" alt /></i>
-                                                                    <i><img id='6' onClick={() => sendIcon('6')} src="../images/smiles/confused-1.png" alt /></i>
-                                                                    <i><img id='7' onClick={() => sendIcon('7')} src="../images/smiles/confused.png" alt /></i>
-                                                                    <i><img id='8' onClick={() => sendIcon('8')} src="../images/smiles/crying-1.png" alt /></i>
-                                                                    <i><img id='9' onClick={() => sendIcon('9')} src="../images/smiles/crying.png" alt /></i>
-                                                                    <i><img id='10' onClick={() => sendIcon('10')} src="../images/smiles/tongue-out.png" alt /></i>
-                                                                    <i><img id='11' onClick={() => sendIcon('11')} src="../images/smiles/wink.png" alt /></i>
-                                                                    <i><img id='12' onClick={() => sendIcon('12')} src="../images/smiles/suspicious.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('1')} src="../images/smiles/angry-1.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('2')} src="../images/smiles/angry.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('3')} src="../images/smiles/bored-1.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('4')} src="../images/smiles/bored-2.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('5')} src="../images/smiles/bored.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('6')} src="../images/smiles/confused-1.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('7')} src="../images/smiles/confused.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('8')} src="../images/smiles/crying-1.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('9')} src="../images/smiles/crying.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('10')} src="../images/smiles/tongue-out.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('11')} src="../images/smiles/wink.png" alt /></i>
+                                                                    <i><img onClick={() => sendIcon('12')} src="../images/smiles/suspicious.png" alt /></i>
                                                                 </div>
                                                             </form>
                                                         </div>
