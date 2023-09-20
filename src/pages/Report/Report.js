@@ -356,7 +356,7 @@ export default function Report () {
           }}
         />
         <Button
-          icon="pi pi-pencil"
+          icon="pi pi-flag-fill"
           rounded
           outlined
           className="mr-2"

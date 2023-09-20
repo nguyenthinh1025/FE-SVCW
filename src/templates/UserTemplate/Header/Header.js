@@ -111,8 +111,8 @@ export default function Header(props) {
           </li>
 
           <li>
-            <a
-              href="http://localhost:3000/home"
+            <NavLink
+              to="/home"
               title="Trang Chủ"
               data-toggle="tooltip"
             >
@@ -133,7 +133,7 @@ export default function Header(props) {
                   <polyline points="9 22 9 12 15 12 15 22" />
                 </svg>
               </i>
-            </a>
+            </NavLink>
           </li>
 
           <li>

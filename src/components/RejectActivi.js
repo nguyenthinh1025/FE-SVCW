@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { QuitActivityAction } from "../redux/actions/ActivityAction";
 import { useDispatch } from "react-redux";
-
+import * as Yup from 'yup';
 export default function RejectActivi(props) {
   const dispatch = useDispatch();
   const {
@@ -13,12 +13,20 @@ export default function RejectActivi(props) {
   } = props;
   console.log(actirejectid);
   const [id, setID] = useState(actirejectid);
+  const SignupSchema = Yup.object().shape({
+      reasonQuit: Yup.string()
+      .required('Vui lòng điền lý do muốn ngừng chiến dịch'),
+  });
   const formik = useFormik({
     initialValues: {
       activityId: actirejectid,
       reasonQuit: "",
     },
+    enableReinitialize:true,
+    validationSchema: SignupSchema,
     onSubmit: (value) => {
+      formik.setFieldValue("activityId", actirejectid);
+      console.log(value)
       const action = QuitActivityAction(value);
       dispatch(action);
       handleClickActiReject()
@@ -75,7 +83,9 @@ export default function RejectActivi(props) {
                       cols="50"
                       name="reasonQuit"
                       onChange={formik.handleChange}
+                      
                     ></textarea>
+                    <div className="error">{formik.errors.reasonQuit}</div>
                   </div>
 
                   <div className="row" style={{}}>

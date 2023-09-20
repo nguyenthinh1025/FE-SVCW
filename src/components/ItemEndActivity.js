@@ -412,7 +412,7 @@ export default function ItemEndActivity(props) {
                     </svg>
                   </i>
                   <ul>
-                    {userID === ItemActivity.userId &&
+                    {/* {userID === ItemActivity.userId &&
                     endDate.isBefore(currentDate) === false &&
                     ItemActivity.targetDonation === 0 ? (
                       <li
@@ -430,7 +430,7 @@ export default function ItemEndActivity(props) {
                       </li>
                     ) : (
                       <div></div>
-                    )}
+                    )} */}
                      {userID === ItemActivity.userId &&
                     endDate.isBefore(currentDate) === false ? (
                       <li
@@ -447,7 +447,7 @@ export default function ItemEndActivity(props) {
                       <div></div>
                     )}
 
-                    {userID === ItemActivity.userId &&
+                    {/* {userID === ItemActivity.userId &&
                     ItemActivity.targetDonation === 0 &&
                     endDate.isBefore(currentDate) === false ? (
                       <li
@@ -483,7 +483,7 @@ export default function ItemEndActivity(props) {
                       </li>
                     ) : (
                       <div></div>
-                    )}
+                    )} */}
                     {userID !== ItemActivity.userId ? (
                       <li
                         onClick={() => {
@@ -543,12 +543,12 @@ export default function ItemEndActivity(props) {
                       <li
                         onClick={() => {
                           handleClickDonate();
-                          setIsListDonate(ItemActivity?.donation);
+                          setIsListDonate(ItemActivity?.donation?.filter(item =>item.status ==="success"));
                         }}
                       >
                         <i className="icofont-pen-alt-1" />
                         Danh sách donate
-                        <span>Danh sách đã donate cho sự kiện</span>
+                        <span>Danh sách đã donate cho chiến dịch</span>
                       </li>
                     ) : (
                       <div></div>
@@ -593,7 +593,7 @@ export default function ItemEndActivity(props) {
                           dispatch(action);
                         }}
                       >
-                        <i className="icofont-flag" />
+                        <i className="icofont-eye-open" />
                         Xem kết quả chiến dịch
                         <span>Xem kết quả diễn ra trong chiến dịch</span>
                       </li>
@@ -1050,11 +1050,11 @@ export default function ItemEndActivity(props) {
                 >
                   <div className="popover_wrapper">
                     <a className="popover_title" href="#" title>
-                      <img alt src="images/smiles/thumb.png" />
+                      <img alt src="../images/smiles/thumb.png" />
                     </a>
                     <div className="popover_content">
                       <span>
-                        <img alt src="images/smiles/thumb.png" />
+                        <img alt src="../images/smiles/thumb.png" />
                         Đã thích
                       </span>
                       <ul className="namelist">

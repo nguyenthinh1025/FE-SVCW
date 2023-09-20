@@ -227,17 +227,17 @@ export default function Result() {
                                     return (
                                       <li>
                                         <h6>
-                                          Hoạt động :{" "}
+                                          Chiến dịch:{" "}
                                           <span style={{ fontWeight: "bold" }}>
                                             {item.activity.title}
                                           </span>
                                         </h6>
                                         <div>
-                                          Thời gian thanh toán :{" "}
+                                          Thời gian thanh toán:{" "}
                                           {DateTime(item.datetime)}
                                         </div>
                                         <div>
-                                          Số tiền :{" "}
+                                          Số tiền:{" "}
                                           <span>
                                             {" "}
                                             <i>
@@ -246,7 +246,7 @@ export default function Result() {
                                           </span>
                                         </div>
                                         <div>
-                                          Trạng thái :{" "}
+                                          Trạng thái:{" "}
                                           <span>
                                             {" "}
                                             <i>{item.status ==="success" ? "ủng hộ thành công" : item.status}</i>

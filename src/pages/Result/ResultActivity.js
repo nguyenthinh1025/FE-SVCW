@@ -131,7 +131,7 @@ export default function ResultActivity (props) {
             className="popup"
             style={{
               width: 1000,
-              height: "500px",
+              padding:'50px 50px',
               zIndex: 80,
               marginTop: "-100px",
             }}
@@ -253,12 +253,12 @@ export default function ResultActivity (props) {
                                     (item, index) => {
                                       return (
                                         <div key={index} >
-                                          <h1 style={{ textAlign: "center" }}>
+                                          <h3 style={{ textAlign: "center" }}>
                                             {item.title}
-                                          </h1>
-                                          <h1 style={{ textAlign: "center" }}>
+                                          </h3>
+                                          <div style={{fontSize:'17px'}}>
                                             {item.desciption}
-                                          </h1>
+                                          </div>
                                           <div
                                             style={{
                                               display: "grid",

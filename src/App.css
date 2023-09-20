@@ -1578,7 +1578,7 @@ i.fa.fa-arrow-up {
 
 .react-calendar{
  border-radius: 10px;
- background-color: #fafafa none repeat scroll 0 0!important;
+ background: #fafafa none repeat scroll 0 0!important;
 }
 
 
@@ -1595,4 +1595,10 @@ i.fa.fa-arrow-up {
 .roll-header{
   height: 670px;
   overflow-y: scroll; 
+}
+
+@media screen and (max-width:'576px') {
+  header{
+    display: none!important;
+  } 
 }

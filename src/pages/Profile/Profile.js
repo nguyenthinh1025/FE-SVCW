@@ -23,6 +23,7 @@ import {
 import { GetListReportTypeAction } from "../../redux/actions/ReportTypeAction";
 import YourFanpage from "../../components/YourFanpage";
 import Loading from "../../components/Loading";
+import StopActivity from "../StopActivity/StopActivity";
 
 export default function Profile (props) {
   const { id } = props.match.params;
@@ -163,6 +164,15 @@ export default function Profile (props) {
                                 Danh sách kết thúc chiến dịch
                               </a>
                             </li>
+                            <li className="nav-item">
+                              <a
+                                className
+                                href="#stopactivity"
+                                data-toggle="tab"
+                              >
+                                Danh sách chiến dịch bị tạm ngưng
+                              </a>
+                            </li>
                           </ul>
                         </div>
                         {getUserId?.achivementUser?.length !== 0 ? (
@@ -232,6 +242,10 @@ export default function Profile (props) {
                                 </div>
                               </div>
                               <EndActivity
+                                arrEndActivityByUserID={arrEndActivityByUserID}
+                                getUserId={getUserId}
+                              />
+                                <StopActivity
                                 arrEndActivityByUserID={arrEndActivityByUserID}
                                 getUserId={getUserId}
                               />

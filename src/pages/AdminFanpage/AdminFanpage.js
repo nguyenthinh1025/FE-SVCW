@@ -294,7 +294,7 @@ console.log(product1.fanpageId)
     return (
       <React.Fragment>
 
-     {op !== 'Active' ?   <Button className='mr-2' icon="pi pi-pencil" rounded outlined onClick={() => confirmDeleteProduct(rowData)} /> : <div></div>}
+     {op !== 'Active' ?   <Button className='mr-2' icon="pi pi-check" rounded outlined onClick={() => confirmDeleteProduct(rowData)} /> : <div></div>}
         <Button
           icon="pi pi-trash"
           rounded
