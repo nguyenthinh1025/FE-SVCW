@@ -482,7 +482,7 @@ export default function Message(props) {
                 return "../images/smiles/tongue-out.png";
             case '11':
                 return "../images/smiles/wink.png";
-            case 12:
+            case '12':
                 return "../images/smiles/suspicious.png";
             default:
                 return ""; // Return an empty string if the ID is not found
