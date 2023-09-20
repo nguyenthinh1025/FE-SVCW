@@ -30,12 +30,12 @@ export const AdminTemplate = (props) => {
             return <Fragment>
                 <div className="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
                     <div className="app-header header-shadow  " >
-                        <div className="app-header__logo">
-                        <div class="logo">
+                        <div className="app-header__logo" style={{marginRight:'10px'}}>
+                        <div class="logo" >
                             <img src="/images/logo.png"/>
                             <span>SVCW</span>
                             </div>
-                            <div className="logo-abc" />
+                            {/* <div className="logo-abc" /> */}
                             <div className="header__pane ml-auto">
                                 <div>
                                     <button type="button" className="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
@@ -59,11 +59,7 @@ export const AdminTemplate = (props) => {
                         <div className="app-header__content" >
                             <div className="app-header-left">
                                 <div className="search-wrapper">
-                                    <div className="input-holder">
-                                        <input type="text" className="search-input" placeholder="Type to search" />
-                                        <button className="search-icon"><span /></button>
-                                    </div>
-                                    <button className="close" />
+                                   
                                 </div>
                             </div>
                             <div className="app-header-right">
