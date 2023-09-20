@@ -201,6 +201,7 @@ export default function ItemEndActivity(props) {
   const [tcss, setTcss] = useState("css");
   const [commentI, setCommentI] = useState("commentContent");
   const [reportid, setReportID] = useState("");
+  const [reportiduser, setReportUSerID] = useState("");
   const handleClick6 = () => {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
   };
@@ -487,12 +488,13 @@ export default function ItemEndActivity(props) {
                     {userID !== ItemActivity.userId ? (
                       <li
                         onClick={() => {
-                          setReportID(ItemActivity.activityId);
+                          setReportID(ItemActivity?.activityId);
+                          setReportUSerID(ItemActivity?.user?.userId)
                           setReport(true);
                         }}
                       >
                         <i className="icofont-flag" />
-                        Báo cáo bài đăng
+                        Báo cáo 
                         <span>
                           Nhầm báo cáo những vấn đề bất thường đến cho người
                           quản lý
@@ -1297,6 +1299,7 @@ export default function ItemEndActivity(props) {
       <ReportActivity
         report={report}
         reportid={reportid}
+        reportiduser = {reportiduser}
         popupStyle3={popupStyle3}
         handleClick={handleClick}
         arrReportType={arrReportType}

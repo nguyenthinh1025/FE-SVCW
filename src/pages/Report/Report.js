@@ -114,14 +114,18 @@ export default function Report () {
   const [products, setProducts] = useState([]);
   const [text1, setText1] = useState("Chi tiết báo cáo");
   const [products1, setProduct1] = useState([]);
+  const [text2, setText2] = useState("Gửi báo cáo");
+  const [products2, setProduct2] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [productDialog1, setProductDialog1] = useState(false);
+  const [productDialog2, setProductDialog2] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [product, setProduct] = useState(emptyProduct);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitted1, setSubmitted1] = useState(false);
+  const [submitted2, setSubmitted2] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
@@ -158,6 +162,10 @@ export default function Report () {
     setSubmitted1(false);
     setProductDialog1(false);
   };
+  const hideDialog2 = () => {
+    setSubmitted2(false);
+    setProductDialog2(false);
+  };
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);
   };
@@ -173,11 +181,22 @@ export default function Report () {
     SendEmail(productItem?.activity?.user?.email, 'Cảnh báo bài viết', `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thư cảnh báo</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#ff1827;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Thư cảnh báo từ SVCW</h1></div><div class="content"><p>Xin chào ${productItem.user?.fullName},</p><p>Chúng tôi thấy bài viết <span style="font-weight:bold;">${productItem?.title}</span> bạn có nội dung không phù hợp với cộng đồng trên SVCW!</p><p>Bạn nên chỉnh sửa lại nội dung bài viết cho phù hợp, nếu không bài viết của bạn sẽ bị xóa.</p><p>Chúc bạn có những trải nghiệm của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
     setProductDialog(false);
   };
-
+  const saveProduct1 = async () => {
+    setSubmitted(true);
+    let _product = { ...product };
+    let productItem = { ...product };
+    // SendEmail(productItem?.activity?.user?.email, 'Cảnh báo người dùng', `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thư cảnh báo</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#ff1827;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Thư cảnh báo từ SVCW</h1></div><div class="content"><p>Xin chào ${productItem.user?.fullName},</p><p>Chúng tôi thấy bài viết <span style="font-weight:bold;">${productItem?.title}</span> bạn có nội dung không phù hợp với cộng đồng trên SVCW!</p><p>Bạn nên chỉnh sửa lại nội dung bài viết cho phù hợp, nếu không bài viết của bạn sẽ bị xóa.</p><p>Chúc bạn có những trải nghiệm của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
+    setProductDialog2(false);
+  };
   const editProduct = (product) => {
     setText("Gửi báo cáo");
     setProduct({ ...product });
     setProductDialog(true);
+  };
+  const editProduct2 = (product) => {
+    setText2("Gửi báo cáo");
+    setProduct2({ ...product });
+    setProductDialog2(true);
   };
   const editProduct1 = (product) => {
     setText1("Chi tiết báo cáo");
@@ -355,13 +374,19 @@ export default function Report () {
             editProduct1(rowData)
           }}
         />
-        <Button
+       {op === 'rt005' ?<Button
+          icon="pi pi-flag-fill"
+          rounded
+          outlined
+          className="mr-2"
+          onClick={() => editProduct2(rowData)}
+        /> :  <Button
           icon="pi pi-flag-fill"
           rounded
           outlined
           className="mr-2"
           onClick={() => editProduct(rowData)}
-        />
+        />}
         {/* <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} /> */}
       </React.Fragment>
     );
@@ -400,6 +425,12 @@ export default function Report () {
     <React.Fragment>
       <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
       <Button label="Gửi" icon="pi pi-check" onClick={saveProduct} />
+    </React.Fragment>
+  );
+  const productDialogFooter2 = (
+    <React.Fragment>
+      <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog2} />
+      <Button label="Gửi" icon="pi pi-check" onClick={saveProduct1} />
     </React.Fragment>
   );
   const productDialogFooter1 = (
@@ -551,11 +582,26 @@ export default function Report () {
           footer={productDialogFooter1}
           onHide={hideDialog1}
         >
-         <div><span style={{fontWeight:800}}>Tiêu đề :</span> {products1?.activity?.title}</div>
+         {op === 'rt005' ? <div><span style={{fontWeight:800}}>Người bị báo cáo :</span> {products1?.activity?.title}</div> :<div><span style={{fontWeight:800}}>Chiến dịch :</span> {products1?.activity?.title}</div>}
          <div><span style={{fontWeight:800}}>Loại báo cáo :</span> {products1?.reportType?.reportTypeName}</div>
          <div><span style={{fontWeight:800}}>Lí do báo cáo :</span> {products1?.reason}</div>
          <div><span style={{fontWeight:800}}>Thời gian :</span> {moment(products1?.datetime).format('DD/MM/YYYY hh:mm A')}</div>
          <div><span style={{fontWeight:800}}>Người báo cáo :</span> {products1?.user?.username}</div>
+        </Dialog>
+        <Dialog
+          visible={productDialog2}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          onClick={() => {
+            setText("Gửi báo cáo");
+          }}
+          header={text}
+          modal
+          className="p-fluid"
+          footer={productDialogFooter2}
+          onHide={hideDialog2}
+        >
+          <div>Gửi cảnh báo đến người dùng <span style={{ fontWeight: 800 }}>dsadsa</span> do vi phạm cộng đồng. Vi phạm lỗi <span style={{ fontWeight: 800 }}>dasd</span></div>
         </Dialog>
         <Dialog
           visible={deleteProductDialog}
