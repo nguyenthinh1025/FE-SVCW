@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Timestamp, addDoc, collection, doc, getDoc, onSnapshot, orderBy, query, setDoc, updateDoc, toDate, serverTimestamp, where, getDocs, limit } from 'firebase/firestore';
 import { firestore } from '../../firebase';
 import { useSelector } from 'react-redux';
+import { NavLink } from "react-router-dom";
 
 export default function Message(props) {
     const { id } = props.match.params;
@@ -30,6 +31,7 @@ export default function Message(props) {
     const messagesRef = collection(firestore, "messages");
     // const chatRoomRef = doc(firestore, "chatRooms", where(id = ));
     const chatRoomsRef = collection(firestore, "chatRooms");
+    console.log('getUserId: ', getUserId)
     const allUserRoomsRef = query(chatRoomsRef,
         where('memberIds', 'array-contains', getUserId?.userId),
         orderBy('lastSeen', 'asc'));
@@ -256,13 +258,15 @@ export default function Message(props) {
                 const groups = [];
                 const friends = [];
                 listData.forEach(room => {
-                    if (room.id === id) {
-                        currentRoom = room;
-                    }
-                    const pmRoom = room.memberIds;
-                    if (pmRoom instanceof Array && pmRoom.includes(id)) {
-                        currentRoom = room;
-                        //get Chat to user
+                    if (id) {
+                        if (room.id === id) {
+                            currentRoom = room;
+                        }
+                        const pmRoom = room.memberIds;
+                        if (pmRoom instanceof Array && pmRoom.includes(id)) {
+                            currentRoom = room;
+                            //get Chat to user
+                        }
                     }
                     if (room.isGroup) {
                         groups.push(room);
@@ -273,19 +277,23 @@ export default function Message(props) {
                 setUserFriends(friends);
                 setUserGroups(groups);
                 if (!currentRoom) {
-                    const existUser = await getChatter(id);
-                    if (existUser) {
-                        // create new PM Room ID for this user to the url userId
-                        const createdRoomId = await newPmRoom(id, 'pm')
-                        if (createdRoomId) {
-                            const newRoomRef = await doc(firestore, 'chatRooms', createdRoomId)
-                            const newRoom = await getDoc(newRoomRef)
-                            if (newRoom.exists()) {
-                                console.log('urlId is new userId - New PM room created: ', newRoom.data());
-                                currentRoom = { ...newRoom.data(), id: newRoom.id };
-                                // return [{ ...newRoom.data(), id: newRoom.id }];
+                    if (id) {
+                        const existUser = await getChatter(id);
+                        if (existUser) {
+                            // create new PM Room ID for this user to the url userId
+                            const createdRoomId = await newPmRoom(id, 'pm')
+                            if (createdRoomId) {
+                                const newRoomRef = await doc(firestore, 'chatRooms', createdRoomId)
+                                const newRoom = await getDoc(newRoomRef)
+                                if (newRoom.exists()) {
+                                    console.log('urlId is new userId - New PM room created: ', newRoom.data());
+                                    currentRoom = { ...newRoom.data(), id: newRoom.id };
+                                    // return [{ ...newRoom.data(), id: newRoom.id }];
+                                }
                             }
                         }
+                    } else {
+                        currentRoom = listData[0];
                     }
                 } else {
                     // get chat to user
@@ -472,15 +480,18 @@ export default function Message(props) {
                                                         ) : (userFriends.map((fr, index) => {
                                                             // const isLastMessage = index === userMsgs.length - 1;
                                                             return (
-                                                                <div className="useravatar">
-                                                                    {/* <a href={'/message/' + fr?.pmUserId}> */}
-                                                                    <img
-                                                                        style={{ backgroundColor: 'white', width: 35, height: 35, objectFit: 'hidden', borderRadius: '100%' }}
-                                                                        src={fr?.image === 'none' ? "../images/default-avt.png" : fr.image} alt />
-                                                                    {/* </a> */}
-                                                                    <span>{fr?.roomName}</span>
-                                                                    <div className={isActive(fr?.lastSeen) ? 'status online' : 'status offline'} />
-                                                                </div>
+                                                                <NavLink to={'/message/' + fr.pmUserId}>
+                                                                    <div className="useravatar">
+                                                                        {/* <a href={'/message/' + fr?.pmUserId}> */}
+                                                                        <img
+                                                                            style={{ backgroundColor: 'white', width: 35, height: 35, objectFit: 'hidden', borderRadius: '100%' }}
+                                                                            src={fr?.image === 'none' ? "../images/default-avt.png" : fr.image} alt />
+                                                                        {/* </a> */}
+                                                                        <span>{fr?.roomName}</span>
+
+                                                                        <div className={isActive(fr?.lastSeen) ? 'status online' : 'status offline'} />
+                                                                    </div>
+                                                                </NavLink>
                                                             )
                                                         }))
                                                     }
@@ -622,7 +633,7 @@ export default function Message(props) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-4">
+                                    {currentRoom ? (<div className="col-lg-4">
                                         <div className="profile-short">
                                             <div className="chating-head" style={{ backgroundColor: '#ddebf3', marginBottom: 10 }}>
                                                 <div className="s-left">
@@ -676,7 +687,9 @@ export default function Message(props) {
                                                 <button className="button primary circle" style={{ margin: 10, backgroundColor: '#8ab332', width: 120 }} href="#" title>Add friend</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>) : (
+                                        <p></p>
+                                    )}
                                 </div>
                             </div>
                         </div>
