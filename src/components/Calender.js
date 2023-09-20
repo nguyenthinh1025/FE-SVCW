@@ -31,7 +31,7 @@ const Calender = (props) => {
     setEvents(arr)
   }, [arr]);
 
-  const eventsForSelectedDate = events.filter((event) =>
+  const eventsForSelectedDate = events?.filter((event) =>
     isSameDay(selectedDate, event.date)
   );
 
@@ -42,12 +42,12 @@ const Calender = (props) => {
   return (
     <div>
       <div>
-        <Calendar
+        <Calendar style={{background:'#fafafa none repeat scroll 0 0'}}
           onChange={setSelectedDate}
           value={selectedDate}
           tileClassName={({ date, view }) => {
             if (view === "month") {
-              const hasEvent = events.some((event) =>
+              const hasEvent = events?.some((event) =>
                 isSameDay(date, event.date)
               );
               return hasEvent ? "highlighted" : "";
@@ -57,14 +57,14 @@ const Calender = (props) => {
         />
       </div>
       <div>
-        {eventsForSelectedDate.length > 0 ? (
+        {eventsForSelectedDate?.length > 0 ? (
           <div>
             <div>
               Sự kiện trong ngày{" "}
               {format(selectedDate, "eeee, dd/MM/yyyy", { locale: vi })}
             </div>
             <ul>
-              {eventsForSelectedDate.map((event, index) => (
+              {eventsForSelectedDate?.map((event, index) => (
                 <li key={index} style={{fontWeight:'bold'}} onClick={() => handleEventClick(event.title)}>
                   <NavLink to={`/detailactivity/${event.actiID}`} style={{display:'flex', flexDirection:'column'}}>
                   {event.title} - ({event.hour} giờ : {event.min} phút )

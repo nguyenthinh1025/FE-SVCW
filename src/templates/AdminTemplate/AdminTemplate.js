@@ -149,15 +149,19 @@ export const AdminTemplate = (props) => {
                                         <li className="app-sidebar__heading">Báo cáo</li>
                                         <li>
                                             <NavLink to='/reporttype'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-attention">
                                                 </i>Loại báo cáo
+                                            </NavLink>
+                                            <NavLink to='/report'>
+                                                <i className="metismenu-icon pe-7s-close-circle">
+                                                </i>Báo cáo
                                             </NavLink>
                                         </li>
 
                                         <li className="app-sidebar__heading">Vai trò</li>
                                         <li>
                                             <NavLink to='/role'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-users">
                                                 </i>Vai trò
                                             </NavLink>
                                         </li>
@@ -165,7 +169,7 @@ export const AdminTemplate = (props) => {
                                             <li className="app-sidebar__heading">Người kiểm duyệt</li>
                                             <li>
                                                 <NavLink to='/moderator'>
-                                                    <i className="metismenu-icon pe-7s-graph2">
+                                                    <i className="metismenu-icon pe-7s-id">
                                                     </i>Người kiểm duyệt
                                                 </NavLink>
                                             </li>
@@ -174,28 +178,22 @@ export const AdminTemplate = (props) => {
                                         <li className="app-sidebar__heading">Tổ chức</li>
                                         <li>
                                             <NavLink to='/adminfanpage'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-global">
                                                 </i>Tổ chức
                                             </NavLink>
                                         </li>
-                                        <li className="app-sidebar__heading">Báo cáo</li>
-                                        <li>
-                                            <NavLink to='/report'>
-                                                <i className="metismenu-icon pe-7s-graph2">
-                                                </i>Báo cáo
-                                            </NavLink>
-                                        </li>
+
                                         <li className="app-sidebar__heading">Chiến dịch</li>
                                         <li>
                                             <NavLink to='/adminactivity'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-browser">
                                                 </i>Chiến dịch
                                             </NavLink>
                                         </li>
                                         <li className="app-sidebar__heading">Tình nguyện viên</li>
                                         <li>
                                             <NavLink to='/volunteer'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-user">
                                                 </i>Tình nguyện viên
                                             </NavLink>
                                         </li>

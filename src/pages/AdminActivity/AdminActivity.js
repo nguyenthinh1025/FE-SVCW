@@ -176,7 +176,11 @@ dispatch(action)
   };
 
   const deleteProduct = async () => {
-    const action = await DeleteActivityAction(product.activityId);
+    console.log(product)
+    const email = product.user.email;
+    const title = product.title;
+    const username = product.user.username;
+    const action = await DeleteActivityAction(product.activityId, email, title,username);
     await dispatch(action);
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
@@ -187,8 +191,9 @@ dispatch(action)
       life: 3000,
       options: {
         style: {
-          zIndex: 100,
-        },
+          zIndex: 999,
+          marginTop:"50px"
+        }
       },
     });
   };

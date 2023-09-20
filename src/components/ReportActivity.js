@@ -104,7 +104,7 @@ export default function ReportActivity (props) {
                                     <div className="form-group">
                                         <label>Loại báo cáo</label>
                                         <select
-                                            value="" // Bind the select value to the formData value
+                                            
                                             onChange={(e) => onInputDropdown(e)} // Pass the formIndex to handleSelectChange
                                             className="form-control"
                                             placeholder="Chọn loại báo cáo"

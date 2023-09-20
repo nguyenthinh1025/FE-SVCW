@@ -42,6 +42,7 @@ import ListFollowJoin from "./ListFollowJoin";
 import CreateResultActivity from "../pages/Result/CreateResultActivity";
 import ResultActivity from "../pages/Result/ResultActivity";
 import { SendEmail } from "../utils/emailService";
+import RejectActivi from "./RejectActivi";
 
 export default function ItemActivity(props) {
   const [share, setShare] = useState(false);
@@ -53,6 +54,16 @@ export default function ItemActivity(props) {
     opacity: share ? 1 : 0,
     visibility: share ? "visible" : "hidden",
     overflow: share ? "auto" : "hidden",
+  };
+  const [actireject, setActiReject] = useState(false);
+  const [actirejectid, setActiRejectid] = useState("");
+  const popupStyleActiReject = {
+    opacity: actireject ? 1 : 0,
+    visibility: actireject ? "visible" : "hidden",
+    overflow: actireject ? "auto" : "hidden",
+  };
+  const handleClickActiReject = () => {
+    setActiReject((prevIsOpen) => !prevIsOpen);
   };
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
@@ -400,7 +411,7 @@ export default function ItemActivity(props) {
                     </svg>
                   </i>
                   <ul>
-                    {userID === ItemActivity.userId &&
+                    {/* {userID === ItemActivity.userId &&
                       endDate.isBefore(currentDate) === false &&
                       ItemActivity.targetDonation === 0 ? (
                       <li
@@ -418,9 +429,9 @@ export default function ItemActivity(props) {
                       </li>
                     ) : (
                       <div></div>
-                    )}
+                    )} */}
 
-                    {userID === ItemActivity.userId &&
+                    {/* {userID === ItemActivity.userId &&
                       ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
@@ -455,7 +466,8 @@ export default function ItemActivity(props) {
                       </li>
                     ) : (
                       <div></div>
-                    )}
+                    )} */}
+                    
                     {userID !== ItemActivity.userId ? (
                       <li
                         onClick={() => {
@@ -525,6 +537,21 @@ export default function ItemActivity(props) {
                     ) : (
                       <div></div>
                     )}
+                     {userID === ItemActivity.userId &&
+                    endDate.isBefore(currentDate) === false ? (
+                      <li
+                        onClick={() => {
+                          handleClickActiReject();
+                  setActiRejectid( ItemActivity.activityId)
+                        }}
+                      >
+                        <i className="icofont-sign-out" />
+                       Tắt chiến dịch
+                        <span>Ngừng chiến ngay lập tức</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
                     {endDate.isAfter(currentDate) === true &&
                       userID === ItemActivity.userId &&
                       ItemActivity?.followJoinAvtivity?.length > 0 ? (
@@ -565,7 +592,7 @@ export default function ItemActivity(props) {
                           dispatch(action);
                         }}
                       >
-                        <i className="icofont-flag" />
+                        <i className="icofont-eye-open" />
                         Xem kết quả chiến dịch
                         <span>Xem kết quả diễn ra trong chiến dịch</span>
                       </li>
@@ -1276,6 +1303,7 @@ export default function ItemActivity(props) {
         listJoinFollow={listJoinFollow}
         popupStyleFolowJoin={popupStyleFolowJoin}
       />
+        <RejectActivi actireject={actireject} popupStyleActiReject={popupStyleActiReject} handleClickActiReject={handleClickActiReject} actirejectid={actirejectid}/>
     </Fragment>
   );
 }

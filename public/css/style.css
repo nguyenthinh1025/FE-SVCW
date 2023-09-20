@@ -11879,7 +11879,7 @@ a.main-btn2:hover,
 .timeline-btn {
   border-bottom: 0 none;
   display: inline-block;
-  width: 72%;
+  width: 100%;
 }
 
 .nav.nav-tabs.about-btn>li a,

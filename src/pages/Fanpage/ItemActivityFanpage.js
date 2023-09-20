@@ -35,6 +35,7 @@ import ShareActivity from "../../components/ShareActivity";
 import Game from "../../components/Game";
 import Donate from "../../components/Donate";
 import { SendEmail } from "../../utils/emailService";
+import RejectActivi from "../../components/RejectActivi";
 
 export default function ItemActivityFanpage(props) {
   const [share, setShare] = useState(false);
@@ -175,6 +176,16 @@ export default function ItemActivityFanpage(props) {
       }
     },
   });
+  const [actireject, setActiReject] = useState(false);
+  const [actirejectid, setActiRejectid] = useState("");
+  const popupStyleActiReject = {
+    opacity: actireject ? 1 : 0,
+    visibility: actireject ? "visible" : "hidden",
+    overflow: actireject ? "auto" : "hidden",
+  };
+  const handleClickActiReject = () => {
+    setActiReject((prevIsOpen) => !prevIsOpen);
+  };
   const formik6 = useFormik({
     initialValues: {
       reportId: "string",
@@ -404,7 +415,7 @@ export default function ItemActivityFanpage(props) {
                       </svg>
                     </i>
                     <ul>
-                      {userID === ItemActivity.userId &&
+                      {/* {userID === ItemActivity.userId &&
                       endDate.isBefore(currentDate) === false &&
                       ItemActivity.targetDonation === 0 ? (
                         <li
@@ -422,9 +433,9 @@ export default function ItemActivityFanpage(props) {
                         </li>
                       ) : (
                         <div></div>
-                      )}
+                      )} */}
 
-                      {userID === ItemActivity.userId &&
+                      {/* {userID === ItemActivity.userId &&
                       ItemActivity.targetDonation === 0 ? (
                         <li
                           onClick={() => {
@@ -460,7 +471,22 @@ export default function ItemActivityFanpage(props) {
                         </li>
                       ) : (
                         <div></div>
-                      )}
+                      )} */}
+                       {userID === ItemActivity.userId &&
+                    endDate.isBefore(currentDate) === false ? (
+                      <li
+                        onClick={() => {
+                          handleClickActiReject();
+                  setActiRejectid( ItemActivity.activityId)
+                        }}
+                      >
+                        <i className="icofont-sign-out" />
+                       Tắt chiến dịch
+                        <span>Ngừng chiến ngay lập tức</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
                       {userID !== ItemActivity.userId ? (
                         <li
                           onClick={() => {
@@ -1295,6 +1321,7 @@ export default function ItemActivityFanpage(props) {
           activityId={shareActivityID}
         />
        <Donate isPopupOpen = {isPopupOpen}  openPopup={openPopup} donate={donate} />
+       <RejectActivi actireject={actireject} popupStyleActiReject={popupStyleActiReject} handleClickActiReject={handleClickActiReject} actirejectid={actirejectid}/>
     </div>
   );
 }

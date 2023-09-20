@@ -288,7 +288,7 @@ export const ResultActivityAction = (value) => {
 export const RefunActivityAction = (id) => {
   return async (dispatch) => {
     try {
-      let result = await http.post(`/VNPay/Refund-money`, id);
+      let result = await http.post(`/VNPay/Refund-money?activityId=${id}`);
       const action1 = GetListActivityAction();
       dispatch(action1);
     } catch (error) {
@@ -297,18 +297,65 @@ export const RefunActivityAction = (id) => {
   };
 };
 
-export const DeleteActivityAction = (value) => {
+export const DeleteActivityAction = (value ,email, title, username) => {
   return async (dispatch) => {
     try {
       let result = await http.delete(`/Activity/delete-activity?id=${value}`);
+      SendEmail(email, 'Bài viết của bãn đã bị xóa',   `<!DOCTYPE html>
+      <html lang="vi">
+      
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width,initial-scale=1"> 
+          <title>Chiến dịch đã bị xóa</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif
+              }
+      
+              .container {
+                  max-width: 600px;
+                  margin: 0 auto;
+                  padding: 20px;
+                  border: 1px solid #ccc;
+                  border-radius: 5px
+              }
+      
+              .header {
+                  background-color: #18dcff;
+                  color: #fff;
+                  text-align: center;
+                  padding: 10px
+              }
+      
+              .content {
+                  padding: 20px
+              }
+          </style>
+      </head>
+      
+      <body>
+          <div class="container">
+              <div class="header">
+                  <h1>Thư thông báo</h1>
+              </div>
+              <div class="content">
+                  <p>Xin chào <span style="font-weight: 800">${username}</span>,</p>
+                  <p>Thông báo chiến dịch đã bị xóa!</p>
+                  <p>Bài viết <span style="font-weight: 800">${title}</span> đã bị xóa khỏi SVCW  <span style="font-weight: 800">.</p>
+                  <p>Bạn vui lòng xem lại nội dung phù hợp với cộng đồng trên SVCW.</p>
+                  <p>Chúc bạn có những trải nghiệm tuyệt vời!</p>
+                  <p>Trân trọng,<br>SVCW</p>
+              </div>
+          </div>
+      </body>            
+      `)
       const action1 = GetListActivityAction();
       dispatch(action1);
       const action5 = GetListEndActivityAction();
       dispatch(action5);
-      const id = {
-        activityId: value,
-      };
-      const action = RefunActivityAction(id);
+      
+      const action = RefunActivityAction(value);
       dispatch(action);
     } catch (error) {
       console.log(error);
@@ -603,10 +650,12 @@ export const QuitActivityAction = (value) => {
         activityId: value.activityId,
       };
       console.log(id);
-      const action = RefunActivityAction(id);
+      const action = RefunActivityAction( value.activityId);
       dispatch(action);
       const action1 = GetListActivityAction();
       dispatch(action1);
+      const action2 = GetFanpageByIDAction(localStorage.getItem('userID'));
+      dispatch(action2)
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",

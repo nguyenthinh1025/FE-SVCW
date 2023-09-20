@@ -428,9 +428,9 @@ export default function DetailProcess (props) {
                       {currentObject.isDonateProcess ?
                         <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
                           <div>{currentObject.isDonateProcess ? <div> - Kêu gọi quyên góp:</div> : <div></div>}</div>
-                          <div style={{ marginLeft: '5px' }}>{currentObject.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {currentObject?.targetDonation} vnđ</div> : <div></div>}</div>
+                          <div style={{ marginLeft: '5px' }}>{currentObject.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {(currentObject?.targetDonation).toLocaleString()} vnđ</div> : <div></div>}</div>
                         </div> : <div></div>}
-                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm: <span style={{ fontWeight: 600 }}>{(currentObject?.location)?.toLocaleString()}</span></div>
+                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm: <span style={{ fontWeight: 600 }}>{currentObject?.location}</span></div>
                     </div>
                     <div
                       className="next-prev-posts"

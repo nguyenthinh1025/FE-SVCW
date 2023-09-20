@@ -52,7 +52,7 @@ export default function QRScanner () {
       }
     };
 
-    const intervalId = setInterval(scanQRCode, 1000);
+    const intervalId = setInterval(scanQRCode, 3000);
 
     return () => {
       clearInterval(intervalId);
