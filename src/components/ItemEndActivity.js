@@ -911,7 +911,7 @@ export default function ItemEndActivity(props) {
                     : "noprocessform")
                 }
               >
-                {endDate.isBefore(currentDate) ? (
+                {(ItemActivity?.process?.length === 0) || endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <button

@@ -66,11 +66,9 @@ export default function ListDonateDone() {
             onClick={handlePrevPage}
             disabled={page === 1}
           >
-            Trang trước
+          <i className="fa-solid fa-angles-left"></i>
           </button>
-          <span style={{ fontSize: "12px", paddingTop: "2px" }}>
-            Trang {page} / {maxPage}
-          </span>
+         
           <button
             style={{
               border: "transparent",
@@ -81,7 +79,7 @@ export default function ListDonateDone() {
             onClick={handleNextPage}
             disabled={page === maxPage}
           >
-            Trang sau
+          <i className="fa-solid fa-angles-right"></i>
           </button>
         </div>
       </div>

@@ -87,6 +87,7 @@ export default function ItemStopActivity(props) {
     isAlreadyLiked,
     detailItem,
     index,
+    getUserId
   } = props;
 
   const [showAllComments, setShowAllComments] = useState(false);
@@ -248,18 +249,31 @@ export default function ItemStopActivity(props) {
       <div className="main-wraper">
         <div className="user-post">
           <div className="friend-info">
-            <figure>
+            <div style={{display:'flex'}}>
+            <figure style={{marginRight:'6px'}}>
               <img
-                style={{ height: "40px", width: "40px" }}
+                style={{ height: "40px", width: "40px"  , borderRadius:'50%' }}
                 alt
                 src={
-                  ItemActivity.user?.image === "none"
+                  getUserId?.image === "none"
                     ? "../images/avatar.jpg"
-                    : ItemActivity.user?.image
+                    : getUserId.image
                 }
               />
             </figure>
-
+           <div>
+           <ins style={{textDecoration:'none'}}>
+                <NavLink to={`/profile/${getUserId.userId}`} >
+                  <h5 className="name-user">{getUserId.username}</h5>
+                </NavLink>
+              </ins>
+              <span>
+                {" "}
+                {DateTime(ItemActivity.createAt)}{" "}
+                <i className="icofont-globe" />
+              </span>
+           </div>
+            </div>
             <div className="post-meta">
               <div className="row">
                 <div
@@ -281,7 +295,7 @@ export default function ItemStopActivity(props) {
                     }}
                     className="col-lg-12 name-user"
                   >
-                    {ItemActivity.title}
+                    {ItemActivity?.title}
                   </NavLink>
                 </div>
               </div>
@@ -588,6 +602,8 @@ export default function ItemStopActivity(props) {
                     name={commentI}
                     onChange={formik2.handleChange}
                     className="input-comment"
+                    disabled
+                    style={{background:'#f2eded'}}
                   />
                   {onID === ItemActivity.activityId ? (
                     <button

@@ -20,7 +20,7 @@ const StatisticalUser = (props) => {
   }, []);
   const [year, setYear] = useState("2023");
   console.log(year);
-  const arr = arrStatical.filter(item =>item.status ==="success")?.map((item, index) => {
+  const arr = arrStatical?.filter(item =>item.status ==="success")?.map((item, index) => {
     return selectedValue ? item.donated : item.totalDonate;
   });
   const arr1 = arrStatical?.map((item, index) => {
