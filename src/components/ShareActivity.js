@@ -55,7 +55,7 @@ export default function ShareActivity (props) {
 
                         <div className="" style={{ textAlign: 'center', fontSize: '20px', paddingTop: '50px' }}>
                             <NavLink to={`/detailactivity/${activityId}`}>
-                                {` http://localhost:3000/detailactivity/${activityId}`}
+                                {`https://svcw-system.azurewebsites.net/api/detailactivity/${activityId}`}
 
                             </NavLink>
                             <button style={{position:'absolute',

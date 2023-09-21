@@ -37,13 +37,13 @@ const AdminStatistical = (props) => {
   });
   const series = [
     {
-      name: "Số tiềng ủng hộ",
+      name: "Số tiền ủng hộ",
       data: arr ,
     },
   ];
   const series1 = [
     {
-      name: "Số thành viên",
+      name: "Số tình nguyện viên",
       data: arr1,
     },
   ];
@@ -173,7 +173,7 @@ const AdminStatistical = (props) => {
                           href="#allposts"
                           data-toggle="tab"
                         >
-                          Người dùng mới tham gia SVCW
+                          Tình nguyện viên tham gia SVCW
                         </a>
                       </li>
                       <li
@@ -206,7 +206,7 @@ const AdminStatistical = (props) => {
                           <div className="main-wraper">
                             <div style={{ display: "flex" }}>
                               <div className="main-title">
-                                Người dùng mới tham gia trên SVCW năm {year}
+                                Tình nguyện viên tham gia trên SVCW năm {year}
                               </div>
                               <select
                                 style={{

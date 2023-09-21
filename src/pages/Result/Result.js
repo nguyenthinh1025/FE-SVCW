@@ -106,14 +106,14 @@ export default function Result() {
                           <div className="main-title">
                             Chiến dịch đã tham gia
                           </div>
-                          {arrFollowJoin.filter((item) => item.isJoin === true)
+                          {arrFollowJoin.filter((item) => item.isJoin === "Join")
                             .length === 0 ? (
                             <div>Chưa tham gia chiến dịch</div>
                           ) : (
                             <div>
                               {" "}
                               {arrFollowJoin
-                                .filter((item) => item.isJoin === true)
+                                .filter((item) => item.isJoin === "Join")
                                 .map((item, index) => {
                                   return (
                                     <div className="blog-posts mb-3">
@@ -180,7 +180,7 @@ export default function Result() {
                                           <>{item?.activity?.description}</>
                                         )}
                                         <div style={{ display: "flex" }}>
-                                          <div style={{ marginLeft: "30px" }}>
+                                          <div style={{ marginRight: "30px" }}>
                                             <i className="icofont-like" />
                                             <a title="Reads" href="#">
                                               {item.activity?.numberLike}
