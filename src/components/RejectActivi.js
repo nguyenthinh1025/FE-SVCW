@@ -11,7 +11,6 @@ export default function RejectActivi(props) {
     handleClickActiReject,
     actirejectid,
   } = props;
-  console.log(actirejectid);
   const [id, setID] = useState(actirejectid);
   const SignupSchema = Yup.object().shape({
       reasonQuit: Yup.string()
@@ -26,7 +25,6 @@ export default function RejectActivi(props) {
     validationSchema: SignupSchema,
     onSubmit: (value) => {
       formik.setFieldValue("activityId", actirejectid);
-      console.log(value)
       const action = QuitActivityAction(value);
       dispatch(action);
       handleClickActiReject()

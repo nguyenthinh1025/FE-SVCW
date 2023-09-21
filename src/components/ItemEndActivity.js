@@ -1134,7 +1134,7 @@ export default function ItemEndActivity(props) {
                 <div
                   className="share"
                   onClick={() => {
-                    const textToCopy = `http://localhost:3000/detailactivity/${ItemActivity.activityId}`;
+                    const textToCopy = `https://svcw-system.azurewebsites.net/detailactivity/${ItemActivity.activityId}`;
 
                     const copyTextToClipboard = () => {
                       const textArea = document.createElement("textarea");

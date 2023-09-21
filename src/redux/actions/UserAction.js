@@ -56,6 +56,11 @@ export const ScheduleUserAction = (id) => {
       dispatch(action);
     } catch (error) {
       console.log(error);
+      const action = {
+        type: "GET_USER_SCHEDULE",
+        userSchedule: [],
+      };
+      dispatch(action);
     }
   };
 };

@@ -256,12 +256,13 @@ export default function Achivement () {
   const leftToolbarTemplate = () => {
     return (
       <div className="flex flex-wrap gap-2">
-        <Button
+        {/* <Button
           label="Thêm mới"
           icon="pi pi-plus"
           severity="success"
           onClick={openNew}
-        />
+        /> */}
+        <div></div>
         {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
       </div>
     );

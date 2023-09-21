@@ -496,7 +496,7 @@ export default function ItemStopActivity(props) {
                 <div className="comment-to bg">
                   <i className="icofont-comment" /> Bình luận
                 </div>
-                <div
+                {/* <div
                   className="share"
                   onClick={() => {
                     const textToCopy = `http://localhost:3000/detailactivity/${ItemActivity.activityId}`;
@@ -530,7 +530,7 @@ export default function ItemStopActivity(props) {
                   }}
                 >
                   <i className="icofont-share-alt" /> Chia sẻ
-                </div>
+                </div> */}
               </div>
               <div className="new-comment" style={{ display: "block" }}>
                 <form

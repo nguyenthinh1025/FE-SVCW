@@ -374,7 +374,7 @@ export default function Report () {
             editProduct1(rowData)
           }}
         />
-       {op === 'rt005' ?<Button
+       {op === 'rt006' ?<Button
           icon="pi pi-flag-fill"
           rounded
           outlined
@@ -582,7 +582,7 @@ export default function Report () {
           footer={productDialogFooter1}
           onHide={hideDialog1}
         >
-         {op === 'rt005' ? <div><span style={{fontWeight:800}}>Người bị báo cáo :</span> {products1?.activity?.title}</div> :<div><span style={{fontWeight:800}}>Chiến dịch :</span> {products1?.activity?.title}</div>}
+         {op === 'rt006' ? <div><span style={{fontWeight:800}}>Người bị báo cáo :</span> {products1?.activity?.title}</div> :<div><span style={{fontWeight:800}}>Chiến dịch :</span> {products1?.activity?.title}</div>}
          <div><span style={{fontWeight:800}}>Loại báo cáo :</span> {products1?.reportType?.reportTypeName}</div>
          <div><span style={{fontWeight:800}}>Lí do báo cáo :</span> {products1?.reason}</div>
          <div><span style={{fontWeight:800}}>Thời gian :</span> {moment(products1?.datetime).format('DD/MM/YYYY hh:mm A')}</div>

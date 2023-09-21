@@ -14,7 +14,6 @@ export default function ReportActivity(props) {
     reportid,
     arrReportType,
   } = props;
-  console.log(reportiduser);
   const dispatch = useDispatch();
   const SignupSchema = Yup.object().shape({
     reportTypeId: Yup.string().required("Vui phòng chọn loại cần báo cáo"),
@@ -36,7 +35,7 @@ export default function ReportActivity(props) {
     enableReinitialize: true,
     validationSchema: SignupSchema,
     onSubmit: async (value) => {
-      if (value.reportTypeId === "rt005") {
+      if (value.reportTypeId === "rt006") {
         console.log("1");
         const form = {
           reportId: "string",
