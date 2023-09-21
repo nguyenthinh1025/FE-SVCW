@@ -18,6 +18,7 @@ import { CreateProcessTypeAction, DeleteProcessTypeAction, GetListProcessTypeAct
 import { CreateReportTypeAction, DeleteReportTypeAction, GetListReportTypeAction, UpdateReportTypeAction } from '../../redux/actions/ReportTypeAction';
 
 export default function ReportType () {
+
   const dispatch = useDispatch()
   const { reportType } = useSelector(root => root.ReportType)
   let emptyProduct = {
@@ -28,7 +29,7 @@ export default function ReportType () {
 
 
 
-  const [text, setText] = useState('Thêm Mới Loại Báo Cáo')
+  const [text, setText] = useState('')
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -202,7 +203,10 @@ export default function ReportType () {
   const leftToolbarTemplate = () => {
     return (
       <div className="flex flex-wrap gap-2">
-        <Button label="Thêm mới" icon="pi pi-plus" severity="success" onClick={openNew} />
+        <Button label="Thêm mới" icon="pi pi-plus" severity="success" onClick={()=>{
+          openNew()
+           setText('Thêm Mới Loại Báo Cáo')
+        }} />
         {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
       </div>
     );
@@ -352,9 +356,7 @@ export default function ReportType () {
           visible={productDialog}
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-          onClick={() => {
-            setText("Thêm Mới Loại Báo Cáo");
-          }}
+          
           header={text}
           modal
           className="p-fluid"

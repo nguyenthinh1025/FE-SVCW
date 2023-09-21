@@ -68,6 +68,9 @@ export default function ProcessType () {
   const toast = useRef(null);
   const dt = useRef(null);
 
+  const setTitle = ()=>{
+    setText("Thêm mới loại hoạt động");
+  }
   useEffect(() => {
     const action = GetListProcessTypeAction();
     dispatch(action);
@@ -120,6 +123,7 @@ export default function ProcessType () {
           detail: `Cập nhật loại hoạt động ${product.processTypeId} thành công`,
           life: 3000,
         });
+        setText('Chỉnh sửa loại hoạt động')
       } else {
         const action = await CreateProcessTypeAction(product);
         await dispatch(action);
@@ -274,7 +278,10 @@ export default function ProcessType () {
           label="Thêm mới"
           icon="pi pi-plus"
           severity="success"
-          onClick={openNew}
+          onClick={ ()=>{
+            openNew()
+            setText("Thêm mới loại hoạt động");
+          }} 
         />
         {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
       </div>
@@ -477,7 +484,7 @@ export default function ProcessType () {
             ></Column> */}
             <Column
               field="description"
-              header="Miếu tả"
+              header="Miêu tả"
               sortable
               style={{ minWidth: "12rem" }}
               body={(rowData) => {
@@ -511,9 +518,7 @@ export default function ProcessType () {
           visible={productDialog}
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-          onClick={() => {
-            setText("Thêm mới toại hoạt động");
-          }}
+         
           header={text}
           modal
           className="p-fluid"
