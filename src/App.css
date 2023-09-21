@@ -1578,5 +1578,30 @@ i.fa.fa-arrow-up {
 
 .react-calendar{
  border-radius: 10px;
- background-color: #fafafa none repeat scroll 0 0!important;
+ background: #fafafa none repeat scroll 0 0!important;
 }
+
+
+#apexcharts5wzu7clxi svg {
+  fill: none;
+  stroke:#72767a!important;
+}
+
+#apexcharts8kst0q0t svg {
+  fill: none;
+  stroke:#72767a!important;
+}
+
+.roll-header{
+  height: 670px;
+  overflow-y: scroll; 
+}
+
+@media screen and (max-width:'576px') {
+  header{
+    display: none!important;
+  } 
+}
+
+
+

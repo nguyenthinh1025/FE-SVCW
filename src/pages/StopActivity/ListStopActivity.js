@@ -1,16 +1,17 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import ItemEndActivity from './ItemEndActivity';
 import moment from 'moment';
+import ItemStopActivity from './ItemStopActivity';
 
-export default function ListEndActivity (props) {
-    let { arrActivity } = props
+export default function ListStopActivity (props) {
+    let { arrActivity  ,getUserId} = props
+    console.log(arrActivity)
     const { userID } = useSelector((root) => root.LoginReducer);
     return (
         <div>
             {arrActivity?.length ===0 ? <div style={{textAlign:'center', fontSize:'20px', fontWeight:600}}>Không tìm thấy bài viết</div>:
            <div>
-             {arrActivity?.filter(item => item.status === 'Active')?.map((item, index) => {
+             {arrActivity?.filter(item => item.status === 'Quit')?.map((item, index) => {
                 const detailItem = item;
                 let isAlreadyLiked = false;
                 let isAlreadyJoined = false;
@@ -29,7 +30,7 @@ export default function ListEndActivity (props) {
                         isAlreadyJoined = user.isJoin;
                     }
                 });
-                return <ItemEndActivity ItemActivity={item} index={index} isAlreadyFollowed={isAlreadyFollowed} isAlreadyJoined={isAlreadyJoined} isAlreadyLiked={isAlreadyLiked} detailItem={detailItem} />
+                return <ItemStopActivity ItemActivity={item} index={index} isAlreadyFollowed={isAlreadyFollowed} isAlreadyJoined={isAlreadyJoined} isAlreadyLiked={isAlreadyLiked} detailItem={detailItem} getUserId={getUserId}/>
             })}
            </div>
         }

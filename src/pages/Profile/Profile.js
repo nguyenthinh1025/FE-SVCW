@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Clock from "../../components/Clock";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,8 @@ import {
 } from "../../redux/actions/ReportAction";
 import { GetListReportTypeAction } from "../../redux/actions/ReportTypeAction";
 import YourFanpage from "../../components/YourFanpage";
+import Loading from "../../components/Loading";
+import StopActivity from "../StopActivity/StopActivity";
 
 export default function Profile (props) {
   const { id } = props.match.params;
@@ -33,16 +35,29 @@ export default function Profile (props) {
   const { arrEndActivityByUserID } = useSelector(
     (root) => root.EndActivityReducer
   );
+  console.log(getUserId)
+  const {isLoadingM} = useSelector(root =>root.LoadingReducer)
+  const [loading,setLoading] = useState(isLoadingM)
   useEffect(() => {  
+    const loading = {
+      type :"DISPLAY_LOADING"
+    }
+    dispatch(loading)
     const action = GetProfileByIdAction(id);
     dispatch(action);
     const action1 = GetListEndActivityByUserIDAction(id);
     dispatch(action1);
     const action4 = GetListReportTypeAction();
     dispatch(action4);
+    const loading1 = {
+      type :"HIDE_LOADING"
+    }
+    dispatch(loading1)
+
   }, []);
   return (
-    <div>
+    <div> 
+      {loading ? <Loading /> : <Fragment></Fragment>}
       <div className="theme-layout">
         <section>
           <div className="gap">
@@ -95,14 +110,18 @@ export default function Profile (props) {
                             </span>
                           </h4>
                           <ul className="joined-info">
+                          {id  === userID ? 
                             <li>
                               <span>Ngày tạo tài khoản:</span>{" "}
                               {moment(getUserId?.createAt).format("DD/MM/YYYY")}
                             </li>
+                          : <li></li>}
+                           {id  === userID ? 
                             <li>
-                              <span>Số tổ chức đang theo dõi:</span>{" "}
-                              {getUserId?.followFanpage?.length}
-                            </li>
+                            <span>Số tổ chức đang theo dõi:</span>{" "}
+                            {getUserId?.followFanpage?.length}
+                          </li>
+                          : <li></li>}
                             <li>
                               <span>Số bài viết:</span>{" "}
                               {getUserId?.activity?.length}
@@ -145,6 +164,15 @@ export default function Profile (props) {
                                 Danh sách kết thúc chiến dịch
                               </a>
                             </li>
+                            <li className="nav-item">
+                              <a
+                                className
+                                href="#stopactivity"
+                                data-toggle="tab"
+                              >
+                                Danh sách chiến dịch bị tạm ngưng
+                              </a>
+                            </li>
                           </ul>
                         </div>
                         {getUserId?.achivementUser?.length !== 0 ? (
@@ -157,12 +185,12 @@ export default function Profile (props) {
                                     {getUserId?.achivementUser?.map(
                                       (item, index) => {
                                         return (
-                                          <li key={index}>
+                                          <li key={index} style={{marginRight:'5px'}}>
                                             <img
                                               src={item?.achivement?.achivementLogo}
                                               alt={`${item?.achivement?.description}`}
                                               title={`${item?.achivement?.description}`}
-                                              style={{width:'50px', height:'50px'}}
+                                              style={{width:'50px', height:'40px'}}
                                             />
                                           </li>
                                         );
@@ -195,7 +223,7 @@ export default function Profile (props) {
                                       />
                                     </div>
 
-                                    <div className="sp sp-bars" />
+                                  
                                   </div>
                                   <Other />
                                 </div>
@@ -215,6 +243,10 @@ export default function Profile (props) {
                               </div>
                               <EndActivity
                                 arrEndActivityByUserID={arrEndActivityByUserID}
+                                getUserId={getUserId}
+                              />
+                                <StopActivity
+                                arrEndActivityByUserID={getUserId?.activity}
                                 getUserId={getUserId}
                               />
                             </div>

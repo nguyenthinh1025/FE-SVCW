@@ -3,6 +3,7 @@ import { http } from "../../utils/reponse";
 import { GetActivityIDAction, GetListActivityAction, GetListEndActivityAction, GetListEndActivityByUserIDAction, GetRecommentActivityAction } from "./ActivityAction";
 import { GetFanpageByIDAction } from "./FanpageAction";
 import { GetProfileByIdAction } from "./ProfileAction";
+import { ScheduleUserAction } from "./UserAction";
 
 export const FollowAction = (activity, user) => {
     return async (dispatch) => {
@@ -109,6 +110,8 @@ export const JoinAction = (activity, user) => {
             dispatch(action7)
             const action8 = GetListEndActivityByUserIDAction(user);
             dispatch(action8)
+            const action9 = ScheduleUserAction(user);
+            dispatch(action9)
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -149,6 +152,8 @@ export const UnJoinAction = (activity, user) => {
             dispatch(action7)
             const action8 = GetListEndActivityByUserIDAction(user);
             dispatch(action8)
+            const action9 = ScheduleUserAction(user);
+            dispatch(action9)
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",

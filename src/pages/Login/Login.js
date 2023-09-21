@@ -69,7 +69,7 @@ export default function Login (props) {
                     admin: localStorage.setItem('admin', 'admin')
                 }
                 await dispatch(action1)
-                props.history.push('/achivement')
+                props.history.push('/adminstatistical')
             }
             else {
                 const action = LoginModeratorAction(value, props);
@@ -154,17 +154,17 @@ export default function Login (props) {
                                 <input type="checkbox" id="checkbox" defaultChecked />
                                 <label htmlFor="checkbox"><span>Nhớ tài khoản</span></label>
                             </div> */}
-                            {msgModerator !== '' ? <h3 style={{ color: 'red' }}>{msgModerator}</h3> : <div></div>}
+                           
                             <button className="main-btn" type="submit" ><i className="icofont-key" /> Đăng nhập</button>
-
-                            {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
                             <p className="google-icon-p"
                                 onClick={signInWithGoogle}
                             >
                                 <i class="fa-brands fa-google google-icon-g" />
-                                Đăng nhập với google
+                                Đăng nhập với Google
                             </p>
                         </form>
+                        {msgModerator !== '' ? <h3 style={{ color: 'red' }}>{msgModerator}</h3> : <div></div>}
+                        {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
                     </div>
                 </div>
                 <div className="mockup right"><img src="images/star-shape.png" alt /></div>

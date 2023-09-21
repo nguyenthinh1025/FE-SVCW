@@ -29,13 +29,13 @@ export const AdminTemplate = (props) => {
         if (localStorage.getItem('admin') !== 'no') {
             return <Fragment>
                 <div className="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
-                    <div className="app-header header-shadow" >
-                        <div className="app-header__logo">
-                        <div class="logo">
+                    <div className="app-header header-shadow  " >
+                        <div className="app-header__logo" style={{marginRight:'10px'}}>
+                        <div class="logo" >
                             <img src="/images/logo.png"/>
                             <span>SVCW</span>
                             </div>
-                            <div className="logo-abc" />
+                            {/* <div className="logo-abc" /> */}
                             <div className="header__pane ml-auto">
                                 <div>
                                     <button type="button" className="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
@@ -59,11 +59,7 @@ export const AdminTemplate = (props) => {
                         <div className="app-header__content" >
                             <div className="app-header-left">
                                 <div className="search-wrapper">
-                                    <div className="input-holder">
-                                        <input type="text" className="search-input" placeholder="Type to search" />
-                                        <button className="search-icon"><span /></button>
-                                    </div>
-                                    <button className="close" />
+                                   
                                 </div>
                             </div>
                             <div className="app-header-right">
@@ -121,10 +117,16 @@ export const AdminTemplate = (props) => {
                     <div className="app-main">
                         <div className="app-sidebar sidebar-shadow">
                            
-                            <div className="scrollbar-sidebar">
+                            <div className="scrollbar-sidebar roll-header">
                                 <div className="app-sidebar__inner">
                                     <ul className="vertical-nav-menu">
-        
+                                    <li className="app-sidebar__heading">Thống kê</li>
+                                        <li>
+                                            <NavLink to='/adminstatistical'>
+                                                <i className="metismenu-icon pe-7s-graph2">
+                                                </i>Thống kê
+                                            </NavLink>
+                                        </li>
                                         <li className="app-sidebar__heading">Huy hiệu</li>
                                         <li>
                                             <NavLink to='/achivement'>
@@ -143,24 +145,28 @@ export const AdminTemplate = (props) => {
                                         <li className="app-sidebar__heading">Báo cáo</li>
                                         <li>
                                             <NavLink to='/reporttype'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-attention">
                                                 </i>Loại báo cáo
+                                            </NavLink>
+                                            <NavLink to='/report'>
+                                                <i className="metismenu-icon pe-7s-close-circle">
+                                                </i>Báo cáo
                                             </NavLink>
                                         </li>
 
                                         <li className="app-sidebar__heading">Vai trò</li>
                                         <li>
                                             <NavLink to='/role'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-users">
                                                 </i>Vai trò
                                             </NavLink>
                                         </li>
                                         {localStorage.getItem('admin') === 'admin' ? <Fragment>
-                                            <li className="app-sidebar__heading">Người quản lý</li>
+                                            <li className="app-sidebar__heading">Người kiểm duyệt</li>
                                             <li>
                                                 <NavLink to='/moderator'>
-                                                    <i className="metismenu-icon pe-7s-graph2">
-                                                    </i>Người quản lý
+                                                    <i className="metismenu-icon pe-7s-id">
+                                                    </i>Người kiểm duyệt
                                                 </NavLink>
                                             </li>
 
@@ -168,22 +174,23 @@ export const AdminTemplate = (props) => {
                                         <li className="app-sidebar__heading">Tổ chức</li>
                                         <li>
                                             <NavLink to='/adminfanpage'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-global">
                                                 </i>Tổ chức
                                             </NavLink>
                                         </li>
-                                        <li className="app-sidebar__heading">Báo cáo</li>
-                                        <li>
-                                            <NavLink to='/report'>
-                                                <i className="metismenu-icon pe-7s-graph2">
-                                                </i>Báo cáo
-                                            </NavLink>
-                                        </li>
+
                                         <li className="app-sidebar__heading">Chiến dịch</li>
                                         <li>
                                             <NavLink to='/adminactivity'>
-                                                <i className="metismenu-icon pe-7s-graph2">
+                                                <i className="metismenu-icon pe-7s-browser">
                                                 </i>Chiến dịch
+                                            </NavLink>
+                                        </li>
+                                        <li className="app-sidebar__heading">Tình nguyện viên</li>
+                                        <li>
+                                            <NavLink to='/volunteer'>
+                                                <i className="metismenu-icon pe-7s-user">
+                                                </i>Tình nguyện viên
                                             </NavLink>
                                         </li>
                                     </ul>

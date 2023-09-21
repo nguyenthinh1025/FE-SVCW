@@ -51,7 +51,7 @@ export default function DetailProcess (props) {
   }, []);
 
   const DateTime = (value) => {
-    const currentTime = moment(value).format("DD-MM-YYYY");
+    const currentTime = moment(value).format("DD/MM/YYYY hh:mm A");
     return currentTime;
   };
 
@@ -151,7 +151,7 @@ export default function DetailProcess (props) {
       if (moment(value.startDate).isBefore(currentObject.activity?.startDate)) {
         Swal.fire({
           title: 'Cảnh báo',
-          text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(currentObject.activity?.startDate).format('DD-MM-YYYY')}`,
+          text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(currentObject.activity?.startDate).format('DD/MM/YYYY')}`,
           icon: 'warning',
           showCancelButton: false,
           confirmButtonColor: '#3085d6',
@@ -161,7 +161,7 @@ export default function DetailProcess (props) {
       } else if (moment(value.endDate).isAfter(currentObject.activity?.endDate)) {
         Swal.fire({
           title: 'Cảnh báo',
-          text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(currentObject.activity?.endDate).format('DD-MM-YYYY')}`,
+          text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(currentObject.activity?.endDate).format('DD/MM/YYYY')}`,
           icon: 'warning',
           showCancelButton: false,
           confirmButtonColor: '#3085d6',
@@ -428,9 +428,9 @@ export default function DetailProcess (props) {
                       {currentObject.isDonateProcess ?
                         <div style={{ fontSize: '20px', color: 'black', fontWeight: 400, display: 'flex', paddingBottom: '20px' }}>
                           <div>{currentObject.isDonateProcess ? <div> - Kêu gọi quyên góp:</div> : <div></div>}</div>
-                          <div style={{ marginLeft: '5px' }}>{currentObject.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {currentObject?.targetDonation} vnđ</div> : <div></div>}</div>
+                          <div style={{ marginLeft: '5px' }}>{currentObject.targetDonation !== 0 ? <div style={{ fontWeight: 600 }}> {(currentObject?.targetDonation).toLocaleString()} vnđ</div> : <div></div>}</div>
                         </div> : <div></div>}
-                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm: <span style={{ fontWeight: 600 }}>{(currentObject?.location)?.toLocaleString()}</span></div>
+                      <div style={{ fontSize: '20px', color: 'black', fontWeight: 400 }}>- Địa điểm: <span style={{ fontWeight: 600 }}>{currentObject?.location}</span></div>
                     </div>
                     <div
                       className="next-prev-posts"

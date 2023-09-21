@@ -42,6 +42,7 @@ import ListFollowJoin from "./ListFollowJoin";
 import CreateResultActivity from "../pages/Result/CreateResultActivity";
 import ResultActivity from "../pages/Result/ResultActivity";
 import { SendEmail } from "../utils/emailService";
+import RejectActivi from "./RejectActivi";
 
 export default function ItemActivity(props) {
   const [share, setShare] = useState(false);
@@ -53,6 +54,16 @@ export default function ItemActivity(props) {
     opacity: share ? 1 : 0,
     visibility: share ? "visible" : "hidden",
     overflow: share ? "auto" : "hidden",
+  };
+  const [actireject, setActiReject] = useState(false);
+  const [actirejectid, setActiRejectid] = useState("");
+  const popupStyleActiReject = {
+    opacity: actireject ? 1 : 0,
+    visibility: actireject ? "visible" : "hidden",
+    overflow: actireject ? "auto" : "hidden",
+  };
+  const handleClickActiReject = () => {
+    setActiReject((prevIsOpen) => !prevIsOpen);
   };
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
@@ -400,7 +411,7 @@ export default function ItemActivity(props) {
                     </svg>
                   </i>
                   <ul>
-                    {userID === ItemActivity.userId &&
+                    {/* {userID === ItemActivity.userId &&
                       endDate.isBefore(currentDate) === false &&
                       ItemActivity.targetDonation === 0 ? (
                       <li
@@ -418,9 +429,9 @@ export default function ItemActivity(props) {
                       </li>
                     ) : (
                       <div></div>
-                    )}
+                    )} */}
 
-                    {userID === ItemActivity.userId &&
+                    {/* {userID === ItemActivity.userId &&
                       ItemActivity.targetDonation === 0 ? (
                       <li
                         onClick={() => {
@@ -455,7 +466,8 @@ export default function ItemActivity(props) {
                       </li>
                     ) : (
                       <div></div>
-                    )}
+                    )} */}
+                    
                     {userID !== ItemActivity.userId ? (
                       <li
                         onClick={() => {
@@ -525,6 +537,21 @@ export default function ItemActivity(props) {
                     ) : (
                       <div></div>
                     )}
+                     {userID === ItemActivity.userId &&
+                    endDate.isBefore(currentDate) === false ? (
+                      <li
+                        onClick={() => {
+                          handleClickActiReject();
+                  setActiRejectid( ItemActivity.activityId)
+                        }}
+                      >
+                        <i className="icofont-sign-out" />
+                       Tắt chiến dịch
+                        <span>Ngừng chiến ngay lập tức</span>
+                      </li>
+                    ) : (
+                      <div></div>
+                    )}
                     {endDate.isAfter(currentDate) === true &&
                       userID === ItemActivity.userId &&
                       ItemActivity?.followJoinAvtivity?.length > 0 ? (
@@ -565,7 +592,7 @@ export default function ItemActivity(props) {
                           dispatch(action);
                         }}
                       >
-                        <i className="icofont-flag" />
+                        <i className="icofont-eye-open" />
                         Xem kết quả chiến dịch
                         <span>Xem kết quả diễn ra trong chiến dịch</span>
                       </li>
@@ -597,7 +624,7 @@ export default function ItemActivity(props) {
                   }}
                   className="col-lg-12"
                 >
-                  <h3
+                  <NavLink   to={`/detailactivity/${ItemActivity.activityId}`}
                     style={{
                       fontSize: "25px",
                       fontWeight: "bold",
@@ -608,7 +635,7 @@ export default function ItemActivity(props) {
                     className="col-lg-12"
                   >
                     {ItemActivity.title}
-                  </h3>
+                  </NavLink>
                 </div>
               </div>
               <div style={{ display: "flex" }}>
@@ -675,7 +702,7 @@ export default function ItemActivity(props) {
               </p>
               <figure style={{}}>
                 <div className="image-gallery-flex">
-                  {ItemActivity?.media?.length <= 3
+                  {ItemActivity?.media?.length <= 4
                     ? ItemActivity.media.map((image, index) => {
                       return (
                         <div key={index} className={`image-container-post`}>
@@ -740,8 +767,8 @@ export default function ItemActivity(props) {
 
               {ItemActivity.process?.map((pro, index) => {
                 if (
-                  moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
-                  moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                  moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(currentDate) &&
+                  moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                 ) {
                   if (pro.isDonateProcess === true) {
                     return <div style={{ position: "relative" }}>
@@ -840,10 +867,10 @@ export default function ItemActivity(props) {
                 <div>
                   {ItemActivity.process?.map((pro, index) => {
                     if (
-                      moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                      moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                         currentDate
                       ) &&
-                      moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                     ) {
                       if (pro.isParticipant === true) {
                         return (
@@ -873,7 +900,7 @@ export default function ItemActivity(props) {
                     : "noprocessform")
                 }
               >
-                {endDate.isBefore(currentDate) ? (
+                {(ItemActivity?.process?.length === 0) || endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <button
@@ -900,10 +927,10 @@ export default function ItemActivity(props) {
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isParticipant === true) {
                           return (
@@ -943,10 +970,10 @@ export default function ItemActivity(props) {
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isDonateProcess === true) {
                           return (
@@ -1081,7 +1108,7 @@ export default function ItemActivity(props) {
                 <div
                   className="share"
                   onClick={() => {
-                    const textToCopy = `http://localhost:3000/detailactivity/${ItemActivity.activityId}`;
+                    const textToCopy = `https://svcw-system.azurewebsites.net/detailactivity/${ItemActivity.activityId}`;
 
                     const copyTextToClipboard = () => {
                       const textArea = document.createElement("textarea");
@@ -1276,6 +1303,7 @@ export default function ItemActivity(props) {
         listJoinFollow={listJoinFollow}
         popupStyleFolowJoin={popupStyleFolowJoin}
       />
+        <RejectActivi actireject={actireject} popupStyleActiReject={popupStyleActiReject} handleClickActiReject={handleClickActiReject} actirejectid={actirejectid}/>
     </Fragment>
   );
 }

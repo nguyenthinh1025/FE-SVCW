@@ -18,11 +18,11 @@ function isSameDay(date1, date2) {
 
 const Calender = (props) => {
   const {arr} = props;
-  console.log(arr)
+
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
   const { userSchedule } = useSelector((root) => root.UserReducer);
-  console.log(userSchedule)
+
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -30,24 +30,24 @@ const Calender = (props) => {
   useEffect(() => {
     setEvents(arr)
   }, [arr]);
-console.log(events)
-  const eventsForSelectedDate = events.filter((event) =>
+
+  const eventsForSelectedDate = events?.filter((event) =>
     isSameDay(selectedDate, event.date)
   );
 
   const handleEventClick = (title) => {
-    console.log(`Clicked event: ${title}`);
+
   };
 
   return (
     <div>
       <div>
-        <Calendar
+        <Calendar style={{background:'#fafafa none repeat scroll 0 0'}}
           onChange={setSelectedDate}
           value={selectedDate}
           tileClassName={({ date, view }) => {
             if (view === "month") {
-              const hasEvent = events.some((event) =>
+              const hasEvent = events?.some((event) =>
                 isSameDay(date, event.date)
               );
               return hasEvent ? "highlighted" : "";
@@ -57,17 +57,17 @@ console.log(events)
         />
       </div>
       <div>
-        {eventsForSelectedDate.length > 0 ? (
+        {eventsForSelectedDate?.length > 0 ? (
           <div>
             <div>
               Sự kiện trong ngày{" "}
               {format(selectedDate, "eeee, dd/MM/yyyy", { locale: vi })}
             </div>
             <ul>
-              {eventsForSelectedDate.map((event, index) => (
+              {eventsForSelectedDate?.map((event, index) => (
                 <li key={index} style={{fontWeight:'bold'}} onClick={() => handleEventClick(event.title)}>
                   <NavLink to={`/detailactivity/${event.actiID}`} style={{display:'flex', flexDirection:'column'}}>
-                  {event.title} - {event.hour}:{event.min} {event.hour >12 ?"tối":'sáng'}
+                  {event.title} - ({event.hour} giờ : {event.min} phút )
                   </NavLink>
                 </li>
               ))}

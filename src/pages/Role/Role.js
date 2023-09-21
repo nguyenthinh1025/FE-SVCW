@@ -63,7 +63,7 @@ export default function Role () {
     );
   };
 
-  const [text, setText] = useState("Thêm mới chức vụ");
+  const [text, setText] = useState("");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -134,9 +134,9 @@ export default function Role () {
         }
         else {
           toast.current.show({
-            severity: "error",
-            summary: "Thất bại",
-            detail: `Cập nhật chức vụ ${product.roleId} thất bại`,
+            severity: "success",
+            summary: "Thành công",
+            detail: `Cập nhật chức vụ ${product.roleId} thành công`,
             life: 3000,
           });
         }
@@ -276,7 +276,12 @@ export default function Role () {
           label="Thêm mới"
           icon="pi pi-plus"
           severity="success"
-          onClick={openNew}
+          onClick={
+          () =>{
+            openNew()
+           setText('Thêm mới chức vụ')
+          }
+          }
         />
         {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
       </div>
@@ -434,7 +439,7 @@ export default function Role () {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} chức vụ"
             globalFilter={globalFilter}
             header={header}
           >

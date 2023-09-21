@@ -66,7 +66,7 @@ export default function DetailActivity(props) {
   settings.nextArrow = <style>{`
   .slick-next {
     position: absolute;
-    right: 0px;
+    right: -320px;
 }
   }
   .slick-prev{
@@ -407,10 +407,10 @@ export default function DetailActivity(props) {
                 <div>
                   {activityById?.process?.map((pro, index) => {
                     if (
-                      moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                      moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                         currentDate
                       ) &&
-                      moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                     ) {
                       if (pro.isParticipant === true) {
                         return (
@@ -445,10 +445,10 @@ export default function DetailActivity(props) {
                   <div>
                     {activityById?.process?.map((pro, index) => {
                       if (
-                        moment(pro?.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro?.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro?.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro?.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro?.isParticipant === true) {
                           return (
@@ -488,10 +488,10 @@ export default function DetailActivity(props) {
                   <div>
                     {activityById?.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isDonateProcess === true) {
                           return (

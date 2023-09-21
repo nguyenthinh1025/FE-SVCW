@@ -29,14 +29,16 @@ export default function Header(props) {
   }, []);
   const formik = useFormik({
     initialValues: {
-      search: title,
+      search: "",
     },
+
     onSubmit: async (value) => {
-      if (formik.values.title !== "") {
+      console.log(formik.values.search)
+      if (formik.values.search) {
         const action = await GetActivityTitleAction(value);
         dispatch(action);
       } else {
-        const action = GetListActivityAction();
+        const action =await GetListActivityAction();
         dispatch(action);
       }
     },
@@ -109,8 +111,8 @@ export default function Header(props) {
           </li>
 
           <li>
-            <a
-              href="http://localhost:3000/home"
+            <NavLink
+              to="/home"
               title="Trang Chủ"
               data-toggle="tooltip"
             >
@@ -131,7 +133,7 @@ export default function Header(props) {
                   <polyline points="9 22 9 12 15 12 15 22" />
                 </svg>
               </i>
-            </a>
+            </NavLink>
           </li>
 
           <li>

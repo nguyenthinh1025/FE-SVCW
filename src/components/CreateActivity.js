@@ -76,7 +76,9 @@ export default function CreateActivity() {
         uploadTask.on("state_changed", (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
+            const integerProgress = Math.floor(progress);
+
+            setUploadProgress(integerProgress);
         });
 
         const snapshot = await uploadTask;
@@ -129,7 +131,7 @@ export default function CreateActivity() {
       formik.setFieldValue("endDate", "");
       formik.setFieldValue("endactivity", "");
       formik.setFieldValue("isFanpageAvtivity", false);
-      // formik.setFieldValue("media", []);
+      formik.setFieldValue("media", []);
 
       Swal.fire({
         title: "Thành công",
@@ -233,7 +235,7 @@ export default function CreateActivity() {
         title: "Cảnh báo",
         text: `Ngày bắt đầu hoạt động không bé hơn ngày bắt đầu tạo chiến dịch! ${moment(
           localStorage.getItem("startactivity")
-        ).format("DD-MM-YYYY")}`,
+        ).format("DD/MM/YYYY")}`,
         icon: "warning",
         showCancelButton: false,
         confirmButtonColor: "#3085d6",
@@ -250,7 +252,7 @@ export default function CreateActivity() {
         title: "Cảnh báo",
         text: `Ngày bắt đầu hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(
           localStorage.getItem("endstart")
-        ).format("DD-MM-YYYY")}`,
+        ).format("DD/MM/YYYY")}`,
         icon: "warning",
         showCancelButton: false,
         confirmButtonColor: "#3085d6",
@@ -267,7 +269,7 @@ export default function CreateActivity() {
         title: "Cảnh báo",
         text: `Ngày kết thúc hoạt động không lớn hơn ngày kết thúc chiến dịch! ${moment(
           localStorage.getItem("endstart")
-        ).format("DD-MM-YYYY")}`,
+        ).format("DD/MM/YYYY")}`,
         icon: "warning",
         showCancelButton: false,
         confirmButtonColor: "#3085d6",
@@ -284,7 +286,7 @@ export default function CreateActivity() {
         title: "Cảnh báo",
         text: `Ngày kết thúc hoạt động không bé hơn ngày bắt đầu chiến dịch! ${moment(
           localStorage.getItem("startactivity")
-        ).format("DD-MM-YYYY")}`,
+        ).format("DD/MM/YYYY")}`,
         icon: "warning",
         showCancelButton: false,
         confirmButtonColor: "#3085d6",
@@ -305,7 +307,30 @@ export default function CreateActivity() {
         zIndex: 999,
       });
       setError("2");
-    } else {
+    }
+    else if ( moment((updatedInputFields[index].endDate)).isBefore(updatedInputFields[index].startDate)) {
+      Swal.fire({
+        title: "Cảnh báo",
+        text: `Ngày kết thúc không trước ngày bắt đầu hoạt động`,
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
+     } else if ( moment((updatedInputFields[index].startDate)).isAfter(updatedInputFields[index].endDate)) {
+      Swal.fire({
+        title: "Cảnh báo",
+        text: `Ngày bắt đầu không sau ngày kết thúc hoạt động`,
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Đồng ý",
+        zIndex: 999,
+      });
+      setError("2");
+     } else {
       setError("1");
     }
 
@@ -338,6 +363,27 @@ export default function CreateActivity() {
       });
       const action1 = await CreateProcessAction(text, handleClick1);
       dispatch(action1);
+      setInputFields([
+        {
+          processTitle: "",
+          description: "",
+          startDate: "",
+          endDate: "",
+          activityId: create,
+          processTypeId: "",
+          isKeyProcess: true,
+          processNo: 0,
+          location: "online",
+          targetParticipant: 0,
+          realParticipant: 0,
+          isDonateProcess: false,
+          isParticipant: false,
+          realDonation: 0,
+          targetDonation: 0,
+          meida: [],
+          media: [],
+        },
+      ])
     } else {
       Swal.fire({
         title: "Cảnh báo",

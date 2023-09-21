@@ -44,8 +44,12 @@ import Donate from "./Donate";
 import ListDonate from "./ListDonate";
 import ListFollowJoin from "./ListFollowJoin";
 import { SendEmail } from "../utils/emailService";
+import RejectActivi from "./RejectActivi";
 
 export default function ItemEndActivity(props) {
+
+
+
   const [isReadMore, setReadMore] = useState(false);
   const [share, setShare] = useState(false);
   const [shareActivityID, setShareActivityID] = useState("");
@@ -111,6 +115,7 @@ export default function ItemEndActivity(props) {
     detailItem,
     index,
   } = props;
+
   const [showAllComments, setShowAllComments] = useState(false);
 
   const handleShowAll = () => {
@@ -196,8 +201,21 @@ export default function ItemEndActivity(props) {
   const [tcss, setTcss] = useState("css");
   const [commentI, setCommentI] = useState("commentContent");
   const [reportid, setReportID] = useState("");
+  const [reportiduser, setReportUSerID] = useState("");
   const handleClick6 = () => {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
+  };
+
+
+  const [actireject, setActiReject] = useState(false);
+  const [actirejectid, setActiRejectid] = useState("");
+  const popupStyleActiReject = {
+    opacity: actireject ? 1 : 0,
+    visibility: actireject ? "visible" : "hidden",
+    overflow: actireject ? "auto" : "hidden",
+  };
+  const handleClickActiReject = () => {
+    setActiReject((prevIsOpen) => !prevIsOpen);
   };
   const openPopup = () => {
     setPopupOpen((prevIsOpen) => !prevIsOpen);
@@ -288,7 +306,11 @@ export default function ItemEndActivity(props) {
     }
     return timeAgoString;
   };
+  const [clickCounts, setClickCounts] = useState(0);
+  const [disabledButtons, setDisabledButtons] = useState(false);
   const handleJoinClick = async (index, activity, isJoin, title, process) => {
+    if (clickCounts < 6) {
+      setClickCounts(prevCount => prevCount + 1);
     if (isJoin === "Join") {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
@@ -312,6 +334,9 @@ export default function ItemEndActivity(props) {
     }
     const action = GetListActivityAction();
     await dispatch(action);
+  } else {
+    setDisabledButtons(true);
+  }
   };
   const handleFollowClick = (index, activity, isFollow, title) => {
     if (isFollow) {
@@ -388,7 +413,7 @@ export default function ItemEndActivity(props) {
                     </svg>
                   </i>
                   <ul>
-                    {userID === ItemActivity.userId &&
+                    {/* {userID === ItemActivity.userId &&
                     endDate.isBefore(currentDate) === false &&
                     ItemActivity.targetDonation === 0 ? (
                       <li
@@ -406,9 +431,24 @@ export default function ItemEndActivity(props) {
                       </li>
                     ) : (
                       <div></div>
+                    )} */}
+                     {userID === ItemActivity.userId &&
+                    endDate.isBefore(currentDate) === false ? (
+                      <li
+                        onClick={() => {
+                          handleClickActiReject();
+                  setActiRejectid( ItemActivity.activityId)
+                        }}
+                      >
+                        <i className="icofont-sign-out" />
+                       Tắt chiến dịch
+                        <span>Ngừng chiến ngay lập tức</span>
+                      </li>
+                    ) : (
+                      <div></div>
                     )}
 
-                    {userID === ItemActivity.userId &&
+                    {/* {userID === ItemActivity.userId &&
                     ItemActivity.targetDonation === 0 &&
                     endDate.isBefore(currentDate) === false ? (
                       <li
@@ -444,16 +484,17 @@ export default function ItemEndActivity(props) {
                       </li>
                     ) : (
                       <div></div>
-                    )}
+                    )} */}
                     {userID !== ItemActivity.userId ? (
                       <li
                         onClick={() => {
-                          setReportID(ItemActivity.activityId);
+                          setReportID(ItemActivity?.activityId);
+                          setReportUSerID(ItemActivity?.user?.userId)
                           setReport(true);
                         }}
                       >
                         <i className="icofont-flag" />
-                        Báo cáo bài đăng
+                        Báo cáo 
                         <span>
                           Nhầm báo cáo những vấn đề bất thường đến cho người
                           quản lý
@@ -504,12 +545,12 @@ export default function ItemEndActivity(props) {
                       <li
                         onClick={() => {
                           handleClickDonate();
-                          setIsListDonate(ItemActivity?.donation);
+                          setIsListDonate(ItemActivity?.donation?.filter(item =>item.status ==="success"));
                         }}
                       >
                         <i className="icofont-pen-alt-1" />
                         Danh sách donate
-                        <span>Danh sách đã donate cho sự kiện</span>
+                        <span>Danh sách đã donate cho chiến dịch</span>
                       </li>
                     ) : (
                       <div></div>
@@ -554,7 +595,7 @@ export default function ItemEndActivity(props) {
                           dispatch(action);
                         }}
                       >
-                        <i className="icofont-flag" />
+                        <i className="icofont-eye-open" />
                         Xem kết quả chiến dịch
                         <span>Xem kết quả diễn ra trong chiến dịch</span>
                       </li>
@@ -735,8 +776,8 @@ export default function ItemEndActivity(props) {
 
               {ItemActivity.process?.map((pro, index) => {
                 if (
-                  moment(pro.startDate, "YYYY-MM-DD").isBefore(currentDate) &&
-                  moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                  moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(currentDate) &&
+                  moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                 ) {
                   if (pro.isDonateProcess === true) {
                     return (
@@ -838,10 +879,10 @@ export default function ItemEndActivity(props) {
                 <div>
                   {ItemActivity.process?.map((pro, index) => {
                     if (
-                      moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                      moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                         currentDate
                       ) &&
-                      moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                      moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                     ) {
                       if (pro.isParticipant === true) {
                         return (
@@ -870,7 +911,7 @@ export default function ItemEndActivity(props) {
                     : "noprocessform")
                 }
               >
-                {endDate.isBefore(currentDate) ? (
+                {(ItemActivity?.process?.length === 0) || endDate.isBefore(currentDate) ? (
                   <div></div>
                 ) : (
                   <button
@@ -898,10 +939,10 @@ export default function ItemEndActivity(props) {
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isParticipant === true) {
                           return (
@@ -914,12 +955,13 @@ export default function ItemEndActivity(props) {
                                 ? "btn-color"
                                 : isAlreadyJoined === "success"
                                 ? "btn-color-1"
-                                : "btn-change"
+                                : "btn-color"
                               } mb-4 mt-4 btn-add ${
                                 ItemActivity.targetDonation !== 0
                                   ? "marginfollow"
                                   : "sas"
                               }`}
+                              disabled={disabledButtons}
                               onClick={() => {
                                 handleJoinClick(
                                   index,
@@ -953,10 +995,10 @@ export default function ItemEndActivity(props) {
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
                       if (
-                        moment(pro.startDate, "YYYY-MM-DD").isBefore(
+                        moment(pro.startDate, "YYYY-MM-DD hh:mm A").isBefore(
                           currentDate
                         ) &&
-                        moment(pro.endDate, "YYYY-MM-DD").isAfter(currentDate)
+                        moment(pro.endDate, "YYYY-MM-DD hh:mm A").isAfter(currentDate)
                       ) {
                         if (pro.isDonateProcess === true) {
                           return (
@@ -1010,11 +1052,11 @@ export default function ItemEndActivity(props) {
                 >
                   <div className="popover_wrapper">
                     <a className="popover_title" href="#" title>
-                      <img alt src="images/smiles/thumb.png" />
+                      <img alt src="../images/smiles/thumb.png" />
                     </a>
                     <div className="popover_content">
                       <span>
-                        <img alt src="images/smiles/thumb.png" />
+                        <img alt src="../images/smiles/thumb.png" />
                         Đã thích
                       </span>
                       <ul className="namelist">
@@ -1092,7 +1134,7 @@ export default function ItemEndActivity(props) {
                 <div
                   className="share"
                   onClick={() => {
-                    const textToCopy = `http://localhost:3000/detailactivity/${ItemActivity.activityId}`;
+                    const textToCopy = `https://svcw-system.azurewebsites.net/detailactivity/${ItemActivity.activityId}`;
 
                     const copyTextToClipboard = () => {
                       const textArea = document.createElement("textarea");
@@ -1257,6 +1299,7 @@ export default function ItemEndActivity(props) {
       <ReportActivity
         report={report}
         reportid={reportid}
+        reportiduser = {reportiduser}
         popupStyle3={popupStyle3}
         handleClick={handleClick}
         arrReportType={arrReportType}
@@ -1293,6 +1336,7 @@ export default function ItemEndActivity(props) {
         listJoinFollow={listJoinFollow}
         popupStyleFolowJoin={popupStyleFolowJoin}
       />
+       <RejectActivi actireject={actireject} popupStyleActiReject={popupStyleActiReject} handleClickActiReject={handleClickActiReject} actirejectid={actirejectid}/>
     </div>
   );
 }

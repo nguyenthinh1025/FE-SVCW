@@ -2,42 +2,48 @@ import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { GetStatisticalAction } from "../../redux/actions/StatisticalAction";
+import { GetStatisticalAction, GetStatisticalAdminAction, GetStatisticalAdminDonateAction } from "../../redux/actions/StatisticalAction";
 
-const StatisticalUser = (props) => {
+const AdminStatistical = (props) => {
   const [selectedValue, setSelectedValue] = useState(true);
+  const [selectedValue1, setSelectedValue1] = useState(true);
 
   const handleOptionClick = (value) => {
     setSelectedValue(value);
   };
-
+  const handleOptionClick1 = (value) => {
+    setSelectedValue1(value);
+  };
   const dispatch = useDispatch();
-  const { arrStatical } = useSelector((root) => root.StatisticalReducer);
-  console.log(arrStatical);
+  const { arrStaticaladmin,arrStaticalAdminDonate } = useSelector((root) => root.StatisticalReducer);
+  console.log(arrStaticalAdminDonate);
   useEffect(() => {
-    const action = GetStatisticalAction(localStorage.getItem("userID"), year);
+    const action = GetStatisticalAdminAction( year);
     dispatch(action);
+    const action1 = GetStatisticalAdminDonateAction( year);
+    dispatch(action1);
   }, []);
   const [year, setYear] = useState("2023");
-  console.log(year);
-  const arr = arrStatical?.filter(item =>item.status ==="success")?.map((item, index) => {
-    return selectedValue ? item.donated : item.totalDonate;
-  });
-  const arr1 = arrStatical?.map((item, index) => {
+  const [year1, setYear1] = useState("2023");
+  const arr1 = arrStaticaladmin?.map((item, index) => {
     return selectedValue
-      ? item.totalNumberActivityCreate
-      : item.totalNumberActivityCreate;
+      ? item.newUser
+      : item.newUser;
   });
-
+  const arr = arrStaticalAdminDonate?.map((item, index) => {
+    return selectedValue1
+      ? item.target
+      : item.target;
+  });
   const series = [
     {
-      name: "Tổng tiền",
-      data: arr,
+      name: "Số tiền ủng hộ",
+      data: arr ,
     },
   ];
   const series1 = [
     {
-      name: "Tổng chiến dịch",
+      name: "Số tình nguyện viên",
       data: arr1,
     },
   ];
@@ -88,10 +94,57 @@ const StatisticalUser = (props) => {
       ],
     },
   };
+  const options1 = {
+    chart: {
+      height: 350,
+      type: "line",
+      zoom: {
+        enabled: false,
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: "straight",
+    },
+    title: {
+      text: selectedValue1
+        ? "Thống kê số chiến dịch đã tạo"
+        : "Thống kê số tiền đã ủng hộ",
+      align: "left",
+      style: {
+        color: selectedValue1 ? "black" : "#0077b6", // Đổi màu tùy theo selectedValue
+        fontSize: selectedValue1 ? "30px" : "30px",
+      },
+    },
+    grid: {
+      row: {
+        colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+        opacity: 0.5,
+      },
+    },
+    xaxis: {
+      categories: [
+        "Tháng 1",
+        "Tháng 2",
+        "Tháng 3",
+        "Tháng 4",
+        "Tháng 5",
+        "Tháng 6",
+        "Tháng 7",
+        "Tháng 8",
+        "Tháng 9",
+        "Tháng 10",
+        "Tháng 11",
+        "Tháng 12",
+      ],
+    },
+  };
 
   return (
-    <div className="" style={{ marginTop: "100px" }}>
-      <div className="theme-layout">
+    <div className="" style={{position:'absolute', marginTop:'10px',  width: "1800px"}}>
+      <div className="">
         <section>
           <div className="top-area bluesh high-opacity">
             <div
@@ -120,20 +173,17 @@ const StatisticalUser = (props) => {
                           href="#allposts"
                           data-toggle="tab"
                         >
-                          Chiến dịch đã tạo
+                          Tình nguyện viên tham gia SVCW
                         </a>
                       </li>
                       <li
                         className="nav-item"
-                        onClick={() => handleOptionClick(false)}
+                        onClick={() => handleOptionClick1(false)}
                       >
                         <a className href="#members" data-toggle="tab">
-                          Số tiền đã ủng hộ
+                          Số tiền ủng hộ đã nhận trên SVCW
                         </a>
                       </li>
-                      {/* <li className="nav-item"><a className href="#photos" data-toggle="tab">Photos</a></li>
-                            <li className="nav-item"><a className href="#videos" data-toggle="tab">Videos</a></li>
-                            <li className="nav-item"><a className href="#groups" data-toggle="tab">Groups</a></li> */}
                     </ul>
                   </div>
                 </div>
@@ -142,7 +192,7 @@ const StatisticalUser = (props) => {
           </div>
         </section>
         <section>
-          <div className="gap">
+          <div className="gap" style={{padding:0}}>
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
@@ -156,7 +206,7 @@ const StatisticalUser = (props) => {
                           <div className="main-wraper">
                             <div style={{ display: "flex" }}>
                               <div className="main-title">
-                                Thống kê số chiến dịch đã tạo năm {year}
+                                Tình nguyện viên tham gia trên SVCW năm {year}
                               </div>
                               <select
                                 style={{
@@ -166,8 +216,7 @@ const StatisticalUser = (props) => {
                                 }}
                                 onClick={(e) => {
                                   setYear(e.target.value);
-                                  const action = GetStatisticalAction(
-                                    localStorage.getItem("userID"),
+                                  const action = GetStatisticalAdminAction(
                                     e.target.value
                                   );
                                   dispatch(action);
@@ -188,11 +237,14 @@ const StatisticalUser = (props) => {
                             />
                           </div>
                         </div>
-                        <div className="tab-pane fade" id="members">
+                        <div
+                          className="tab-pane fade show"
+                          id="members"
+                        >
                           <div className="main-wraper">
                             <div style={{ display: "flex" }}>
                               <div className="main-title">
-                                Thống kê số tiền đã ủng hộ {year}
+                                Số tiền ủng hộ nhận được trên SVCW năm {year1}
                               </div>
                               <select
                                 style={{
@@ -201,9 +253,8 @@ const StatisticalUser = (props) => {
                                   border: "transparent",
                                 }}
                                 onClick={(e) => {
-                                  setYear(e.target.value);
-                                  const action = GetStatisticalAction(
-                                    localStorage.getItem("userID"),
+                                  setYear1(e.target.value);
+                                  const action = GetStatisticalAdminDonateAction(
                                     e.target.value
                                   );
                                   dispatch(action);
@@ -217,7 +268,7 @@ const StatisticalUser = (props) => {
                               </select>
                             </div>
                             <ReactApexChart
-                              options={options}
+                              options={options1}
                               series={series}
                               type="line"
                               height={350}
@@ -233,45 +284,9 @@ const StatisticalUser = (props) => {
           </div>
         </section>
       </div>
-      {/* <div>
-                <button
-                    onClick={() => handleOptionClick(true)}
-                    style={{
-                        backgroundColor: ' #0077b6', // Màu nền
-                        color: 'white', // Màu chữ
-                        border: 'none', // Loại bỏ đường viền
-                        padding: '10px 20px', // Kích thước lề nội dung
-                        borderRadius: '5px', // Bo tròn viền
-                        cursor: 'pointer', // Biểu tượng con trỏ khi rê chuột
-                        fontSize: '16px', // Cỡ chữ
-                    }}
-                >
-                    Biểu đồ theo số tiền đã ủng hộ
-                </button>
-                <button
-                    onClick={() => handleOptionClick(false)}
-                    style={{
-                        backgroundColor: 'white', // Màu nền
-                        color: ' #0077b6', // Màu chữ
-                        border: 'none', // Loại bỏ đường viền
-                        padding: '10px 20px', // Kích thước lề nội dung
-                        borderRadius: '5px', // Bo tròn viền
-                        cursor: 'pointer', // Biểu tượng con trỏ khi rê chuột
-                        fontSize: '16px', // Cỡ chữ
-                    }}
-
-                >Biểu đồ theo số hoạt động đã tạo</button>
-
-         </div>
-
-            <div className='row' style={{ marginTop: '100px' }}>
-                <div className="">
-                    <ReactApexChart options={options} series={series} type="line" height={350} />
-                </div>
-
-            </div> */}
+      
     </div>
   );
 };
 
-export default StatisticalUser;
+export default AdminStatistical;

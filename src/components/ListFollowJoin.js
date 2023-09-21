@@ -151,7 +151,7 @@ export default function ListFollowJoin(props) {
                       rows={10}
                       rowsPerPageOptions={[5, 10, 25]}
                       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                      currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+                      currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} người theo dõi"
                       globalFilter={globalFilter}
                       header={header}
                     >   
@@ -172,7 +172,7 @@ export default function ListFollowJoin(props) {
                       
                       <Column
                         field={(datetime) =>
-                          moment(datetime.datetime).format("DD-MM-YYYY hh:mm A")
+                          moment(datetime.datetime).format("DD/MM/YYYY hh:mm A")
                         }
                         header="Thời gian theo dõi"
                         sortable
@@ -198,7 +198,7 @@ export default function ListFollowJoin(props) {
                       rows={10}
                       rowsPerPageOptions={[5, 10, 25]}
                       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                      currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+                      currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} người tham gia"
                       globalFilter={globalFilter}
                       header={header}
                     >   
@@ -219,7 +219,7 @@ export default function ListFollowJoin(props) {
                       
                       <Column
                         field={(datetime) =>
-                          moment(datetime.datetime).format("DD-MM-YYYY hh:mm A")
+                          moment(datetime.datetime).format("DD/MM/YYYY hh:mm A")
                         }
                         header="Thời gian tham gia"
                         sortable

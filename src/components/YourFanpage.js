@@ -18,7 +18,7 @@ export default function YourFanpage () {
     dispatch(action);
   }, []);
   const arrShe = userSchedule.map((item, index) => {
-    const datetimeStrings = item.process?.filter(item => item.processTypeId === "pt002").map(process => process.startDate);
+    const datetimeStrings = item.process?.filter(item => item.processTypeId === "pt003").map(process => process.startDate);
 
     let day = "";
     let month = "";
@@ -42,7 +42,7 @@ export default function YourFanpage () {
     return {
         actiID: item.activityId,
         tile: item.title,
-        process: item?.process?.filter(item => item.processTypeId === "pt002"),
+        process: item?.process?.filter(item => item.processTypeId === "pt003"),
         day: Number(day),
         month: month-1,
         year: Number(year),
@@ -55,7 +55,7 @@ useEffect(()=>{
     return   { date: new Date(item.year, item.month, item.day, item.hour, item.minute), title: item.tile , hour:item.hour, min:item.minute ,actiID:item.actiID }
   }))
 },[userSchedule])
-console.log(arr)
+
   return (
     <div className="">
       <aside className="sidebar static right">
@@ -109,8 +109,9 @@ console.log(arr)
           <div></div>
         )}
         <RecommentActivity />
-        <Game />
         <Calender arr ={arr}/>
+        {/* <Game /> */}
+        
       </aside>
     </div>
   );

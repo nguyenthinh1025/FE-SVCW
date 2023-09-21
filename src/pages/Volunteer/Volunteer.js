@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import moment from "moment";
 import { classNames } from "primereact/utils";
 import { DataTable } from "primereact/datatable";
@@ -9,10 +9,11 @@ import { FileUpload } from "primereact/fileupload";
 import { Rating } from "primereact/rating";
 import { Toolbar } from "primereact/toolbar";
 import { InputTextarea } from "primereact/inputtextarea";
-
+import { Dropdown } from "primereact/dropdown";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
+import * as Yup from "yup";
 import {
   CreateAchivementAction,
   DeleteAchivementAction,
@@ -22,10 +23,18 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { storage_bucket } from "./../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-
-export default function Achivement () {
+import {
+  DeleteFanpageAction,
+  GetListFanpageAction,
+  UpdateStatusFanpageAction,
+} from "../../redux/actions/FanpageAction";
+import { useFormik } from "formik";
+import { SendEmail } from "../../utils/emailService";
+import { BanUserAction, GetListUserAction, UnBanUserAction } from "../../redux/actions/UserAction";
+export default function Volunteer() {
   const dispatch = useDispatch();
-  const { arrAchivement } = useSelector((root) => root.AchivementReducer);
+  const { arrListUser } = useSelector((root) => root.UserReducer);
+  console.log(arrListUser);
   const [showInput, setShowInput] = useState(true);
   const [id, setID] = useState("abc");
   let counter = 0;
@@ -48,6 +57,7 @@ export default function Achivement () {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
 
         setShowInput(false);
       },
@@ -61,36 +71,68 @@ export default function Achivement () {
     );
   };
 
-  const [text, setText] = useState("Chỉnh sửa huy hiệu");
+  const [text, setText] = useState("Thêm mới huy hiệu");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
+  const [deleteProductDialog1, setDeleteProductDialog1] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [product, setProduct] = useState(emptyProduct);
-  const [tempProduct, setTempProduct] = useState({ ...emptyProduct });
   const [selectedProducts, setSelectedProducts] = useState(null);
+  const [product1, setProduct1] = useState(emptyProduct);
+  const [selectedProducts1, setSelectedProducts1] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
+
   useEffect(() => {
-    const action = GetListAchivementAction();
+    const action = GetListUserAction();
     dispatch(action);
   }, []);
-  useEffect(() => {
-    setProducts(arrAchivement);
-  }, [arrAchivement]);
 
-  // const formatCurrency = (value) => {
-  //     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  // };
-
-  const openNew = () => {
-    setProduct(emptyProduct);
-    setSubmitted(false);
-    setProductDialog(true);
+  const [op, setOp] = useState("Active");
+  const onInputDropdown = (e, field) => {
+    setOp(e.target.value);
+    // setProduct(updatedProduct);
   };
 
+  const arrReportType = [
+    { value: "Active", label: "Hoạt động" },
+    { value: "Banned", label: "Cấm hoạt động" },
+  ];
+  useEffect(() => {
+    const arr = arrListUser?.filter((item) => item.status === op);
+    setProducts(arr);
+  }, [arrListUser, op]);
+
+  // const formatCurrency = (value) => {
+
+  const formik = useFormik({
+    initialValues: {
+      description: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+    },
+  });
+
+
+
+  const SignupSchema = Yup.object().shape({
+    reasonBan: Yup.string().required("Vui lòng điền lý do báo cáo"),
+  });
+  const fromik1 = useFormik({
+    initialValues: {
+      userId: "string",
+      reasonBan: "",
+    },
+    enableReinitialize:true,
+    validationSchema:SignupSchema,
+    onSubmit: (value) => {
+      console.log(value);
+    },
+  });
   const hideDialog = () => {
     setSubmitted(false);
     setProductDialog(false);
@@ -99,7 +141,9 @@ export default function Achivement () {
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);
   };
-
+  const hideDeleteProductDialog1 = () => {
+    setDeleteProductDialog1(false);
+  };
   const hideDeleteProductsDialog = () => {
     setDeleteProductsDialog(false);
   };
@@ -107,64 +151,39 @@ export default function Achivement () {
   const saveProduct = async () => {
     setSubmitted(true);
 
-    if (product.description.trim()) {
-      let _products = [...products];
-      let _product = { ...product };
-
-      if (product.achivementId !== "0") {
-        const index = findIndexById(product.id);
-        _products[index] = _product;
-        const action = await UpdateAchivementAction(product);
-        await dispatch(action);
-        setProductDialog(false);
-        counter++;
-        toast.current.show({
-          severity: "success",
-          summary: "Thành công",
-          detail: `Cập nhật thành công huy hiệu ${product.achivementId} thành công`,
-          life: 3000,
-        });
-        setText("");
-      }
-      else {
-        const action = await CreateAchivementAction(product);
-        await dispatch(action);
-        counter++;
-        toast.current.show({
-          severity: "success",
-          summary: "Thành công",
-          detail: "Tạo mới huy hiệu thành công",
-          life: 3000,
-        });
-      }
-
-      setProducts(_products);
-      setProductDialog(false);
-      setProduct(emptyProduct);
-    }
+    setProductDialog(false);
   };
 
   const editProduct = (product) => {
     setText("Chỉnh sửa huy hiệu");
     setProduct({ ...product });
     setProductDialog(true);
-    setTempProduct({ ...product });
   };
 
   const confirmDeleteProduct = (product) => {
     setProduct(product);
     setDeleteProductDialog(true);
   };
-
+  const confirmDeleteProduct1 = (product) => {
+    setProduct1(product);
+    setDeleteProductDialog1(true);
+  };
   const deleteProduct = async () => {
-    const action = await DeleteAchivementAction(product.achivementId);
+    const action = await UnBanUserAction(product.userId);
     await dispatch(action);
+    // let productItem = { ...product };
+
+    // SendEmail(
+    //   productItem.email,
+    //   "Tạo mới tổ chức thành công",
+    //   `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`
+    // );
     setDeleteProductDialog(false);
-    setProduct(emptyProduct);
+    // setProduct(emptyProduct);
     toast.current.show({
-      severity: "error",
+      severity: "success",
       summary: "Thành công",
-      detail: `Xóa huy hiệu ${product.achivementId} Thành công`,
+      detail: `Cập nhật trạng thái ${product.username} thành công`,
       life: 3000,
       options: {
         style: {
@@ -173,11 +192,59 @@ export default function Achivement () {
       },
     });
   };
+  const deleteProduct1 = async () => {
+    if(fromik1.values.reasonBan ===""){
+      toast.current.show({
+        severity: "error",
+        summary: "Lỗi",
+        detail: `Vui lòng điền lý do báo cáo`,
+        life: 3000,
+        options: {
+          style: {
+            zIndex: 100,
+          },
+        },
+      });
+    }
+   else{
+    const action = {
+      userId: fromik1.values.userId,
+      reasonBan: fromik1.values.reasonBan
+    }
+    const action1 = BanUserAction(action);
+    dispatch(action1)
+    setDeleteProductDialog1(false);
+    
+    // console.log(product1.fanpageId);
+    // const action = await DeleteFanpageAction(product1.fanpageId);
+    // await dispatch(action);
+    // let productItem = { ...product1 };
+
+    // SendEmail(
+    //   productItem.email,
+    //   "Nhóm của bạn đã bị xóa",
+    //   `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`
+    // );
+
+    // setProduct(emptyProduct);
+    toast.current.show({
+      severity: "success",
+      summary: "Thành công",
+      detail: `Xóa tình nguyện viên thành công`,
+      life: 3000,
+      options: {
+        style: {
+          zIndex: 100,
+        },
+      },
+    });
+   }
+  };
 
   const findIndexById = (id) => {
     let index = -1;
 
-    for (let i = 0;i < products.length;i++) {
+    for (let i = 0; i < products.length; i++) {
       if (products[i].id === id) {
         index = i;
         break;
@@ -192,7 +259,7 @@ export default function Achivement () {
     let chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for (let i = 0;i < 5;i++) {
+    for (let i = 0; i < 5; i++) {
       id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
 
@@ -256,13 +323,13 @@ export default function Achivement () {
   const leftToolbarTemplate = () => {
     return (
       <div className="flex flex-wrap gap-2">
-        {/* <Button
-          label="Thêm mới"
-          icon="pi pi-plus"
-          severity="success"
-          onClick={openNew}
-        /> */}
-        <div></div>
+        <Dropdown
+          options={arrReportType}
+          id="reportType"
+          onChange={(e) => onInputDropdown(e, "reportType")}
+          value={op}
+          placeholder="Chọn trạng thái"
+        />
         {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
       </div>
     );
@@ -283,10 +350,10 @@ export default function Achivement () {
   const imageBodyTemplate = (rowData) => {
     return (
       <img
-        src={`${rowData.achivementLogo}`}
+        src={`${rowData.image}`}
         alt={rowData.image}
         className="shadow-2 border-round"
-        style={{ width: "64px", height: "48px", objectFit: "contain" }}
+        style={{ width: "64px" }}
       />
     );
   };
@@ -312,20 +379,31 @@ export default function Achivement () {
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Button
-          icon="pi pi-pencil"
-          rounded
-          outlined
-          className="mr-2"
-          onClick={() => editProduct(rowData)}
-        />
+        {op !== "Active" ? (
+          <Button
+            className="mr-2"
+            icon="pi pi-pencil"
+            rounded
+            outlined
+            onClick={() => confirmDeleteProduct(rowData)}
+          />
+        ) : (
+          <div></div>
+        )}
+         {op !== "Banned" ? (
         <Button
           icon="pi pi-trash"
           rounded
           outlined
           severity="danger"
-          onClick={() => confirmDeleteProduct(rowData)}
+          onClick={() => {
+            confirmDeleteProduct1(rowData)
+            fromik1.setFieldValue('userId', rowData.userId)
+          } }
         />
+        ) : (
+          <div></div>
+        )}
       </React.Fragment>
     );
   };
@@ -348,7 +426,7 @@ export default function Achivement () {
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0 mb-3">Quản lý huy hiệu</h4>
+      <h4 className="m-0 mb-3">Quản lý tình nguyện viên</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -362,23 +440,38 @@ export default function Achivement () {
   const productDialogFooter = (
     <React.Fragment>
       <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button disabled={(tempProduct.description === product.description || product.description === "") && (tempProduct.achivementLogo === product.achivementLogo)} label="Hoàn thành" icon="pi pi-check" onClick={saveProduct} />
+      <Button label="Hoàn thành" icon="pi pi-check" onClick={saveProduct} />
     </React.Fragment>
   );
   const deleteProductDialogFooter = (
     <React.Fragment>
-
+      <Button
+        label="Hủy bỏ"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteProductDialog}
+      />
       <Button
         label="Đồng ý"
         icon="pi pi-check"
         severity="danger"
         onClick={deleteProduct}
       />
+    </React.Fragment>
+  );
+  const deleteProductDialogFooter1 = (
+    <React.Fragment>
       <Button
         label="Hủy bỏ"
         icon="pi pi-times"
         outlined
-        onClick={hideDeleteProductDialog}
+        onClick={hideDeleteProductDialog1}
+      />
+      <Button
+        label="Đồng ý"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteProduct1}
       />
     </React.Fragment>
   );
@@ -398,6 +491,7 @@ export default function Achivement () {
       />
     </React.Fragment>
   );
+
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
       <div>
@@ -419,39 +513,54 @@ export default function Achivement () {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} huy hiệu"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} tình nguyện viên"
             globalFilter={globalFilter}
             header={header}
           >
             {/* <Column selectionMode="multiple" exportable={false}></Column> */}
-            <Column
-              field="achivementId"
+            {/* <Column
+              field="fanpageId"
               header="Mã"
               sortable
               style={{ minWidth: "11rem" }}
-            ></Column>
-            <Column
-              field="achivementLogo"
-              header="Hình ảnh"
-              body={imageBodyTemplate}
-            ></Column>
-            <Column
-              field="description"
-              header="Tên huy hiệu"
+            ></Column> */}
+            {/* <Column
+              field="fanpageName"
+              header="Fanpage"
               sortable
               style={{ minWidth: "12rem" }}
               body={(rowData) => {
-                const maxLength = 20;
-                const description = rowData.description;
-                if (description.length > maxLength) {
+                const maxLength = 35;
+                const fanpageName = rowData.fanpageName;
+                if (fanpageName.length > maxLength) {
                   return (
-                    <span title={description}>
-                      {description.substring(0, maxLength)}...
+                    <span title={fanpageName}>
+                      {fanpageName.substring(0, maxLength)}...
                     </span>
                   );
                 }
-                return description;
+
+                return fanpageName;
               }}
+            ></Column> */}
+            {/* <Column
+              field="image"
+              header="Hình ảnh"
+              body={imageBodyTemplate}
+            ></Column> */}
+            {/* <Column field="fanpageName" header="Fanpage" sortable style={{ minWidth: '12rem' }}></Column> */}
+
+            <Column
+              field="username"
+              header="Tên"
+              sortable
+              style={{ minWidth: "12rem" }}
+            ></Column>
+            <Column
+              field="email"
+              header="Email"
+              sortable
+              style={{ minWidth: "12rem" }}
             ></Column>
             <Column
               field={(createAt) =>
@@ -461,10 +570,6 @@ export default function Achivement () {
               sortable
               style={{ minWidth: "12rem" }}
             ></Column>
-            {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
-                        <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
-                        <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                        <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column> */}
             <Column
               body={actionBodyTemplate}
               exportable={false}
@@ -472,12 +577,13 @@ export default function Achivement () {
             ></Column>
           </DataTable>
         </div>
+
         <Dialog
           visible={productDialog}
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
           onClick={() => {
-            setText("Chỉnh sửa huy hiệu");
+            setText("Thêm Mới huy hiệu");
           }}
           header={text}
           modal
@@ -496,21 +602,14 @@ export default function Achivement () {
             <br />
             <div>
               <label htmlFor="img" className="input-preview">
-                <input
-                  name="img"
-                  id="img"
-                  className="input-s"
-                  style={{ opacity: 0 }}
-                  type="file"
-                  onChange={(e) => onInputChange(e, "achivementLogo")}
-                />
+                {/* <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
                 {product?.achivementLogo === "" ? (
-                  <div style={{ border: '1px solid #6366F1', padding: '5px 0', cursor: 'pointer', width: '150px', background: '#6366F1', borderRadius: '5px', color: 'white', textAlign: 'center' }}>Tải hình lên</div>
+                  <div></div>
                 ) : (
                   <img
                     src={product.achivementLogo}
                     style={{
-                      width: "500px",
+                      width: "900px",
                       height: "195px",
                       borderRadius: "5px",
                     }}
@@ -533,11 +632,11 @@ export default function Achivement () {
               className="font-bold"
               style={{ fontWeight: "bold" }}
             >
-              Tên huy hiệu
+              Miêu tả
             </label>
             <InputTextarea
               id="description"
-              value={product.description}
+              value={formik.values.description}
               onChange={(e) => onInputChange(e, "description")}
               required
               rows={3}
@@ -545,7 +644,7 @@ export default function Achivement () {
             />
             {submitted && !product.description && (
               <small className="p-error">
-                Tên huy hiệu không được để trống.
+                Miêu tả huy hiệu không được để trống.
               </small>
             )}
           </div>
@@ -566,14 +665,50 @@ export default function Achivement () {
               style={{ fontSize: "2rem" }}
             />
             {product && (
-              <span>
-                Bạn muốn xóa huy hiệu <b>{product.achivementId}</b> chứ?
-
+              <span style={{ fontSize: "18px" }}>
+                Bạn muốn cập nhật trạng thái hoạt động cho người dùng
+                <b>{product.username}</b>?
               </span>
             )}
           </div>
         </Dialog>
-
+        <Dialog
+          visible={deleteProductDialog1}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Thông Báo"
+          modal
+          footer={deleteProductDialogFooter1}
+          onHide={hideDeleteProductDialog1}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {product1 && (
+              <form onSubmit={fromik1.handleSubmit}>
+                <span style={{ fontSize: "18px" }}>
+                  Bạn muốn xóa thành viên
+                  <b>{product1.username}</b>?
+                </span>
+                <div style={{ fontSize: "18px" , paddingTop:'10px', fontWeight:700 }}>
+                  Lý do
+                </div>
+                <textarea
+                  id="message"
+                  className="form-control"
+                  rows="2"
+                  cols="50"
+                  name="reasonBan"
+                  onChange={fromik1.handleChange}
+                  required
+                ></textarea>
+                <div className="error" >{formik.errors.reasonBan}</div>
+              </form>
+            )}
+          </div>
+        </Dialog>
         <Dialog
           visible={deleteProductsDialog}
           style={{ width: "32rem" }}
