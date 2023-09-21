@@ -137,7 +137,7 @@ export default function Header(props) {
           <li>
             <NavLink
               className="mesg-notif"
-              to="/message"
+              to="/message/default"
               title="Tin Nhắn"
               data-toggle="tooltip"
             >
