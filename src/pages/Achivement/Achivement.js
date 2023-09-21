@@ -61,7 +61,7 @@ export default function Achivement () {
     );
   };
 
-  const [text, setText] = useState("Thêm mới huy hiệu");
+  const [text, setText] = useState("Chỉnh sửa huy hiệu");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -477,7 +477,7 @@ export default function Achivement () {
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
           onClick={() => {
-            setText("Thêm mới huy hiệu");
+            setText("Chỉnh sửa huy hiệu");
           }}
           header={text}
           modal
