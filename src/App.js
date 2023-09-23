@@ -33,6 +33,7 @@ import Volunteer from './pages/Volunteer/Volunteer';
 import Sta from './Sta';
 import StatisticalUser1 from './pages/StatisticalUser/StatisticalUser1';
 import AdminStatistical1 from './pages/AdminStatistical/AdminStatistical1';
+import Detail from './Detail';
 export const history = createBrowserHistory()
 
 function App () {
@@ -63,6 +64,7 @@ function App () {
         <UserTemplate exact path="/groups" Component={Group} />
         <Route exact path="/test" component={CalendarComponent} />
         <Route exact path="/sta" component={Sta} />
+        <Route exact path="/detail/:id" component={Detail} />
         <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
         <Route path="/detailactivity/:id" exact component={DetailActivity} />
         <Route exact path="/loginmobile" component={LoginMobile} />
