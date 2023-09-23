@@ -18,7 +18,7 @@ function isSameDay(date1, date2) {
 
 const Calender = (props) => {
   const {arr} = props;
-
+console.log(arr)
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
   const { userSchedule } = useSelector((root) => root.UserReducer);

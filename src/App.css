@@ -1605,3 +1605,34 @@ i.fa.fa-arrow-up {
 
 
 
+.calen{
+  position: relative;
+}
+
+.event-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  background-color: #00ff00; /* Màu xanh */
+  border-radius: 50%;
+  position: absolute;
+  bottom: 2px;
+  transform: translateX(-50%);
+  cursor: pointer;
+  margin-left: 16px;
+}
+.event-day {
+  color: blue; /* Màu chữ đỏ cho các ngày có sự kiện */
+}
+.popup {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.p-button.p-button-help{
+  background: #3f6ad8!important;
+  border: 1px solid #3f6ad8!important;
+}

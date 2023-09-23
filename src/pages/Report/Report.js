@@ -179,6 +179,17 @@ export default function Report () {
     let _product = { ...product };
     let productItem = { ...product };
     SendEmail(productItem?.activity?.user?.email, 'Cảnh báo bài viết', `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thư cảnh báo</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#ff1827;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Thư cảnh báo từ SVCW</h1></div><div class="content"><p>Xin chào ${productItem.user?.fullName},</p><p>Chúng tôi thấy bài viết <span style="font-weight:bold;">${productItem?.title}</span> bạn có nội dung không phù hợp với cộng đồng trên SVCW!</p><p>Bạn nên chỉnh sửa lại nội dung bài viết cho phù hợp, nếu không bài viết của bạn sẽ bị xóa.</p><p>Chúc bạn có những trải nghiệm của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
+    toast.current.show({
+      severity: "success",
+      summary: "Thành công",
+      detail: `Gửi cảnh báo đến bài viết ${productItem?.title} thành công`,
+      life: 3000,
+      options: {
+        style: {
+          zIndex: 100,
+        },
+      },
+    });
     setProductDialog(false);
   };
   const saveProduct1 = async () => {
@@ -584,7 +595,7 @@ export default function Report () {
         >
          {op === 'rt006' ? <div><span style={{fontWeight:800}}>Người bị báo cáo :</span> {products1?.activity?.title}</div> :<div><span style={{fontWeight:800}}>Chiến dịch :</span> {products1?.activity?.title}</div>}
          <div><span style={{fontWeight:800}}>Loại báo cáo :</span> {products1?.reportType?.reportTypeName}</div>
-         <div><span style={{fontWeight:800}}>Lí do báo cáo :</span> {products1?.reason}</div>
+         <div><span style={{fontWeight:800}}>Lý do báo cáo :</span> {products1?.reason}</div>
          <div><span style={{fontWeight:800}}>Thời gian :</span> {moment(products1?.datetime).format('DD/MM/YYYY hh:mm A')}</div>
          <div><span style={{fontWeight:800}}>Người báo cáo :</span> {products1?.user?.username}</div>
         </Dialog>

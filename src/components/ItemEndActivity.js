@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   DeleteActivityByUserAction,
@@ -874,7 +874,7 @@ export default function ItemEndActivity(props) {
                 }
               })}
               {endDate.isBefore(currentDate) ? (
-                <div></div>
+                <Fragment></Fragment>
               ) : (
                 <div>
                   {ItemActivity.process?.map((pro, index) => {
@@ -912,7 +912,7 @@ export default function ItemEndActivity(props) {
                 }
               >
                 {(ItemActivity?.process?.length === 0) || endDate.isBefore(currentDate) ? (
-                  <div></div>
+                  <Fragment></Fragment>
                 ) : (
                   <button
                     className={` ${
@@ -934,7 +934,7 @@ export default function ItemEndActivity(props) {
                   </button>
                 )}
                 {endDate.isBefore(currentDate) ? (
-                  <div></div>
+                  <Fragment></Fragment>
                 ) : (
                   <div>
                     {ItemActivity.process?.map((pro, index) => {
@@ -990,7 +990,7 @@ export default function ItemEndActivity(props) {
                 )}
 
                 {endDate.isBefore(currentDate) ? (
-                  <div></div>
+                  <Fragment></Fragment>
                 ) : (
                   <div>
                     {ItemActivity.process?.map((pro, index) => {

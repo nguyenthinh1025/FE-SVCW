@@ -33,7 +33,7 @@ import {
 export default function Moderator () {
   const dispatch = useDispatch();
   const { arrModerator, msg } = useSelector((root) => root.ModeratorReducer);
-
+console.log(arrModerator)
   const [showInput, setShowInput] = useState(true);
   const [id, setID] = useState("abc");
   let counter = 0;

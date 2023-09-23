@@ -1,30 +1,29 @@
 import React, { useEffect } from "react";
-import ReactApexChart from "react-apexcharts";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { GetStatisticalAction } from "../../redux/actions/StatisticalAction";
 import { Chart } from "primereact/chart";
 import {NavLink} from 'react-router-dom'
-const StatisticalUser = (props) => {
+const StatisticalUser1 = (props) => {
   const [selectedValue, setSelectedValue] = useState(true);
 const dispatch = useDispatch()
   const handleOptionClick = (value) => {
     setSelectedValue(value);
   };
   const [year, setYear] = useState("2023");
-  const [arr, setArr] = useState([]);
+  const [arr1, setArr1] = useState([]);
 
   const { arrStatical } = useSelector((root) => root.StatisticalReducer);
   console.log(arrStatical);
   useEffect(() => {
-   
-    setArr(
-      arrStatical?.map((item, index) => {
-        return selectedValue
-          ? item.totalNumberActivityCreate
-          : item.totalNumberActivityCreate;
-      })
+    setArr1(
+      arrStatical
+        ?.filter((item) => item.status === "success")
+        ?.map((item, index) => {
+          return selectedValue ? item.donated : item.totalDonate;
+        })
     );
+   
   }, [arrStatical, selectedValue]);
   useEffect(() => {
     const action = GetStatisticalAction(localStorage.getItem("userID"), year);
@@ -32,13 +31,16 @@ const dispatch = useDispatch()
   }, []);
 
   useEffect(() => {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue("--text-color");
-    const textColorSecondary = documentStyle.getPropertyValue(
+   
+
+
+    const documentStyle1 = getComputedStyle(document.documentElement);
+    const textColor1 = documentStyle1.getPropertyValue("--text-color");
+    const textColorSecondary1 = documentStyle1.getPropertyValue(
       "--text-color-secondary"
     );
-    const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
-    const data = {
+    const surfaceBorder1 = documentStyle1.getPropertyValue("--surface-border");
+    const data1 = {
       labels: [
         "Tháng 1",
         "Tháng 2",
@@ -50,60 +52,55 @@ const dispatch = useDispatch()
         "Tháng 8",
         "Tháng 9",
         "Tháng 10",
-        "Tháng 11",
-        "Tháng 12",
       ],
       datasets: [
         {
-          label: "Chiến dịch đã tạo",
-          data: arr,
+          label: "Số tiền",
+          data: arr1,
           fill: false,
-          borderColor: documentStyle.getPropertyValue("--blue-400"),
+          borderColor: documentStyle1.getPropertyValue("--blue-400"),
           tension: 0.4,
         },
       ],
     };
-    const options = {
+    const options1 = {
       maintainAspectRatio: false,
       aspectRatio: 0.6,
       plugins: {
         legend: {
           labels: {
-            color: textColor,
+            color: textColor1,
           },
         },
       },
       scales: {
         x: {
           ticks: {
-            color: textColorSecondary,
+            color: textColorSecondary1,
           },
           grid: {
-            color: surfaceBorder,
+            color: surfaceBorder1,
           },
         },
         y: {
           ticks: {
-            color: textColorSecondary,
+            color: textColorSecondary1,
           },
           grid: {
-            color: surfaceBorder,
+            color: surfaceBorder1,
           },
         },
       },
     };
 
-    setChartData(data);
-    setChartOptions(options);
+    setChartData1(data1);
+    setChartOptions1(options1);
 
 
-   
+  }, [arr1]);
 
-
-  }, [arr]);
-  const [chartData, setChartData] = useState({});
-  const [chartOptions, setChartOptions] = useState({});
-
+  const [chartData1, setChartData1] = useState({});
+  const [chartOptions1, setChartOptions1] = useState({});
 
 
 
@@ -134,7 +131,7 @@ const dispatch = useDispatch()
                         onClick={() => handleOptionClick(true)}
                       >
                         <NavLink
-                          className="active"
+                          
                         to ="/statisticaluser"
                           data-toggle="tab"
                         >
@@ -145,7 +142,7 @@ const dispatch = useDispatch()
                         className="nav-item"
                         onClick={() => handleOptionClick(false)}
                       >
-                        <NavLink className to ="/statisticaluser1" data-toggle="tab">
+                        <NavLink  to="/statisticaluser1" className="active" data-toggle="tab">
                           Số tiền đã ủng hộ
                         </NavLink>
                       </li>
@@ -165,14 +162,12 @@ const dispatch = useDispatch()
                   <div id="page-contents" className="row merged20">
                     <div className="col-lg-12">
                       <div className="tab-content">
-                        <div
-                          className="tab-pane fade active show"
-                          id="allposts"
-                        >
+                       
+                        <div className="tab-pane fade active show" id="members">
                           <div className="main-wraper">
                             <div style={{ display: "flex" }}>
                               <div className="main-title">
-                                Thống kê số chiến dịch đã tạo năm {year}
+                                Thống kê số tiền đã ủng hộ {year}
                               </div>
                               <select
                                 style={{
@@ -197,11 +192,10 @@ const dispatch = useDispatch()
                               </select>
                             </div>
                             <div className="card">
-      <Chart type="line" data={chartData} options={chartOptions} />
-      </div>
+                            <Chart type="line" data={chartData1} options={chartOptions1} />
+                            </div>
                           </div>
                         </div>
-                        
                       </div>
                     </div>
                   </div>
@@ -216,4 +210,4 @@ const dispatch = useDispatch()
   );
 };
 
-export default StatisticalUser;
+export default StatisticalUser1;

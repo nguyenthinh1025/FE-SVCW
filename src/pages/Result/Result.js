@@ -698,7 +698,7 @@ export default function Result() {
                             <span>
                               {
                                 arrFollowJoin.filter(
-                                  (item) => item.isJoin === true
+                                  (item) => item.isJoin === "Join"
                                 ).length
                               }
                             </span>

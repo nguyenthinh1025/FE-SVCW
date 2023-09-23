@@ -1,38 +1,47 @@
-import React, { useState, useEffect, useRef } from 'react';
-import moment from 'moment';
-import { classNames } from 'primereact/utils';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Toast } from 'primereact/toast';
-import { Button } from 'primereact/button';
-import { FileUpload } from 'primereact/fileupload';
-import { Rating } from 'primereact/rating';
-import { Toolbar } from 'primereact/toolbar';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { Tag } from 'primereact/tag';
-import { CreateAchivementAction, DeleteAchivementAction, GetListAchivementAction, UpdateAchivementAction } from './../../redux/actions/AchivementAction';
-import { useDispatch, useSelector } from 'react-redux';
-import { storage_bucket } from './../../firebase';
+import React, { useState, useEffect, useRef } from "react";
+import moment from "moment";
+import { classNames } from "primereact/utils";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
+import { FileUpload } from "primereact/fileupload";
+import { Rating } from "primereact/rating";
+import { Toolbar } from "primereact/toolbar";
+import { InputTextarea } from "primereact/inputtextarea";
+import { Dropdown } from "primereact/dropdown";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+import { Tag } from "primereact/tag";
+import {
+  CreateAchivementAction,
+  DeleteAchivementAction,
+  GetListAchivementAction,
+  UpdateAchivementAction,
+} from "./../../redux/actions/AchivementAction";
+import { useDispatch, useSelector } from "react-redux";
+import { storage_bucket } from "./../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { DeleteFanpageAction, GetListFanpageAction, UpdateStatusFanpageAction } from '../../redux/actions/FanpageAction';
+import {
+  DeleteFanpageAction,
+  GetListFanpageAction,
+  UpdateStatusFanpageAction,
+} from "../../redux/actions/FanpageAction";
 import { useFormik } from "formik";
-import { SendEmail } from '../../utils/emailService';
-export default function AdminFanpage () {
-  const dispatch = useDispatch()
-  const { arrFanpage } = useSelector(root => root.FanpageReducer)
+import { SendEmail } from "../../utils/emailService";
+export default function AdminFanpage() {
+  const dispatch = useDispatch();
+  const { arrFanpage } = useSelector((root) => root.FanpageReducer);
 
   const [showInput, setShowInput] = useState(true);
-  const [id, setID] = useState('abc')
+  const [id, setID] = useState("abc");
   let counter = 0;
   let emptyProduct = {
     achivementId: counter.toString(),
     achivementLogo: "",
     description: "",
-    createAt: moment().format('YYYY-MM-DD'),
-    status: true
+    createAt: moment().format("YYYY-MM-DD"),
+    status: true,
   };
 
   const uploadFile = (e) => {
@@ -41,24 +50,26 @@ export default function AdminFanpage () {
 
     const uploadTask = uploadBytesResumable(fileRef, file);
 
-    uploadTask.on('state_changed', (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log("Upload is " + progress + "% done");
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
 
-      setShowInput(false);
-
-    },
+        setShowInput(false);
+      },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-
           const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
           setProduct(updatedProduct);
         });
-      });
+      }
+    );
   };
 
-  const [text, setText] = useState('Thêm mới huy hiệu')
+  const [text, setText] = useState("Thêm mới huy hiệu");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -75,25 +86,23 @@ export default function AdminFanpage () {
 
   useEffect(() => {
     const action = GetListFanpageAction();
-    dispatch(action)
+    dispatch(action);
   }, []);
 
-  const [op, setOp] = useState('Active')
+  const [op, setOp] = useState("Active");
   const onInputDropdown = (e, field) => {
-
-
-    setOp(e.target.value)
+    setOp(e.target.value);
     // setProduct(updatedProduct);
   };
 
   const arrReportType = [
-    { value: 'Pending', label: "Chờ duyệt" },
-    { value: 'Active', label: "Hoạt động" },
-    { value: 'InActive', label: "Cấm hoạt động" },
-  ]
+    { value: "Pending", label: "Chờ duyệt" },
+    { value: "Active", label: "Hoạt động" },
+    { value: "InActive", label: "Cấm hoạt động" },
+  ];
   useEffect(() => {
-    const arr = arrFanpage?.filter(item => item.status === op)
-    setProducts(arr)
+    const arr = arrFanpage?.filter((item) => item.status === op);
+    setProducts(arr);
   }, [arrFanpage, op]);
 
   // const formatCurrency = (value) => {
@@ -104,14 +113,13 @@ export default function AdminFanpage () {
       description: "",
       email: "",
       password: "",
-      confirm_password: ""
-    }
+      confirm_password: "",
+    },
   });
   const openNew = () => {
     setProduct(emptyProduct);
     setSubmitted(false);
     setProductDialog(true);
-
   };
 
   const hideDialog = () => {
@@ -132,13 +140,11 @@ export default function AdminFanpage () {
   const saveProduct = async () => {
     setSubmitted(true);
 
-
     setProductDialog(false);
-
   };
 
   const editProduct = (product) => {
-    setText('Chỉnh sửa huy hiệu')
+    setText("Chỉnh sửa huy hiệu");
     setProduct({ ...product });
     setProductDialog(true);
   };
@@ -152,44 +158,59 @@ export default function AdminFanpage () {
     setDeleteProductDialog1(true);
   };
   const deleteProduct = async () => {
-
-    const action = await UpdateStatusFanpageAction(product.fanpageId)
-    await dispatch(action)
+    const action = await UpdateStatusFanpageAction(product.fanpageId);
+    await dispatch(action);
     let productItem = { ...product };
 
-    SendEmail(productItem.email, "Tạo mới tổ chức thành công", `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
+    SendEmail(
+      productItem.email,
+      "Tạo mới tổ chức thành công",
+      `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`
+    );
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
     toast.current.show({
-      severity: 'success', summary: 'Thành công', detail: `Cập nhật trạng thái ${product.fanpageName} Thành công`, life: 3000, options: {
+      severity: "success",
+      summary: "Thành công",
+      detail: `Duyệt tổ chức ${productItem.fanpageName} thành công`,
+      life: 3000,
+      options: {
         style: {
-          zIndex: 100
-        }
-      }
+          zIndex: 100,
+        },
+      },
     });
   };
   const deleteProduct1 = async () => {
-console.log(product1.fanpageId)
-    const action = await DeleteFanpageAction(product1.fanpageId)
-    await dispatch(action)
+    console.log(product1.fanpageId);
+    const action = await DeleteFanpageAction(product1.fanpageId);
+    await dispatch(action);
     let productItem = { ...product1 };
 
-    SendEmail(productItem.email, "Nhóm của bạn đã bị xóa", `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
-    setDeleteProductDialog(false);
+    SendEmail(
+      productItem.email,
+      "Nhóm của bạn đã bị xóa",
+      `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chúc Mừng! Tạo Tổ Chức Mới Thành Công trên SVCW</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#18dcff;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Chúc Mừng! Tạo tổ chức mới thành công trên SVCW</h1></div><div class="content"><p>Xin chào,</p><p>Chúc mừng bạn đã tạo thành công Fanpage <span style="font-weight: bold;">${productItem.fanpageName}</span> trên SVCW!</p><p>Chúng tôi rất vui mừng vì bạn đã tham gia vào cộng đồng của chúng tôi. Fanpage của bạn sẽ là nơi bạn có thể chia sẻ thông tin, tương tác với cộng đồng và tạo những trải nghiệm thú vị cho người dùng.</p><p>Đừng ngần ngại bắt đầu đăng bài, chia sẻ thông tin và tạo nội dung thú vị trên tổ chức của bạn. Bạn có thể truy cập vào tài khoản của mình để quản lý và tùy chỉnh Fanpage theo ý muốn.</p> viết phần còn lại ở đây <p>Nếu bạn gặp bất kỳ khó khăn hoặc có câu hỏi, đừng ngần ngại liên hệ với chúng tôi qua địa chỉ hỗ trợ. Chúng tôi sẽ sẵn sàng giúp đỡ bạn.</p><p>Chúc bạn có những trải nghiệm thú vị và thành công trong việc quản lý tổ chức của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`
+    );
+    setDeleteProductDialog1(false);
     setProduct(emptyProduct);
     toast.current.show({
-      severity: 'success', summary: 'Thành công', detail: `Cập nhật trạng thái ${product.fanpageName} Thành công`, life: 3000, options: {
+      severity: "success",
+      summary: "Thành công",
+      detail: `Cấm hoạt động với tổ chức ${productItem.fanpageName} thành công`,
+      life: 3000,
+      options: {
         style: {
-          zIndex: 100
-        }
-      }
+          zIndex: 100,
+        },
+      },
     });
   };
 
   const findIndexById = (id) => {
     let index = -1;
 
-    for (let i = 0;i < products.length;i++) {
+    for (let i = 0; i < products.length; i++) {
       if (products[i].id === id) {
         index = i;
         break;
@@ -200,10 +221,11 @@ console.log(product1.fanpageId)
   };
 
   const createId = () => {
-    let id = '';
-    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let id = "";
+    let chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for (let i = 0;i < 5;i++) {
+    for (let i = 0; i < 5; i++) {
       id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
 
@@ -224,22 +246,27 @@ console.log(product1.fanpageId)
     setProducts(_products);
     setDeleteProductsDialog(false);
     setSelectedProducts(null);
-    toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Xóa Thành công huy hiệu', life: 3000 });
+    toast.current.show({
+      severity: "success",
+      summary: "Thành công",
+      detail: "Xóa Thành công huy hiệu",
+      life: 3000,
+    });
   };
 
   const onCategoryChange = (e) => {
     let _product = { ...product };
 
-    _product['category'] = e.value;
+    _product["category"] = e.value;
     setProduct(_product);
   };
 
   const onInputChange = (e, name) => {
-    if (name === 'achivementLogo') {
+    if (name === "achivementLogo") {
       uploadFile(e); // Call uploadFile function when achivementLogo value changes
     }
 
-    const val = (e.target && e.target.value) || '';
+    const val = (e.target && e.target.value) || "";
     let _product = { ...product };
 
     _product[`${name}`] = val;
@@ -259,26 +286,46 @@ console.log(product1.fanpageId)
     setProduct(_product);
   };
 
-
   const leftToolbarTemplate = () => {
     return (
       <div className="flex flex-wrap gap-2">
-        <Dropdown options={arrReportType} id='reportType' onChange={(e) => onInputDropdown(e, 'reportType')} value={op} placeholder="Chọn trạng thái" />
+        <Dropdown
+          options={arrReportType}
+          id="reportType"
+          onChange={(e) => onInputDropdown(e, "reportType")}
+          value={op}
+          placeholder="Chọn trạng thái"
+        />
         {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
       </div>
     );
   };
 
   const rightToolbarTemplate = () => {
-    return <Button label="Tải xuống" icon="pi pi-upload" style={{ marginRight: '50px' }} className="p-button-help" onClick={exportCSV} />;
+    return (
+      <Button
+        label="Tải xuống"
+        icon="pi pi-upload"
+        style={{ marginRight: "50px" }}
+        className="p-button-help"
+        onClick={exportCSV}
+      />
+    );
   };
 
   const imageBodyTemplate = (rowData) => {
-    return <img src={`${rowData.avatar}`} alt={rowData.avatar} className="shadow-2 border-round" style={{ width: '64px' }} />;
+    return (
+      <img
+        src={`${rowData.avatar}`}
+        alt={rowData.avatar}
+        className="shadow-2 border-round"
+        style={{ width: "64px" }}
+      />
+    );
   };
 
   const priceBodyTemplate = (rowData) => {
-    return
+    return;
     // return formatCurrency(rowData.price);
   };
 
@@ -287,35 +334,49 @@ console.log(product1.fanpageId)
   };
 
   const statusBodyTemplate = (rowData) => {
-    return <Tag value={rowData.inventoryStatus} severity={getSeverity(rowData)}></Tag>;
+    return (
+      <Tag
+        value={rowData.inventoryStatus}
+        severity={getSeverity(rowData)}
+      ></Tag>
+    );
   };
 
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-
-     {op !== 'Active' ?   <Button className='mr-2' icon="pi pi-check" rounded outlined onClick={() => confirmDeleteProduct(rowData)} /> : <div></div>}
-        <Button
+        {op !== "Active" ? (
+          <Button
+            className="mr-2"
+            icon="pi pi-check"
+            rounded
+            outlined
+            onClick={() => confirmDeleteProduct(rowData)}
+          />
+        ) : (
+          <div></div>
+        )}
+     {op ==="InActive" ? <div></div>:  <Button
           icon="pi pi-trash"
           rounded
           outlined
           severity="danger"
           onClick={() => confirmDeleteProduct1(rowData)}
-        />
+        /> }
       </React.Fragment>
     );
   };
 
   const getSeverity = (product) => {
     switch (product.inventoryStatus) {
-      case 'INSTOCK':
-        return 'success';
+      case "INSTOCK":
+        return "success";
 
-      case 'LOWSTOCK':
-        return 'warning';
+      case "LOWSTOCK":
+        return "warning";
 
-      case 'OUTOFSTOCK':
-        return 'danger';
+      case "OUTOFSTOCK":
+        return "danger";
 
       default:
         return null;
@@ -327,7 +388,11 @@ console.log(product1.fanpageId)
       <h4 className="m-0 mb-3">Quản lý tổ chức</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
-        <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Tìm kiếm..." />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Tìm kiếm..."
+        />
       </span>
     </div>
   );
@@ -339,20 +404,50 @@ console.log(product1.fanpageId)
   );
   const deleteProductDialogFooter = (
     <React.Fragment>
-      <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
-      <Button label="Đồng ý" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
+      <Button
+        label="Hủy bỏ"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteProductDialog}
+      />
+      <Button
+        label="Đồng ý"
+        icon="pi pi-check"
+        severity="primary"
+        onClick={deleteProduct}
+      />
     </React.Fragment>
   );
   const deleteProductDialogFooter1 = (
     <React.Fragment>
-      <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog1} />
-      <Button label="Đồng ý" icon="pi pi-check" severity="danger" onClick={deleteProduct1} />
+      <Button
+        label="Hủy bỏ"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteProductDialog1}
+      />
+      <Button
+        label="Đồng ý"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteProduct1}
+      />
     </React.Fragment>
   );
   const deleteProductsDialogFooter = (
     <React.Fragment>
-      <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteProductsDialog} />
-      <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
+      <Button
+        label="No"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteProductsDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteSelectedProducts}
+      />
     </React.Fragment>
   );
 
@@ -390,7 +485,7 @@ console.log(product1.fanpageId)
             ></Column> */}
             <Column
               field="fanpageName"
-              header="Fanpage"
+              header="Tổ chức"
               sortable
               style={{ minWidth: "12rem" }}
               body={(rowData) => {
@@ -518,21 +613,29 @@ console.log(product1.fanpageId)
           visible={deleteProductDialog}
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-          header="Thông Báo"
+          header={`Duyệt tổ chức ${product.fanpageName}`}
           modal
           footer={deleteProductDialogFooter}
           onHide={hideDeleteProductDialog}
         >
           <div className="confirmation-content">
-            <i
-              className="pi pi-exclamation-triangle mr-3"
-              style={{ fontSize: "2rem" }}
-            />
             {product && (
-              <span style={{ fontSize: "18px" }}>
-                Bạn muốn cập nhật trạng thái hoạt động tổ chức{" "}
-                <b>{product.fanpageName}</b>?
-              </span>
+            <div>
+                <div style={{ fontSize: "18px" }}>
+               <div style={{ lineHeight:'30px'}} ><span style={{fontWeight:600}}>- Tổ chức:</span> {product.fanpageName}</div>
+               <div  style={{ lineHeight:'30px'}} ><span style={{fontWeight:600}}>- Mã số thuế:</span> {product.mst}</div>
+               <div  style={{ lineHeight:'30px'}}  ><span style={{fontWeight:600}}>- Email tổ chức:</span> {product.email}</div>
+               <div  style={{ lineHeight:'30px'}} ><span style={{fontWeight:600}}>- Ngày tạo:</span> {moment(product.createAt).format("DD/MM/YYYY")}</div>
+               <div  style={{ lineHeight:'30px'}} ><span style={{fontWeight:600}}>- Số điện thoại:</span> {product.phone}</div>
+               <div  style={{ lineHeight:'30px' , display:'flex' , flexDirection:'column'}} ><span style={{fontWeight:600}}>- Hình ảnh: </span> 
+               <img src={product.avatar} width={400} height={300} />
+               </div>
+               <div  style={{ lineHeight:'30px' , display:'flex' , flexDirection:'column'}} ><span style={{fontWeight:600}}>- Ảnh bìa: </span> 
+               <img src={product.coverImage} width={400} height={300} />
+               </div>
+              </div> 
+            </div>
+             
             )}
           </div>
         </Dialog>
@@ -552,8 +655,7 @@ console.log(product1.fanpageId)
             />
             {product1 && (
               <span style={{ fontSize: "18px" }}>
-                Bạn muốn xóa tổ chức{" "}
-                <b>{product1.fanpageName}</b>?
+                Bạn muốn cấm hoạt động đối với tổ chức <b>{product1.fanpageName}</b>?
               </span>
             )}
           </div>

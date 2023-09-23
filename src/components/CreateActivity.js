@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateActivityAction } from "../redux/actions/ActivityAction";
 import Swal from "sweetalert2";
@@ -12,6 +12,7 @@ import { GetUserByIdAction } from "../redux/actions/UserAction";
 import moment from "moment";
 import { GetListProcessTypeAction } from "../redux/actions/ProcessTypeAction";
 import { CreateProcessAction } from "../redux/actions/ProcessAction";
+import * as Yup from "yup";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 export default function CreateActivity() {
   const dispatch = useDispatch();
@@ -104,6 +105,20 @@ export default function CreateActivity() {
     setUploadProgress(0);
   };
 
+  const validationSchema = Yup.object({
+    title: Yup.string().required("Tên chiến dịch không được bỏ trống"),
+    description: Yup.string()
+
+      .required("Mô tả chiến dịch không được bỏ trống"),
+      startDate: Yup.string()
+      .required("Ngày bắt đầu không được bỏ trống"),
+      endDate: Yup.string()
+      .required("Ngày kết thúc không được bỏ trống"),   
+      location: Yup.string().required("Đối tượng không được bỏ trống"),
+      media: Yup.array()
+      .required("Vui lòng tải lên hình ảnh")
+      .test('isNotEmpty', 'Vui lòng tải lên ít nhất một hình ảnh', value => value && value.length > 0),
+  });
   const [create, setCreate] = useState(activityProcess);
   const formik = useFormik({
     initialValues: {
@@ -119,7 +134,7 @@ export default function CreateActivity() {
       media: [],
     },
     // enableReinitialize: true,
-    enableReinitialize: false,
+    validationSchema:validationSchema,
     onSubmit: async (value) => {
       const action = await CreateActivityAction(value, setCreate);
       await dispatch(action);
@@ -407,6 +422,7 @@ export default function CreateActivity() {
     formik.setFieldValue("endDate", "");
     formik.setFieldValue("endactivity", "");
     formik.setFieldValue("isFanpageAvtivity", false);
+    formik.setFieldValue("media", []);
   };
   const handleClick1 = () => {
     setIsOpen1((prevIsOpen) => !prevIsOpen);
@@ -530,7 +546,7 @@ export default function CreateActivity() {
                 onSubmit={formik.handleSubmit}
               >
                 <div className="row">
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                     <div className="form-group">
                       <label id="name-label" htmlFor="name">
                         Tên chiến dịch
@@ -545,32 +561,43 @@ export default function CreateActivity() {
                         className="form-control"
                         required
                       />
+                       <div className="error">{formik.errors.title}</div>
                     </div>
+                   
                   </div>
-                  <div className="col-md-6">
+                  </div>
+                 <div className="row">
+
+                 <div className="col-md-12">
                     <div className="form-group">
                       <label id="email-label" htmlFor="email">
                         Mô tả chiến dịch
                       </label>
-                      <input
-                        type="text"
-                        name="description"
-                        onChange={formik.handleChange}
-                        value={formik.values.description}
-                        id="email"
-                        placeholder="Nhập mô tả"
-                        className="form-control"
-                        required
-                      />
+                      <textarea
+                      id="message"
+                      className="form-control"
+                      rows="2"
+                      cols="50"
+                      name="description"
+                      onChange={formik.handleChange}
+                      value={formik.values.description}
+                      required
+
+                    ></textarea>
+                      
+                       <div className="error">{formik.errors.description}</div>
                     </div>
+                   
                   </div>
-                </div>
+                 </div>
+                
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label id="name-label" htmlFor="name">
                         Ngày bắt đầu
                       </label>
+                      
                       <input
                         type="date"
                         name="startDate"
@@ -578,9 +605,10 @@ export default function CreateActivity() {
                         value={formik.values.startDate}
                         id="name"
                         className="form-control"
-                        // min={new Date().toISOString().split("T")[0]}
-                        required
+                        min={new Date().toISOString().split("T")[0]}
+
                       />
+                        <div className="error">{formik.errors.startDate}</div>
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -595,19 +623,33 @@ export default function CreateActivity() {
                         value={formik.values.endDate}
                         id="name"
                         className="form-control"
-                        // min={new Date().toISOString().split("T")[0]}
-                        required
+                        min={new Date().toISOString().split("T")[0]}
+
                       />
+                        <div className="error">{formik.errors.endDate}</div>
                     </div>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                     <div className="form-group">
                       <label id="name-label" htmlFor="name">
                         Đối tượng hỗ trợ
                       </label>
-                      <input
+
+                      <textarea
+                      id="message"
+                      className="form-control"
+                      rows="2"
+                      cols="50"
+                      name="location"
+                      onChange={formik.handleChange}
+                      value={formik.values.location}
+                      required
+
+                    ></textarea>
+                      <div className="error">{formik.errors.location}</div>
+                      {/* <input
                         type="text"
                         name="location"
                         onChange={(e) => {
@@ -618,8 +660,8 @@ export default function CreateActivity() {
                         id="name"
                         placeholder=" Đối tượng hỗ trợ"
                         className="form-control"
-                        required
-                      />
+
+                      /> */}
                     </div>
                   </div>
 
@@ -692,6 +734,7 @@ export default function CreateActivity() {
                             </label>
                             <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
                           </fieldset>
+                            <div className="error">{formik.errors.media}</div>
                         </form>
                         <svg style={{ display: "none" }}>
                           <defs>
@@ -707,7 +750,10 @@ export default function CreateActivity() {
                       </div>
 
                       <div className="image-container image-container-flex">
-                        {images.map((image, index) => (
+                        {formik.values.media.length === 0   ? <div></div>
+                        :
+                        <Fragment>
+                          {images.map((image, index) => (
                           <div
                             className="image-item image-item-relative"
                             key={index}
@@ -725,6 +771,8 @@ export default function CreateActivity() {
                             </button>
                           </div>
                         ))}
+                        </Fragment>
+}
                       </div>
 
                       {isLoading && (
