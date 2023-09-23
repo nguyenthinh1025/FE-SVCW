@@ -9,7 +9,7 @@ export default function ListStopActivity (props) {
     const { userID } = useSelector((root) => root.LoginReducer);
     return (
         <div>
-            {arrActivity?.length ===0 ? <div style={{textAlign:'center', fontSize:'20px', fontWeight:600}}>Không tìm thấy bài viết</div>:
+            {arrActivity?.filter(item => item.status === 'Quit')?.length === 0 ? <div style={{textAlign:'center', fontSize:'20px', fontWeight:600}}>Không tìm thấy bài viết</div>:
            <div>
              {arrActivity?.filter(item => item.status === 'Quit')?.map((item, index) => {
                 const detailItem = item;

@@ -824,7 +824,7 @@ export default function CreateActivity() {
                           setIsOpen((prevIsOpen) => !prevIsOpen);
                           Swal.fire({
                             title: "Cảnh báo",
-                            text: "Vui lòng tạo chiến dịch trước",
+                            text: "Vui lòng nhập đầy đủ thông tin tạo chiến dịch",
                             icon: "warning",
                             showCancelButton: false, // Set this to false to hide the cancel button
                             confirmButtonColor: "#3085d6",

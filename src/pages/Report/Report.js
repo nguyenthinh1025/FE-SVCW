@@ -13,6 +13,7 @@ import { Dropdown } from "primereact/dropdown";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
+import {NavLink} from 'react-router-dom'
 import {
   CreateAchivementAction,
   DeleteAchivementAction,
@@ -578,7 +579,7 @@ export default function Report () {
           footer={productDialogFooter}
           onHide={hideDialog}
         >
-          <div>Gửi cảnh báo đến bài viết <span style={{ fontWeight: 800 }}>{product?.activity?.title}</span> do vi phạm cộng đồng. Vi phạm lỗi <span style={{ fontWeight: 800 }}>{product?.reportType?.reportTypeName}</span></div>
+          <div>Gửi cảnh báo đến bài viết <span style={{ fontWeight: 800 }}>{product?.activity?.title}</span> do vi phạm lỗi <span style={{ fontWeight: 800 }}>{product?.reportType?.reportTypeName}</span></div>
         </Dialog>
         <Dialog
           visible={productDialog1}
@@ -593,7 +594,7 @@ export default function Report () {
           footer={productDialogFooter1}
           onHide={hideDialog1}
         >
-         {op === 'rt006' ? <div><span style={{fontWeight:800}}>Người bị báo cáo :</span> {products1?.activity?.title}</div> :<div><span style={{fontWeight:800}}>Chiến dịch :</span> {products1?.activity?.title}</div>}
+         {op === 'rt006' ? <div><span style={{fontWeight:800}}>Người bị báo cáo :</span>{products1?.activity?.title}</div> :<div><span style={{fontWeight:800}}>Chiến dịch :</span> <NavLink to={`/detail/${products1?.activity?.activityId}`}> {products1?.activity?.title}</NavLink></div>}
          <div><span style={{fontWeight:800}}>Loại báo cáo :</span> {products1?.reportType?.reportTypeName}</div>
          <div><span style={{fontWeight:800}}>Lý do báo cáo :</span> {products1?.reason}</div>
          <div><span style={{fontWeight:800}}>Thời gian :</span> {moment(products1?.datetime).format('DD/MM/YYYY hh:mm A')}</div>
@@ -612,7 +613,7 @@ export default function Report () {
           footer={productDialogFooter2}
           onHide={hideDialog2}
         >
-          <div>Gửi cảnh báo đến người dùng <span style={{ fontWeight: 800 }}>dsadsa</span> do vi phạm cộng đồng. Vi phạm lỗi <span style={{ fontWeight: 800 }}>dasd</span></div>
+          <div>Gửi cảnh báo đến người dùng <span style={{ fontWeight: 800 }}>dsadsa</span> do vi phạm lỗi <span style={{ fontWeight: 800 }}>dasd</span></div>
         </Dialog>
         <Dialog
           visible={deleteProductDialog}

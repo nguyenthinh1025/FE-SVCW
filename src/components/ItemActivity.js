@@ -514,7 +514,7 @@ export default function ItemActivity(props) {
                           dispatch(action);
                         }}
                       >
-                        <i className="icofont-pen-alt-1" />
+                        <i className="icofont-qr-code" />
                         Mã QR
                         <span>Lấy mã QR của sự kiện</span>
                       </li>
@@ -530,7 +530,7 @@ export default function ItemActivity(props) {
                           setIsListDonate(ItemActivity?.donation);
                         }}
                       >
-                        <i className="icofont-pen-alt-1" />
+                        <i className="icofont-money-bag" />
                         Danh sách donate
                         <span>Danh sách đã donate cho sự kiện</span>
                       </li>
@@ -570,7 +570,7 @@ export default function ItemActivity(props) {
                           );
                         }}
                       >
-                        <i className="icofont-pen-alt-1" />
+                        <i className="icofont-people" />
                         Danh sách theo dõi, tham gia
                         <span> Danh sách theo dõi tham gia chiến dịch</span>
                       </li>
@@ -1108,7 +1108,7 @@ export default function ItemActivity(props) {
                 <div
                   className="share"
                   onClick={() => {
-                    const textToCopy = `https://svcw-system.azurewebsites.net/detailactivity/${ItemActivity.activityId}`;
+                    const textToCopy = `https://svcw-studentsvolunteer.vercel.app/detailactivity/${ItemActivity.activityId}`;
 
                     const copyTextToClipboard = () => {
                       const textArea = document.createElement("textarea");
