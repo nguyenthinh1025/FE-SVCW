@@ -29,7 +29,7 @@ export default function YourFanpage () {
     if (datetimeStrings && datetimeStrings.length > 0) {
         const datetimeString = datetimeStrings[0]; // Lấy giá trị đầu tiên từ datetimeStrings
 
-        const [, yearString, monthString, dayString, hourString, minuteString] = datetimeString.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+        const [ yearString, monthString, dayString, hourString, minuteString] = datetimeString.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
 
         day = dayString;
         month = monthString;
@@ -37,7 +37,6 @@ export default function YourFanpage () {
         hour = hourString;
         minute = minuteString;
     }
-   
    
     return {
         actiID: item.activityId,

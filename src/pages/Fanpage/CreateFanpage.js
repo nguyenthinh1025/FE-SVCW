@@ -46,7 +46,7 @@ export default function CreateFanpage (props) {
       coverImage: "",
       description: "",
       mst: "",
-      email: "",
+      email: localStorage.getItem('emailuser'),
       phone: "",
       userId: userID,
     },
@@ -165,12 +165,11 @@ export default function CreateFanpage (props) {
                                 type="text"
                                 placeholder="Tên Fanpage"
                               />
-                              {formik.touched.fanpageName &&
-                                formik.errors.fanpageName ? (
+                             
                                 <div className="error">
                                   {formik.errors.fanpageName}
                                 </div>
-                              ) : null}
+                             
                             </div>
                             <div className="col-lg-6 col-md-6 col-sm-12 mb-4">
                               <input
@@ -182,9 +181,9 @@ export default function CreateFanpage (props) {
                                 type="text"
                                 placeholder="Nhập Mã Số Thuế"
                               />
-                              {formik.touched.mst && formik.errors.mst ? (
+                             
                                 <div className="error">{formik.errors.mst}</div>
-                              ) : null}
+                             
                             </div>
                             <div className="col-lg-12 col-md-12 col-sm-12 mb-4">
                               <input
@@ -195,12 +194,13 @@ export default function CreateFanpage (props) {
                                 value={formik.values.email}
                                 type="text"
                                 placeholder="Nhập Email"
+                                disabled
                               />
-                              {formik.touched.email && formik.errors.email ? (
+                            
                                 <div className="error">
                                   {formik.errors.email}
                                 </div>
-                              ) : null}
+                            
                             </div>
                             <div className="col-lg-12 col-md-12 col-sm-12 mb-4">
                               <input
@@ -212,11 +212,11 @@ export default function CreateFanpage (props) {
                                 type="text"
                                 placeholder="Nhập Số Điện Thoại"
                               />
-                              {formik.touched.phone && formik.errors.phone ? (
+                           
                                 <div className="error">
                                   {formik.errors.phone}
                                 </div>
-                              ) : null}
+                            
                             </div>
                             <div className="col-lg-12 col-md-12 col-sm-12 mb-4">
                               <textarea
@@ -228,12 +228,11 @@ export default function CreateFanpage (props) {
                                 rows={5}
                                 placeholder="Nhập Mô Tả"
                               />
-                              {formik.touched.description &&
-                                formik.errors.description ? (
+                             
                                 <div className="error">
                                   {formik.errors.description}
                                 </div>
-                              ) : null}
+                            
                             </div>
                           </div>
                         </div>
@@ -243,11 +242,7 @@ export default function CreateFanpage (props) {
                         className="main-btn"
                         href="#"
                         title
-                        disabled={
-                          !formik.isValid ||
-                          !formik.values.avatar ||
-                          !formik.values.coverImage
-                        }
+                       
                       >
                         Tạo tổ chức
                       </button>
@@ -268,6 +263,7 @@ export default function CreateFanpage (props) {
                               <i className="fa fa-arrow-up" />
                             </div>
                           </div>
+                          <div className="error">{formik.errors.avatar}</div>
                           {isLoading && (
                             <div>
                               <div className="progress-bar-container">
@@ -315,6 +311,7 @@ export default function CreateFanpage (props) {
                               <i className="fa fa-arrow-up" />
                             </div>
                           </div>
+                           <div className="error">{formik.errors.coverImage}</div>
                           {isLoading1 && (
                             <div>
                               <div className="progress-bar-container">

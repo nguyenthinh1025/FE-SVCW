@@ -2,34 +2,44 @@ import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { GetStatisticalAction } from "../../redux/actions/StatisticalAction";
+import {
+  GetStatisticalAction,
+  GetStatisticalAdminAction,
+  GetStatisticalAdminDonateAction,
+} from "../../redux/actions/StatisticalAction";
 import { Chart } from "primereact/chart";
-import {NavLink} from 'react-router-dom'
-const StatisticalUser = (props) => {
+import { NavLink } from "react-router-dom";
+const AdminStatistical1 = (props) => {
   const [selectedValue, setSelectedValue] = useState(true);
-const dispatch = useDispatch()
+  const [selectedValue1, setSelectedValue1] = useState(true);
+
   const handleOptionClick = (value) => {
     setSelectedValue(value);
   };
-  const [year, setYear] = useState("2023");
-  const [arr, setArr] = useState([]);
-
-  const { arrStatical } = useSelector((root) => root.StatisticalReducer);
-  console.log(arrStatical);
+  const handleOptionClick1 = (value) => {
+    setSelectedValue1(value);
+  };
+  const dispatch = useDispatch();
+  const { arrStaticaladmin, arrStaticalAdminDonate } = useSelector(
+    (root) => root.StatisticalReducer
+  );
+  console.log(arrStaticalAdminDonate);
   useEffect(() => {
-   
+    const action = GetStatisticalAdminAction(year);
+    dispatch(action);
+    const action1 = GetStatisticalAdminDonateAction(year);
+    dispatch(action1);
+  }, []);
+  const [year, setYear] = useState("2023");
+  const [year1, setYear1] = useState("2023");
+  const [arr, setArr] = useState([]);
+  useEffect(() => {
     setArr(
-      arrStatical?.map((item, index) => {
-        return selectedValue
-          ? item.totalNumberActivityCreate
-          : item.totalNumberActivityCreate;
+      arrStaticalAdminDonate?.map((item, index) => {
+        return selectedValue ? item.target : item.target;
       })
     );
-  }, [arrStatical, selectedValue]);
-  useEffect(() => {
-    const action = GetStatisticalAction(localStorage.getItem("userID"), year);
-    dispatch(action);
-  }, []);
+  }, [arrStaticaladmin, selectedValue]);
 
   useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -55,7 +65,7 @@ const dispatch = useDispatch()
       ],
       datasets: [
         {
-          label: "Chiến dịch đã tạo",
+          label: "Số tiền",
           data: arr,
           fill: false,
           borderColor: documentStyle.getPropertyValue("--blue-400"),
@@ -64,52 +74,50 @@ const dispatch = useDispatch()
       ],
     };
     const options = {
-      maintainAspectRatio: false,
-      aspectRatio: 0.6,
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor,
+        maintainAspectRatio: false,
+        aspectRatio: 0.6,
+        plugins: {
+          legend: {
+            labels: {
+              color: textColor,
+            },
           },
         },
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: textColorSecondary,
+        scales: {
+          x: {
+            ticks: {
+              color: textColorSecondary,
+            },
+            grid: {
+              color: surfaceBorder,
+            },
           },
-          grid: {
-            color: surfaceBorder,
+          y: {
+            ticks: {
+              color: textColorSecondary,
+              callback: function (value, index, values) {
+                return value >= 1000 ? value.toLocaleString() : value;
+              },
+            },
+            grid: {
+              color: surfaceBorder,
+            },
           },
         },
-        y: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-          },
-        },
-      },
-    };
+      };
 
     setChartData(data);
     setChartOptions(options);
-
-
-   
-
-
   }, [arr]);
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
-
-
-
   return (
-    <div className="" style={{ marginTop: "100px" }}>
-      <div className="theme-layout">
+    <div
+      className=""
+      style={{ position: "absolute", marginTop: "10px", width: "1800px" }}
+    >
+      <div className="">
         <section>
           <div className="top-area bluesh high-opacity">
             <div
@@ -134,22 +142,21 @@ const dispatch = useDispatch()
                         onClick={() => handleOptionClick(true)}
                       >
                         <NavLink
-                          className="active"
-                        to ="/statisticaluser"
+                        
+                         to="/adminstatistical"
                           data-toggle="tab"
                         >
-                          Chiến dịch đã tạo
+                          Tình nguyện viên tham gia SVCW
                         </NavLink>
                       </li>
                       <li
                         className="nav-item"
-                        onClick={() => handleOptionClick(false)}
+                        onClick={() => handleOptionClick1(false)}
                       >
-                        <NavLink className to ="/statisticaluser1" data-toggle="tab">
-                          Số tiền đã ủng hộ
+                        <NavLink to="/adminstatistical1"   className="active" href="#members" data-toggle="tab">
+                          Số tiền ủng hộ đã nhận trên SVCW
                         </NavLink>
                       </li>
-
                     </ul>
                   </div>
                 </div>
@@ -158,7 +165,7 @@ const dispatch = useDispatch()
           </div>
         </section>
         <section>
-          <div className="gap">
+          <div className="gap" style={{ padding: 0 }}>
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
@@ -172,7 +179,7 @@ const dispatch = useDispatch()
                           <div className="main-wraper">
                             <div style={{ display: "flex" }}>
                               <div className="main-title">
-                                Thống kê số chiến dịch đã tạo năm {year}
+                                Số tiền ủng hộ nhận được trên SVCW năm {year}
                               </div>
                               <select
                                 style={{
@@ -182,8 +189,7 @@ const dispatch = useDispatch()
                                 }}
                                 onClick={(e) => {
                                   setYear(e.target.value);
-                                  const action = GetStatisticalAction(
-                                    localStorage.getItem("userID"),
+                                  const action = GetStatisticalAdminAction(
                                     e.target.value
                                   );
                                   dispatch(action);
@@ -197,11 +203,50 @@ const dispatch = useDispatch()
                               </select>
                             </div>
                             <div className="card">
-      <Chart type="line" data={chartData} options={chartOptions} />
-      </div>
+                              <Chart
+                                type="line"
+                                data={chartData}
+                                options={chartOptions}
+                              />
+                            </div>
                           </div>
                         </div>
-                        
+                        <div className="tab-pane fade show" id="members">
+                          <div className="main-wraper">
+                            <div style={{ display: "flex" }}>
+                              <div className="main-title">
+                                Số tiền ủng hộ nhận được trên SVCW năm {year1}
+                              </div>
+                              <select
+                                style={{
+                                  width: "80px",
+                                  height: "20px",
+                                  border: "transparent",
+                                }}
+                                onClick={(e) => {
+                                  setYear1(e.target.value);
+                                  const action =
+                                    GetStatisticalAdminDonateAction(
+                                      e.target.value
+                                    );
+                                  dispatch(action);
+                                }}
+                              >
+                                <option value="2022">2022</option>
+                                <option value="2023" selected>
+                                  2023
+                                </option>
+                                <option value="2024">2024</option>
+                              </select>
+                            </div>
+                            {/* <ReactApexChart
+                              options={options1}
+                              series={series}
+                              type="line"
+                              height={350}
+                            /> */}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -211,9 +256,8 @@ const dispatch = useDispatch()
           </div>
         </section>
       </div>
-     
     </div>
   );
 };
 
-export default StatisticalUser;
+export default AdminStatistical1;

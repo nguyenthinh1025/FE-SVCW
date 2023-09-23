@@ -30,6 +30,9 @@ import Message from './pages/Message/Message';
 import CalendarComponent from './Test';
 import AdminStatistical from './pages/AdminStatistical/AdminStatistical';
 import Volunteer from './pages/Volunteer/Volunteer';
+import Sta from './Sta';
+import StatisticalUser1 from './pages/StatisticalUser/StatisticalUser1';
+import AdminStatistical1 from './pages/AdminStatistical/AdminStatistical1';
 export const history = createBrowserHistory()
 
 function App () {
@@ -45,6 +48,7 @@ function App () {
         <AdminTemplate exact path="/adminactivity" Component={AdminActivity} />
         <AdminTemplate exact path="/report" Component={Report} />
         <AdminTemplate exact path="/adminstatistical" Component={AdminStatistical} />
+        <AdminTemplate exact path="/adminstatistical1" Component={AdminStatistical1} />
         <AdminTemplate exact path="/volunteer" Component={Volunteer} />
         <AdminTemplate exact path="/profilemoderator/:id" Component={ProfileModerator} />
         <UserTemplate path="/profile/:id" exact Component={Profile} />
@@ -55,8 +59,10 @@ function App () {
         <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
         <UserTemplate exact path="/history" Component={Result} />
         <UserTemplate exact path="/statisticaluser" Component={StatisticalUser} />
+        <UserTemplate exact path="/statisticaluser1" Component={StatisticalUser1} />
         <UserTemplate exact path="/groups" Component={Group} />
         <Route exact path="/test" component={CalendarComponent} />
+        <Route exact path="/sta" component={Sta} />
         <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
         <Route path="/detailactivity/:id" exact component={DetailActivity} />
         <Route exact path="/loginmobile" component={LoginMobile} />

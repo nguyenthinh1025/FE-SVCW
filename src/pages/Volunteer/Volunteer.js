@@ -682,16 +682,19 @@ export default function Volunteer() {
           onHide={hideDeleteProductDialog1}
         >
           <div className="confirmation-content">
-            <i
-              className="pi pi-exclamation-triangle mr-3"
-              style={{ fontSize: "2rem" }}
-            />
+            
             {product1 && (
               <form onSubmit={fromik1.handleSubmit}>
+               <div>
+               <i
+              className="pi pi-exclamation-triangle mr-3 pt-2"
+              style={{ fontSize: "2rem" }}
+            />
                 <span style={{ fontSize: "18px" }}>
-                  Bạn muốn xóa thành viên
-                  <b>{product1.username}</b>?
+                  Bạn muốn xóa tình nguyện viên
+                  <b style={{paddingLeft:'5px'}}>{product1.username}</b>?
                 </span>
+               </div>
                 <div style={{ fontSize: "18px" , paddingTop:'10px', fontWeight:700 }}>
                   Lý do
                 </div>

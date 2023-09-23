@@ -187,7 +187,7 @@ dispatch(action)
     toast.current.show({
       severity: "error",
       summary: "Thành công",
-      detail: `Cập nhật trạng thái ${product.title} thành công`,
+      detail: `Duyệt chiến dịch ${product.title} thành công`,
       life: 3000,
       options: {
         style: {
@@ -709,7 +709,7 @@ dispatch(action)
                      setIsOpen(false);
                    }}
                  >
-                   Hoạt động 
+                  Duyệt
                  </div>}
                    </div>
                  <div>
