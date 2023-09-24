@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ScheduleUserAction } from "./redux/actions/UserAction";
 import moment from "moment";
 
-const MyCalendar = () => {
+const MyCalendar = (props) => {
   const [arr, setArr] = useState([]);
   const dispatch = useDispatch();
   const { userID } = useSelector((root) => root.LoginReducer);
@@ -17,12 +17,8 @@ const MyCalendar = () => {
   }, []);
   console.log(userSchedule);
   const arrShe = userSchedule.map((item, index) => {
-    const datetimeStrings = item.process
-      ?.filter((process) => process.processTypeId === "pt003")
-      .map((process) => process.startDate);
-    const datetimeStringEnd = item.process
-      ?.filter((process) => process.processTypeId === "pt003")
-      .map((process) => process.endDate);
+    const datetimeStrings = item?.process?.filter((process) => process.processTypeId === "pt003").map((process) => process.startDate);
+    const datetimeStringEnd = item?.process?.filter((process) => process.processTypeId === "pt003").map((process) => process.endDate);
 
     let day = "";
     let month = "";
@@ -62,11 +58,9 @@ const MyCalendar = () => {
     }
 
     return {
-      actiID: item.activityId,
-      tile: item.title,
-      process: item?.process?.filter(
-        (process) => process.processTypeId === "pt003"
-      ),
+      actiID: item?.activityId,
+      tile: item?.title,
+      process: item?.process?.filter((process) => process.processTypeId === "pt003"),
       day: Number(day),
       month: month - 1,
       year: Number(year),
@@ -125,11 +119,14 @@ const[days,setDay] = useState('')
     );
     console.log(dayEvents);
     if (dayEvents.length > 0) {
-      const popupContent = dayEvents.map((event) => (
-        <div key={event.title}>
-          <h3>{event.title}</h3>
-          <p>{moment(event?.startDate).format("DD/MM/YYYY hh:mm A")}</p>
-          <p>{moment(event?.endDate).format("DD/MM/YYYY hh:mm A")}</p>
+      const popupContent = dayEvents.map((event,index) => (
+        <div key={index}>
+       <div style={{fontSize:'20px', textAlign:'center' , cursor:'pointer'}} onClick={()=>{
+        props.history.push(`/detailactivity/${event.actiID}`)
+       }}><span style={{fontSize:'20px',color:"#007bff"}}>{event.title}</span></div>
+
+         <div style={{paddingLeft:'20px'}}>Thời gian: <span>{moment(event?.startDate).format("DD/MM/YYYY hh:mm A")} -</span> <span>{moment(event?.endDate).format("DD/MM/YYYY hh:mm A")}</span></div>
+          <hr />
         </div>
       ));
 

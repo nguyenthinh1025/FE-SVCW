@@ -346,6 +346,7 @@ export default function Role () {
           severity="danger"
           onClick={() => confirmDeleteProduct(rowData)}
         />
+        
       </React.Fragment>
     );
   };

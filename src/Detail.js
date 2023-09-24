@@ -114,12 +114,13 @@ import moment from "moment";
    <div></div>
 :
 <div className="container similar-products my-4">
-<hr />
+
 <p style={{fontSize:'22px'}}>Các hoạt động trong chiến dịch</p>
 <div className="row">
   {activityById.process?.map((item,index)=>{
       return <div className="col-md-12">
-          <div style={{fontSize:'20px', paddingBottom:'20px'}}>Hoạt động thứ {index+1} </div>
+        <hr />
+          <div style={{fontSize:'20px', paddingBottom:'20px'}}>Hoạt động {index+1} </div>
       <div className="similar-product">
       <Slider {...settings1} >
              {item?.media?.map((media,index)=>{

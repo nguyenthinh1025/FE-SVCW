@@ -222,13 +222,13 @@ export const AdminTemplate = (props) => {
                             </Fragment>
                           )}
 
-                          <li className="app-sidebar__heading">Vai trò</li>
+                          {/* <li className="app-sidebar__heading">Vai trò</li>
                           <li>
                             <NavLink to="/role">
                               <i className="metismenu-icon pe-7s-users"></i>Vai
                               trò
                             </NavLink>
-                          </li>
+                          </li> */}
                           {localStorage.getItem("admin") === "admin" ? (
                             <Fragment>
                               <li className="app-sidebar__heading">

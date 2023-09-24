@@ -118,8 +118,8 @@ export const CreateActivityAction = (value, setCreate) => {
       dispatch(action);
       const action5 = GetListEndActivityAction();
       dispatch(action5);
-      // const action3 =await GetProfileByIdAction(localStorage.getItem('userID'));
-      // dispatch(action3)
+      const action3 =await GetProfileByIdAction(localStorage.getItem('userID'));
+      dispatch(action3)
       localStorage.setItem("activityprocess", result.data.data.activityId);
       localStorage.setItem("activityprocessid", result.data.data.activityId);
       localStorage.setItem("startactivity", value.startDate);
@@ -357,8 +357,8 @@ export const DeleteActivityAction = (value ,email, title, username) => {
       const action5 = GetListEndActivityAction();
       dispatch(action5);
       
-      const action = RefunActivityAction(value);
-      dispatch(action);
+      // const action = RefunActivityAction(value);
+      // dispatch(action);
     } catch (error) {
       console.log(error);
     }
@@ -652,8 +652,8 @@ export const QuitActivityAction = (value) => {
         activityId: value.activityId,
       };
       console.log(id);
-      const action = RefunActivityAction( value.activityId);
-      dispatch(action);
+      // const action = RefunActivityAction( value.activityId);
+      // dispatch(action);
       const action1 = GetListActivityAction();
       dispatch(action1);
       const action2 = GetFanpageByIDAction(localStorage.getItem('userID'));

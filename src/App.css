@@ -1737,3 +1737,9 @@ text-color {
   }
 
 }
+
+.p-toast-top-right {
+position: absolute;
+  top: 55px!important;
+  right: 20px;
+}
