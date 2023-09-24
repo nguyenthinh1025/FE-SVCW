@@ -11,8 +11,8 @@ export default function ResponsiveHeader () {
       (root) => root.ProfileReducer
     );
   useEffect(() => {
-    const action = GetProfileByIdAction(userID);
-    dispatch(action);
+    // const action = GetProfileByIdAction(userID);
+    // dispatch(action);
   }, []);
     return (
 

@@ -127,7 +127,7 @@ export default function AdminActivity() {
     { value: "Active", label: "Hoạt động" },
     { value: "InActive", label: "Cấm hoạt động" },
     { value: "Pending", label: "Chờ duyệt" },
-    { value: "Reject", label: "Từ chối" },
+    { value: "Reject", label: "Từ chối duyệt" },
     { value: "Quit", label: "Ngừng chiến dịch" },
   ];
   useEffect(() => {

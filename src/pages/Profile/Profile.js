@@ -44,7 +44,6 @@ export default function Profile(props) {
   const handleClickCreate = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
-  console.log(getUserId);
   const { isLoadingM } = useSelector((root) => root.LoadingReducer);
   const [loading, setLoading] = useState(isLoadingM);
   useEffect(() => {

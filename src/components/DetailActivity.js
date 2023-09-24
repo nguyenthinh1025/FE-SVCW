@@ -66,7 +66,7 @@ export default function DetailActivity(props) {
   settings.nextArrow = <style>{`
   .slick-next {
     position: absolute;
-    right: -320px;
+    right: -20px;
 }
   }
   .slick-prev{
@@ -93,6 +93,17 @@ export default function DetailActivity(props) {
   };
 
   useEffect(() => {
+
+     if (!localStorage.getItem('userID')) {
+        Swal.fire({
+            title: 'Thất bại!',
+            text: 'Vui lòng đăng nhập để trải nghiệm tốt hơn!',
+            icon: 'warning',
+        }).then((result) => {
+            props.history.push('')
+    
+        });
+    }
     const action = GetActivityIDAction(id);
     dispatch(action);
   }, []);
@@ -567,8 +578,34 @@ export default function DetailActivity(props) {
                     <div
                   className="share"
                   onClick={() => {
-                    setShare(true);
-                    setShareActivityID(activityById.activityId);
+                    const textToCopy = `https://svcw-studentsvolunteer.vercel.app/detailactivity/${activityById?.activityId}`;
+
+                    const copyTextToClipboard = () => {
+                      const textArea = document.createElement("textarea");
+                      textArea.value = textToCopy;
+                      document.body.appendChild(textArea);
+                      textArea.select();
+                      document.execCommand("copy");
+                      document.body.removeChild(textArea);
+                    };
+
+                    copyTextToClipboard();
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: "top-end",
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                      },
+                    });
+
+                    Toast.fire({
+                      icon: "success",
+                      title: `Sao chép liên kết thành công`,
+                    });
                   }}
                 >
                   <i className="icofont-share-alt" /> Chia sẻ

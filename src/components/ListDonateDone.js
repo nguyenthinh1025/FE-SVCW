@@ -44,8 +44,10 @@ export default function ListDonateDone() {
         <ul className="prof-complete ">
           {visibleItems.map((item, index) => (
             <li key={index}>
-              <span style={{color:'#088dcd'}}>{item.name}</span>
-              <em style={{color:'#088dcd'}}>{item.amount.toLocaleString()} vnđ</em>
+              <div style={{display:'flex', justifyContent:'space-between'}}>
+              <span style={{color:'#088dcd'}}>{(item.name).slice(0,12)}</span>
+              <span style={{color:'#088dcd', fontSize:'14px', paddingTop:'-10px'}}>{item.amount.toLocaleString()} vnđ</span>
+              </div>
             </li>
           ))}
         </ul>

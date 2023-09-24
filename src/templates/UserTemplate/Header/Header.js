@@ -34,12 +34,14 @@ export default function Header(props) {
 
     onSubmit: async (value) => {
       console.log(formik.values.search)
-      if (formik.values.search) {
+      if (formik.values.search !== "") {
         const action = await GetActivityTitleAction(value);
         dispatch(action);
+        localStorage.setItem('find','find')
       } else {
         const action =await GetListActivityAction();
         dispatch(action);
+        localStorage.setItem('find','')
       }
     },
   });
@@ -56,7 +58,7 @@ export default function Header(props) {
           <form method="post" onSubmit={formik.handleSubmit}>
             <input
               type="text"
-              placeholder="Tìm Kiếm..."
+              placeholder="Tìm kiếm..."
               name="search"
               onChange={formik.handleChange}
             />
@@ -241,7 +243,7 @@ export default function Header(props) {
               {getUserId?.fanpage === null ? (
                 <li>
                   <NavLink to="/createfanpage" title>
-                    <i className="icofont-plus" /> Tạo Fanpage
+                    <i className="icofont-plus" /> Tạo tổ chức
                   </NavLink>
                 </li>
               ) : (
