@@ -17,8 +17,8 @@ export default function YourFanpage () {
     const action = ScheduleUserAction(userID);
     dispatch(action);
   }, []);
-  const arrShe = userSchedule.map((item, index) => {
-    const datetimeStrings = item.process?.filter(item => item.processTypeId === "pt003").map(process => process.startDate);
+  const arrShe = userSchedule?.map((item, index) => {
+    const datetimeStrings = item?.process?.filter(item => item.processTypeId === "pt003").map(process => process.startDate);
 
     let day = "";
     let month = "";
@@ -39,8 +39,8 @@ export default function YourFanpage () {
     }
    
     return {
-        actiID: item.activityId,
-        tile: item.title,
+        actiID: item?.activityId,
+        tile: item?.title,
         process: item?.process?.filter(item => item.processTypeId === "pt003"),
         day: Number(day),
         month: month-1,

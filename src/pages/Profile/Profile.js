@@ -48,24 +48,24 @@ export default function Profile(props) {
   const { isLoadingM } = useSelector((root) => root.LoadingReducer);
   const [loading, setLoading] = useState(isLoadingM);
   useEffect(() => {
-    const loading = {
-      type: "DISPLAY_LOADING",
-    };
-    dispatch(loading);
+    // const loading = {
+    //   type: "DISPLAY_LOADING",
+    // };
+    // dispatch(loading);
     const action = GetProfileByIdAction(id);
     dispatch(action);
     const action1 = GetListEndActivityByUserIDAction(id);
     dispatch(action1);
     const action4 = GetListReportTypeAction();
     dispatch(action4);
-    const loading1 = {
-      type: "HIDE_LOADING",
-    };
-    dispatch(loading1);
+    // const loading1 = {
+    //   type: "HIDE_LOADING",
+    // };
+    // dispatch(loading1);
   }, []);
   return (
     <div>
-      {loading ? <Loading /> : <Fragment></Fragment>}
+      {/* {loading ? <Loading /> : <Fragment></Fragment>} */}
       <div className="theme-layout">
         <section>
           <div className="gap">

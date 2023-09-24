@@ -26,6 +26,7 @@ import {
   ActiveActivityAction,
   DeleteActivityAction,
   GetListActivityAction,
+  RefunActivityAction,
   RejectActivityAction,
 } from "../../redux/actions/ActivityAction";
 import Swal from "sweetalert2";
@@ -56,19 +57,22 @@ export default function AdminActivity() {
     setIsOpenReject((prevIsOpen) => !prevIsOpen);
   };
   const formik = useFormik({
-    initialValues:{
+    initialValues: {
       activityId: "",
       reasonReject: "",
-      username:'',
-      email:"",
-      title:''
-    }, onSubmit: async(value)=>{
-      console.log(value)
-const action =await RejectActivityAction( value);
-dispatch(action)
-      handleClickCreate()
-    }
-  })
+      username: "",
+      email: "",
+      title: "",
+    },
+    onSubmit: async (value) => {
+      console.log(value);
+      const action = await RejectActivityAction(value);
+      dispatch(action);
+      setDeleteProductDialog(false);
+      setIsOpen(false);
+      handleClickCreate();
+    },
+  });
 
   const uploadFile = (e) => {
     let file = e.target.files[0];
@@ -98,8 +102,10 @@ dispatch(action)
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
+  const [deleteProductDialog1, setDeleteProductDialog1] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [product, setProduct] = useState(emptyProduct);
+  const [product1, setProduct1] = useState(emptyProduct);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
@@ -113,7 +119,6 @@ dispatch(action)
 
   const [op, setOp] = useState("Active");
   const onInputDropdown = (e, field) => {
-
     setOp(e.target.value);
     // setProduct(updatedProduct);
   };
@@ -123,6 +128,7 @@ dispatch(action)
     { value: "InActive", label: "Cấm hoạt động" },
     { value: "Pending", label: "Chờ duyệt" },
     { value: "Reject", label: "Từ chối" },
+    { value: "Quit", label: "Ngừng chiến dịch" },
   ];
   useEffect(() => {
     const arr = arrActivity.filter((item) => item.status === op);
@@ -147,7 +153,9 @@ dispatch(action)
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);
   };
-
+  const hideDeleteProductDialog1 = () => {
+    setDeleteProductDialog1(false);
+  };
   const hideDeleteProductsDialog = () => {
     setDeleteProductsDialog(false);
   };
@@ -174,26 +182,53 @@ dispatch(action)
     setProduct(product);
     setDeleteProductDialog(true);
   };
-
+  const confirmDeleteProduct1 = (product) => {
+    setProduct1(product);
+    setDeleteProductDialog1(true);
+  };
   const deleteProduct = async () => {
-    console.log(product)
+    console.log(product);
     const email = product.user.email;
     const title = product.title;
     const username = product.user.username;
-    const action = await DeleteActivityAction(product.activityId, email, title,username);
+    const action = await DeleteActivityAction(
+      product.activityId,
+      email,
+      title,
+      username
+    );
     await dispatch(action);
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
     toast.current.show({
-      severity: "error",
+      severity: "success",
       summary: "Thành công",
       detail: `Duyệt chiến dịch ${product.title} thành công`,
       life: 3000,
       options: {
         style: {
           zIndex: 999,
-          marginTop:"50px"
-        }
+          marginTop: "50px",
+        },
+      },
+    });
+  };
+  const deleteProduct1 = async () => {
+    console.log(product1);
+    const action = await RefunActivityAction(product1.activityId);
+    await dispatch(action);
+    setDeleteProductDialog1(false);
+    setProduct(emptyProduct);
+    toast.current.show({
+      severity: "success",
+      summary: "Thành công",
+      detail: `Hoàn tiền cho chiến dịch ${product1.title} thành công`,
+      life: 3000,
+      options: {
+        style: {
+          zIndex: 999,
+          marginTop: "50px",
+        },
       },
     });
   };
@@ -346,17 +381,20 @@ dispatch(action)
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Button
-          icon="pi pi-eye"
-          rounded
-          outlined
-          className="mr-2"
-          onClick={() => {
-
-            setIsOpen(true);
-            setActivity(rowData);
-          }}
-        />
+        {op === "Quit" ? (
+          <div></div>
+        ) : (
+          <Button
+            icon="pi pi-eye"
+            rounded
+            outlined
+            className="mr-2"
+            onClick={() => {
+              setIsOpen(true);
+              setActivity(rowData);
+            }}
+          />
+        )}
         {/* <Button
           icon="pi pi-pencil"
           rounded
@@ -366,14 +404,28 @@ dispatch(action)
             editProduct(rowData);
           }}
         /> */}
-    {op === 'InActive' ? <div></div> :  <Button
-          icon="pi pi-trash"
-          rounded
-          outlined
-          severity="danger"
-          onClick={() => confirmDeleteProduct(rowData)}
-        />
-      }
+        {op === "InActive" || op === "Quit" || op ==="Pending"? (
+          <div></div>
+        ) : (
+          <Button
+            icon="pi pi-trash"
+            rounded
+            outlined
+            severity="danger"
+            onClick={() => confirmDeleteProduct(rowData)}
+          />
+        )}
+        {op === "Quit" ? (
+          <Button
+            icon="pi pi-money-bill"
+            rounded
+            outlined
+            severity="danger"
+            onClick={() => confirmDeleteProduct1(rowData)}
+          />
+        ) : (
+          <div></div>
+        )}
       </React.Fragment>
     );
   };
@@ -426,6 +478,22 @@ dispatch(action)
         icon="pi pi-check"
         severity="danger"
         onClick={deleteProduct}
+      />
+    </React.Fragment>
+  );
+  const deleteProductDialogFooter1 = (
+    <React.Fragment>
+      <Button
+        label="Hủy bỏ"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteProductDialog1}
+      />
+      <Button
+        label="Đồng ý"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteProduct1}
       />
     </React.Fragment>
   );
@@ -509,7 +577,7 @@ dispatch(action)
             {/* <Column field="description" header="Chi tiết" sortable style={{ minWidth: '12rem' }}></Column> */}
             <Column
               field="description"
-              header="Tên chiến dịch"
+              header="Mô tả"
               sortable
               style={{ minWidth: "12rem" }}
               body={(rowData) => {
@@ -590,12 +658,32 @@ dispatch(action)
             />
             {product && (
               <span>
-                Bạn có muốn xóa bài viết <b>{product.title}</b>?
+                Bạn có muốn xóa chiến dịch <b>{product.title}</b>?
               </span>
             )}
           </div>
         </Dialog>
-
+        <Dialog
+          visible={deleteProductDialog1}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Thông Báo"
+          modal
+          footer={deleteProductDialogFooter1}
+          onHide={hideDeleteProductDialog1}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {product1 && (
+              <span>
+                Bạn muốn hoàn tiền cho chiến dịch <b>{product1.title}</b>?
+              </span>
+            )}
+          </div>
+        </Dialog>
         <Dialog
           visible={deleteProductsDialog}
           style={{ width: "32rem" }}
@@ -682,60 +770,101 @@ dispatch(action)
                       position: "absolute",
                       right: "20px",
                       marginBottom: "20px",
-                      display:'flex'
+                      display: "flex",
                     }}
                   >
-                   <div style={{marginRight:'20px'}}>
-                   {op === "Active" ? <div></div>
-                   :
-                   <div
-                   style={{
-                     cursor: "pointer",
-                     border: "none",
-                     padding: "8px 20px",
-                     background: "#3f6ad8",
-                     color: "white",
-                     borderRadius: "5px",
-                   }}
-                   onClick={async () => {
-                     const action = await ActiveActivityAction(
-                       activity?.activityId,
-                       activity?.user?.email,
-                       activity?.user?.username,
-                       activity?.title
-                     );
-                     dispatch(action);
+                    <div style={{ marginRight: "20px" }}>
+                      {op === "Active" || op === "InActive" ? (
+                        <div></div>
+                      ) : (
+                        <div
+                          style={{
+                            cursor: "pointer",
+                            border: "none",
+                            padding: "8px 20px",
+                            background: "#3f6ad8",
+                            color: "white",
+                            borderRadius: "5px",
+                          }}
+                          onClick={async () => {
+                            const action = await ActiveActivityAction(
+                              activity?.activityId,
+                              activity?.user?.email,
+                              activity?.user?.username,
+                              activity?.title
+                            );
+                            dispatch(action);
 
-                     setIsOpen(false);
-                   }}
-                 >
-                  Duyệt
-                 </div>}
-                   </div>
-                 <div>
-                 {op === "Active" || op ==="Reject" ? <div></div>
-                   :
-                   <div
-                   style={{
-                     cursor: "pointer",
-                     border: "none",
-                     padding: "8px 20px",
-                     background: "red",
-                     color: "white",
-                     borderRadius: "5px",
-                   }}
-                   onClick={async () => {
-                    
-              formik.setFieldValue('activityId',  activity?.activityId)
-              formik.setFieldValue('email',  activity?.user?.email)
-              formik.setFieldValue('username',  activity?.user?.username)
-              formik.setFieldValue('title',   activity?.title)
-                       handleClickCreate()               
-                   }}
-                 >
-                  Từ chối
-                 </div>}
-                 </div>
+                            setIsOpen(false);
+                          }}
+                        >
+                          Duyệt
+                        </div>
+                      )}
+                      {op === "InActive" ? (
+                        <div
+                          style={{
+                            cursor: "pointer",
+                            border: "none",
+                            padding: "8px 20px",
+                            background: "#3f6ad8",
+                            color: "white",
+                            borderRadius: "5px",
+                          }}
+                          onClick={async () => {
+                            const action = await ActiveActivityAction(
+                              activity?.activityId,
+                              activity?.user?.email,
+                              activity?.user?.username,
+                              activity?.title
+                            );
+                            dispatch(action);
+
+                            setIsOpen(false);
+                          }}
+                        >
+                          Hoạt động
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                    <div>
+                      {op === "Active" ||
+                      op === "Reject" ||
+                      op === "InActive" ? (
+                        <div></div>
+                      ) : (
+                        <div
+                          style={{
+                            cursor: "pointer",
+                            border: "none",
+                            padding: "8px 20px",
+                            background: "red",
+                            color: "white",
+                            borderRadius: "5px",
+                          }}
+                          onClick={async () => {
+                            formik.setFieldValue(
+                              "activityId",
+                              activity?.activityId
+                            );
+                            formik.setFieldValue(
+                              "email",
+                              activity?.user?.email
+                            );
+                            formik.setFieldValue(
+                              "username",
+                              activity?.user?.username
+                            );
+                            formik.setFieldValue("title", activity?.title);
+                            handleClickCreate();
+                          }}
+                        >
+                          Từ chối
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <h2
                     style={{
@@ -908,9 +1037,12 @@ dispatch(action)
       ) : (
         <div></div>
       )}
-       {isOpenReject === true ? (
+      {isOpenReject === true ? (
         <div className="post-new-popup" style={popupStyleCreate}>
-          <div className="popup" style={{ width: 800, zIndex: 80, marginTop: '-50px' }}>
+          <div
+            className="popup"
+            style={{ width: 800, zIndex: 80, marginTop: "-50px" }}
+          >
             <span className="popup-closed" onClick={handleClickCreate}>
               <i className="icofont-close" />
             </span>
@@ -934,16 +1066,14 @@ dispatch(action)
                       <line x1={5} y1={12} x2={19} y2={12} />
                     </svg>
                   </i>
-                Từ chối chiến dịch
+                  Từ chối chiến dịch
                 </h5>
               </div>
             </div>
 
-            <div style={{ padding: '40px 0' }}>
+            <div style={{ padding: "40px 0" }}>
               <form onSubmit={formik.handleSubmit}>
                 <div className="form row mt-3">
-
-                 
                   <div className="form-group">
                     <label>Lý do</label>
                     <textarea
@@ -955,7 +1085,7 @@ dispatch(action)
                       onChange={formik.handleChange}
                     ></textarea>
                   </div>
-                 
+
                   <div className="row" style={{}}>
                     <div className="col-md-4">
                       <button

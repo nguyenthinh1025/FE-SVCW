@@ -319,19 +319,19 @@ export default function ItemActivityFanpage(props) {
       
     } else {
       setJoinedIndex(index);
-      const action = JoinAction(activity, userID);
+      const action = JoinAction(activity, userID, title, process[0]?.location,process[0]?.startDate,process[0]?.endDate);
       dispatch(action);
-      SendEmail(
-        localStorage.getItem("emailuser"),
-        "Thông báo thời gian diễn ra chiến dịch",
-        `Bạn đã tham gia thành công chiến dịch ${title} . Vui lòng đến địa chỉ ${
-          process[0]?.location
-        } từ ngày ${moment(process[0]?.startDate).format(
-          "DD/MM/YYYY hh:mm A"
-        )} đến ngày ${moment(process[0]?.endDate).format(
-          "DD/MM/YYYY hh:mm A"
-        )} để tham gia chiến dịch`
-      );
+      // SendEmail(
+      //   localStorage.getItem("emailuser"),
+      //   "Thông báo thời gian diễn ra chiến dịch",
+      //   `Bạn đã tham gia thành công chiến dịch ${title} . Vui lòng đến địa chỉ ${
+      //     process[0]?.location
+      //   } từ ngày ${moment(process[0]?.startDate).format(
+      //     "DD/MM/YYYY hh:mm A"
+      //   )} đến ngày ${moment(process[0]?.endDate).format(
+      //     "DD/MM/YYYY hh:mm A"
+      //   )} để tham gia chiến dịch`
+      // );
     }
     const action = GetListActivityAction();
     await dispatch(action);
