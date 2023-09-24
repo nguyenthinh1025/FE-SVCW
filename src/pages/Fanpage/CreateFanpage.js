@@ -163,7 +163,7 @@ export default function CreateFanpage (props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.fanpageName}
                                 type="text"
-                                placeholder="Tên Fanpage"
+                                placeholder="Tên tổ chức"
                               />
                              
                                 <div className="error">
@@ -179,7 +179,7 @@ export default function CreateFanpage (props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.mst}
                                 type="text"
-                                placeholder="Nhập Mã Số Thuế"
+                                placeholder="Nhập mã số thuế"
                               />
                              
                                 <div className="error">{formik.errors.mst}</div>
@@ -193,7 +193,7 @@ export default function CreateFanpage (props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
                                 type="text"
-                                placeholder="Nhập Email"
+                                placeholder="Nhập email"
                                 disabled
                               />
                             
@@ -210,7 +210,7 @@ export default function CreateFanpage (props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.phone}
                                 type="text"
-                                placeholder="Nhập Số Điện Thoại"
+                                placeholder="Nhập số điện thoại"
                               />
                            
                                 <div className="error">
@@ -226,7 +226,7 @@ export default function CreateFanpage (props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.description}
                                 rows={5}
-                                placeholder="Nhập Mô Tả"
+                                placeholder="Nhập mô tả"
                               />
                              
                                 <div className="error">
@@ -253,7 +253,7 @@ export default function CreateFanpage (props) {
                         style={{ position: "relative" }}
                       >
                         <div className="cart-summary">
-                          <h4 className="main-title">Ảnh Đại Diện</h4>
+                          <h4 className="main-title">Ảnh đại diện</h4>
                           <div
                             className="wrapper"
                             onChange={(e) => uploadFile(e)}
@@ -301,7 +301,7 @@ export default function CreateFanpage (props) {
                       </div>
                       <div className="main-wraper stick-widget">
                         <div className="cart-summary">
-                          <h4 className="main-title">Ảnh Bìa</h4>
+                          <h4 className="main-title">Ảnh bìa</h4>
                           <div className="wrapper">
                             <div
                               className="file-upload"

@@ -43,10 +43,11 @@ export default function Home (props) {
                 setIsMatch(false);
             });
         }
+  
         const action3 = GetListActivityAction();
         dispatch(action3)
-        const action = GetUserByIdAction(localStorage.getItem('userID'));
-        dispatch(action);
+        // const action = GetUserByIdAction(localStorage.getItem('userID'));
+        // dispatch(action);
         const action1 = GetProfileByIdAction(userID);
         dispatch(action1)
         const action2 = GetListFanpageAction();

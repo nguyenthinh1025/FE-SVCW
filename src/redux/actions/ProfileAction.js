@@ -6,7 +6,7 @@ export const GetProfileByIdAction = (id) => {
   return async (dispatch) => {
     try {
       let result = await http.get(`/User/get-user-by-id?UserId=${id}`);
-
+console.log(result.data.data.user.userId)
       const action = {
         type: "GET_USER_BY_ID",
         getUserId: result.data.data.user,

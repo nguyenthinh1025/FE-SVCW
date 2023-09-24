@@ -146,8 +146,8 @@ export const GetActivityTitleAction = (value) => {
         userId: localStorage.getItem("userID"),
         searchContent: value.search,
       };
-      const action1 = RecommentActivityAction(search, search.userId);
-      dispatch(action1);
+      // const action1 = RecommentActivityAction(search, search.userId);
+      // dispatch(action1);
     } catch (error) {
       console.log(error);
     }
@@ -468,7 +468,7 @@ export const ActiveActivityAction = (id, email, fullname, activityName) => {
       dispatch(action1);
       Swal.fire({
         title: "Thành công!",
-        text: "Cập nhật trạng thái hoạt động cho chiến dịch thành công",
+     text: `Duyệt chiến dịch ${activityName} thành công`,
         icon: "success",
         confirmButtonText: "Thành công",
       });

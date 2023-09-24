@@ -194,14 +194,14 @@ export default function ResultActivity (props) {
                       style={{ margin: "20px 0" }}
                     >
                       <li className="nav-item">
-                        <a className="active" href="#posts" data-toggle="tab">
+                        <a className="active" href="#ketqua" data-toggle="tab">
                           Kết quả chiến dịch
                         </a>
                       </li>
                       <li className="nav-item" style={{ margin: "0 10px" }}>
                         <a
                           className
-                          href="#pictures"
+                          href="#ungho"
                           data-toggle="tab"
                           onClick={() => {
                             handleClickDonate();
@@ -215,7 +215,7 @@ export default function ResultActivity (props) {
                       <li className="nav-item">
                         <a
                           className
-                          href="#about"
+                          href="#thamgia"
                           data-toggle="tab"
                           onClick={() => {
                             handleClickFolowJoin();
@@ -239,7 +239,7 @@ export default function ResultActivity (props) {
                   <div className="row">
                     <div className="col-lg-12">
                       <div className="tab-content">
-                        <div className=" tab-pane active fade show " id="posts">
+                        <div className=" tab-pane active fade show " id="ketqua">
                           <div className="row merged20">
                             <div className="col-lg-12">
                               <div
@@ -247,7 +247,7 @@ export default function ResultActivity (props) {
                               >
                                 <Slider
                                   {...parentSettings}
-                                  style={{ height: "500px" }}
+                                  style={{ height: "300px" }}
                                 >
                                   {arrEndActivityID?.result?.map(
                                     (item, index) => {
@@ -265,6 +265,7 @@ export default function ResultActivity (props) {
                                               justifyContent: "center",
                                               gridTemplateColumns: '1fr 1fr 1fr 1fr',
                                               marginTop: '50px',
+                                            
                                               gap: '10px'
                                             }}
                                           >
@@ -297,7 +298,7 @@ export default function ResultActivity (props) {
                           </div>
                         </div>
 
-                        <div className="tab-pane fade" id="pictures">
+                        <div className="tab-pane fade" id="ungho">
                           <div className="row merged20">
                             <Toolbar
                               className="mb-4"
@@ -347,7 +348,7 @@ export default function ResultActivity (props) {
                             </DataTable>
                           </div>
                         </div>
-                        <div className="tab-pane fade" id="about">
+                        <div className="tab-pane fade" id="thamgia">
                           <div className="row merged20">
                             <div className="col-lg-12">
                               <div className="row">

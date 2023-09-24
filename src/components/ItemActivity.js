@@ -190,6 +190,7 @@ export default function ItemActivity(props) {
     : ItemActivity.comment.slice(0, 2);
   const handleClickCreate = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
+    
   }; const handleClick1 = () => {
     setIsOpen1((prevIsOpen) => !prevIsOpen);
   };

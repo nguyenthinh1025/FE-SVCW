@@ -150,7 +150,7 @@ export default function CreateActivity() {
 
       Swal.fire({
         title: "Thành công",
-        text: "Tạo chiến dịch mới thành công!",
+        text: "Chiến dịch của bạn đã được ghi nhận. Vui lòng chờ được kiểm duyệt bởi hệ thống SVCW nhé!",
         icon: "success",
         showCancelButton: false,
         confirmButtonColor: "#3085d6",

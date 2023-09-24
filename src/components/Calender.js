@@ -17,8 +17,12 @@ const Calender = (props) => {
   }, []);
   console.log(userSchedule);
   const arrShe = userSchedule.map((item, index) => {
-    const datetimeStrings = item?.process?.filter((process) => process.processTypeId === "pt003").map((process) => process.startDate);
-    const datetimeStringEnd = item?.process?.filter((process) => process.processTypeId === "pt003").map((process) => process.endDate);
+    const datetimeStrings = item?.process
+      ?.filter((process) => process.processTypeId === "pt003")
+      .map((process) => process.startDate);
+    const datetimeStringEnd = item?.process
+      ?.filter((process) => process.processTypeId === "pt003")
+      .map((process) => process.endDate);
 
     let day = "";
     let month = "";
@@ -60,7 +64,9 @@ const Calender = (props) => {
     return {
       actiID: item?.activityId,
       tile: item?.title,
-      process: item?.process?.filter((process) => process.processTypeId === "pt003"),
+      process: item?.process?.filter(
+        (process) => process.processTypeId === "pt003"
+      ),
       day: Number(day),
       month: month - 1,
       year: Number(year),
@@ -108,10 +114,10 @@ const Calender = (props) => {
     }
     return null;
   };
-const[days,setDay] = useState('')
+  const [days, setDay] = useState("");
   const handleDayClick = (date) => {
     const dateString = date.toISOString().split("T")[0];
-    setDay(dateString)
+    setDay(dateString);
     const dayEvents = arr.filter(
       (event) =>
         dateString >= event.startDate.toISOString().split("T")[0] &&
@@ -119,13 +125,26 @@ const[days,setDay] = useState('')
     );
     console.log(dayEvents);
     if (dayEvents.length > 0) {
-      const popupContent = dayEvents.map((event,index) => (
+      const popupContent = dayEvents.map((event, index) => (
         <div key={index}>
-       <div style={{fontSize:'20px', textAlign:'center' , cursor:'pointer'}} onClick={()=>{
-        props.history.push(`/detailactivity/${event.actiID}`)
-       }}><span style={{fontSize:'20px',color:"#007bff"}}>{event.title}</span></div>
+          <div
+            style={{ fontSize: "20px", textAlign: "center", cursor: "pointer" }}
+            onClick={() => {
+              props.history.push(`/detailactivity/${event.actiID}`);
+            }}
+          >
+            <span style={{ fontSize: "20px", color: "#007bff" }}>
+              {event.title}
+            </span>
+          </div>
 
-         <div style={{paddingLeft:'20px'}}>Thời gian: <span>{moment(event?.startDate).format("DD/MM/YYYY hh:mm A")} -</span> <span>{moment(event?.endDate).format("DD/MM/YYYY hh:mm A")}</span></div>
+          <div style={{ paddingLeft: "20px" }}>
+            Thời gian:{" "}
+            <span>
+              {moment(event?.startDate).format("DD/MM/YYYY hh:mm A")} -
+            </span>{" "}
+            <span>{moment(event?.endDate).format("DD/MM/YYYY hh:mm A")}</span>
+          </div>
           <hr />
         </div>
       ));
@@ -133,8 +152,7 @@ const[days,setDay] = useState('')
       setPopupContent(popupContent);
       setShowPopup(true);
     } else {
-      
-      const popupContent = "Không có sự kiện nào trong ngày"
+      const popupContent = "Không có sự kiện nào trong ngày";
       setPopupContent(popupContent); // Đặt giá trị của popupContent thành null để không hiển thị nội dung
       setShowPopup(true); // Mở popup
     }
@@ -154,34 +172,34 @@ const[days,setDay] = useState('')
         onClickDay={handleDayClick}
       />
       {showPopup && (
-        <div className="" style={{ marginTop: "200px" }}>
-          <div className="popup" style={{ padding: "20px 0" }}>
-            <div>
-              <span
-                onClick={closePopup}
-                style={{
-                  position: "absolute",
-                  right: "10px",
-                  top: "5px",
-                  color: "#088dcd",
-                  fontSize: "20px",
-                  border: "1px solid #088dcd",
-                  padding: "0 10px 2px 10px",
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                }}
-              >
-                x
-              </span>
-            </div>
-            <div
-              style={{ textAlign: "center", fontSize: "20px", fontWeight: 800 }}
+        <div className="" style={{ position:'relative',top:'20px', zIndex:999 }}>
+        <div className="popup" style={{ padding: "20px 0", marginTop:'100px' ,zIndex:999 , marginLeft:'90px'}}>
+          <div>
+            <span
+              onClick={closePopup}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "5px",
+                color: "#088dcd",
+                fontSize: "20px",
+                border: "1px solid #088dcd",
+                padding: "0px 13px 4px",
+                borderRadius: "50%",
+                cursor: "pointer",
+              }}
             >
-              Sự kiện trong ngày  {moment(days).format('DD/MM/YYYY')}
-            </div>
-            <div style={{ paddingTop: "30px" }}>{popupContent}</div>
+              x
+            </span>
           </div>
+          <div
+            style={{ textAlign: "center", fontSize: "20px", fontWeight: 800 }}
+          >
+            Sự kiện trong ngày {moment(days).format("DD/MM/YYYY")}
+          </div>
+          <div style={{ paddingTop: "30px" }}>{popupContent}</div>
         </div>
+      </div>
       )}
     </div>
   );
