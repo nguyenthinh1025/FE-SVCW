@@ -4,6 +4,8 @@ import { GetActivityIDAction, GetListActivityAction, GetListEndActivityAction, G
 import { GetFanpageByIDAction } from "./FanpageAction";
 import { GetProfileByIdAction } from "./ProfileAction";
 import { ScheduleUserAction } from "./UserAction";
+import { SendEmail } from "../../utils/emailService";
+import moment from "moment";
 
 export const FollowAction = (activity, user) => {
     return async (dispatch) => {
@@ -90,7 +92,7 @@ export const UnFollowAction = (activity, user) => {
 
 
 
-export const JoinAction = (activity, user) => {
+export const JoinAction = (activity, user,title,location,startDate,endDate) => {
     return async (dispatch) => {
         try {
             let result = await http.post(`/Activity/join-Activity?activityId=${activity}&userId=${user}`);
@@ -128,8 +130,35 @@ export const JoinAction = (activity, user) => {
                 icon: "success",
                 title: `Tham gia thành công sự kiện`,
               });
+              SendEmail(
+                localStorage.getItem("emailuser"),
+                "Thông báo thời gian diễn ra chiến dịch",
+                `Bạn đã tham gia thành công chiến dịch ${title} . Vui lòng đến địa chỉ ${
+                  location
+                } từ ngày ${moment(startDate).format(
+                  "DD/MM/YYYY hh:mm A"
+                )} đến ngày ${moment(endDate).format(
+                  "DD/MM/YYYY hh:mm A"
+                )} để tham gia chiến dịch`
+              );
         } catch (error) {
             console.log(error.response?.data.message);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+      
+            Toast.fire({
+              icon: "warning",
+              title: `${error.response?.data.message}`,
+            });
         }
     }
 }

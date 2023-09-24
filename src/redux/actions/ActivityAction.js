@@ -118,8 +118,8 @@ export const CreateActivityAction = (value, setCreate) => {
       dispatch(action);
       const action5 = GetListEndActivityAction();
       dispatch(action5);
-      const action3 = GetProfileByIdAction(localStorage.getItem('userID'));
-      dispatch(action3)
+      // const action3 =await GetProfileByIdAction(localStorage.getItem('userID'));
+      // dispatch(action3)
       localStorage.setItem("activityprocess", result.data.data.activityId);
       localStorage.setItem("activityprocessid", result.data.data.activityId);
       localStorage.setItem("startactivity", value.startDate);
