@@ -357,7 +357,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
             </div>
             <div class="col-md-6">
               <label for="validationDefault07" class="form-label">
-                Sự kiện đã tham gia
+                Chiến dịch đã tham gia
               </label>
               <input
                 type="text"
@@ -369,7 +369,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage, arrActivity }) => {
             </div>
             <div class="col-md-6">
               <label for="validationDefault08" class="form-label">
-                Sự kiện hoàn thành
+                Chiến dịch hoàn thành
               </label>
               <input
                 type="text"

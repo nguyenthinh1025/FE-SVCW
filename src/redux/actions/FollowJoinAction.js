@@ -128,7 +128,7 @@ export const JoinAction = (activity, user,title,location,startDate,endDate) => {
         
               Toast.fire({
                 icon: "success",
-                title: `Tham gia thành công sự kiện`,
+                title: `Tham gia chiến dịch thành công`,
               });
               SendEmail(
                 localStorage.getItem("emailuser"),
@@ -198,7 +198,7 @@ export const UnJoinAction = (activity, user) => {
         
               Toast.fire({
                 icon: "error",
-                title: `Bỏ tham gia sự kiện thành công`,
+                title: `Bỏ tham gia chiến dịch thành công`,
               });
         } catch (error) {
             console.log(error);

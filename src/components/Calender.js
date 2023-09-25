@@ -152,7 +152,7 @@ const Calender = (props) => {
       setPopupContent(popupContent);
       setShowPopup(true);
     } else {
-      const popupContent = "Không có sự kiện nào trong ngày";
+      const popupContent = "Không có chiến dịch nào trong ngày";
       setPopupContent(popupContent); // Đặt giá trị của popupContent thành null để không hiển thị nội dung
       setShowPopup(true); // Mở popup
     }
@@ -195,7 +195,7 @@ const Calender = (props) => {
           <div
             style={{ textAlign: "center", fontSize: "20px", fontWeight: 800 }}
           >
-            Sự kiện trong ngày {moment(days).format("DD/MM/YYYY")}
+            Chiến dịch trong ngày {moment(days).format("DD/MM/YYYY")}
           </div>
           <div style={{ paddingTop: "30px" }}>{popupContent}</div>
         </div>

@@ -534,7 +534,7 @@ export default function ItemEndActivity(props) {
                       >
                         <i className="icofont-qr-code" />
                         Mã QR
-                        <span>Lấy mã QR của sự kiện</span>
+                        <span>Lấy mã QR của chiến dịch</span>
                       </li>
                     ) : (
                       <div></div>

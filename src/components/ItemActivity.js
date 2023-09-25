@@ -517,7 +517,7 @@ export default function ItemActivity(props) {
                       >
                         <i className="icofont-qr-code" />
                         Mã QR
-                        <span>Lấy mã QR của sự kiện</span>
+                        <span>Lấy mã QR của chiến dịch</span>
                       </li>
                     ) : (
                       <div></div>
@@ -533,7 +533,7 @@ export default function ItemActivity(props) {
                       >
                         <i className="icofont-money-bag" />
                         Danh sách donate
-                        <span>Danh sách đã donate cho sự kiện</span>
+                        <span>Danh sách đã donate cho chiến dịch</span>
                       </li>
                     ) : (
                       <div></div>
