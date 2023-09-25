@@ -183,7 +183,7 @@ export default function Volunteer() {
     toast.current.show({
       severity: "success",
       summary: "Thành công",
-      detail: `Cập nhật trạng thái ${product.username} thành công`,
+      detail: `Tình nguyên viên ${product.username}có thể truy cập hệ thống thành công`,
       life: 3000,
       options: {
         style: {
