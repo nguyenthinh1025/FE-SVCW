@@ -134,6 +134,7 @@ export const CreateActivityAction = (value, setCreate) => {
 export const GetActivityTitleAction = (value) => {
   return async (dispatch) => {
     try {
+     
       let result = await http.post(`/Activity/get-activity-title`, value);
       const action = {
         type: "GET_LIST_ACTIVITY_TITLE",
@@ -148,6 +149,24 @@ export const GetActivityTitleAction = (value) => {
       };
       // const action1 = RecommentActivityAction(search, search.userId);
       // dispatch(action1);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const GetActivitySreachAction = (value) => {
+  return async (dispatch) => {
+    try {
+     
+      let result = await http.post(`/Activity/search`, value);
+      console.log(result)
+      const action = {
+        type: "GET_LIST_ACTIVITY_SEARCH",
+        arrActivitySearch: result.data.data,
+      };
+      console.log(result.data.data);
+      dispatch(action);     
     } catch (error) {
       console.log(error);
     }

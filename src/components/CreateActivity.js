@@ -36,7 +36,9 @@ export default function CreateActivity() {
   const { processType, activityProcess } = useSelector(
     (root) => root.ProcessTypeReducer
   );
-
+  function formatNumberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   const [tt, setTT] = useState(false);
   const popupStyle9 = {
     opacity: isOpen ? 1 : 0,
@@ -77,9 +79,9 @@ export default function CreateActivity() {
         uploadTask.on("state_changed", (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            const integerProgress = Math.floor(progress);
+          const integerProgress = Math.floor(progress);
 
-            setUploadProgress(integerProgress);
+          setUploadProgress(integerProgress);
         });
 
         const snapshot = await uploadTask;
@@ -105,19 +107,19 @@ export default function CreateActivity() {
     setUploadProgress(0);
   };
 
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object().shape({
     title: Yup.string().required("Tên chiến dịch không được bỏ trống"),
-    description: Yup.string()
-
-      .required("Mô tả chiến dịch không được bỏ trống"),
-      startDate: Yup.string()
-      .required("Ngày bắt đầu không được bỏ trống"),
-      endDate: Yup.string()
-      .required("Ngày kết thúc không được bỏ trống"),   
-      location: Yup.string().required("Đối tượng không được bỏ trống"),
-      media: Yup.array()
+    description: Yup.string().required("Mô tả chiến dịch không được bỏ trống"),
+    startDate: Yup.string().required("Ngày bắt đầu không được bỏ trống"),
+    endDate: Yup.string().required("Ngày kết thúc không được bỏ trống"),
+    location: Yup.string().required("Đối tượng không được bỏ trống"),
+    media: Yup.array()
       .required("Vui lòng tải lên hình ảnh")
-      .test('isNotEmpty', 'Vui lòng tải lên ít nhất một hình ảnh', value => value && value.length > 0),
+      .test(
+        "isNotEmpty",
+        "Vui lòng tải lên ít nhất một hình ảnh",
+        (value) => value && value.length > 0
+      ),
   });
   const [create, setCreate] = useState(activityProcess);
   const formik = useFormik({
@@ -126,15 +128,14 @@ export default function CreateActivity() {
       description: "",
       startDate: "",
       endDate: "",
-      // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
       location: "",
       targetDonation: 0,
       userId: userID,
       isFanpageAvtivity: false,
       media: [],
     },
-    // enableReinitialize: true,
-    validationSchema:validationSchema,
+    enableReinitialize: true,
+    validationSchema,
     onSubmit: async (value) => {
       const action = await CreateActivityAction(value, setCreate);
       await dispatch(action);
@@ -188,6 +189,8 @@ export default function CreateActivity() {
       media: [],
     },
   ]);
+  const [tit, setTit] = useState("");
+  console.log(tit)
   const addInputField = () => {
     if (error === "1") {
       setInputFields([
@@ -322,8 +325,11 @@ export default function CreateActivity() {
         zIndex: 999,
       });
       setError("2");
-    }
-    else if ( moment((updatedInputFields[index].endDate)).isBefore(updatedInputFields[index].startDate)) {
+    } else if (
+      moment(updatedInputFields[index].endDate).isBefore(
+        updatedInputFields[index].startDate
+      )
+    ) {
       Swal.fire({
         title: "Cảnh báo",
         text: `Ngày kết thúc không trước ngày bắt đầu hoạt động`,
@@ -334,7 +340,11 @@ export default function CreateActivity() {
         zIndex: 999,
       });
       setError("2");
-     } else if ( moment((updatedInputFields[index].startDate)).isAfter(updatedInputFields[index].endDate)) {
+    } else if (
+      moment(updatedInputFields[index].startDate).isAfter(
+        updatedInputFields[index].endDate
+      )
+    ) {
       Swal.fire({
         title: "Cảnh báo",
         text: `Ngày bắt đầu không sau ngày kết thúc hoạt động`,
@@ -345,7 +355,10 @@ export default function CreateActivity() {
         zIndex: 999,
       });
       setError("2");
-     } else {
+    } else if (updatedInputFields[index].processTitle === "") {
+      setTit("Vui lònng không bỏ trống");
+    } else {
+       setTit("");
       setError("1");
     }
 
@@ -376,8 +389,9 @@ export default function CreateActivity() {
           media: item.media,
         };
       });
-      const action1 = await CreateProcessAction(text, handleClick1);
-      dispatch(action1);
+      console.log(text)
+      // const action1 = await CreateProcessAction(text, handleClick1);
+      // dispatch(action1);
       setInputFields([
         {
           processTitle: "",
@@ -398,7 +412,7 @@ export default function CreateActivity() {
           meida: [],
           media: [],
         },
-      ])
+      ]);
     } else {
       Swal.fire({
         title: "Cảnh báo",
@@ -559,45 +573,39 @@ export default function CreateActivity() {
                         id="name"
                         placeholder="Nhập tên chiến dịch"
                         className="form-control"
-                        required
                       />
-                       <div className="error">{formik.errors.title}</div>
+                      <div className="error">{formik.errors.title}</div>
                     </div>
-                   
                   </div>
-                  </div>
-                 <div className="row">
-
-                 <div className="col-md-12">
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
                     <div className="form-group">
                       <label id="email-label" htmlFor="email">
                         Mô tả chiến dịch
                       </label>
                       <textarea
-                      id="message"
-                      className="form-control"
-                      rows="2"
-                      cols="50"
-                      name="description"
-                      onChange={formik.handleChange}
-                      value={formik.values.description}
-                      required
+                        id="message"
+                        className="form-control"
+                        rows="2"
+                        cols="50"
+                        name="description"
+                        onChange={formik.handleChange}
+                        value={formik.values.description}
+                      ></textarea>
 
-                    ></textarea>
-                      
-                       <div className="error">{formik.errors.description}</div>
+                      <div className="error">{formik.errors.description}</div>
                     </div>
-                   
                   </div>
-                 </div>
-                
+                </div>
+
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label id="name-label" htmlFor="name">
                         Ngày bắt đầu
                       </label>
-                      
+
                       <input
                         type="date"
                         name="startDate"
@@ -606,9 +614,9 @@ export default function CreateActivity() {
                         id="name"
                         className="form-control"
                         min={new Date().toISOString().split("T")[0]}
-
+                        max={moment(formik.values.endDate).format("YYYY-MM-DD")}
                       />
-                        <div className="error">{formik.errors.startDate}</div>
+                      <div className="error">{formik.errors.startDate}</div>
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -623,10 +631,13 @@ export default function CreateActivity() {
                         value={formik.values.endDate}
                         id="name"
                         className="form-control"
-                        min={new Date().toISOString().split("T")[0]}
-
+                        min={
+                          moment(formik.values.startDate).format(
+                            "YYYY-MM-DD"
+                          ) && new Date().toISOString().split("T")[0]
+                        }
                       />
-                        <div className="error">{formik.errors.endDate}</div>
+                      <div className="error">{formik.errors.endDate}</div>
                     </div>
                   </div>
                 </div>
@@ -638,16 +649,14 @@ export default function CreateActivity() {
                       </label>
 
                       <textarea
-                      id="message"
-                      className="form-control"
-                      rows="2"
-                      cols="50"
-                      name="location"
-                      onChange={formik.handleChange}
-                      value={formik.values.location}
-                      required
-
-                    ></textarea>
+                        id="message"
+                        className="form-control"
+                        rows="2"
+                        cols="50"
+                        name="location"
+                        onChange={formik.handleChange}
+                        value={formik.values.location}
+                      ></textarea>
                       <div className="error">{formik.errors.location}</div>
                       {/* <input
                         type="text"
@@ -664,7 +673,6 @@ export default function CreateActivity() {
                       /> */}
                     </div>
                   </div>
-
                 </div>
 
                 <div className="row">
@@ -734,7 +742,7 @@ export default function CreateActivity() {
                             </label>
                             <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
                           </fieldset>
-                            <div className="error">{formik.errors.media}</div>
+                          <div className="error">{formik.errors.media}</div>
                         </form>
                         <svg style={{ display: "none" }}>
                           <defs>
@@ -750,29 +758,30 @@ export default function CreateActivity() {
                       </div>
 
                       <div className="image-container image-container-flex">
-                        {formik.values.media.length === 0   ? <div></div>
-                        :
-                        <Fragment>
-                          {images.map((image, index) => (
-                          <div
-                            className="image-item image-item-relative"
-                            key={index}
-                          >
-                            <img
-                              src={image.url}
-                              alt={`Image ${index}`}
-                              className="image-preview image-item-flex"
-                            />
-                            <button
-                              className="delete-button"
-                              onClick={() => handleImageDelete(index)}
-                            >
-                              <span>&times;</span>
-                            </button>
-                          </div>
-                        ))}
-                        </Fragment>
-}
+                        {formik.values.media.length === 0 ? (
+                          <div></div>
+                        ) : (
+                          <Fragment>
+                            {images.map((image, index) => (
+                              <div
+                                className="image-item image-item-relative"
+                                key={index}
+                              >
+                                <img
+                                  src={image.url}
+                                  alt={`Image ${index}`}
+                                  className="image-preview image-item-flex"
+                                />
+                                <button
+                                  className="delete-button"
+                                  onClick={() => handleImageDelete(index)}
+                                >
+                                  <span>&times;</span>
+                                </button>
+                              </div>
+                            ))}
+                          </Fragment>
+                        )}
                       </div>
 
                       {isLoading && (
@@ -896,7 +905,7 @@ export default function CreateActivity() {
                 }}
               >
                 Tên chiến dịch:
-                <span style={{ fontWeight: "bold", paddingLeft:'5px' }}>
+                <span style={{ fontWeight: "bold", paddingLeft: "5px" }}>
                   {formik.values.title}
                 </span>
               </div>
@@ -912,7 +921,7 @@ export default function CreateActivity() {
                         }}
                       >
                         <div style={{ fontSize: "18px", fontWeight: "bold" }}>
-                          Hoạt động thứ {index + 1}
+                          Hoạt động {index + 1}
                         </div>
                         <div className="">
                           {inputFields.length !== 1 && (
@@ -926,47 +935,67 @@ export default function CreateActivity() {
                           )}
                         </div>
                       </div>
-                      <div className="row my-3" key={index}>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label id="name-label" htmlFor="name">
-                              Tên hoạt động
-                            </label>
-                            <input
-                              type="text"
-                              value={data.processTitle}
-                              onChange={(event) =>
-                                handleInputChange(
-                                  index,
-                                  "processTitle",
-                                  event.target.value
-                                )
-                              }
-                              className="form-control"
-                              placeholder="Tên hoạt động"
-                              required
-                            />
+                      <div className="row" key={index}>
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label id="name-label" htmlFor="name">
+                                Tên hoạt động
+                              </label>
+                              <input
+                                type="text"
+                                value={data.processTitle}
+                                onChange={(event) =>
+                                  handleInputChange(
+                                    index,
+                                    "processTitle",
+                                    event.target.value
+                                  )
+                                }
+                                className="form-control"
+                                placeholder="Tên hoạt động"
+                                required
+                              />
+                              <div> {tit ==="" ? <Fragment></Fragment>: tit}</div>
+                            </div>
                           </div>
                         </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label id="name-label" htmlFor="name">
-                              Chi tiết hoạt động
-                            </label>
-                            <input
-                              type="text"
-                              value={data.description}
-                              onChange={(event) =>
-                                handleInputChange(
-                                  index,
-                                  "description",
-                                  event.target.value
-                                )
-                              }
-                              className="form-control"
-                              placeholder="Chi tiết"
-                              required
-                            />
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label id="name-label" htmlFor="name">
+                                Chi tiết hoạt động
+                              </label>
+                              <textarea
+                                rows="2"
+                                cols="50"
+                                value={data.description}
+                                onChange={(event) =>
+                                  handleInputChange(
+                                    index,
+                                    "description",
+                                    event.target.value
+                                  )
+                                }
+                                className="form-control"
+                                placeholder="Chi tiết"
+                                required
+                              ></textarea>
+                              {/* <input
+                                type="text"
+                                value={data.description}
+                                onChange={(event) =>
+                                  handleInputChange(
+                                    index,
+                                    "description",
+                                    event.target.value
+                                  )
+                                }
+                                className="form-control"
+                                placeholder="Chi tiết"
+                                required
+                              /> */}
+                            </div>
                           </div>
                         </div>
                         <div className="row">
@@ -1077,15 +1106,16 @@ export default function CreateActivity() {
                                   Số người tham gia
                                 </label>
                                 <input
-                                  type="number"
+                                  type=""
                                   min={0}
                                   name="targetParticipant"
-                                  value={data.targetParticipant}
+                                  value={formatNumberWithCommas(data.targetParticipant)}
+                                  
                                   onChange={(event) =>
                                     handleInputChange(
                                       index,
                                       "targetParticipant",
-                                      event.target.value
+                                      Number(event.target.value.replace(/\D/, ""))
                                     )
                                   }
                                   id="name"
@@ -1099,10 +1129,10 @@ export default function CreateActivity() {
                                   Số tiền ủng hộ
                                 </label>
                                 <input
-                                  type="number"
+                                  type=""
                                   min={0}
                                   name="targetDonation"
-                                  value={data.targetDonation}
+                                  value={formatNumberWithCommas(data.targetDonation)}
                                   onChange={(event) => {
                                     if (
                                       Number(event.target.value) >
@@ -1122,10 +1152,11 @@ export default function CreateActivity() {
                                       setError("2");
                                     } else {
                                       handleInputChange(
-                                        index,
-                                        "targetDonation",
-                                        event.target.value
-                                      );
+                                      index,
+                                      "targetDonation",
+                                      Number(event.target.value.replace(/\D/, ""))
+                                    )
+                                    
                                       setError("1");
                                     }
                                   }}

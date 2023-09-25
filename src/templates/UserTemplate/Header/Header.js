@@ -10,6 +10,7 @@ import {
   RecommentActivityAction,
 } from "../../../redux/actions/ActivityAction";
 import { async } from "q";
+import { history } from "../../../App";
 
 export default function Header(props) {
   const { userID } = useSelector((root) => root.LoginReducer);
@@ -35,9 +36,10 @@ export default function Header(props) {
     onSubmit: async (value) => {
       console.log(formik.values.search)
       if (formik.values.search !== "") {
-        const action = await GetActivityTitleAction(value);
-        dispatch(action);
-        localStorage.setItem('find','find')
+        props.history.push(`/search/${formik.values.search}`)
+        // const action = await GetActivityTitleAction(value, props);
+        // dispatch(action);
+   
       } else {
         const action =await GetListActivityAction();
         dispatch(action);

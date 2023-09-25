@@ -21,15 +21,21 @@ export default function RecommentActivity () {
   };
   settings.nextArrow = <style>{`
   .slick-next {
-    // position: absolute;
-    // right: 2px;
-}
-  
-  .slick-prev{
     position: absolute;
-   
-    zIndex:999!important
+    right: -19px;
+}
   }
+
+`}</style>;
+settings.prevArrow = <style>{`
+.slick-prev:before {
+  content: '←';
+  position: absolute;
+  left: 7px;
+  z-index: 9999;
+}
+}
+
 `}</style>;
   useEffect(()=>{
     const action9 = GetRecommentActivityAction(userID);
