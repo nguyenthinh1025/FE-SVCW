@@ -165,15 +165,15 @@ const Calender = (props) => {
   return (
     <div>
       <Calendar
-        className="calen"
+        className=""
         onChange={setDate}
         value={date}
         tileContent={tileContent}
         onClickDay={handleDayClick}
       />
       {showPopup && (
-        <div className="" style={{ position:'relative',top:'20px', zIndex:999 }}>
-        <div className="popup" style={{ padding: "20px 0", marginTop:'100px' ,zIndex:999 , marginLeft:'90px'}}>
+        <div className="" style={{ position:'relative', zIndex:999 }}>
+        <div className="popup" style={{position:'fixed', padding: "20px 0",zIndex:999 }}>
           <div>
             <span
               onClick={closePopup}

@@ -21,7 +21,11 @@ export default function Login (props) {
     const [isMatch, setIsMatch] = useState(false);
 
     useEffect(() => {
-
+        const action9 = {
+            type: "CHECK_MODERATOR",
+            msgModerator: "",
+          };
+          dispatch(action9);
         const action = GetListActivityAction();
         dispatch(action)
         const action1 = GetListFanpageAction();

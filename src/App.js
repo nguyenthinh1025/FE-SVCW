@@ -34,6 +34,7 @@ import Sta from './Sta';
 import StatisticalUser1 from './pages/StatisticalUser/StatisticalUser1';
 import AdminStatistical1 from './pages/AdminStatistical/AdminStatistical1';
 import Detail from './Detail';
+import Search from './pages/Search/Search';
 export const history = createBrowserHistory()
 
 function App () {
@@ -62,6 +63,7 @@ function App () {
         <UserTemplate exact path="/statisticaluser" Component={StatisticalUser} />
         <UserTemplate exact path="/statisticaluser1" Component={StatisticalUser1} />
         <UserTemplate exact path="/groups" Component={Group} />
+        <UserTemplate exact path="/search/:title" Component={Search} />
         <Route exact path="/test" component={CalendarComponent} />
         <Route exact path="/sta" component={Sta} />
         <Route exact path="/detail/:id" component={Detail} />

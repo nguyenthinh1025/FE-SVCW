@@ -17,7 +17,7 @@ export const UserTemplate = (props) => {
             return <div className='theme-layout'>
                 <Config />
                 <ResponsiveHeader />
-                <Header />
+                <Header  {...propsRoute}/>
                 <Carousel />
 
                 <SideBar />

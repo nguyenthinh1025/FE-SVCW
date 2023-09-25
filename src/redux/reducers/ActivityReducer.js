@@ -9,7 +9,8 @@ const stateDefault = {
     activityById: localStorage.getItem('activityID'),
     arrListActivity: [],
     arrActivityLogin: [],
-    arrActivityRecomment: []
+    arrActivityRecomment: [],
+    arrActivitySearch:[]
 }
 
 
@@ -42,6 +43,10 @@ export const ActivityReducer = (state = stateDefault, action) => {
         }
         case 'GET_ACTIVITY_RECOMMENT': {
             state.arrActivityRecomment = action.arrActivityRecomment;
+            return { ...state }
+        }
+        case 'GET_LIST_ACTIVITY_SEARCH': {
+            state.arrActivitySearch = action.arrActivitySearch;
             return { ...state }
         }
 
