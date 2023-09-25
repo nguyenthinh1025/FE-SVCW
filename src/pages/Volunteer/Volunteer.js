@@ -666,7 +666,7 @@ export default function Volunteer() {
             />
             {product && (
               <span style={{ fontSize: "18px" }}>
-                Bạn muốn tình nguyện viên <b>{product.username}</b> truy cập lại hệ thống??
+                Bạn muốn tình nguyện viên <b>{product.username}</b> truy cập lại hệ thống?
               </span>
             )}
           </div>
